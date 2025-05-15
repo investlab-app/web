@@ -1,12 +1,13 @@
 // @ts-check
 
-import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginRouter from '@tanstack/eslint-plugin-router';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 export default [
-  ...tseslint.config(eslint.configs.recommended, tseslint.configs.recommended),
+  ...tseslint.configs.recommended,
   ...pluginRouter.configs['flat/recommended'],
+  ...pluginQuery.configs['flat/recommended'],
   {
     files: ['src/**/*', '__test__/**/*'],
   },
