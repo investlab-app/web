@@ -8,7 +8,8 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "test": "vitest run",
-    "format": "prettier --write .",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
@@ -57,6 +58,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "3.1.3",
     "eslint": "^9.26.0",
     "jsdom": "^26.0.0",
     "prettier": "^3.5.3",
