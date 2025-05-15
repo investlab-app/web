@@ -30,7 +30,6 @@ import {
   IconLayoutColumns,
   IconLoader,
   IconPlus,
-  IconTrendingUp,
 } from "@tabler/icons-react";
 import {
   type ColumnDef,
@@ -47,19 +46,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { toast } from "sonner";
 import { z } from "zod";
+import ReactECharts from "echarts-for-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Drawer,
@@ -629,19 +622,101 @@ const chartData = [
   { month: "June", desktop: 214, mobile: 140 },
 ];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--primary)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile();
+
+  // Prepare data for ECharts
+  const months = chartData.map((data) => data.month);
+  const desktopData = chartData.map((data) => data.desktop);
+  const mobileData = chartData.map((data) => data.mobile);
+
+  const chartOptions = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    legend: {
+      data: ["Desktop", "Mobile"],
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "category",
+      data: months,
+      axisLabel: {
+        formatter: (value: string) => value.slice(0, 3), // Show short month names
+      },
+    },
+    yAxis: {
+      type: "value",
+    },
+    series: [
+      {
+        name: "Desktop",
+        type: "line",
+        smooth: true,
+        data: desktopData,
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(117, 33, 232, 0.5)" },
+              { offset: 1, color: "rgba(117, 33, 232, 0)" },
+            ],
+          },
+        },
+        lineStyle: {
+          color: getComputedStyle(document.body)
+            .getPropertyValue("--primary")
+            .trim(),
+        },
+        itemStyle: {
+          color: getComputedStyle(document.body)
+            .getPropertyValue("--primary")
+            .trim(),
+        },
+      },
+      {
+        name: "Mobile",
+        type: "line",
+        smooth: true,
+        data: mobileData,
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(117, 33, 232, 0.5)" },
+              { offset: 1, color: "rgba(117, 33, 232, 0)" },
+            ],
+          },
+        },
+        lineStyle: {
+          color: getComputedStyle(document.body)
+            .getPropertyValue("--primary")
+            .trim(),
+        },
+        itemStyle: {
+          color: getComputedStyle(document.body)
+            .getPropertyValue("--primary")
+            .trim(),
+        },
+      },
+    ],
+  };
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
@@ -660,51 +735,16 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
             <>
-              <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 0,
-                    right: 10,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                    hide
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
-                  <Area
-                    dataKey="mobile"
-                    type="natural"
-                    fill="var(--color-mobile)"
-                    fillOpacity={0.6}
-                    stroke="var(--color-mobile)"
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="desktop"
-                    type="natural"
-                    fill="var(--color-desktop)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-desktop)"
-                    stackId="a"
-                  />
-                </AreaChart>
-              </ChartContainer>
+              <div className="h-64">
+                <ReactECharts
+                  option={chartOptions}
+                  style={{ height: "100%" }}
+                />
+              </div>
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
-                  <IconTrendingUp className="size-4" />
+                  Trending up by 5.2% this month
                 </div>
                 <div className="text-muted-foreground">
                   Showing total visitors for the last 6 months. This is just

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import ReactECharts from "echarts-for-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -10,12 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -121,20 +115,6 @@ const chartData = [
   { date: "2024-06-30", desktop: 446, mobile: 400 },
 ];
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "var(--primary)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = React.useState("90d");
@@ -158,6 +138,116 @@ export function ChartAreaInteractive() {
     startDate.setDate(startDate.getDate() - daysToSubtract);
     return date >= startDate;
   });
+
+  const dates = filteredData.map((item) => item.date);
+  const desktopData = filteredData.map((item) => item.desktop);
+  const mobileData = filteredData.map((item) => item.mobile);
+
+  const chartOptions = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+      backgroundColor: "rgba(47, 5, 77, 0.9)",
+      textStyle: {
+        color: "white",
+      },
+      borderWidth: 0,
+      formatter: (params: { axisValue: string; data: number }[]) => {
+        const date = params[0].axisValue;
+        const desktop = params[0].data;
+        const mobile = params[1].data;
+        return `
+          <div">
+            <strong>${date}</strong><br />
+            Desktop: ${desktop}<br />
+            Mobile: ${mobile}
+          </div>
+        `;
+      },
+    },
+    legend: {
+      data: ["Desktop", "Mobile"],
+      textStyle: {
+        color: "white",
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "category",
+      data: dates,
+      axisLabel: {
+        formatter: (value: string) => {
+          const date = new Date(value);
+          return date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          });
+        },
+      },
+    },
+    yAxis: {
+      type: "value",
+    },
+    series: [
+      {
+        name: "Desktop",
+        type: "line",
+        smooth: true,
+        data: desktopData,
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(117, 33, 232, 0.5)" },
+              { offset: 1, color: "rgba(117, 33, 232, 0)" },
+            ],
+          },
+        },
+        lineStyle: {
+          color: "rgba(117, 33, 232, 1)",
+        },
+        itemStyle: {
+          color: "rgba(117, 33, 232, 1)",
+        },
+      },
+      {
+        name: "Mobile",
+        type: "line",
+        smooth: true,
+        data: mobileData,
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(117, 33, 232, 0.5)" },
+              { offset: 1, color: "rgba(117, 33, 232, 0)" },
+            ],
+          },
+        },
+        lineStyle: {
+          color: "rgba(117, 33, 232, 1)",
+        },
+        itemStyle: {
+          color: "rgba(117, 33, 232, 1)",
+        },
+      },
+    ],
+  };
 
   return (
     <Card className="@container/card">
@@ -204,83 +294,7 @@ export function ChartAreaInteractive() {
         </CardAction>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-            />
-            <ChartTooltip
-              cursor={false}
-              defaultIndex={isMobile ? -1 : 10}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
-            <Area
-              dataKey="mobile"
-              type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-          </AreaChart>
-        </ChartContainer>
+        <ReactECharts option={chartOptions} style={{ height: "400px" }} />
       </CardContent>
     </Card>
   );
