@@ -27,6 +27,20 @@ This project uses [Vitest](https://vitest.dev/) for testing. You can run the tes
 pnpm test
 ```
 
+## End-to-End Testing (Playwright)
+
+This project uses [Playwright](https://playwright.dev/) for end-to-end (E2E) testing.
+
+- E2E test files are located in the `e2e/` directory.
+- To run all Playwright tests:
+
+```bash
+pnpm run test:e2e
+```
+
+- Playwright configuration is in `playwright.config.ts`.
+- Test reports are generated in the `playwright-report/` directory (gitignored).
+
 ## Styling
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
@@ -287,6 +301,22 @@ We use the `Derived` class to create a new store that is derived from another st
 Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
 
 You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+
+## Linting
+
+This project uses [ESLint](https://eslint.org/) for linting. You can run the linter with:
+
+```bash
+pnpm lint
+```
+
+## Formatting
+
+This project uses [Prettier](https://prettier.io/) for code formatting. You can run the formatter with:
+
+```bash
+pnpm format
+```
 
 # Demo files
 
