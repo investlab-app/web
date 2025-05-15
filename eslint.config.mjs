@@ -9,6 +9,6 @@ export default [
   ...pluginRouter.configs['flat/recommended'],
   ...pluginQuery.configs['flat/recommended'],
   {
-    files: ['src/**/*', '__test__/**/*'],
+    files: ['src/**/*', 'test/**/*'],
   },
 ];
