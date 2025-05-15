@@ -1,15 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AppSidebar } from "@/components/app-sidebar";
-import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
-import { SectionCards } from "@/components/section-cards";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { createFileRoute } from '@tanstack/react-router';
+import { AppSidebar } from '@/components/app-sidebar';
+import { ChartAreaInteractive } from '@/components/chart-area-interactive';
+import { DataTable } from '@/components/data-table';
+import { SectionCards } from '@/components/section-cards';
+import { SiteHeader } from '@/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
-import data from "../data.json";
-import { ThemeProvider } from "@/components/theme-provider";
+import data from '../data.json';
+import { ThemeProvider } from '@/components/theme-provider';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: App,
 });
 
