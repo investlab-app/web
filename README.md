@@ -1,4 +1,4 @@
-# wall-street-stocks-web
+# stocks-web
 
 [![CI](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml)
 
