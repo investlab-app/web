@@ -4,7 +4,7 @@ import {
   IconShare3,
   IconTrash,
   type Icon,
-} from "@tabler/icons-react"
+} from "@tabler/icons-react";
 
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -21,18 +21,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 export function NavDocuments({
   items,
 }: {
   items: {
-    name: string
-    url: string
-    icon: Icon
-  }[]
+    name: string;
+    url: string;
+    icon: Icon;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -86,5 +86,5 @@ export function NavDocuments({
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
