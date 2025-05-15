@@ -5,6 +5,9 @@ dist-ssr
 *.local
 .vscode
 
+# Vitest
+/coverage
+
 # Playwright
 /test-results/
 /playwright-report/
