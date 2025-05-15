@@ -159,7 +159,7 @@ export function ChartAreaInteractive() {
         const desktop = params[0].data;
         const mobile = params[1].data;
         return `
-          <div">
+          <div>
             <strong>${date}</strong><br />
             Desktop: ${desktop}<br />
             Mobile: ${mobile}
