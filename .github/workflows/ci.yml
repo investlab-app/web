@@ -28,8 +28,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps
       - name: Run lint checks
         run: pnpm lint
       - name: Check code formatting
@@ -40,6 +38,8 @@ jobs:
         run: pnpm build
       - name: Run unit tests with coverage
         run: pnpm test --coverage
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
       - name: Run Playwright end-to-end tests
         run: pnpm exec playwright test
       - name: Upload coverage report
