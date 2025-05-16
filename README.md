@@ -37,7 +37,7 @@ This project uses [Playwright](https://playwright.dev/) for end-to-end (E2E) tes
 - To run all Playwright tests:
 
 ```bash
-pnpm run test:e2e
+pnpm test:e2e
 ```
 
 - Playwright configuration is in `playwright.config.ts`.
