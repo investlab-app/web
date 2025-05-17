@@ -1,6 +1,7 @@
 # stocks-web
 
 [![CI](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml)
+[![ORT](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml)
 
 Welcome to your new TanStack app!
 
@@ -37,7 +38,7 @@ This project uses [Playwright](https://playwright.dev/) for end-to-end (E2E) tes
 - To run all Playwright tests:
 
 ```bash
-pnpm run test:e2e
+pnpm test:e2e
 ```
 
 - Playwright configuration is in `playwright.config.ts`.
