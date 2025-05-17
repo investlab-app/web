@@ -1,6 +1,7 @@
 # stocks-web
 
 [![CI](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml)
+[![ORT](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml)
 
 Welcome to your new TanStack app!
 
