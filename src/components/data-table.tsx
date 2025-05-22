@@ -7,8 +7,6 @@ import {
   closestCenter,
   useSensor,
   useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
 } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
@@ -32,11 +30,6 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type Row,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -49,6 +42,14 @@ import {
 import { toast } from 'sonner';
 import { z } from 'zod';
 import ReactECharts from 'echarts-for-react';
+import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  Row,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
@@ -122,7 +123,7 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+const columns: Array<ColumnDef<z.infer<typeof schema>>> = [
   {
     id: 'drag',
     header: () => null,
@@ -325,7 +326,7 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 export function DataTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[];
+  data: Array<z.infer<typeof schema>>;
 }) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -346,8 +347,8 @@ export function DataTable({
     useSensor(KeyboardSensor, {})
   );
 
-  const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
+  const dataIds = React.useMemo<Array<UniqueIdentifier>>(
+    () => data.map(({ id }) => id),
     [data]
   );
 
@@ -378,7 +379,8 @@ export function DataTable({
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    if (active && over && active.id !== over.id) {
+    if (over) {
+      // eslint-disable-next-line no-shadow
       setData((data) => {
         const oldIndex = dataIds.indexOf(active.id);
         const newIndex = dataIds.indexOf(over.id);
@@ -493,7 +495,7 @@ export function DataTable({
                 ))}
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                {table.getRowModel().rows?.length ? (
+                {table.getRowModel().rows.length ? (
                   <SortableContext
                     items={dataIds}
                     strategy={verticalListSortingStrategy}
