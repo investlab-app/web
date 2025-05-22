@@ -1,0 +1,72 @@
+name: Dependency Check
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pnpm-lock.yaml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pnpm-lock.yaml'
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    name: Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use HTTPS instead of SSH for Git cloning
+        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Run GitHub Action for ORT
+        uses: oss-review-toolkit/ort-ci-github-action@v1
+        with:
+          allow-dynamic-versions: 'true'
+          fail-on: 'violations'
+          report-formats: 'CycloneDx,SpdxDocument,WebApp,PlainTextTemplate'
+
+      - name: Create combined NOTICE file
+        shell: bash
+        run: |
+          echo "Looking for NOTICE.header in .github/NOTICE.header"
+          ls -lh .github/NOTICE.header
+          echo "Looking for NOTICE_SUMMARY in ort-results/report/NOTICE_SUMMARY"
+          ls -lh ort-results/report/NOTICE_SUMMARY
+          echo "Concatenating NOTICE file..."
+          cat .github/NOTICE.header ort-results/report/NOTICE_SUMMARY > NOTICE
+          echo "NOTICE file created successfully:"
+          ls -lh NOTICE
+
+      - name: Upload NOTICE file artifact
+        uses: actions/upload-artifact@v4
+        if: always() # Ensure artifact is uploaded for inspection even if other steps fail
+        with:
+          name: NOTICE-File
+          path: NOTICE
+          retention-days: 30
+
+      - name: Configure Git User
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and Push NOTICE File
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          git add NOTICE
+          if git diff --staged --quiet; then
+            echo "NOTICE file has not changed. No commit needed."
+          else
+            echo "NOTICE file has changed. Committing and pushing..."
+            git commit -m "docs: Update NOTICE file [skip ci]"
+            git push
+          fi

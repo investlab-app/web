@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Release
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,7 +19,6 @@ jobs:
         with:
           node-version: '20'
           fetch-depth: '0'
-
       - name: Zip dist directory
         run: |
           if [ -d "dist" ]; then
@@ -28,7 +28,6 @@ jobs:
             exit 0
           fi
         shell: bash
-
       - name: Generate Changelog and Create Release
         id: release_drafter
         uses: release-drafter/release-drafter@v6
@@ -37,7 +36,6 @@ jobs:
           publish: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Upload Release Asset (dist.zip)
         if: steps.release_drafter.outputs.upload_url && hashFiles('./dist.zip')
         uses: actions/upload-release-asset@v1
