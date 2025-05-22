@@ -14,6 +14,8 @@ jobs:
       contents: write
       pull-requests: read
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Setup and Build
         uses: ./.github/actions/setup-and-build
         with:
