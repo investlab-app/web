@@ -1,5 +1,5 @@
 {
-  "include": ["src", "test"],
+  "include": ["src", "e2e", "playwright.config.ts", "vite.config.ts"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

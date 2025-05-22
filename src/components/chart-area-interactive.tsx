@@ -154,7 +154,7 @@ export function ChartAreaInteractive() {
         color: 'white',
       },
       borderWidth: 0,
-      formatter: (params: { axisValue: string; data: number }[]) => {
+      formatter: (params: Array<{ axisValue: string; data: number }>) => {
         const date = params[0].axisValue;
         const desktop = params[0].data;
         const mobile = params[1].data;
