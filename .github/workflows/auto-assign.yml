@@ -11,7 +11,7 @@ jobs:
       - name: Auto-assign issue
         uses: pozil/auto-assign-issue@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           assignees: simplyNoOne
           numOfAssignee: 1
       - name: Add issue to project
