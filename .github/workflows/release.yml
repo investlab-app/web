@@ -4,34 +4,34 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main # Or your default branch, e.g., master
+      - main
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Needed to create a release and push changelog
-      pull-requests: read # Needed to read PR labels for changelog
+      contents: write
+      pull-requests: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history for changelog generation
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Specify your Node.js version
+          node-version: '20'
 
       - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install # Changed to pnpm
+        run: pnpm install
 
       - name: Build project
-        run: pnpm run build # Changed to pnpm, assuming build script is in package.json
+        run: pnpm run build
 
       - name: Zip dist directory
         run: |
@@ -39,16 +39,16 @@ jobs:
             zip -r dist.zip ./dist
           else
             echo "dist directory not found, skipping zip."
-            exit 0 # Exit successfully if no dist dir, or use 'exit 1' to fail
+            exit 0
           fi
         shell: bash
 
       - name: Generate Changelog and Create Release
-        id: release_drafter # Added id to reference outputs
+        id: release_drafter
         uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter.yml
-          publish: true
+          publish: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
