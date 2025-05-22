@@ -1,0 +1,39 @@
+name: 'Setup and Build'
+description: 'Checks out code, sets up Node, pnpm, installs dependencies, and builds the project'
+
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '20'
+  pnpm-version:
+    description: 'pnpm version to use'
+    required: false
+    default: '10'
+  fetch-depth:
+    description: 'Fetch depth for checkout. 0 for all history.'
+    required: false
+    default: '1'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: ${{ inputs.fetch-depth }}
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
+    - name: Build project
+      run: pnpm run build
+      shell: bash

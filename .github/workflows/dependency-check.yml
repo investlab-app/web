@@ -1,0 +1,91 @@
+name: Dependency Analysis
+
+on:
+  push:
+    branches: [main]
+    paths: ['pnpm-lock.yaml']
+  pull_request:
+    branches: [main]
+    paths: ['pnpm-lock.yaml']
+  workflow_dispatch:
+
+jobs:
+  ort-analysis:
+    name: ORT Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      artifact-name: ${{ steps.extract_artifact_name.outputs.artifact-name }}
+    steps:
+      - name: Use HTTPS instead of SSH for Git cloning
+        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Run GitHub Action for ORT
+        uses: oss-review-toolkit/ort-ci-github-action@v1
+        with:
+          allow-dynamic-versions: 'true'
+          fail-on: 'violations'
+          report-formats: 'CycloneDx,SpdxDocument,WebApp,PlainTextTemplate'
+      - name: Extract artifact name for next job
+        id: extract_artifact_name
+        shell: bash
+        run: |
+          # The ORT action creates an artifact name based on repo name and version
+          REPO_NAME=$(basename $GITHUB_REPOSITORY)
+          SAFE_REPO_NAME=$(echo $REPO_NAME | sed -e 's/[^A-Za-z0-9 \-\_]//g' -e 's/\s/-/g' -e 's/\([A-Z]\)/\L\1/g')
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          ARTIFACT_NAME="ort-results-${SAFE_REPO_NAME}-${SHORT_SHA}"
+          echo "artifact-name=${ARTIFACT_NAME}" >> "$GITHUB_OUTPUT"
+          echo "Generated artifact name: ${ARTIFACT_NAME}"
+
+  commit-notice:
+    name: Commit NOTICE File
+    runs-on: ubuntu-latest
+    needs: ort-analysis
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download ORT results
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.ort-analysis.outputs.artifact-name }}
+          path: ort-results
+      - name: Create combined NOTICE file
+        shell: bash
+        run: |
+          NOTICE_HEADER_FILE=".github/NOTICE.header"
+          ORT_NOTICE_FILE="ort-results/NOTICE_DEFAULT"
+          if [[ ! -f "${NOTICE_HEADER_FILE}" ]]; then
+            echo "Warning: NOTICE header file not found at ${NOTICE_HEADER_FILE}"
+            touch "${NOTICE_HEADER_FILE}"
+          fi
+          if [[ ! -f "${ORT_NOTICE_FILE}" ]]; then
+            echo "Error: ORT NOTICE file not found at ${ORT_NOTICE_FILE}"
+            echo "Available files in ort-results:"
+            ls -la ort-results/
+            exit 1
+          fi
+          cat "${NOTICE_HEADER_FILE}" "${ORT_NOTICE_FILE}" > NOTICE
+      - name: Configure git user
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Commit and push NOTICE file
+        shell: bash
+        run: |
+          git pull origin ${{ github.ref_name }}
+          git add NOTICE
+          if git diff --staged --quiet; then
+            echo "NOTICE file has not changed. No commit needed."
+          else
+            echo "NOTICE file has changed. Committing and pushing..."
+            git commit -m "docs: Update NOTICE file [skip ci]"
+            git push origin ${{ github.ref_name }}
+          fi
