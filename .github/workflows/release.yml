@@ -1,0 +1,63 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main # Or your default branch, e.g., master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create a release and push changelog
+      pull-requests: read # Needed to read PR labels for changelog
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for changelog generation
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Specify your Node.js version
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install # Changed to pnpm
+
+      - name: Build project
+        run: pnpm run build # Changed to pnpm, assuming build script is in package.json
+
+      - name: Zip dist directory
+        run: |
+          if [ -d "dist" ]; then
+            zip -r dist.zip ./dist
+          else
+            echo "dist directory not found, skipping zip."
+            exit 0 # Exit successfully if no dist dir, or use 'exit 1' to fail
+          fi
+        shell: bash
+
+      - name: Generate Changelog and Create Release
+        id: release_drafter # Added id to reference outputs
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter.yml
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset (dist.zip)
+        if: steps.release_drafter.outputs.upload_url && hashFiles('./dist.zip') != ''
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
