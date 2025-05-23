@@ -4,6 +4,7 @@ on:
     types: [opened]
 jobs:
   run:
+    name: Auto-assign issue and add to project
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -11,7 +12,7 @@ jobs:
       - name: Auto-assign issue
         uses: pozil/auto-assign-issue@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           assignees: simplyNoOne
           numOfAssignee: 1
       - name: Add issue to project

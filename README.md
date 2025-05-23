@@ -1,7 +1,7 @@
 # stocks-web
 
-[![CI](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ci.yml)
-[![ORT](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/ort.yml)
+[![Test](https://github.com/wall-street-stocks/stocks-web/actions/workflows/test.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/test.yml)
+[![Dependency Analysis](https://github.com/wall-street-stocks/stocks-web/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/dependency-check.yml)
 
 Welcome to your new TanStack app!
 
