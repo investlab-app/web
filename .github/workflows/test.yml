@@ -31,8 +31,24 @@ jobs:
         run: pnpm tsc --noEmit
       - name: Run unit tests with coverage
         run: pnpm test --coverage
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright browsers and/or OS dependencies
+        shell: bash
+        run: |
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" == "true" ]; then
+            echo "Browser cache hit. Ensuring OS dependencies are installed for cached browsers."
+            pnpm exec playwright install-deps
+          else
+            echo "Browser cache miss. Installing Playwright browsers and their OS dependencies."
+            pnpm exec playwright install --with-deps
+          fi
       - name: Run Playwright end-to-end tests
         run: pnpm exec playwright test
       - name: Upload coverage report
