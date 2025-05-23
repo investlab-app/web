@@ -163,8 +163,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.27.0(jiti@2.4.2))
       eslint-plugin-react-you-might-not-need-an-effect:
-        specifier: ^0.0.31
-        version: 0.0.31(eslint@9.27.0(jiti@2.4.2))
+        specifier: ^0.0.32
+        version: 0.0.32(eslint@9.27.0(jiti@2.4.2))
       jsdom:
         specifier: ^26.1.0
         version: 26.1.0
@@ -1897,8 +1897,8 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-you-might-not-need-an-effect@0.0.31:
-    resolution: {integrity: sha512-fKDaPKnRczeV+uerQPu/SDi+PeYxggAhVhWZDP/umZBEC6W1p4g7iQ8sv5iqmgt2hpgE0YShfa5ZEH80tBo91Q==}
+  eslint-plugin-react-you-might-not-need-an-effect@0.0.32:
+    resolution: {integrity: sha512-v5zLf8mR9m5JBqhM9v6YWaFlpmeC64EUFJZKORApauC16KRRasbbT+DLoAfzs4loat/FPGXbkK1jTyOyjnv8KA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       eslint: '>=7.0.0'
@@ -4641,7 +4641,7 @@ snapshots:
     dependencies:
       eslint: 9.27.0(jiti@2.4.2)
 
-  eslint-plugin-react-you-might-not-need-an-effect@0.0.31(eslint@9.27.0(jiti@2.4.2)):
+  eslint-plugin-react-you-might-not-need-an-effect@0.0.32(eslint@9.27.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.27.0(jiti@2.4.2)
       eslint-utils: 3.0.0(eslint@9.27.0(jiti@2.4.2))
