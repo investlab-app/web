@@ -1,6 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import viteReact from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -13,10 +14,15 @@ export default defineConfig({
     viteReact(),
     tailwindcss(),
   ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    include: ['src/**/*.test.{js,jsx,ts,tsx}'],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        //rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   resolve: {
     alias: {
