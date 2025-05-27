@@ -1,20 +1,16 @@
-import { GalleryVerticalEnd } from "lucide-react"
-import { SignUpForm } from "@/components/signup-form"
-import { createFileRoute } from '@tanstack/react-router';
-import { useUser } from '@clerk/tanstack-react-start';  // Clerk user hook
-import { useNavigate } from '@tanstack/react-router';
-import { useEffect } from "react";
-
+import { GalleryVerticalEnd } from 'lucide-react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useUser } from '@clerk/tanstack-react-start';
+import { useEffect } from 'react';
+import { SignUpForm } from '@/components/signup-form';
 
 export default function SignUpPage() {
-
-
   const { isSignedIn } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate({ to: "/" });  // Redirect to home if already signed in
+      navigate({ to: '/' }); // Redirect to home if already signed in
     }
   }, [isSignedIn, navigate]);
 
@@ -34,9 +30,8 @@ export default function SignUpPage() {
         <SignUpForm />
       </div>
     </div>
-  )
-  
+  );
 }
-  export const Route = createFileRoute('/signup-page')({
-    component: SignUpPage,
-  });
+export const Route = createFileRoute('/signup-page')({
+  component: SignUpPage,
+});

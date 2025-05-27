@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from '@clerk/tanstack-react-start';
-import { LandingPage } from '@/features/landing/landing-page'; // You create this
 import { createFileRoute } from '@tanstack/react-router';
-import { HomePage } from '@/features/home/home-page';       // You already have this
+import { LandingPage } from '@/features/landing/landing-page'; // You create this
+import { HomePage } from '@/features/home/home-page'; // You already have this
 
 export const Route = createFileRoute('/')({
   component: IndexPage,

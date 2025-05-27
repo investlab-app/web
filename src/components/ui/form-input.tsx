@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils"
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 interface FormInputProps {
   id: string;
@@ -15,14 +15,14 @@ interface FormInputProps {
 export function FormInput({
   id,
   label,
-  type = "text",
+  type = 'text',
   name,
   placeholder,
   required = false,
   className,
 }: FormInputProps) {
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn('grid gap-2', className)}>
       <Label htmlFor={id}>{label}</Label>
       <Input
         id={id}

@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { SignUp, useSignIn } from "@clerk/clerk-react";
-import { useNavigate } from "@tanstack/react-router";
-import { AuthFormContainer } from "@/components/auth-form-container";
-import { AuthFormHeader } from "@/components/auth-form-header";
-import { FormInput } from "@/components/ui/form-input";
-import { SocialAuthButton } from "@/components/ui/social-auth-button";
-import { Divider } from "@/components/ui/divider";
-import { AuthFormFooter } from "@/components/auth-form-footer";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useSignIn } from '@clerk/clerk-react';
+import { useNavigate } from '@tanstack/react-router';
+import { AuthFormContainer } from '@/components/auth-form-container';
+import { AuthFormHeader } from '@/components/auth-form-header';
+import { FormInput } from '@/components/ui/form-input';
+import { SocialAuthButton } from '@/components/ui/social-auth-button';
+import { Divider } from '@/components/ui/divider';
+import { AuthFormFooter } from '@/components/auth-form-footer';
+import { Button } from '@/components/ui/button';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -16,32 +16,32 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isLoaded || !signIn) return;
+    if (!isLoaded ) return;
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
       const result = await signIn.create({
-        strategy: "password",
+        strategy: 'password',
         identifier: email,
         password: password,
       });
 
-      if (result.status === "complete") {
+      if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId });
       }
-    } catch (err: any) {
-      console.error("Sign-in error:", err.errors);
-      setError(err.errors?.[0]?.message || "Something went wrong.");
+    } catch (err: unknown) {
+      console.error('Sign-in error:', err.errors);
+      setError(err.errors?.[0]?.message || 'Something went wrong.');
     }
   };
 
   const handleGoogleAuth = () => {
     signIn?.authenticateWithRedirect({
-      strategy: "oauth_google",
-      redirectUrlComplete: "http://localhost:3000/sso-callback",
+      strategy: 'oauth_google',
+      redirectUrlComplete: 'http://localhost:3000/sso-callback',
     });
   };
 
@@ -87,10 +87,7 @@ export function LoginForm() {
             Login
           </Button>
 
-          <AuthFormFooter 
-            type="login" 
-            onBack={() => navigate({ to: "/" })}
-          />
+          <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
         </div>
       </form>
     </AuthFormContainer>

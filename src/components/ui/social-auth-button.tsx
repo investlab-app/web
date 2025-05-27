@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import type {ReactNode}  from "react";
+import type { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface SocialAuthButtonProps {
-  provider: "google" ;
+  provider: 'google';
   onClick: () => void;
   children: ReactNode;
 }

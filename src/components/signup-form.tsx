@@ -1,36 +1,36 @@
-import { useState } from "react";
-import { useSignUp } from "@clerk/clerk-react";
-import { useNavigate } from "@tanstack/react-router";
-import { AuthFormContainer } from "@/components/auth-form-container";
-import { AuthFormHeader } from "@/components/auth-form-header";
-import { FormInput } from "@/components/ui/form-input";
-import { PasswordInput } from "./ui/password-input";
-import { AuthFormFooter } from "@/components/auth-form-footer";
-import { Button } from "@/components/ui/button";
-import { SocialAuthButton } from "./ui/social-auth-button";
-import { Divider } from "./ui/divider";
+import { useState } from 'react';
+import { useSignUp } from '@clerk/clerk-react';
+import { useNavigate } from '@tanstack/react-router';
+import { PasswordInput } from './ui/password-input';
+import { SocialAuthButton } from './ui/social-auth-button';
+import { Divider } from './ui/divider';
+import { AuthFormContainer } from '@/components/auth-form-container';
+import { AuthFormHeader } from '@/components/auth-form-header';
+import { FormInput } from '@/components/ui/form-input';
+import { AuthFormFooter } from '@/components/auth-form-footer';
+import { Button } from '@/components/ui/button';
 
 export function SignUpForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const [error, setError] = useState<string | null>(null);
   const [showVerification, setShowVerification] = useState(false);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isLoaded || !signUp) return;
+    if (!isLoaded) return;
 
     const formData = new FormData(e.currentTarget);
-    const firstName = formData.get("firstName") as string;
-    const lastName = formData.get("lastName") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirmPassword") as string;
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
 
@@ -44,14 +44,14 @@ export function SignUpForm() {
         lastName: lastName,
       });
 
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
       setLoading(false);
       setError(null);
       setShowVerification(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setLoading(false);
-      setError(err.errors?.[0]?.message || "Something went wrong.");
-      console.error("Sign-up error:", err);
+      setError(err.errors?.[0]?.message || 'Something went wrong.');
+      console.error('Sign-up error:', err);
     }
   };
 
@@ -59,22 +59,21 @@ export function SignUpForm() {
     e.preventDefault();
     try {
       const result = await signUp.attemptEmailAddressVerification({ code });
-      if (result.status === "complete") {
+      if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId });
       }
-    } catch (err: any) {
-      setError("Invalid or expired verification code.");
+    } catch (err: unknown) {
+      setError('Invalid or expired verification code.');
+      setError(err.errors?.[0]?.message || 'Something went wrong.');
     }
   };
 
-
   const handleGoogleAuth = () => {
     signUp?.authenticateWithRedirect({
-      strategy: "oauth_google",
-      redirectUrlComplete: "http://localhost:3000/sso-callback",
+      strategy: 'oauth_google',
+      redirectUrlComplete: 'http://localhost:3000/sso-callback',
     });
   };
-
 
   if (showVerification) {
     return (
@@ -135,29 +134,34 @@ export function SignUpForm() {
 
       <form onSubmit={handleSubmit} className="grid gap-6">
         <div className="flex flex-col gap-4">
-                  <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-                    Sign in with Google
-                  </SocialAuthButton>
-                </div>
-        
-                <Divider text="Or continue with" />
-        
+          <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
+            Sign in with Google
+          </SocialAuthButton>
+        </div>
+
+        <Divider text="Or continue with" />
+
         <div className="grid gap-4">
-          <FormInput id="firstName" label="First Name" name="firstName" required />
+          <FormInput
+            id="firstName"
+            label="First Name"
+            name="firstName"
+            required
+          />
           <FormInput id="lastName" label="Last Name" name="lastName" required />
-          <FormInput 
-            id="email" 
-            label="Email" 
-            type="email" 
-            name="email" 
-            required 
+          <FormInput
+            id="email"
+            label="Email"
+            type="email"
+            name="email"
+            required
           />
           <PasswordInput id="password" name="password" required />
-          <PasswordInput 
-            id="confirmPassword" 
-            name="confirmPassword" 
-            label="Confirm Password" 
-            required 
+          <PasswordInput
+            id="confirmPassword"
+            name="confirmPassword"
+            label="Confirm Password"
+            required
           />
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -166,10 +170,7 @@ export function SignUpForm() {
             Sign Up
           </Button>
 
-          <AuthFormFooter 
-            type="signup" 
-            onBack={() => navigate({ to: "/" })}
-          />
+          <AuthFormFooter type="signup" onBack={() => navigate({ to: '/' })} />
         </div>
       </form>
     </AuthFormContainer>

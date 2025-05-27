@@ -1,5 +1,5 @@
-import { CardTitle, CardDescription } from "@/components/ui/card";
-import { cn } from "@/lib/utils"
+import { CardDescription, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface AuthFormHeaderProps {
   title: string;
@@ -13,7 +13,7 @@ export function AuthFormHeader({
   className,
 }: AuthFormHeaderProps) {
   return (
-    <div className={cn("text-center", className)}>
+    <div className={cn('text-center', className)}>
       <CardTitle className="text-xl">{title}</CardTitle>
       <CardDescription>{description}</CardDescription>
     </div>

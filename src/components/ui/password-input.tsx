@@ -1,8 +1,8 @@
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 interface PasswordInputProps {
   label?: string;
@@ -16,8 +16,8 @@ interface PasswordInputProps {
 }
 
 export function PasswordInput({
-  label = "Password",
-  id = "password",
+  label = 'Password',
+  id = 'password',
   className,
   value,
   onChange,
@@ -26,7 +26,7 @@ export function PasswordInput({
   placeholder,
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
 
   return (
     <div className={`grid gap-2 ${className}`}>
@@ -37,7 +37,7 @@ export function PasswordInput({
         <Input
           id={id}
           name={name}
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           className="pr-10" // padding right for toggle button
           value={value}
           onChange={onChange}
@@ -52,7 +52,7 @@ export function PasswordInput({
           size="sm"
           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
           onClick={() => setShowPassword(!showPassword)}
-          aria-label={showPassword ? "Hide password" : "Show password"}
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
           aria-pressed={showPassword}
         >
           {showPassword ? (
