@@ -10,66 +10,123 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as IndexImport } from './routes/index';
+import { Route as rootRoute } from './routes/__root'
+import { Route as SsoCallbackImport } from './routes/sso-callback'
+import { Route as SignupPageImport } from './routes/signup-page'
+import { Route as LoginPageImport } from './routes/login-page'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const SsoCallbackRoute = SsoCallbackImport.update({
+  id: '/sso-callback',
+  path: '/sso-callback',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignupPageRoute = SignupPageImport.update({
+  id: '/signup-page',
+  path: '/signup-page',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginPageRoute = LoginPageImport.update({
+  id: '/login-page',
+  path: '/login-page',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/login-page': {
+      id: '/login-page'
+      path: '/login-page'
+      fullPath: '/login-page'
+      preLoaderRoute: typeof LoginPageImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup-page': {
+      id: '/signup-page'
+      path: '/signup-page'
+      fullPath: '/signup-page'
+      preLoaderRoute: typeof SignupPageImport
+      parentRoute: typeof rootRoute
+    }
+    '/sso-callback': {
+      id: '/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof SsoCallbackImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
+  '/': typeof IndexRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
+  '/': typeof IndexRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  '/': typeof IndexRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/';
-  fileRoutesByTo: FileRoutesByTo;
-  to: '/';
-  id: '__root__' | '/';
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login-page' | '/signup-page' | '/sso-callback'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/login-page' | '/signup-page' | '/sso-callback'
+  id: '__root__' | '/' | '/login-page' | '/signup-page' | '/sso-callback'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
+  IndexRoute: typeof IndexRoute
+  LoginPageRoute: typeof LoginPageRoute
+  SignupPageRoute: typeof SignupPageRoute
+  SsoCallbackRoute: typeof SsoCallbackRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-};
+  LoginPageRoute: LoginPageRoute,
+  SignupPageRoute: SignupPageRoute,
+  SsoCallbackRoute: SsoCallbackRoute,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -77,11 +134,23 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/login-page",
+        "/signup-page",
+        "/sso-callback"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/login-page": {
+      "filePath": "login-page.tsx"
+    },
+    "/signup-page": {
+      "filePath": "signup-page.tsx"
+    },
+    "/sso-callback": {
+      "filePath": "sso-callback.tsx"
     }
   }
 }
