@@ -1,14 +1,14 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { LoginForm } from "@/components/login-form"
 import { createFileRoute } from '@tanstack/react-router';
-import { useUser } from '@clerk/tanstack-react-start';  // Clerk user hook
+import { useAuth } from '@clerk/tanstack-react-start';  // Clerk user hook
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect } from "react";
 
 
 export default function LoginPage() {
 
-  const { isSignedIn } = useUser();
+  const { isSignedIn } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
