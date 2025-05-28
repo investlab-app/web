@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,6 +23,9 @@ export function LoginForm() {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
+
+    setLoading(true);
+
     try {
       const result = await signIn.create({
         strategy: 'password',
@@ -30,7 +34,9 @@ export function LoginForm() {
       });
 
       if (result.status === 'complete') {
+        setLoading(false);
         await setActive({ session: result.createdSessionId });
+        navigate({ to: '/' });
       }
     } catch (err: unknown) {
       console.error('Sign-in error:', err.errors);
@@ -54,6 +60,12 @@ export function LoginForm() {
         />
       }
     >
+      {loading && (
+        <div className="flex justify-center mb-4">
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-primary" />
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="grid gap-6">
         <div className="flex flex-col gap-4">
           <SocialAuthButton provider="google" onClick={handleGoogleAuth}>

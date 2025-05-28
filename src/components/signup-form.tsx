@@ -61,6 +61,7 @@ export function SignUpForm() {
       const result = await signUp.attemptEmailAddressVerification({ code });
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId });
+        navigate({ to: '/' });
       }
     } catch (err: unknown) {
       setError('Invalid or expired verification code.');
