@@ -9,6 +9,7 @@ import { Divider } from '@/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
+import type { ClerkError } from '@/lib/clerk-error';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -41,8 +42,8 @@ export function LoginForm() {
       }
     } catch (err: unknown) {
       setLoading(false);
-      console.error('Sign-in error:', err.errors);
-      setError(err.errors?.[0]?.message || 'Something went wrong.');
+      console.error('Sign-in error:', (err as ClerkError).errors);
+      setError((err as ClerkError).errors?.[0]?.message || 'Something went wrong.');
     }
   };
 

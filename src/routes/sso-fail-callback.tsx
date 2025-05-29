@@ -32,6 +32,6 @@ export default function SsoCallback() {
   );
 }
 
-export const Route = createFileRoute('/sso-callback copy')({
+export const Route = createFileRoute('/sso-fail-callback')({
   component: SsoCallback,
 });
