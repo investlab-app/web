@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
 import { PasswordInput } from '@/components/ui/password-input';
-import { SocialAuthButton } from './social-auth-button';
+import { SocialAuthButton } from '@/features/login/components/social-auth-button';
 import { Divider } from '@/components/ui/divider';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
@@ -11,10 +11,8 @@ import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 
 export function SignUpForm() {
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signUp } = useSignUp();
   const [error, setError] = useState<string | null>(null);
-  const [showVerification, setShowVerification] = useState(false);
-  const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -28,7 +26,7 @@ export function SignUpForm() {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
-
+    setError(null);
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -46,8 +44,7 @@ export function SignUpForm() {
 
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
       setLoading(false);
-      setError(null);
-      setShowVerification(true);
+      navigate({ to: '/verify-email' });
     } catch (err: unknown) {
       setLoading(false);
       setError(err.errors?.[0]?.message || 'Something went wrong.');
@@ -55,68 +52,13 @@ export function SignUpForm() {
     }
   };
 
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const result = await signUp.attemptEmailAddressVerification({ code });
-      if (result.status === 'complete') {
-        await setActive({ session: result.createdSessionId });
-        navigate({ to: '/' });
-      }
-    } catch (err: unknown) {
-      setError('Invalid or expired verification code.');
-      setError(err.errors?.[0]?.message || 'Something went wrong.');
-    }
-  };
-
   const handleGoogleAuth = () => {
     signUp?.authenticateWithRedirect({
       strategy: 'oauth_google',
       redirectUrlComplete: 'http://localhost:3000/sso-callback',
+      redirectUrl: 'http://localhost:3000/sso-fail-callback',
     });
   };
-
-  if (showVerification) {
-    return (
-      <AuthFormContainer
-        header={
-          <AuthFormHeader
-            title="Verify your email"
-            description="Enter the code sent to your email"
-          />
-        }
-      >
-        <form onSubmit={handleCodeSubmit} className="grid gap-6">
-          <FormInput
-            id="code"
-            label="Verification Code"
-            name="code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-          />
-
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-
-          <Button type="submit" className="w-full">
-            Verify Email
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full"
-            onClick={() => {
-              setError(null);
-              setShowVerification(false);
-            }}
-            type="button"
-          >
-            Go Back
-          </Button>
-        </form>
-      </AuthFormContainer>
-    );
-  }
 
   return (
     <AuthFormContainer
@@ -133,13 +75,12 @@ export function SignUpForm() {
         </div>
       )}
 
+      <div className="flex flex-col gap-4">
+        <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
+          Sign up with Google
+        </SocialAuthButton>
+      </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <div className="flex flex-col gap-4">
-          <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-            Sign in with Google
-          </SocialAuthButton>
-        </div>
-
         <Divider text="Or continue with" />
 
         <div className="grid gap-4">
@@ -167,7 +108,7 @@ export function SignUpForm() {
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
-          <Button type="submit" className="w-full">
+          <Button autoFocus type="submit" className="w-full">
             Sign Up
           </Button>
 

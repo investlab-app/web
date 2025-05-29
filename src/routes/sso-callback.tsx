@@ -8,11 +8,18 @@ export default function SsoCallback() {
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate({ to: '/' }); // redirect to your dashboard/home
+      navigate({ to: '/' });
     }
   }, [isSignedIn, navigate]);
 
-  return <div>Signing you in...</div>;
+  return (
+    <div className="flex min-h-screen items-center justify-center text-center">
+      <div>
+        <h1 className="text-4xl font-bold">Signing you in...</h1>
+        <p className="text-muted-foreground">Give us a sec, please</p>
+      </div>
+    </div>
+  );
 }
 
 export const Route = createFileRoute('/sso-callback')({

@@ -23,6 +23,7 @@ export function LoginForm() {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
+    setError(null);
     setLoading(true);
 
     try {
@@ -48,6 +49,7 @@ export function LoginForm() {
     signIn?.authenticateWithRedirect({
       strategy: 'oauth_google',
       redirectUrlComplete: 'http://localhost:3000/sso-callback',
+      redirectUrl: 'http://localhost:3000/sso-fail-callback',
     });
   };
 
@@ -66,13 +68,12 @@ export function LoginForm() {
         </div>
       )}
 
+      <div className="flex flex-col gap-4">
+        <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
+          Login with Google
+        </SocialAuthButton>
+      </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <div className="flex flex-col gap-4">
-          <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-            Login with Google
-          </SocialAuthButton>
-        </div>
-
         <Divider text="Or continue with" />
 
         <div className="grid gap-6">
@@ -95,7 +96,7 @@ export function LoginForm() {
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
-          <Button type="submit" className="w-full">
+          <Button autoFocus type="submit" className="w-full">
             Login
           </Button>
 

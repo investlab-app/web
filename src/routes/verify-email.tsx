@@ -1,9 +1,9 @@
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { SignUpForm } from '@/features/login/components/signup-form';
+import { EmailVerificationForm } from '@/features/login/components/email-verification-form';
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const { isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
 
@@ -19,12 +19,12 @@ export default function SignUpPage() {
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
         Our stocks app with no specified name
-        <SignUpForm />
+        <EmailVerificationForm />
       </div>
     </div>
   );
 }
 
-export const Route = createFileRoute('/signup-page')({
-  component: SignUpPage,
+export const Route = createFileRoute('/verify-email')({
+  component: LoginPage,
 });
