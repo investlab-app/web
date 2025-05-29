@@ -25,7 +25,9 @@ export function EmailVerificationForm() {
         navigate({ to: '/' });
       }
     } catch (err: unknown) {
-      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
+      setError(
+        (err as ClerkError).errors[0]?.message || 'Something went wrong.'
+      );
     }
   };
 

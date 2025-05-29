@@ -49,7 +49,9 @@ export function SignUpForm() {
       navigate({ to: '/verify-email' });
     } catch (err: unknown) {
       setLoading(false);
-      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
+      setError(
+        (err as ClerkError).errors[0]?.message || 'Something went wrong.'
+      );
       console.error('Sign-up error:', err);
     }
   };

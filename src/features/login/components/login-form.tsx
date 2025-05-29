@@ -43,7 +43,9 @@ export function LoginForm() {
     } catch (err: unknown) {
       setLoading(false);
       console.error('Sign-in error:', (err as ClerkError).errors);
-      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
+      setError(
+        (err as ClerkError).errors[0]?.message || 'Something went wrong.'
+      );
     }
   };
 
