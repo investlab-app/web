@@ -1,5 +1,4 @@
 // src/components/home-page.tsx
-import { UserButton } from '@clerk/tanstack-react-start';
 import data from '../../data.json';
 import { AppSidebar } from '@/components/app-sidebar';
 import { ChartAreaInteractive } from '@/components/chart-area-interactive';
@@ -22,7 +21,6 @@ export function HomePage() {
               <AuthTestButton url="/api/test/admin_test" auth />
               <AuthTestButton url="/api/test/users_test" auth />
               <AuthTestButton url="/api/test/all_test" auth={false} />
-              <UserButton />
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>

@@ -1,7 +1,7 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
-import { ClerkProvider } from '@clerk/tanstack-react-start';
+import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@/components/theme-provider';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
