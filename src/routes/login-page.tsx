@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { LoginForm } from '@/components/login-form';
+import { LoginForm } from '@/features/login/components/login-form';
 
 export default function LoginPage() {
   const { isSignedIn, isLoaded } = useUser();

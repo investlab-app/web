@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
-import { PasswordInput } from './ui/password-input';
-import { SocialAuthButton } from './ui/social-auth-button';
-import { Divider } from './ui/divider';
-import { AuthFormContainer } from '@/components/auth-form-container';
-import { AuthFormHeader } from '@/components/auth-form-header';
+import { PasswordInput } from '@/components/ui/password-input';
+import { SocialAuthButton } from './social-auth-button';
+import { Divider } from '@/components/ui/divider';
+import { AuthFormContainer } from '@/features/login/components/auth-form-container';
+import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { FormInput } from '@/components/ui/form-input';
-import { AuthFormFooter } from '@/components/auth-form-footer';
+import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 
 export function SignUpForm() {
