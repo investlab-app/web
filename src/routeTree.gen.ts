@@ -10,12 +10,12 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as SsoCallbackImport } from './routes/sso-callback'
-import { Route as SignupPageImport } from './routes/signup-page'
-import { Route as LoginPageImport } from './routes/login-page'
-import { Route as allImport } from './routes/[all]'
-import { Route as IndexImport } from './routes/index'
+import { Route as rootRoute } from './routes/__root';
+import { Route as SsoCallbackImport } from './routes/sso-callback';
+import { Route as SignupPageImport } from './routes/signup-page';
+import { Route as LoginPageImport } from './routes/login-page';
+import { Route as NotFoundImport } from './routes/$not-found';
+import { Route as IndexImport } from './routes/index';
 
 // Create/Update Routes
 
@@ -23,135 +23,140 @@ const SsoCallbackRoute = SsoCallbackImport.update({
   id: '/sso-callback',
   path: '/sso-callback',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const SignupPageRoute = SignupPageImport.update({
   id: '/signup-page',
   path: '/signup-page',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const LoginPageRoute = LoginPageImport.update({
   id: '/login-page',
   path: '/login-page',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
-const allRoute = allImport.update({
-  id: '/[all]',
-  path: '/[all]',
+const NotFoundRoute = NotFoundImport.update({
+  id: '/$not-found',
+  path: '/$not-found',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/[all]': {
-      id: '/[all]'
-      path: '/[all]'
-      fullPath: '/[all]'
-      preLoaderRoute: typeof allImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/$not-found': {
+      id: '/$not-found';
+      path: '/$not-found';
+      fullPath: '/$not-found';
+      preLoaderRoute: typeof NotFoundImport;
+      parentRoute: typeof rootRoute;
+    };
     '/login-page': {
-      id: '/login-page'
-      path: '/login-page'
-      fullPath: '/login-page'
-      preLoaderRoute: typeof LoginPageImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/login-page';
+      path: '/login-page';
+      fullPath: '/login-page';
+      preLoaderRoute: typeof LoginPageImport;
+      parentRoute: typeof rootRoute;
+    };
     '/signup-page': {
-      id: '/signup-page'
-      path: '/signup-page'
-      fullPath: '/signup-page'
-      preLoaderRoute: typeof SignupPageImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/signup-page';
+      path: '/signup-page';
+      fullPath: '/signup-page';
+      preLoaderRoute: typeof SignupPageImport;
+      parentRoute: typeof rootRoute;
+    };
     '/sso-callback': {
-      id: '/sso-callback'
-      path: '/sso-callback'
-      fullPath: '/sso-callback'
-      preLoaderRoute: typeof SsoCallbackImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/sso-callback';
+      path: '/sso-callback';
+      fullPath: '/sso-callback';
+      preLoaderRoute: typeof SsoCallbackImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/[all]': typeof allRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
+  '/': typeof IndexRoute;
+  '/$not-found': typeof NotFoundRoute;
+  '/login-page': typeof LoginPageRoute;
+  '/signup-page': typeof SignupPageRoute;
+  '/sso-callback': typeof SsoCallbackRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/[all]': typeof allRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
+  '/': typeof IndexRoute;
+  '/$not-found': typeof NotFoundRoute;
+  '/login-page': typeof LoginPageRoute;
+  '/signup-page': typeof SignupPageRoute;
+  '/sso-callback': typeof SsoCallbackRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/[all]': typeof allRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
+  __root__: typeof rootRoute;
+  '/': typeof IndexRoute;
+  '/$not-found': typeof NotFoundRoute;
+  '/login-page': typeof LoginPageRoute;
+  '/signup-page': typeof SignupPageRoute;
+  '/sso-callback': typeof SsoCallbackRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/[all]' | '/login-page' | '/signup-page' | '/sso-callback'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/[all]' | '/login-page' | '/signup-page' | '/sso-callback'
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths:
+    | '/'
+    | '/$not-found'
+    | '/login-page'
+    | '/signup-page'
+    | '/sso-callback';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/$not-found' | '/login-page' | '/signup-page' | '/sso-callback';
   id:
     | '__root__'
     | '/'
-    | '/[all]'
+    | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sso-callback'
-  fileRoutesById: FileRoutesById
+    | '/sso-callback';
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  allRoute: typeof allRoute
-  LoginPageRoute: typeof LoginPageRoute
-  SignupPageRoute: typeof SignupPageRoute
-  SsoCallbackRoute: typeof SsoCallbackRoute
+  IndexRoute: typeof IndexRoute;
+  NotFoundRoute: typeof NotFoundRoute;
+  LoginPageRoute: typeof LoginPageRoute;
+  SignupPageRoute: typeof SignupPageRoute;
+  SsoCallbackRoute: typeof SsoCallbackRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  allRoute: allRoute,
+  NotFoundRoute: NotFoundRoute,
   LoginPageRoute: LoginPageRoute,
   SignupPageRoute: SignupPageRoute,
   SsoCallbackRoute: SsoCallbackRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -160,7 +165,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/[all]",
+        "/$not-found",
         "/login-page",
         "/signup-page",
         "/sso-callback"
@@ -169,8 +174,8 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/[all]": {
-      "filePath": "[all].tsx"
+    "/$not-found": {
+      "filePath": "$not-found.tsx"
     },
     "/login-page": {
       "filePath": "login-page.tsx"

@@ -17,12 +17,11 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isLoaded ) return;
+    if (!isLoaded) return;
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-
 
     setLoading(true);
 
@@ -34,11 +33,12 @@ export function LoginForm() {
       });
 
       if (result.status === 'complete') {
-        setLoading(false);
         await setActive({ session: result.createdSessionId });
+        setLoading(false);
         navigate({ to: '/' });
       }
     } catch (err: unknown) {
+      setLoading(false);
       console.error('Sign-in error:', err.errors);
       setError(err.errors?.[0]?.message || 'Something went wrong.');
     }
