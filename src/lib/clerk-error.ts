@@ -1,3 +1,3 @@
 export type ClerkError = {
-    errors: { message: string }[];
+    errors: Array<{ message: string }>;
   };

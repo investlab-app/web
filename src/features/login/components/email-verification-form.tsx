@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import type { ClerkError } from '@/lib/clerk-error';
 import { Button } from '@/components/ui/button';
 import { SixDigitOTPInput } from '@/components/ui/six-digit-otp-input';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
-import type { ClerkError } from '@/lib/clerk-error';
 
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -25,7 +25,7 @@ export function EmailVerificationForm() {
         navigate({ to: '/' });
       }
     } catch (err: unknown) {
-      setError((err as ClerkError).errors?.[0]?.message || 'Something went wrong.');
+      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
     }
   };
 

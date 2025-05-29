@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import type { ClerkError } from '@/lib/clerk-error';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { FormInput } from '@/components/ui/form-input';
@@ -9,7 +10,6 @@ import { Divider } from '@/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
-import type { ClerkError } from '@/lib/clerk-error';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -43,7 +43,7 @@ export function LoginForm() {
     } catch (err: unknown) {
       setLoading(false);
       console.error('Sign-in error:', (err as ClerkError).errors);
-      setError((err as ClerkError).errors?.[0]?.message || 'Something went wrong.');
+      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
     }
   };
 

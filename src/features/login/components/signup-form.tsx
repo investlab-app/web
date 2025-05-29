@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import type { ClerkError } from '@/lib/clerk-error';
 import { PasswordInput } from '@/components/ui/password-input';
 import { SocialAuthButton } from '@/features/login/components/social-auth-button';
 import { Divider } from '@/components/ui/divider';
@@ -10,7 +11,6 @@ import { FormInput } from '@/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
-import type { ClerkError } from '@/lib/clerk-error';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();
@@ -49,7 +49,7 @@ export function SignUpForm() {
       navigate({ to: '/verify-email' });
     } catch (err: unknown) {
       setLoading(false);
-      setError((err as ClerkError).errors?.[0]?.message || 'Something went wrong.');
+      setError((err as ClerkError).errors[0]?.message || 'Something went wrong.');
       console.error('Sign-up error:', err);
     }
   };
