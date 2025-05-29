@@ -9,6 +9,7 @@ import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { FormInput } from '@/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
+import { THIS_URL } from '@/lib/constants';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();
@@ -55,8 +56,8 @@ export function SignUpForm() {
   const handleGoogleAuth = () => {
     signUp?.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: 'http://localhost:3000/sso-callback',
-      redirectUrl: 'http://localhost:3000/sso-fail-callback',
+      redirectUrlComplete: `${THIS_URL}sso-callback`,
+      redirectUrl: `${THIS_URL}sso-fail-callback`,
     });
   };
 

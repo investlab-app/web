@@ -8,6 +8,7 @@ import { SocialAuthButton } from '@/features/login/components/social-auth-button
 import { Divider } from '@/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
+import { THIS_URL } from '@/lib/constants';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -48,8 +49,8 @@ export function LoginForm() {
   const handleGoogleAuth = () => {
     signIn?.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: 'http://localhost:3000/sso-callback',
-      redirectUrl: 'http://localhost:3000/sso-fail-callback',
+      redirectUrlComplete: `${THIS_URL}/sso-callback`,
+      redirectUrl: `${THIS_URL}/sso-fail-callback`,
     });
   };
 
