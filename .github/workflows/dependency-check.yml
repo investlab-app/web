@@ -46,7 +46,10 @@ jobs:
     needs: ort-analysis
     permissions:
       contents: write
+      pull-requests: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Checkout PR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -86,7 +89,6 @@ jobs:
           else
             echo "NOTICE file has changed. Committing and pushing..."
             git commit -m "docs: Update NOTICE file [skip ci]"
-            git push origin ${{ github.ref_name }}
           fi
       - name: Push changes
         env:
