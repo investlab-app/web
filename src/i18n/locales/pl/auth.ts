@@ -1,0 +1,23 @@
+const plAuth = {
+  login: 'Zaloguj',
+  signup_form_desc: 'Utwórz konto aby korzystać z naszej aplikacji',
+  signup: 'Załóż konto',
+  or_continue_w_google: 'Kontynuuj z Google',
+  or_continue: 'Lub kontynuuj z',
+  login_w_google: 'Zaloguj się z Google',
+  signup_w_google: 'Zarejestruj się z Google',
+  signup_w_email: 'Zarejestruj się mailem',
+  forgot_pass: 'Zapomniałem hasła',
+  password: 'Hasło',
+  passwords_dont_match: 'Hasła różnią się',
+  confirm_password: 'Powtórz hasło',
+  create_your_account: 'Stwórz swoje konto',
+  welcome_back: 'Witaj ponownie',
+  login_form_desc: 'Zaloguj się do swojego konta',
+  first_name: 'Imię',
+  last_name: 'Nazwisko',
+  dont_have_an_account: 'Nie masz konta?',
+  already_have_an_account: 'Masz już konto?',
+};
+
+export default plAuth;

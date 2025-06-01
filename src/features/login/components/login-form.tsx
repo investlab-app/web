@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import type { ClerkError } from '@/lib/clerk-error';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
@@ -10,12 +11,14 @@ import { Divider } from '@/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
+import { PasswordInput } from '@/components/ui/password-input';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,8 +64,8 @@ export function LoginForm() {
     <AuthFormContainer
       header={
         <AuthFormHeader
-          title="Welcome back"
-          description="Login with your Google account"
+          title={t('auth.welcome_back')}
+          description={t('auth.login_form_desc')}
         />
       }
     >
@@ -74,11 +77,11 @@ export function LoginForm() {
 
       <div className="flex flex-col gap-4">
         <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-          Login with Google
+          {t('auth.login_w_google')}
         </SocialAuthButton>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text="Or continue with" />
+        <Divider text={t('auth.or_continue')} />
 
         <div className="grid gap-6">
           <FormInput
@@ -90,23 +93,20 @@ export function LoginForm() {
             required
           />
 
-          <FormInput
+          <PasswordInput
             id="password"
-            label="Password"
-            type="password"
             name="password"
+            label={t('auth.password')}
             required
           />
-
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <Button autoFocus type="submit" className="w-full">
-            Login
+            {t('auth.login')}
           </Button>
-
-          <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
         </div>
       </form>
+      <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
     </AuthFormContainer>
   );
 }
