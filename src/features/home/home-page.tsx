@@ -7,6 +7,8 @@ import { SectionCards } from '@/components/section-cards';
 import { SiteHeader } from '@/components/site-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AuthTestButton } from '@/features/login/components/auth-test-button';
+import FinancialDashboard from '../charts/tests';
+import { StockChartContainer } from '../charts/stock-chart-container';
 
 export function HomePage() {
   return (
@@ -22,7 +24,7 @@ export function HomePage() {
               <AuthTestButton url="/api/test/users_test" auth />
               <AuthTestButton url="/api/test/all_test" auth={false} />
               <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
+                <StockChartContainer />
               </div>
               <DataTable data={data} />
             </div>
