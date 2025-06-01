@@ -45,6 +45,7 @@ export function PasswordInput({
           onBlur={() => setIsFocused(false)}
           required={required}
           placeholder={placeholder}
+          autoComplete="off"
         />
         <Button
           type="button"

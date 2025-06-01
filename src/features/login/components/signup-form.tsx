@@ -11,12 +11,14 @@ import { FormInput } from '@/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
+import { useTranslation } from 'react-i18next';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export function SignUpForm() {
     const confirmPassword = formData.get('confirmPassword') as string;
     setError(null);
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError(t("auth.passwords_dont_match"));
       return;
     }
 
@@ -68,8 +70,8 @@ export function SignUpForm() {
     <AuthFormContainer
       header={
         <AuthFormHeader
-          title="Create your account"
-          description="Sign up with email"
+          title={t("auth.create_your_account")}
+          description={t("auth.signup_form_desc")}
         />
       }
     >
@@ -81,20 +83,20 @@ export function SignUpForm() {
 
       <div className="flex flex-col gap-4">
         <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-          Sign up with Google
+          {t("auth.signup_w_google")}
         </SocialAuthButton>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text="Or continue with" />
+        <Divider text={t("auth.or_continue")} />
 
         <div className="grid gap-4">
           <FormInput
             id="firstName"
-            label="First Name"
+            label={t("auth.first_name")}
             name="firstName"
             required
           />
-          <FormInput id="lastName" label="Last Name" name="lastName" required />
+          <FormInput id="lastName" label={t("auth.last_name")} name="lastName" required />
           <FormInput
             id="email"
             label="Email"
@@ -102,23 +104,23 @@ export function SignUpForm() {
             name="email"
             required
           />
-          <PasswordInput id="password" name="password" required />
+          <PasswordInput id="password" name="password" label={t("auth.password")} required />
           <PasswordInput
             id="confirmPassword"
             name="confirmPassword"
-            label="Confirm Password"
+            label={t("auth.confirm_password")}
             required
           />
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <Button autoFocus type="submit" className="w-full">
-            Sign Up
+          {t("auth.signup")}
           </Button>
 
-          <AuthFormFooter type="signup" onBack={() => navigate({ to: '/' })} />
         </div>
       </form>
+          <AuthFormFooter type="signup" onBack={() => navigate({ to: '/' })} />
     </AuthFormContainer>
   );
 }
