@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import type { ClerkError } from '@/lib/clerk-error';
 import { PasswordInput } from '@/components/ui/password-input';
 import { SocialAuthButton } from '@/features/login/components/social-auth-button';
@@ -11,14 +12,13 @@ import { FormInput } from '@/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
-import { useTranslation } from 'react-i18next';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export function SignUpForm() {
     const confirmPassword = formData.get('confirmPassword') as string;
     setError(null);
     if (password !== confirmPassword) {
-      setError(t("auth.passwords_dont_match"));
+      setError(t('auth.passwords_dont_match'));
       return;
     }
 
@@ -70,8 +70,8 @@ export function SignUpForm() {
     <AuthFormContainer
       header={
         <AuthFormHeader
-          title={t("auth.create_your_account")}
-          description={t("auth.signup_form_desc")}
+          title={t('auth.create_your_account')}
+          description={t('auth.signup_form_desc')}
         />
       }
     >
@@ -83,20 +83,25 @@ export function SignUpForm() {
 
       <div className="flex flex-col gap-4">
         <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-          {t("auth.signup_w_google")}
+          {t('auth.signup_w_google')}
         </SocialAuthButton>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text={t("auth.or_continue")} />
+        <Divider text={t('auth.or_continue')} />
 
         <div className="grid gap-4">
           <FormInput
             id="firstName"
-            label={t("auth.first_name")}
+            label={t('auth.first_name')}
             name="firstName"
             required
           />
-          <FormInput id="lastName" label={t("auth.last_name")} name="lastName" required />
+          <FormInput
+            id="lastName"
+            label={t('auth.last_name')}
+            name="lastName"
+            required
+          />
           <FormInput
             id="email"
             label="Email"
@@ -104,23 +109,27 @@ export function SignUpForm() {
             name="email"
             required
           />
-          <PasswordInput id="password" name="password" label={t("auth.password")} required />
+          <PasswordInput
+            id="password"
+            name="password"
+            label={t('auth.password')}
+            required
+          />
           <PasswordInput
             id="confirmPassword"
             name="confirmPassword"
-            label={t("auth.confirm_password")}
+            label={t('auth.confirm_password')}
             required
           />
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <Button autoFocus type="submit" className="w-full">
-          {t("auth.signup")}
+            {t('auth.signup')}
           </Button>
-
         </div>
       </form>
-          <AuthFormFooter type="signup" onBack={() => navigate({ to: '/' })} />
+      <AuthFormFooter type="signup" onBack={() => navigate({ to: '/' })} />
     </AuthFormContainer>
   );
 }

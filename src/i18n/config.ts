@@ -18,13 +18,15 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-      auth: enAuth,
-      common: enCommon}
+        auth: enAuth,
+        common: enCommon,
+      },
     },
     pl: {
       translation: {
-      auth: plAuth,
-      common: plCommon}
+        auth: plAuth,
+        common: plCommon,
+      },
     },
   },
 });

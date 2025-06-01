@@ -1,6 +1,7 @@
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import type { ClerkError } from '@/lib/clerk-error';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
@@ -11,7 +12,6 @@ import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { THIS_URL } from '@/lib/constants';
 import { PasswordInput } from '@/components/ui/password-input';
-import { useTranslation } from 'react-i18next';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -64,8 +64,8 @@ export function LoginForm() {
     <AuthFormContainer
       header={
         <AuthFormHeader
-          title={t("auth.welcome_back")}
-          description={t("auth.login_form_desc")}
+          title={t('auth.welcome_back')}
+          description={t('auth.login_form_desc')}
         />
       }
     >
@@ -77,11 +77,11 @@ export function LoginForm() {
 
       <div className="flex flex-col gap-4">
         <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-        {t("auth.login_w_google")}
+          {t('auth.login_w_google')}
         </SocialAuthButton>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text={t("auth.or_continue")}/>
+        <Divider text={t('auth.or_continue')} />
 
         <div className="grid gap-6">
           <FormInput
@@ -93,16 +93,20 @@ export function LoginForm() {
             required
           />
 
-          <PasswordInput id="password" name="password" label={t("auth.password")} required />
+          <PasswordInput
+            id="password"
+            name="password"
+            label={t('auth.password')}
+            required
+          />
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <Button autoFocus type="submit" className="w-full">
-          {t("auth.login")}
+            {t('auth.login')}
           </Button>
-
         </div>
       </form>
-          <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
+      <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
     </AuthFormContainer>
   );
 }
