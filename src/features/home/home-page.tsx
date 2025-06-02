@@ -24,8 +24,6 @@ export function HomePage() {
               <AuthTestButton url="/api/test/all_test" auth={false} />
               <div className="px-4 lg:px-6">
                 <StockChartContainer ticker="AAPL" />
-                <StockChartContainer ticker="TSLA" />
-                <StockChartContainer ticker="TTWO" />
               </div>
               <DataTable data={data} />
             </div>

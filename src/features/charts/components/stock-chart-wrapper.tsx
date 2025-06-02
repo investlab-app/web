@@ -37,9 +37,11 @@ export const StockChartWrapper: React.FC<
     <Card>
       <CardHeader>
         <CardTitle>{stockName}</CardTitle>
+        {!hasError && typeof currentPrice === 'number' && (
         <CardDescription>
-          {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+         { t('instruments.current_price')}: ${currentPrice.toFixed(2)}
         </CardDescription>
+        )}
         <CardAction>
           <Select value={selectedRange} onValueChange={onRangeChange}>
             <SelectTrigger className="w-40" aria-label="Select time range">
