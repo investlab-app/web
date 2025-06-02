@@ -5,6 +5,8 @@ import enAuth from './locales/en/auth';
 import plAuth from './locales/pl/auth';
 import enCommon from './locales/en/common';
 import plCommon from './locales/pl/common';
+import enInstruments from './locales/en/instruments';
+import plInstruments from './locales/pl/instruments';
 
 i18n.use(initReactI18next).init({
   lng: 'pl',
@@ -20,12 +22,14 @@ i18n.use(initReactI18next).init({
       translation: {
         auth: enAuth,
         common: enCommon,
+        instruments: enInstruments,
       },
     },
     pl: {
       translation: {
         auth: plAuth,
         common: plCommon,
+        instruments: plInstruments,
       },
     },
   },

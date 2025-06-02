@@ -1,4 +1,3 @@
-
 type FetchFromApiOptions = {
   endpoint: string;
   method?: 'GET' | 'POST';
@@ -6,11 +5,18 @@ type FetchFromApiOptions = {
   token: string;
 };
 
-export async function fetchFromApi({ endpoint, method = 'GET', body, token }: FetchFromApiOptions): Promise<any> {
+export async function fetchFromApi({
+  endpoint,
+  method = 'GET',
+  body,
+  token,
+}: FetchFromApiOptions): Promise<any> {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   if (!baseUrl || !token) {
-    throw new Error('API URL or Token is not defined in environment variables.');
+    throw new Error(
+      'API URL or Token is not defined in environment variables.'
+    );
   }
 
   let url = `${baseUrl}/${endpoint}`;
@@ -48,12 +54,11 @@ type FetchHistoryForInstrumentOptions = {
   endDate: Date;
   interval: string;
   token: string;
-}
+};
 
 function formatDate(date: Date): string {
   return date.toISOString().split('.')[0];
 }
-
 
 export async function fetchHistoryForInstrument({
   ticker,
@@ -70,6 +75,6 @@ export async function fetchHistoryForInstrument({
       end_date: formatDate(endDate),
       interval,
     },
-    token: token
+    token: token,
   });
 }
