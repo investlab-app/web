@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import {
-  intervalToStartDate,
-  timeIntervals,
-} from '../helpers/time-ranges-helpers';
+import { intervalToStartDate, timeIntervals } from '../helpers/time-ranges-helpers';
 import { transformApiResponse } from '../helpers/api-reasponse-helpers';
 import { StockChartWrapper } from './stock-chart-wrapper';
 import type { instrumentPriceProps } from '../helpers/charts-props';
@@ -13,53 +10,60 @@ type StockChartContainerProps = {
   ticker: string;
 };
 
-export const StockChartContainer: React.FC<StockChartContainerProps> = ({
-  ticker,
-}) => {
+export const StockChartContainer: React.FC<StockChartContainerProps> = ({ ticker }) => {
   const { getToken } = useAuth();
-  const [interval, setInterval] = React.useState('1m');
+
+  const [interval, setInterval] = React.useState('1h');
+
   const [data, setData] = React.useState<Array<instrumentPriceProps>>([]);
   const [minPrice, setMinPrice] = React.useState<number>(0);
   const [maxPrice, setMaxPrice] = React.useState<number>(0);
   const [currentPrice, setCurrentPrice] = React.useState<number>(0);
   const [hasError, setHasError] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    const loadData = async () => {
-      setHasError(false);
-      try {
-        const token = await getToken();
-        if (!token) throw new Error('No auth token available');
+  function updateValue(newVal : string) {
+    loadData(newVal);
+  }
 
-        const startDate = intervalToStartDate(interval);
-        const endDate = new Date();
+  const loadData = async (chosenInterval: string) => {
+    setHasError(false);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('No auth token available');
 
-        const apiData = await fetchHistoryForInstrument({
-          ticker: ticker,
-          startDate,
-          endDate,
-          interval,
-          token,
-        });
+      const startDate = intervalToStartDate(chosenInterval);
+      const endDate = new Date();
 
-        const parsed = transformApiResponse(apiData);
-        if (parsed.length === 0) {
-          setHasError(true);
-          return;
-        }
+      const apiData = await fetchHistoryForInstrument({
+        ticker,
+        startDate,
+        endDate,
+        interval: chosenInterval,
+        token,
+      });
 
-        setData(parsed);
-        setCurrentPrice(parsed[parsed.length - 1].close);
-        setMinPrice(apiData.min_price);
-        setMaxPrice(apiData.max_price);
-      } catch (err) {
-        console.error('Failed to fetch stock data:', err);
+      const parsed = transformApiResponse(apiData);
+      if (parsed.length === 0) {
         setHasError(true);
+        return;
       }
-    };
 
-    loadData();
-  }, [interval, getToken, ticker]);
+      setData(parsed);
+      setCurrentPrice(parsed[parsed.length - 1].close);
+      setMinPrice(apiData.min_price);
+      setMaxPrice(apiData.max_price);
+
+      setInterval(chosenInterval);
+    } catch (err) {
+      console.error('Failed to fetch stock data:', err);
+      setHasError(true);
+    }
+  };
+
+  React.useEffect(() => {
+
+    loadData(interval);
+  }, [getToken, ticker, interval]);
 
   return (
     <StockChartWrapper
@@ -67,7 +71,7 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
       currentPrice={currentPrice}
       timeRanges={timeIntervals}
       selectedInterval={interval}
-      onIntervalChange={setInterval}
+      onIntervalChange={updateValue} 
       data={data}
       minPrice={minPrice}
       maxPrice={maxPrice}
