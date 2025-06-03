@@ -7,7 +7,6 @@ export const timeIntervals = [
   { label: '1 Week', value: '1wk' },
 ];
 
-
 export const intervalToStartDate = (range: string, date?: Date): Date => {
   const now = date ?? new Date();
   const start = new Date(now);

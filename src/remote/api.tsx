@@ -1,6 +1,7 @@
 type FetchFromApiOptions = {
   endpoint: string;
   method?: 'GET' | 'POST';
+  // eslint-disable-next-line
   body?: Record<string, any>;
   token: string;
 };
@@ -10,6 +11,7 @@ export async function fetchFromApi({
   method = 'GET',
   body,
   token,
+  // eslint-disable-next-line
 }: FetchFromApiOptions): Promise<any> {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -66,6 +68,7 @@ export async function fetchHistoryForInstrument({
   endDate,
   interval,
   token,
+  // eslint-disable-next-line
 }: FetchHistoryForInstrumentOptions): Promise<any> {
   return fetchFromApi({
     endpoint: 'api/prices',

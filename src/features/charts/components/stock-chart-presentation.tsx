@@ -8,13 +8,13 @@ import type { ChartPresentationsProps } from '../helpers/charts-props';
 
 export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   stockName,
-  data,
+  chartData,
   minPrice,
   maxPrice,
   selectedInterval,
 }) => {
-  const dates = data.map((item) => item.date);
-  const seriesData = data.map((item) => ({
+  const dates = chartData.map((item) => item.date);
+  const seriesData = chartData.map((item) => ({
     value: item.close,
     high: item.high,
     low: item.low,
@@ -31,6 +31,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       axisPointer: { animation: false },
       backgroundColor: 'rgba(47, 5, 77, 0.9)',
       textStyle: { color: 'white' },
+      // eslint-disable-next-line
       formatter: (params: Array<any>) => {
         const { axisValue, data } = params[0];
         return `<div><strong>
@@ -47,7 +48,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       axisTick: { show: false },
       axisLine: { show: true },
       axisLabel: {
-        interval: createLabelIntervalFn(data.length),
+        interval: createLabelIntervalFn(chartData.length),
         formatter: (value: string) =>
           formatChartDateByInterval(value, selectedInterval),
       },
@@ -67,7 +68,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
         end: endPercent,
         moveOnMouseWheel: true,
         moveOnMouseMove: true,
-        zoomOnMouseWheel: false, 
+        zoomOnMouseWheel: false,
       },
     ],
     series: [

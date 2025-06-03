@@ -38,9 +38,9 @@ export const StockChartWrapper: React.FC<
       <CardHeader>
         <CardTitle>{stockName}</CardTitle>
         {!hasError && typeof currentPrice === 'number' && (
-        <CardDescription>
-         { t('instruments.current_price')}: ${currentPrice.toFixed(2)}
-        </CardDescription>
+          <CardDescription>
+            {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+          </CardDescription>
         )}
         <CardAction>
           <Select value={selectedInterval} onValueChange={onIntervalChange}>
@@ -63,7 +63,7 @@ export const StockChartWrapper: React.FC<
         ) : (
           <StockChartPresentation
             stockName={stockName}
-            data={data}
+            chartData={data}
             minPrice={minPrice}
             maxPrice={maxPrice}
             selectedInterval={selectedInterval}

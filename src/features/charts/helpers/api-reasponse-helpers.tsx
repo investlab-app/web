@@ -1,11 +1,11 @@
-import type { instrumentPriceProps } from './charts-props';
+import type { ApiItem, InstrumentPriceProps } from './charts-props';
 
 export function transformApiResponse(
-  apiData: any
-): Array<instrumentPriceProps> {
-  if (!apiData || !Array.isArray(apiData.data)) return [];
-
-  return apiData.data.map((item: any) => ({
+  apiData: ApiItem
+): Array<InstrumentPriceProps> {
+  if (!Array.isArray(apiData.data)) return [];
+  console.log(apiData);
+  return apiData.data.map((item) => ({
     date: item.timestamp,
     open: parseFloat(item.open),
     close: parseFloat(item.close),

@@ -61,8 +61,8 @@ export function SignUpForm() {
   const handleGoogleAuth = () => {
     signUp?.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: `${THIS_URL}sso-callback`,
-      redirectUrl: `${THIS_URL}sso-fail-callback`,
+      redirectUrlComplete: `${THIS_URL}/sso-callback`,
+      redirectUrl: `${THIS_URL}/sso-fail-callback`,
     });
   };
 
