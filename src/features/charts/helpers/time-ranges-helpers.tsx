@@ -1,51 +1,33 @@
-export const timeRanges = [
+export const timeIntervals = [
+  { label: '1 Minute', value: '1m' },
+  { label: '5 Minutes', value: '5m' },
+  { label: '30 Minutes', value: '30m' },
   { label: '1 Hour', value: '1h' },
   { label: '1 Day', value: '1d' },
-  { label: '1 Week', value: '1w' },
-  { label: '1 Month', value: '1m' },
-  { label: '6 Months', value: '6m' },
-  { label: '1 Year', value: '1y' },
-  { label: '5 Years', value: '5y' },
-  { label: 'Max', value: 'max' },
+  { label: '1 Week', value: '1wk' },
 ];
 
-export const rangeToIntervalMap: Record<string, string> = {
-  '1h': '1m',
-  '1d': '5m',
-  '1w': '30m',
-  '1m': '1d',
-  '6m': '1d',
-  '1y': '1d',
-  '5y': '1d',
-  max: '1wk',
-};
 
-export const rangeToStartDate = (range: string): Date => {
-  const now = new Date();
+export const intervalToStartDate = (range: string, date?: Date): Date => {
+  const now = date ?? new Date();
   const start = new Date(now);
   switch (range) {
-    case '1h':
-      start.setHours(now.getHours() - 1);
-      break;
-    case '1d':
+    case '1m':
       start.setDate(now.getDate() - 1);
       break;
-    case '1w':
-      start.setDate(now.getDate() - 7);
+    case '5m':
+      start.setDate(now.getDate() - 5);
       break;
-    case '1m':
+    case '30m':
       start.setMonth(now.getMonth() - 1);
       break;
-    case '6m':
-      start.setMonth(now.getMonth() - 6);
+    case '1h':
+      start.setMonth(now.getMonth() - 3);
       break;
-    case '1y':
-      start.setFullYear(now.getFullYear() - 1);
-      break;
-    case '5y':
+    case '1d':
       start.setFullYear(now.getFullYear() - 5);
       break;
-    case 'max':
+    case '1wk':
       start.setFullYear(now.getFullYear() - 50);
       break;
   }

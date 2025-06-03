@@ -1,9 +1,8 @@
-// components/stock-chart-presentation.tsx
 import * as React from 'react';
 import ReactECharts from 'echarts-for-react';
 import {
   createLabelIntervalFn,
-  formatChartDateByRange,
+  formatChartDateByRange as formatChartDateByInterval,
 } from '../helpers/stock-chart-formatting-helpers';
 import type { ChartPresentationsProps } from '../helpers/charts-props';
 
@@ -12,7 +11,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   data,
   minPrice,
   maxPrice,
-  selectedRange,
+  selectedInterval,
 }) => {
   const dates = data.map((item) => item.date);
   const seriesData = data.map((item) => ({
@@ -21,6 +20,9 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
     low: item.low,
     open: item.open,
   }));
+
+  const startPercent = 90;
+  const endPercent = 100;
 
   const chartOptions = {
     animation: false,
@@ -32,7 +34,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       formatter: (params: Array<any>) => {
         const { axisValue, data } = params[0];
         return `<div><strong>
-          ${formatChartDateByRange(axisValue, selectedRange, true)}
+          ${formatChartDateByInterval(axisValue, selectedInterval, true)}
         </strong><br />
         Price: $${data.value?.toFixed(2)}<br />
         High: $${data.high?.toFixed(2)}<br />
@@ -47,7 +49,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       axisLabel: {
         interval: createLabelIntervalFn(data.length),
         formatter: (value: string) =>
-          formatChartDateByRange(value, selectedRange),
+          formatChartDateByInterval(value, selectedInterval),
       },
     },
     yAxis: {
@@ -57,6 +59,17 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       max: Math.ceil(maxPrice),
       splitLine: { lineStyle: { opacity: 0.2 } },
     },
+    dataZoom: [
+      {
+        type: 'inside',
+        zoomLock: true,
+        start: startPercent,
+        end: endPercent,
+        moveOnMouseWheel: true,
+        moveOnMouseMove: true,
+        zoomOnMouseWheel: false, 
+      },
+    ],
     series: [
       {
         name: stockName,

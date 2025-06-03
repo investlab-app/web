@@ -10,8 +10,8 @@ export type StockChartProps = {
   stockName: string;
   currentPrice: number;
   timeRanges: Array<{ label: string; value: string }>;
-  selectedRange: string;
-  onRangeChange: (value: string) => void;
+  selectedInterval: string;
+  onIntervalChange: (value: string) => void;
   data: Array<instrumentPriceProps>;
   minPrice: number;
   maxPrice: number;
@@ -22,5 +22,5 @@ export type ChartPresentationsProps = {
   data: Array<instrumentPriceProps>;
   minPrice: number;
   maxPrice: number;
-  selectedRange: string;
+  selectedInterval: string;
 };

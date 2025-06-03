@@ -6,7 +6,7 @@ export function createLabelIntervalFn(
     return () => true;
   }
 
-  const interval = Math.floor(dataLength / 5);
+  const interval = Math.floor(dataLength / 50);
 
   return (index: number) => index % interval === 0;
 }
@@ -19,15 +19,10 @@ export function formatChartDateByRange(
   const date = new Date(value);
 
   switch (range) {
+    case '1m':
+    case '5m':
+    case '30m':
     case '1h':
-    case '1d':
-      // Show hour and minute
-      return date.toLocaleTimeString('pl-PL', {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-
-    case '1w':
       // Show day, month, hour, and minute
       return `${date.toLocaleDateString('en-UK', {
         day: 'numeric',
@@ -37,17 +32,8 @@ export function formatChartDateByRange(
         minute: '2-digit',
       })}`;
 
-    case '1m':
-      // Show day and month
-      return date.toLocaleDateString('en-UK', {
-        day: 'numeric',
-        month: 'short',
-      });
-
-    case '6m':
-    case '1y':
-    case '5y':
-    case 'max':
+    case '1d':
+    case '1wk':
       // Show month and year
       return tooltip
         ? date.toLocaleDateString('en-UK', {

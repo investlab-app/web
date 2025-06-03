@@ -25,8 +25,8 @@ export const StockChartWrapper: React.FC<
   stockName,
   currentPrice,
   timeRanges,
-  selectedRange,
-  onRangeChange,
+  selectedInterval: selectedInterval,
+  onIntervalChange: onIntervalChange,
   data,
   minPrice,
   maxPrice,
@@ -43,7 +43,7 @@ export const StockChartWrapper: React.FC<
         </CardDescription>
         )}
         <CardAction>
-          <Select value={selectedRange} onValueChange={onRangeChange}>
+          <Select value={selectedInterval} onValueChange={onIntervalChange}>
             <SelectTrigger className="w-40" aria-label="Select time range">
               <SelectValue placeholder="Select range" />
             </SelectTrigger>
@@ -66,7 +66,7 @@ export const StockChartWrapper: React.FC<
             data={data}
             minPrice={minPrice}
             maxPrice={maxPrice}
-            selectedRange={selectedRange}
+            selectedInterval={selectedInterval}
           />
         )}
       </CardContent>
