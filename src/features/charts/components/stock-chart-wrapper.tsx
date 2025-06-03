@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StockChartPresentation } from './stock-chart-presentation';
 import { ChartErrorMessage } from './chart-error-message';
-import type { StockChartProps } from '../helpers/charts-props';
+import type { InstrumentPriceProps } from '../helpers/charts-props';
 import {
   Card,
   CardAction,
@@ -18,6 +18,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
+export type StockChartProps = {
+  stockName: string;
+  currentPrice: number;
+  timeRanges: Array<{ label: string; value: string }>;
+  selectedInterval: string;
+  onIntervalChange: (value: string) => void;
+  data: Array<InstrumentPriceProps>;
+  minPrice: number;
+  maxPrice: number;
+};
 
 export const StockChartWrapper: React.FC<
   StockChartProps & { hasError?: boolean }

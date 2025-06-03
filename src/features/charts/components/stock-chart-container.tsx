@@ -1,5 +1,6 @@
-import * as React from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 import {
   intervalToStartDate,
   timeIntervals,
@@ -18,19 +19,21 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
 }) => {
   const { getToken } = useAuth();
 
-  const [interval, setInterval] = React.useState('1h');
+  const [interval, setInterval] = useState('1h');
 
-  const [data, setData] = React.useState<Array<InstrumentPriceProps>>([]);
-  const [minPrice, setMinPrice] = React.useState<number>(0);
-  const [maxPrice, setMaxPrice] = React.useState<number>(0);
-  const [currentPrice, setCurrentPrice] = React.useState<number>(0);
-  const [hasError, setHasError] = React.useState<boolean>(false);
+  const [data, setData] = useState<Array<InstrumentPriceProps>>([]);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  const [currentPrice, setCurrentPrice] = useState<number>(0);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   function updateValue(newVal: string) {
     loadData(newVal);
   }
 
-  const loadData = React.useCallback(
+  const queryClient = useQueryClient();
+
+  const loadData = useCallback(
     async (chosenInterval: string) => {
       setHasError(false);
       try {
@@ -40,12 +43,18 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
         const startDate = intervalToStartDate(chosenInterval);
         const endDate = new Date();
 
-        const apiData = await fetchHistoryForInstrument({
-          ticker,
-          startDate,
-          endDate,
-          interval: chosenInterval,
-          token,
+        // Use React Query's programmatic fetch
+        const apiData = await queryClient.fetchQuery({
+          queryKey: ['stock-data', ticker, chosenInterval],
+          queryFn: () =>
+            fetchHistoryForInstrument({
+              ticker,
+              startDate,
+              endDate,
+              interval: chosenInterval,
+              token,
+            }),
+          staleTime: 1000 * 60, // optional: 1 min stale time
         });
 
         const parsed = transformApiResponse(apiData);
@@ -65,12 +74,12 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
         setHasError(true);
       }
     },
-    [getToken, ticker] // dependencies used inside loadData
+    [getToken, queryClient, ticker]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadData(interval);
-  }, [loadData, interval]);
+  }, []);
 
   return (
     <StockChartWrapper

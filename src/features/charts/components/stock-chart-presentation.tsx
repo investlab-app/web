@@ -4,7 +4,15 @@ import {
   createLabelIntervalFn,
   formatChartDateByRange as formatChartDateByInterval,
 } from '../helpers/stock-chart-formatting-helpers';
-import type { ChartPresentationsProps } from '../helpers/charts-props';
+import type { InstrumentPriceProps } from '../helpers/charts-props';
+
+export type ChartPresentationsProps = {
+  stockName: string;
+  chartData: Array<InstrumentPriceProps>;
+  minPrice: number;
+  maxPrice: number;
+  selectedInterval: string;
+};
 
 export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   stockName,

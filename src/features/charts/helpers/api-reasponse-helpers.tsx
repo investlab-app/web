@@ -1,4 +1,16 @@
-import type { ApiItem, InstrumentPriceProps } from './charts-props';
+import type { InstrumentPriceProps } from './charts-props';
+
+export type ApiItem = {
+  min_price: number;
+  max_price: number;
+  data: {
+    timestamp: string;
+    open: string;
+    close: string;
+    high: string;
+    low: string;
+  };
+};
 
 export function transformApiResponse(
   apiData: ApiItem
