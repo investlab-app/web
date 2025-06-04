@@ -16,6 +16,7 @@ import { Route as SsoFailCallbackImport } from './routes/sso-fail-callback';
 import { Route as SsoCallbackImport } from './routes/sso-callback';
 import { Route as SignupPageImport } from './routes/signup-page';
 import { Route as LoginPageImport } from './routes/login-page';
+import { Route as InstrumentsPageImport } from './routes/instruments-page';
 import { Route as NotFoundImport } from './routes/$not-found';
 import { Route as IndexImport } from './routes/index';
 
@@ -51,6 +52,12 @@ const LoginPageRoute = LoginPageImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
+const InstrumentsPageRoute = InstrumentsPageImport.update({
+  id: '/instruments-page',
+  path: '/instruments-page',
+  getParentRoute: () => rootRoute,
+} as any);
+
 const NotFoundRoute = NotFoundImport.update({
   id: '/$not-found',
   path: '/$not-found',
@@ -79,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/$not-found';
       fullPath: '/$not-found';
       preLoaderRoute: typeof NotFoundImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/instruments-page': {
+      id: '/instruments-page';
+      path: '/instruments-page';
+      fullPath: '/instruments-page';
+      preLoaderRoute: typeof InstrumentsPageImport;
       parentRoute: typeof rootRoute;
     };
     '/login-page': {
@@ -124,6 +138,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
   '/$not-found': typeof NotFoundRoute;
+  '/instruments-page': typeof InstrumentsPageRoute;
   '/login-page': typeof LoginPageRoute;
   '/signup-page': typeof SignupPageRoute;
   '/sso-callback': typeof SsoCallbackRoute;
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '/$not-found': typeof NotFoundRoute;
+  '/instruments-page': typeof InstrumentsPageRoute;
   '/login-page': typeof LoginPageRoute;
   '/signup-page': typeof SignupPageRoute;
   '/sso-callback': typeof SsoCallbackRoute;
@@ -145,6 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute;
   '/': typeof IndexRoute;
   '/$not-found': typeof NotFoundRoute;
+  '/instruments-page': typeof InstrumentsPageRoute;
   '/login-page': typeof LoginPageRoute;
   '/signup-page': typeof SignupPageRoute;
   '/sso-callback': typeof SsoCallbackRoute;
@@ -157,6 +174,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$not-found'
+    | '/instruments-page'
     | '/login-page'
     | '/signup-page'
     | '/sso-callback'
@@ -166,6 +184,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$not-found'
+    | '/instruments-page'
     | '/login-page'
     | '/signup-page'
     | '/sso-callback'
@@ -175,6 +194,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$not-found'
+    | '/instruments-page'
     | '/login-page'
     | '/signup-page'
     | '/sso-callback'
@@ -186,6 +206,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   NotFoundRoute: typeof NotFoundRoute;
+  InstrumentsPageRoute: typeof InstrumentsPageRoute;
   LoginPageRoute: typeof LoginPageRoute;
   SignupPageRoute: typeof SignupPageRoute;
   SsoCallbackRoute: typeof SsoCallbackRoute;
@@ -196,6 +217,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NotFoundRoute: NotFoundRoute,
+  InstrumentsPageRoute: InstrumentsPageRoute,
   LoginPageRoute: LoginPageRoute,
   SignupPageRoute: SignupPageRoute,
   SsoCallbackRoute: SsoCallbackRoute,
@@ -215,6 +237,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/$not-found",
+        "/instruments-page",
         "/login-page",
         "/signup-page",
         "/sso-callback",
@@ -227,6 +250,9 @@ export const routeTree = rootRoute
     },
     "/$not-found": {
       "filePath": "$not-found.tsx"
+    },
+    "/instruments-page": {
+      "filePath": "instruments-page.tsx"
     },
     "/login-page": {
       "filePath": "login-page.tsx"
