@@ -4,7 +4,6 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
-  IconSearch,
   IconSettings,
 } from '@tabler/icons-react';
 

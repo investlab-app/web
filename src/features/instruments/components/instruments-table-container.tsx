@@ -9,7 +9,12 @@ import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE = 2;
 
-const InstrumentsTableContainer = () => {
+type Props = {
+  setOpenSheet: (open: boolean) => void;
+  setInstrument: (instrument: Instrument) => void;
+};
+
+const InstrumentsTableContainer = ({setOpenSheet, setInstrument}: Props) => {
   const { t } = useTranslation();
 
   const [search, setSearch] = useState('');
@@ -21,6 +26,7 @@ const InstrumentsTableContainer = () => {
   });
 
   const liveData = useLiveInstrumentUpdates(data);
+  // const { show } = useRightSidebar(); 
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -36,6 +42,9 @@ const InstrumentsTableContainer = () => {
 
   const handleInstrumentPressed = (asset: Instrument) => {
     console.log('Instrument clicked:', asset);
+    // show();
+    setInstrument(asset);
+    setOpenSheet(true);
   };
 
   return (

@@ -105,5 +105,5 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
     ],
   };
 
-  return <ReactECharts option={chartOptions} style={{ height: '400px' }} />;
+  return <ReactECharts option={chartOptions} style={{ height: '300px' }} />;
 };
