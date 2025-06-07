@@ -1,38 +1,48 @@
 // hooks/useLiveInstrumentUpdates.ts
+import { useLiveUpdates } from './use-live-updates';
 import { useEffect, useState } from 'react';
-import type { Instrument } from './instrument';
 
-const useLiveInstrumentUpdates = (
-  instruments: Array<Instrument>,
-  intervalMs: number = 3000
-) => {
-  const [liveData, setLiveData] = useState<Array<Instrument>>(instruments);
-
-  useEffect(() => {
-    // Set initial data
-    setLiveData(instruments);
-
-    const interval = setInterval(() => {
-      setLiveData((prevData) =>
-        prevData.map((asset) => ({
-          ...asset,
-          currentPrice: parseFloat(
-            (asset.currentPrice * (1 + (Math.random() - 0.5) / 100)).toFixed(2)
-          ),
-          percentPL: parseFloat(
-            (asset.percentPL + (Math.random() - 0.5)).toFixed(2)
-          ),
-          dollarPL: parseFloat(
-            (asset.dollarPL + (Math.random() - 0.5) * 5).toFixed(2)
-          ),
-        }))
-      );
-    }, intervalMs);
-
-    return () => clearInterval(interval);
-  }, [instruments, intervalMs]);
-
-  return liveData;
+type InputInstrument = {
+  name: string;
+  quantity: number;
+  currentPrice: number;
 };
 
-export default useLiveInstrumentUpdates;
+type Instrument = {
+  name: string;
+  quantity: number;
+  currentPrice: number;
+  marketValue: number;
+  percentPL: number;
+  dollarPL: number;
+};
+
+export function useLiveInstrumentUpdates(instruments: InputInstrument[]) {
+  // Track live prices separately
+  const livePriceAAPL = useLiveUpdates('AAPL')['price'];
+
+  const [liveData, setLiveData] = useState<Instrument[]>([]);
+
+  useEffect(() => {
+    const updated = instruments.map((instrument) => {
+      const livePrice = livePriceAAPL;
+
+      const originalTotal = instrument.quantity * instrument.currentPrice;
+      const marketValue = +(instrument.quantity * livePrice).toFixed(2);
+      const dollarPL = +(marketValue - originalTotal).toFixed(2);
+      const percentPL = +((dollarPL / originalTotal) * 100).toFixed(2);
+
+      return {
+        ...instrument,
+        currentPrice: livePrice,
+        marketValue,
+        dollarPL,
+        percentPL,
+      };
+    });
+
+    setLiveData(updated);
+  }, [livePriceAAPL, instruments]);
+
+  return liveData;
+}

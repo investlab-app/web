@@ -1,15 +1,13 @@
 // BuySellSection.tsx
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
-import { NumberInput } from "@/components/ui/number-input";
-import {
-  IconChevronDown,
-} from '@tabler/icons-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsContent } from '@radix-ui/react-tabs';
+import { NumberInput } from '@/components/ui/number-input';
+import { IconChevronDown } from '@tabler/icons-react';
 
 interface BuySellSectionProps {
-  mode: "price" | "volume";
+  mode: 'price' | 'volume';
   value: number;
   derivedValue: number;
   onValueChange: (val: number) => void;
@@ -23,9 +21,9 @@ export const BuySellSection = ({
   onValueChange,
   onModeToggle,
 }: BuySellSectionProps) => {
-    const {t} = useTranslation();
+  const { t } = useTranslation();
   const handleInputChange = (val: number | null | undefined) => {
-    if (typeof val === "number" && !isNaN(val)) {
+    if (typeof val === 'number' && !isNaN(val)) {
       onValueChange(val);
     }
   };
@@ -40,63 +38,65 @@ export const BuySellSection = ({
           </TabsList>
 
           <TabsContent value="market">
-  <div className="mt-4 space-y-2 w-full">
-    <label className="text-sm font-medium">
-      {mode === "price" ? t('instruments.price') : t('instruments.volume')}
-    </label>
+            <div className="mt-4 space-y-2 w-full">
+              <label className="text-sm font-medium">
+                {mode === 'price'
+                  ? t('instruments.price')
+                  : t('instruments.volume')}
+              </label>
 
-    <div className="flex items-center gap-2">
-      <NumberInput
-        value={value}
-        onValueChange={handleInputChange}
-        prefix={mode === "price" ? "$" : undefined}
-        fixedDecimalScale
-        stepper={mode === "price" ? 0.5 : 0.1}
-        decimalScale={mode === "price" ? 2 : 5}
-      />
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9" // Match the input height
-        onClick={onModeToggle}
-        title={mode === "price" ? "Switch to Volume" : "Switch to Price"}
-      >
-       
-         <IconChevronDown/>
-        
-        
-      </Button>
-    </div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <NumberInput
+                    value={value}
+                    onValueChange={handleInputChange}
+                    prefix={mode === 'price' ? '$' : undefined}
+                    fixedDecimalScale
+                    stepper={mode === 'price' ? 0.5 : 0.1}
+                    decimalScale={mode === 'price' ? 2 : 5}
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9" // Match the input height
+                  onClick={onModeToggle}
+                  title={
+                    mode === 'price' ? 'Switch to Volume' : 'Switch to Price'
+                  }
+                >
+                  <IconChevronDown />
+                </Button>
+              </div>
 
-    <p className="text-muted-foreground text-sm">
-      {mode === "price"
-        ? `${t('instruments.volume')}: ${derivedValue.toFixed(5)}`
-        : `${t('instruments.price')}: $${derivedValue.toFixed(2)}`}
-    </p>
-  </div>
+              <p className="text-muted-foreground text-sm">
+                {mode === 'price'
+                  ? `${t('instruments.volume')}: ${derivedValue.toFixed(5)}`
+                  : `${t('instruments.price')}: $${derivedValue.toFixed(2)}`}
+              </p>
+            </div>
 
-  <div className="flex justify-between mt-4">
-    <Button className="bg-green-600 hover:bg-green-700 w-5/12">
-      {t('instruments.buy')}
-    </Button>
-    <Button className="bg-red-600 hover:bg-red-700  w-5/12">
-    {t('instruments.sell')}
-    </Button>
-  </div>
-</TabsContent>
+            <div className="flex gap-3 mt-4">
+              <Button className="bg-green-600 hover:bg-green-700 flex-1">
+                {t('instruments.buy')}
+              </Button>
+              <Button className="bg-red-600 hover:bg-red-700  flex-1">
+                {t('instruments.sell')}
+              </Button>
+            </div>
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
   );
 };
 
-
-import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
-import InstrumentsPage from "@/routes/instruments-page";
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import InstrumentsPage from '@/routes/instruments-page';
 
 export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
-  const [mode, setMode] = useState<"price" | "volume">("price");
+  const [mode, setMode] = useState<'price' | 'volume'>('price');
   const [price, setPrice] = useState(initialPrice);
   const [volume, setVolume] = useState(initialPrice / currentPrice);
 
@@ -127,7 +127,7 @@ export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
   );
 
   const toggleMode = useCallback(() => {
-    setMode((prev) => (prev === "price" ? "volume" : "price"));
+    setMode((prev) => (prev === 'price' ? 'volume' : 'price'));
   }, []);
 
   return {
@@ -139,7 +139,6 @@ export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
     toggleMode,
   };
 };
-
 
 interface BuySellContainerProps {
   currentPrice: number;
@@ -158,9 +157,9 @@ export const BuySellContainer = ({ currentPrice }: BuySellContainerProps) => {
   return (
     <BuySellSection
       mode={mode}
-      value={mode === "price" ? price : volume}
-      derivedValue={mode === "price" ? volume : price}
-      onValueChange={mode === "price" ? handlePriceChange : handleVolumeChange}
+      value={mode === 'price' ? price : volume}
+      derivedValue={mode === 'price' ? volume : price}
+      onValueChange={mode === 'price' ? handlePriceChange : handleVolumeChange}
       onModeToggle={toggleMode}
     />
   );

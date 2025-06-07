@@ -43,9 +43,9 @@ const InstrumentTable = ({
         <TableBody>
           {data.map((instrument, idx) => (
             <TableRow
-            key={idx}
-            onClick={() => onInstrumentPressed(instrument)}
-            className="cursor-pointer"
+              key={idx}
+              onClick={() => onInstrumentPressed(instrument)}
+              className="cursor-pointer"
             >
               {/* <SheetTrigger> */}
               <TableCell className="text-white">{instrument.name}</TableCell>
@@ -82,7 +82,7 @@ const InstrumentTable = ({
                   {Math.abs(instrument.dollarPL).toFixed(2)}
                 </span>
               </TableCell>
-            {/* </SheetTrigger> */}
+              {/* </SheetTrigger> */}
             </TableRow>
           ))}
         </TableBody>

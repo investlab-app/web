@@ -5,7 +5,7 @@ const enInstruments = {
   buy: 'Buy',
   sell: 'Sell',
   volume: 'Volume',
-  price: 'Price'
+  price: 'Price',
 };
 
 export default enInstruments;

@@ -1,14 +1,8 @@
-import { useAuth } from '@clerk/clerk-react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
-import {
-  intervalToStartDate,
-  timeIntervals,
-} from '../helpers/time-ranges-helpers';
-import { transformApiResponse } from '../helpers/api-reasponse-helpers';
+import { useEffect, useState } from 'react';
+import { useLoadStockChartData } from '../helpers/use-load-stock-chart-data';
 import { StockChartWrapper } from './stock-chart-wrapper';
+import { timeIntervals } from '../helpers/time-ranges-helpers';
 import type { InstrumentPriceProps } from '../helpers/charts-props';
-import { fetchHistoryForInstrument } from '@/remote/api';
 
 type StockChartContainerProps = {
   ticker: string;
@@ -17,68 +11,39 @@ type StockChartContainerProps = {
 export const StockChartContainer: React.FC<StockChartContainerProps> = ({
   ticker,
 }) => {
-  const { getToken } = useAuth();
-
   const [interval, setInterval] = useState('1h');
-
   const [data, setData] = useState<Array<InstrumentPriceProps>>([]);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [hasError, setHasError] = useState<boolean>(false);
 
-  function updateValue(newVal: string) {
-    loadData(newVal);
-  }
+  const loadStockData = useLoadStockChartData();
 
-  const queryClient = useQueryClient();
-
-  const loadData = useCallback(
-    async (chosenInterval: string) => {
+  const updateValue = async (newInterval: string) => {
+    try {
       setHasError(false);
-      try {
-        const token = await getToken();
-        if (!token) throw new Error('No auth token available');
+      const result = await loadStockData(ticker, newInterval);
 
-        const startDate = intervalToStartDate(chosenInterval);
-        const endDate = new Date();
-
-        // Use React Query's programmatic fetch
-        const apiData = await queryClient.fetchQuery({
-          queryKey: ['stock-data', ticker, chosenInterval],
-          queryFn: () =>
-            fetchHistoryForInstrument({
-              ticker,
-              startDate,
-              endDate,
-              interval: chosenInterval,
-              token,
-            }),
-          staleTime: 1000 * 60, // optional: 1 min stale time
-        });
-
-        const parsed = transformApiResponse(apiData);
-        if (parsed.length === 0) {
-          setHasError(true);
-          return;
-        }
-
-        setData(parsed);
-        setCurrentPrice(parsed[parsed.length - 1].close);
-        setMinPrice(apiData.min_price);
-        setMaxPrice(apiData.max_price);
-
-        setInterval(chosenInterval);
-      } catch (err) {
-        console.error('Failed to fetch stock data:', err);
+      if (result.parsed.length === 0) {
         setHasError(true);
+        return;
       }
-    },
-    [getToken, queryClient, ticker]
-  );
 
+      setData(result.parsed);
+      setCurrentPrice(result.parsed[result.parsed.length - 1].close);
+      setMinPrice(result.minPrice);
+      setMaxPrice(result.maxPrice);
+      setInterval(newInterval);
+    } catch (err) {
+      console.error('Failed to fetch stock data:', err);
+      setHasError(true);
+    }
+  };
+
+  // Load once on mount
   useEffect(() => {
-    loadData(interval);
+    updateValue(interval);
   }, []);
 
   return (

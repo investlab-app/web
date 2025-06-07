@@ -6,7 +6,7 @@ export function createLabelIntervalFn(
     return () => true;
   }
 
-  const interval = Math.floor(dataLength / 50);
+  const interval = Math.floor(dataLength / 30);
 
   return (index: number) => index % interval === 0;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useInstruments from '../helpers/use-instruments';
-import useLiveInstrumentUpdates from '../helpers/use-live-instrument-updates';
+import { useLiveInstrumentUpdates } from '../helpers/use-live-instrument-updates';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../helpers/instrument';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ type Props = {
   setInstrument: (instrument: Instrument) => void;
 };
 
-const InstrumentsTableContainer = ({setOpenSheet, setInstrument}: Props) => {
+const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   const { t } = useTranslation();
 
   const [search, setSearch] = useState('');
@@ -26,7 +26,7 @@ const InstrumentsTableContainer = ({setOpenSheet, setInstrument}: Props) => {
   });
 
   const liveData = useLiveInstrumentUpdates(data);
-  // const { show } = useRightSidebar(); 
+  // const { show } = useRightSidebar();
 
   useEffect(() => {
     const timeout = setTimeout(() => {

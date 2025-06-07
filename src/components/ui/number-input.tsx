@@ -102,7 +102,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         let validatedValue = displayValue;
         if (displayValue < min) validatedValue = min;
         if (displayValue > max) validatedValue = max;
-        
+
         if (validatedValue !== displayValue) {
           handleValueChange(validatedValue);
         }

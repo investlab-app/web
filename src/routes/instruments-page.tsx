@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
@@ -28,24 +28,22 @@ export default function InstrumentsPage() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <Sheet open={open} onOpenChange={setOpen}>
-
-          <SheetContent className=" max-w-2/3 sm:max-w-2/3">
-
-        {instrument ?( <InstrumentDetails instrument={instrument}/>) : null}
+          <SheetContent className=" w-full sm:max-w-2/3">
+            {instrument ? <InstrumentDetails instrument={instrument} /> : null}
           </SheetContent>
 
-
-
-        <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <InstrumentsTableContainer setOpenSheet={setOpen} setInstrument={setInstrument}/>
+          <SiteHeader />
+          <div className="flex flex-1 flex-col">
+            <div className="@container/main flex flex-1 flex-col gap-2">
+              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                <InstrumentsTableContainer
+                  setOpenSheet={setOpen}
+                  setInstrument={setInstrument}
+                />
+              </div>
             </div>
           </div>
-        </div>
-</Sheet>
-
+        </Sheet>
       </SidebarInset>
     </SidebarProvider>
   );
@@ -54,6 +52,3 @@ export default function InstrumentsPage() {
 export const Route = createFileRoute('/instruments-page')({
   component: InstrumentsPage,
 });
-
-
-
