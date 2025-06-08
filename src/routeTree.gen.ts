@@ -14,7 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as SsoFailCallbackImport } from './routes/sso-fail-callback'
 import { Route as SsoCallbackImport } from './routes/sso-callback'
-import { Route as SseImport } from './routes/sse'
+import { Route as SseDemoImport } from './routes/sseDemo'
 import { Route as SignupPageImport } from './routes/signup-page'
 import { Route as LoginPageImport } from './routes/login-page'
 import { Route as NotFoundImport } from './routes/$not-found'
@@ -40,9 +40,9 @@ const SsoCallbackRoute = SsoCallbackImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SseRoute = SseImport.update({
-  id: '/sse',
-  path: '/sse',
+const SseDemoRoute = SseDemoImport.update({
+  id: '/sseDemo',
+  path: '/sseDemo',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,11 +102,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupPageImport
       parentRoute: typeof rootRoute
     }
-    '/sse': {
-      id: '/sse'
-      path: '/sse'
-      fullPath: '/sse'
-      preLoaderRoute: typeof SseImport
+    '/sseDemo': {
+      id: '/sseDemo'
+      path: '/sseDemo'
+      fullPath: '/sseDemo'
+      preLoaderRoute: typeof SseDemoImport
       parentRoute: typeof rootRoute
     }
     '/sso-callback': {
@@ -140,7 +140,7 @@ export interface FileRoutesByFullPath {
   '/$not-found': typeof NotFoundRoute
   '/login-page': typeof LoginPageRoute
   '/signup-page': typeof SignupPageRoute
-  '/sse': typeof SseRoute
+  '/sseDemo': typeof SseDemoRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -151,7 +151,7 @@ export interface FileRoutesByTo {
   '/$not-found': typeof NotFoundRoute
   '/login-page': typeof LoginPageRoute
   '/signup-page': typeof SignupPageRoute
-  '/sse': typeof SseRoute
+  '/sseDemo': typeof SseDemoRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -163,7 +163,7 @@ export interface FileRoutesById {
   '/$not-found': typeof NotFoundRoute
   '/login-page': typeof LoginPageRoute
   '/signup-page': typeof SignupPageRoute
-  '/sse': typeof SseRoute
+  '/sseDemo': typeof SseDemoRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -176,7 +176,7 @@ export interface FileRouteTypes {
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sse'
+    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -186,7 +186,7 @@ export interface FileRouteTypes {
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sse'
+    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -196,7 +196,7 @@ export interface FileRouteTypes {
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sse'
+    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -208,7 +208,7 @@ export interface RootRouteChildren {
   NotFoundRoute: typeof NotFoundRoute
   LoginPageRoute: typeof LoginPageRoute
   SignupPageRoute: typeof SignupPageRoute
-  SseRoute: typeof SseRoute
+  SseDemoRoute: typeof SseDemoRoute
   SsoCallbackRoute: typeof SsoCallbackRoute
   SsoFailCallbackRoute: typeof SsoFailCallbackRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
@@ -219,7 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   NotFoundRoute: NotFoundRoute,
   LoginPageRoute: LoginPageRoute,
   SignupPageRoute: SignupPageRoute,
-  SseRoute: SseRoute,
+  SseDemoRoute: SseDemoRoute,
   SsoCallbackRoute: SsoCallbackRoute,
   SsoFailCallbackRoute: SsoFailCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
@@ -239,7 +239,7 @@ export const routeTree = rootRoute
         "/$not-found",
         "/login-page",
         "/signup-page",
-        "/sse",
+        "/sseDemo",
         "/sso-callback",
         "/sso-fail-callback",
         "/verify-email"
@@ -257,8 +257,8 @@ export const routeTree = rootRoute
     "/signup-page": {
       "filePath": "signup-page.tsx"
     },
-    "/sse": {
-      "filePath": "sse.tsx"
+    "/sseDemo": {
+      "filePath": "sseDemo.tsx"
     },
     "/sso-callback": {
       "filePath": "sso-callback.tsx"
