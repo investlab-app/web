@@ -66,7 +66,7 @@ export default function Sse() {
       ctrl.abort(); // Clean up the event source connection on unmount
       console.log('Cleanup: SSE connection aborted');
     };
-  }, [getToken]);
+  }, [ctrl, getToken]);
 
   return (
     <div>
