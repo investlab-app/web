@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { SheetTrigger } from '@/components/ui/sheet';
 
 interface Instrument {
   name: string;
@@ -47,7 +46,6 @@ const InstrumentTable = ({
               onClick={() => onInstrumentPressed(instrument)}
               className="cursor-pointer"
             >
-              {/* <SheetTrigger> */}
               <TableCell className="text-white">{instrument.name}</TableCell>
               <TableCell className="text-white">
                 {instrument.quantity}
@@ -82,7 +80,6 @@ const InstrumentTable = ({
                   {Math.abs(instrument.dollarPL).toFixed(2)}
                 </span>
               </TableCell>
-              {/* </SheetTrigger> */}
             </TableRow>
           ))}
         </TableBody>

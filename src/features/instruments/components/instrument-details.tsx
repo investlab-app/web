@@ -1,13 +1,8 @@
 // components/NetflixDetailView.tsx
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
-import { TabsContent } from '@radix-ui/react-tabs';
-import { NumberInput } from '@/components/ui/number-input';
-import { useCallback, useState } from 'react';
-import { BuySellContainer, BuySellSection } from './buy-sell-section';
+import { BuySellContainer } from './buy-sell-section';
 import type { Instrument } from '../helpers/instrument';
 
 const NewsSection = () => {

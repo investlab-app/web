@@ -93,7 +93,6 @@ export const BuySellSection = ({
 
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import InstrumentsPage from '@/routes/instruments-page';
 
 export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
   const [mode, setMode] = useState<'price' | 'volume'>('price');

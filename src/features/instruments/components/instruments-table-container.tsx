@@ -25,8 +25,17 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
     perPage: PAGE_SIZE,
   });
 
-  const liveData = useLiveInstrumentUpdates(data);
-  // const { show } = useRightSidebar();
+  const { liveData, subscribe, unsubscribe } = useLiveInstrumentUpdates(data);
+
+  useEffect(() => {
+    console.log("subscribign....");
+    data.forEach((instrument) => subscribe(instrument.name));
+    
+    return () => {
+      console.log("sUNubscribign....");
+      data.forEach((instrument) => unsubscribe(instrument.name));
+    };
+  }, [data]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

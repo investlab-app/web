@@ -22,7 +22,7 @@ const useInstruments = ({
     const fetchData = async () => {
       setLoading(true);
 
-      await new Promise((res) => setTimeout(res, 400));
+      await new Promise((res) => setTimeout(res, 500));
 
       const filtered = mockInstrumentData.filter((item) =>
         item.name.toLowerCase().includes(filter.toLowerCase())
