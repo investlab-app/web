@@ -45,12 +45,12 @@ const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
   return (
     <div className="p-4 space-y-4 overflow-y-auto">
       <h2 className="text-xl font-semibold text-left">
-        {instrument.name}L Overview
+        {instrument.name} Overview
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
-          <StockChartContainer ticker={instrument.name} />
+          <StockChartContainer ticker={instrument.symbol} />
         </div>
 
         <div className="space-y-4 md:space-y-0 md:col-span-1 h-full">

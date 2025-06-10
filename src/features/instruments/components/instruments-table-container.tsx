@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import useInstruments from '../helpers/use-instruments';
-import { useLiveInstrumentUpdates } from '../helpers/use-live-instrument-updates';
+// import { useLiveInstrumentUpdates } from '../helpers/use-live-instrument-updates';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../helpers/instrument';
 import { Button } from '@/components/ui/button';
 import SearchInput from '@/components/ui/search-input';
 import { useTranslation } from 'react-i18next';
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
 type Props = {
   setOpenSheet: (open: boolean) => void;
@@ -16,7 +16,6 @@ type Props = {
 
 const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   const { t } = useTranslation();
-
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const { data, loading, hasMore } = useInstruments({
@@ -25,22 +24,10 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
     perPage: PAGE_SIZE,
   });
 
-  const { liveData, subscribe, unsubscribe } = useLiveInstrumentUpdates(data);
-
-  useEffect(() => {
-    console.log("subscribign....");
-    data.forEach((instrument) => subscribe(instrument.name));
-    
-    return () => {
-      console.log("sUNubscribign....");
-      data.forEach((instrument) => unsubscribe(instrument.name));
-    };
-  }, [data]);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setPage(1);
-    }, 400);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, [search]);
@@ -65,7 +52,7 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
         placeholder={t('common.search')}
       />
       <InstrumentTable
-        data={liveData}
+        data={data}
         onInstrumentPressed={handleInstrumentPressed}
       />
 

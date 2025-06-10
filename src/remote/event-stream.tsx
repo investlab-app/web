@@ -61,19 +61,17 @@ export function unsubscribeFromTicker(ticker: string, callback: Listener) {
   }
 }
 
-
 function startMockSSE() {
-    if (mockInterval) return;
-  
-    const tickers = ['AAPL', 'TSCO', 'TSLA', 'NFLX'];
-  
-    mockInterval = setInterval(() => {
-      const ticker = tickers[Math.floor(Math.random() * tickers.length)];
-      const price = +(100 + Math.random() * 100).toFixed(2);
-  
-      if (listeners[ticker]) {
-        listeners[ticker].forEach((cb) => cb(price));
-      }
-    }, 2000);
-  }
-  
+  if (mockInterval) return;
+
+  const tickers = ['AAPL', 'TSCO', 'TSLA', 'NFLX'];
+
+  mockInterval = setInterval(() => {
+    const ticker = tickers[Math.floor(Math.random() * tickers.length)];
+    const price = +(100 + Math.random() * 100).toFixed(2);
+
+    if (listeners[ticker]) {
+      listeners[ticker].forEach((cb) => cb(price));
+    }
+  }, 2000);
+}

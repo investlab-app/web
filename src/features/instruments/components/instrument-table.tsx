@@ -1,4 +1,3 @@
-import { ArrowDown, ArrowUp } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -7,15 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-interface Instrument {
-  name: string;
-  quantity: number;
-  currentPrice: number;
-  marketValue: number;
-  percentPL: number;
-  dollarPL: number;
-}
+import type { Instrument } from '../helpers/instrument';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
@@ -31,12 +22,11 @@ const InstrumentTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Asset Name</TableHead>
-            <TableHead>Quantity</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Symbol</TableHead>
             <TableHead>Current Price</TableHead>
-            <TableHead>Market Value</TableHead>
-            <TableHead>% Total P/L</TableHead>
-            <TableHead>$ Total P/L</TableHead>
+            <TableHead>Day Change</TableHead>
+            <TableHead>Volume</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -47,39 +37,21 @@ const InstrumentTable = ({
               className="cursor-pointer"
             >
               <TableCell className="text-white">{instrument.name}</TableCell>
-              <TableCell className="text-white">
-                {instrument.quantity}
-              </TableCell>
+              <TableCell className="text-white">{instrument.symbol}</TableCell>
               <TableCell className="text-white">
                 ${instrument.currentPrice.toFixed(2)}
               </TableCell>
               <TableCell className="text-white">
-                ${instrument.marketValue.toFixed(2)}
-              </TableCell>
-              <TableCell className="text-white">
-                <span
-                  className={`inline-flex items-center gap-1 ${
-                    instrument.percentPL < 0 ? 'text-red-500' : 'text-green-500'
-                  }`}
-                >
-                  {instrument.percentPL < 0 ? (
-                    <ArrowDown size={14} />
-                  ) : (
-                    <ArrowUp size={14} />
-                  )}
-                  {Math.abs(instrument.percentPL).toFixed(2)}%
-                </span>
-              </TableCell>
-              <TableCell className="text-white">
                 <span
                   className={
-                    instrument.dollarPL < 0 ? 'text-red-500' : 'text-green-500'
+                    instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
                   }
                 >
-                  {instrument.dollarPL < 0 ? '-' : '+'}$
-                  {Math.abs(instrument.dollarPL).toFixed(2)}
+                  {instrument.dayChange < 0 ? '-' : '+'}
+                  {Math.abs(instrument.dayChange).toFixed(2)}%
                 </span>
               </TableCell>
+              <TableCell className="text-white">{instrument.volume}</TableCell>
             </TableRow>
           ))}
         </TableBody>

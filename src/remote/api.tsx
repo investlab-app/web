@@ -1,3 +1,5 @@
+import { ChevronsRightLeft } from 'lucide-react';
+
 type FetchHistoryForInstrumentOptions = {
   ticker: string;
   startDate: Date;
@@ -31,6 +33,71 @@ export function fetchHistoryForInstrument({
   });
 
   return fetch(`${baseUrl}/api/prices?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(async (res) => {
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  });
+}
+
+type FetchInstrumentsOverviewOptions = {
+  tickers?: string[];
+  page: number;
+  pageSize: number;
+  sector?: string;
+  sortBy?: string;
+  sortDirection?: string;
+  token: string;
+};
+
+type FetchAvailableInstrumentsOptions = {
+  token: string;
+};
+
+export function fetchInstrumentsOverview({
+  tickers = [],
+  page,
+  pageSize,
+  sector = '',
+  sortBy = '',
+  sortDirection = 'asc',
+  token,
+}: FetchInstrumentsOverviewOptions) {
+  if (!baseUrl || !token) {
+    throw new Error('API URL or Token not defined');
+  }
+
+  const params = new URLSearchParams({
+    tickers: tickers.map(String).join(','),
+    page: page.toString(),
+    page_size: pageSize.toString(),
+    ...(sector && { sector }),
+    ...(sortBy && { sort_by: sortBy }),
+    ...(sortDirection && { sort_direction: sortDirection }),
+  });
+
+  console.log(params.toString());
+  return fetch(`${baseUrl}/api/instruments/instruments?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(async (res) => {
+    if (!res.ok) throw new Error(await res.text());
+    // console.log(res.json());
+    return res.json();
+  });
+}
+
+export function fetchAvailableInstruments({
+  token,
+}: FetchAvailableInstrumentsOptions) {
+  if (!baseUrl || !token) {
+    throw new Error('API URL or Token not defined');
+  }
+  console.log('fetching api available');
+  return fetch(`${baseUrl}/api/instruments/instruments/available`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
