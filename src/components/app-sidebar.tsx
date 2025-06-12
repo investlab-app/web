@@ -11,7 +11,6 @@ import {
   IconHelp,
   IconListDetails,
   IconReport,
-  IconSearch,
   IconSettings,
   IconUsers,
 } from '@tabler/icons-react';
@@ -123,11 +122,6 @@ const data = {
       url: '#',
       icon: IconHelp,
     },
-    {
-      title: 'Search',
-      url: '#',
-      icon: IconSearch,
-    },
   ],
   documents: [
     {
@@ -153,10 +147,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>            <SidebarMenuButton
+          <SidebarMenuItem>
+            <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >              <a href="#">
+            >
+              <a href="#">
                 <InvestLabLogo />
                 <span className="text-base font-semibold">InvestLab</span>
               </a>

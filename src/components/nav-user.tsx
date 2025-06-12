@@ -1,5 +1,4 @@
 import { UserButton, useUser } from '@clerk/clerk-react';
-import { dark } from '@clerk/themes';
 import { useRef } from 'react';
 import {
   SidebarMenu,
@@ -33,7 +32,6 @@ export function NavUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        {' '}
         <SidebarMenuButton
           size="lg"
           onClick={handleClick}
@@ -42,7 +40,6 @@ export function NavUser() {
           <div ref={userButtonRef} onClick={handleUserButtonClick}>
             <UserButton
               appearance={{
-                baseTheme: dark,
                 elements: {
                   userButtonPopoverCard: {
                     transform: 'translateY(-8px) translateX(-8px)',
