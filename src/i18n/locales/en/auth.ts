@@ -9,6 +9,8 @@ const enAuth = {
   signup_w_email: 'Sign up with email',
   forgot_pass: 'Forgot password',
   password: 'Password',
+  email_placeholder: 'name@example.com',
+  password_placeholder: 'Enter your password',
   passwords_dont_match: 'Passwords do not match',
   confirm_password: 'Confirm password',
   create_your_account: 'Create your account',

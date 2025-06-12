@@ -9,6 +9,8 @@ const plAuth = {
   signup_w_email: 'Zarejestruj się mailem',
   forgot_pass: 'Zapomniałem hasła',
   password: 'Hasło',
+  email_placeholder: 'nazwa@przykład.pl',
+  password_placeholder: 'Wprowadź swoje hasło',
   passwords_dont_match: 'Hasła różnią się',
   confirm_password: 'Powtórz hasło',
   create_your_account: 'Stwórz swoje konto',

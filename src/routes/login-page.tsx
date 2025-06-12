@@ -19,13 +19,20 @@ export default function LoginPage() {
   if (!isLoaded || isSignedIn) return null;
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
-      <div className="flex w-full max-w-sm flex-col gap-6">
-        <div className="flex items-center justify-center gap-2">
-          <InvestLabLogo className="!size-6" width={24} height={24} />
-          <span className="text-xl font-semibold">{t('common.app_name')}</span>
+    <div className="min-h-svh bg-background">
+      {/* Background gradient - same as landing page */}
+      <div className="relative overflow-hidden min-h-svh">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
+        
+        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+          <div className="flex w-full max-w-sm flex-col gap-6">
+            <div className="flex items-center justify-center gap-3">
+              <InvestLabLogo className="!size-8" width={32} height={32} />
+              <span className="text-2xl font-semibold">{t('common.app_name')}</span>
+            </div>
+            <LoginForm />
+          </div>
         </div>
-        <LoginForm />
       </div>
     </div>
   );

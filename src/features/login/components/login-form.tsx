@@ -81,20 +81,18 @@ export function LoginForm() {
       <div className="py-4">
         <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
       </div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <FormInput
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">        <FormInput
           id="email"
           label="Email"
           type="email"
           name="email"
-          placeholder="name@example.com"
+          placeholder={t('auth.email_placeholder')}
           required
-        />
-
-        <PasswordInput
+        /><PasswordInput
           id="password"
           name="password"
           label={t('auth.password')}
+          placeholder={t('auth.password_placeholder')}
           required
         />
         {error && <p className="text-red-600 text-sm">{error}</p>}

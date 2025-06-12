@@ -161,7 +161,7 @@ export function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 bg-primary">
+      <div className="py-16 bg-primary/80 dark:bg-primary/60">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-primary-foreground mb-4">
             {t('hero.cta_title')}
