@@ -9,7 +9,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
   IconSearch,
@@ -21,6 +20,7 @@ import { NavDocuments } from '@/components/nav-documents';
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
+import { InvestLabLogo } from '@/components/investlab-logo';
 import {
   Sidebar,
   SidebarContent,
@@ -153,14 +153,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
+          <SidebarMenuItem>            <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+            >              <a href="#">
+                <InvestLabLogo />
+                <span className="text-base font-semibold">InvestLab</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
