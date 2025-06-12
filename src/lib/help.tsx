@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSSE, useSSETickers } from '@/hooks/use-sse';
 
-// Example 1: Manual subscription management
 function SSEManualExample() {
   const [tickerInput, setTickerInput] = useState('');
   const sse = useSSE({

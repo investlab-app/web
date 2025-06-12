@@ -1,5 +1,5 @@
-// Updated hook
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import {
   convertToInstrument,
   convertToInstruments,
@@ -27,7 +27,6 @@ type UseInstrumentsReturn = {
   availableInstruments: string[];
   availableInstrumentsLoading: boolean;
   error: string | null;
-  // refetch: () => void;
   totalItems: number;
   numPages: number;
 };
@@ -40,74 +39,67 @@ const useInstruments = ({
   sortBy,
   sortDirection,
 }: UseInstrumentsOptions): UseInstrumentsReturn => {
-  const [data, setData] = useState<Instrument[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [availableInstruments, setAvailableInstruments] = useState<string[]>(
-    []
-  );
-  const [availableInstrumentsLoading, setAvailableInstrumentsLoading] =
-    useState(false);
-  const [availableInstrumentsFetched, setAvailableInstrumentsFetched] =
-    useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [totalItems, setTotalItems] = useState(0);
-  const [numPages, setNumPages] = useState(0);
   const { getToken } = useAuth();
-  const lastFilterRef = useRef<string>(filter);
+  const [currentPage, setCurrentPage] = useState(page);
 
   useEffect(() => {
-    const fetchAvailable = async () => {
-      if (!availableInstrumentsLoading && !availableInstrumentsFetched) {
-        try {
-          setAvailableInstrumentsLoading(true);
-          const token = await getToken();
-          if (!token) throw new Error('No auth token available');
+    if (page === 1) {
+      setCurrentPage(1);
+    } else {
+      setCurrentPage(page);
+    }
+  }, [filter, page]);
 
-          const response = await fetchAvailableInstruments({ token });
-          setAvailableInstruments(response.instruments || response || []);
-          setAvailableInstrumentsFetched(true);
-          console.log('fetched');
-        } catch (err) {
-          console.error('Failed to fetch available instruments:', err);
-          setError(
-            err instanceof Error
-              ? err.message
-              : 'Failed to load available instruments'
-          );
-          setData([]);
-        } finally {
-          setAvailableInstrumentsLoading(false);
-        }
-      }
-    };
+  const {
+    data: availableInstruments = [],
+    isLoading: availableInstrumentsLoading,
+    error: availableInstrumentsError,
+  } = useQuery({
+    queryKey: ['availableInstruments'],
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) throw new Error('No auth token available');
 
-    console.log('will call');
-    fetchAvailable();
-  }, []);
+      const response = await fetchAvailableInstruments({ token });
+      return response.instruments || response || [];
+    },
+    staleTime: 24 * 60 * 60 * 1000, // 24 hrs
+    gcTime: 48 * 60 * 60 * 1000, // 48 hrs
+  });
 
-  // Fetch instruments data
-  const fetchData = useCallback(
-    async (filter: string, resetData = false) => {
-      try {
-        console.log('fetching data motherf, page', page, 'filter ', filter);
+  const filteredTickers = useMemo(() => {
+    if (!filter || filter.trim().length === 0) {
+      return availableInstruments;
+    }
+    return availableInstruments.filter((ticker: string) =>
+      ticker.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [availableInstruments, filter]);
+
+  const pagesToFetch = useMemo(() => {
+    return Array.from({ length: currentPage }, (_, i) => i + 1);
+  }, [currentPage]);
+
+  const instrumentQueries = useQueries({
+    queries: pagesToFetch.map((pageNum) => ({
+      queryKey: [
+        'instruments',
+        {
+          filter: filter.trim(),
+          page: pageNum,
+          perPage,
+          sector,
+          sortBy,
+          sortDirection,
+        },
+      ],
+      queryFn: async () => {
         const token = await getToken();
         if (!token) throw new Error('No auth token available');
 
-        setLoading(true);
-        setError(null);
-
-        const filteredTickers = (!filter || filter.trim().length == 0)
-        ? availableInstruments
-        : availableInstruments.filter((ticker) =>
-            ticker.toLowerCase().includes(filter.toLowerCase())
-          );
-
-        console.log(filteredTickers);
-
         const response = await fetchInstrumentsOverview({
           tickers: filteredTickers.length > 0 ? filteredTickers : undefined,
-          page,
+          page: pageNum,
           pageSize: perPage,
           sector,
           sortBy,
@@ -115,69 +107,78 @@ const useInstruments = ({
           token,
         });
 
-        // Handle the API response structure
         const items = response.items || [];
         const total = response.total || 0;
         const pages = response.num_pages || 0;
 
-        console.log(items);
-        const instruments = convertToInstruments(items);
+        return {
+          instruments: convertToInstruments(items),
+          total,
+          numPages: pages,
+          page: pageNum,
+        };
+      },
+      enabled:
+        filteredTickers.length > 0 || !filter || filter.trim().length === 0,
+      staleTime: 2 * 60 * 1000, // 2 minutes
+      gcTime: 5 * 60 * 1000, // 5 minutes
+    })),
+  });
 
-        if (resetData || page === 1) {
-          setData(instruments);
-        } else {
-          setData((prev) => [...prev, ...instruments]);
-        }
+  const combinedData = useMemo(() => {
+    const allInstruments: Instrument[] = [];
+    let totalItems = 0;
+    let numPages = 0;
+    let hasError = false;
+    let errorMessage: string | null = null;
+    let isLoading = false;
 
-        setTotalItems(total);
-        setNumPages(pages);
-        setHasMore(page < pages);
-      } catch (err) {
-        console.error('Failed to fetch instruments:', err);
-        setError(
-          err instanceof Error ? err.message : 'Failed to load instruments'
-        );
-      } finally {
-        setLoading(false);
+    for (const query of instrumentQueries) {
+      if (query.isLoading) {
+        isLoading = true;
       }
-    },
-    [page, perPage, sortBy, sortDirection, availableInstruments]
-  );
 
+      if (query.error) {
+        hasError = true;
+        errorMessage =
+          query.error instanceof Error
+            ? query.error.message
+            : 'Failed to load instruments';
+        break;
+      }
 
-  // Fetch data when page changes (for pagination)
-  useEffect(() => {
-    if (!availableInstrumentsFetched) return;
-    if (filter !== lastFilterRef.current) {
-      lastFilterRef.current = filter;
-      if (page !== 1) {
-        return; // skip fetch — wait for page reset
+      if (query.data) {
+        allInstruments.push(...query.data.instruments);
+        totalItems = query.data.total;
+        numPages = query.data.numPages;
       }
     }
-    
-      fetchData(filter,  page === 1);
-    
-  }, [filter, page, availableInstrumentsFetched]);
 
-  // // Initial data fetch
-  // useEffect(() => {
-  //   if (availableInstrumentsFetched && page === 1) {
-  //     console.log("INISTIAL FWETHC");
-  //     fetchData(filter, true);
-  //   }
-  // }, []);
+    return {
+      data: allInstruments,
+      loading: isLoading,
+      error: hasError ? errorMessage : null,
+      totalItems,
+      numPages,
+      hasMore: currentPage < numPages,
+    };
+  }, [instrumentQueries, currentPage]);
 
+  const finalError = availableInstrumentsError
+    ? availableInstrumentsError instanceof Error
+      ? availableInstrumentsError.message
+      : 'Failed to load available instruments'
+    : combinedData.error;
 
   return {
-    data,
-    loading,
-    hasMore,
+    data: combinedData.data,
+    loading: availableInstrumentsLoading || combinedData.loading,
+    hasMore: combinedData.hasMore,
     availableInstruments,
     availableInstrumentsLoading,
-    error,
-    // refetch,
-    totalItems,
-    numPages,
+    error: finalError,
+    totalItems: combinedData.totalItems,
+    numPages: combinedData.numPages,
   };
 };
 

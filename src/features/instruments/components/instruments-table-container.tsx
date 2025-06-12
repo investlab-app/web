@@ -27,7 +27,6 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
     perPage: PAGE_SIZE,
   });
 
-
   useEffect(() => {
     setPage(1); // reset to page 1 whenever search changes
   }, [debouncedSearch]);

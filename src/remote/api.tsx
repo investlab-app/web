@@ -1,5 +1,3 @@
-import { ChevronsRightLeft } from 'lucide-react';
-
 type FetchHistoryForInstrumentOptions = {
   ticker: string;
   startDate: Date;
@@ -85,7 +83,6 @@ export function fetchInstrumentsOverview({
     },
   }).then(async (res) => {
     if (!res.ok) throw new Error(await res.text());
-    // console.log(res.json());
     return res.json();
   });
 }
