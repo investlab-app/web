@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { InvestLabLogo } from '@/components/investlab-logo';
-import { 
-  TrendingUp, 
-  BarChart3, 
-  Shield, 
-  Smartphone, 
-  ArrowRight
+import {
+  TrendingUp,
+  BarChart3,
+  Shield,
+  Smartphone,
+  ArrowRight,
 } from 'lucide-react';
 
 export function LandingPage() {
@@ -20,23 +20,23 @@ export function LandingPage() {
     {
       icon: <TrendingUp className="h-6 w-6" />,
       title: t('hero.feature_realtime_title'),
-      description: t('hero.feature_realtime_desc')
+      description: t('hero.feature_realtime_desc'),
     },
     {
       icon: <BarChart3 className="h-6 w-6" />,
       title: t('hero.feature_analytics_title'),
-      description: t('hero.feature_analytics_desc')
+      description: t('hero.feature_analytics_desc'),
     },
     {
       icon: <Shield className="h-6 w-6" />,
       title: t('hero.feature_security_title'),
-      description: t('hero.feature_security_desc')
+      description: t('hero.feature_security_desc'),
     },
     {
       icon: <Smartphone className="h-6 w-6" />,
       title: t('hero.feature_mobile_title'),
-      description: t('hero.feature_mobile_desc')
-    }
+      description: t('hero.feature_mobile_desc'),
+    },
   ];
 
   return (
@@ -45,7 +45,7 @@ export function LandingPage() {
       <div className="relative overflow-hidden">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="pt-20 pb-16 text-center lg:pt-32">
             <div className="mx-auto max-w-4xl">
@@ -58,7 +58,7 @@ export function LandingPage() {
                   </h2>
                 </div>
               </div>
-              
+
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
                 {t('hero.title_1')}
                 <span className="text-primary block">{t('hero.title_2')}</span>
@@ -67,16 +67,16 @@ export function LandingPage() {
                 {t('hero.description')}
               </p>
               <div className="mt-10 flex items-center justify-center gap-4">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   onClick={() => navigate({ to: '/signup-page' })}
                   className="h-12 px-8"
                 >
                   {t('hero.get_started_free')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="lg"
                   onClick={() => navigate({ to: '/login-page' })}
                   className="h-12 px-8"
@@ -100,7 +100,7 @@ export function LandingPage() {
               {t('hero.platform_description')}
             </p>
           </div>
-          
+
           {/* Placeholder for platform screenshot */}
           <div className="relative mx-auto max-w-5xl">
             <div className="relative rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/10 dark:to-secondary/10">
@@ -137,10 +137,13 @@ export function LandingPage() {
               {t('hero.features_description')}
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="text-center p-6 hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="pt-6">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 rounded-lg bg-primary/10 text-primary">
@@ -170,17 +173,16 @@ export function LandingPage() {
             {t('hero.cta_description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              variant="secondary"
+            <Button
+              size="lg"
               onClick={() => navigate({ to: '/signup-page' })}
-              className="h-12 px-8"
+              className="h-12 px-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
             >
               {t('hero.create_free_account')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="outline"
               onClick={() => navigate({ to: '/login-page' })}
               className="h-12 px-8 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
