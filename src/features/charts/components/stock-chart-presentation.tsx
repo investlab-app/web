@@ -1,9 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
-import {
-  createLabelIntervalFn,
-  formatChartDateByRange as formatChartDateByInterval,
-} from '../helpers/stock-chart-formatting-helpers';
+import { createChartOptions } from '../helpers/chart-options';
 import type { InstrumentPriceProps } from '../helpers/charts-props';
 
 export type ChartPresentationsProps = {
@@ -12,6 +9,7 @@ export type ChartPresentationsProps = {
   minPrice: number;
   maxPrice: number;
   selectedInterval: string;
+  liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
 };
 
 export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
@@ -20,90 +18,73 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   minPrice,
   maxPrice,
   selectedInterval,
+  liveUpdateValue = null,
 }) => {
-  const dates = chartData.map((item) => item.date);
-  const seriesData = chartData.map((item) => ({
-    value: item.close,
-    high: item.high,
-    low: item.low,
-    open: item.open,
-  }));
+  const chartRef = useRef<any>(null);
 
-  const startPercent = 90;
-  const endPercent = 100;
+  const chartOptions = useMemo(
+    () =>
+      createChartOptions(
+        stockName,
+        chartData,
+        minPrice,
+        maxPrice,
+        selectedInterval
+      ),
+    [stockName, chartData, minPrice, maxPrice, selectedInterval]
+  );
 
-  const chartOptions = {
-    animation: false,
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { animation: false },
-      backgroundColor: 'rgba(47, 5, 77, 0.9)',
-      textStyle: { color: 'white' },
-      // eslint-disable-next-line
-      formatter: (params: Array<any>) => {
-        const { axisValue, data } = params[0];
-        return `<div><strong>
-          ${formatChartDateByInterval(axisValue, selectedInterval, true)}
-        </strong><br />
-        Price: $${data.value?.toFixed(2)}<br />
-        High: $${data.high?.toFixed(2)}<br />
-        Low: $${data.low?.toFixed(2)}</div>`;
-      },
-    },
-    xAxis: {
-      type: 'category',
-      data: dates,
-      axisTick: { show: false },
-      axisLine: { show: true },
-      axisLabel: {
-        interval: createLabelIntervalFn(chartData.length),
-        formatter: (value: string) =>
-          formatChartDateByInterval(value, selectedInterval),
-      },
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { show: true },
-      min: Math.floor(minPrice),
-      max: Math.ceil(maxPrice),
-      splitLine: { lineStyle: { opacity: 0.2 } },
-    },
-    dataZoom: [
+  useEffect(() => {
+    if (!liveUpdateValue || !chartRef.current) return;
+
+    const chartInstance = chartRef.current.getEchartsInstance();
+    if (!chartInstance) return;
+
+    const [val, isUpdate] = liveUpdateValue;
+
+    const oldSeriesData = chartInstance.getOption()?.series?.[0]?.data ?? [];
+    const oldXData = chartInstance.getOption()?.xAxis?.[0]?.data ?? [];
+
+    let newSeriesData = [...oldSeriesData];
+    let newXData = [...oldXData];
+
+    if (isUpdate && newSeriesData.length > 0 && newXData.length > 0) {
+      // Update last point
+      newSeriesData[newSeriesData.length - 1] = {
+        value: val.close,
+        high: val.high,
+        low: val.low,
+        open: val.open,
+      };
+      newXData[newXData.length - 1] = val.date;
+    } else {
+      // Append new point
+      newSeriesData.push({
+        value: val.close,
+        high: val.high,
+        low: val.low,
+        open: val.open,
+      });
+      newXData.push(val.date);
+    }
+
+    chartInstance.setOption(
       {
-        type: 'inside',
-        zoomLock: true,
-        start: startPercent,
-        end: endPercent,
-        moveOnMouseWheel: true,
-        moveOnMouseMove: true,
-        zoomOnMouseWheel: false,
+        series: [{ data: newSeriesData }],
+        xAxis: { data: newXData },
       },
-    ],
-    series: [
       {
-        name: stockName,
-        type: 'line',
-        smooth: false,
-        data: seriesData,
-        showSymbol: false,
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: 'rgba(117, 33, 232, 0.5)' },
-              { offset: 1, color: 'rgba(117, 33, 232, 0)' },
-            ],
-          },
-        },
-        lineStyle: { color: 'rgba(117, 33, 232, 1)' },
-        itemStyle: { color: 'rgba(117, 33, 232, 1)' },
-      },
-    ],
-  };
+        notMerge: false,
+        lazyUpdate: true,
+      }
+    );
+  }, [liveUpdateValue]);
 
-  return <ReactECharts option={chartOptions} style={{ height: '300px' }} />;
+  return (
+    <ReactECharts
+      ref={chartRef}
+      option={chartOptions}
+      style={{ height: '400px' }}
+    />
+  );
 };

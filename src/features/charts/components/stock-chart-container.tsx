@@ -1,18 +1,35 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLoadStockChartData } from '../helpers/use-load-stock-chart-data';
-import { StockChartWrapper } from './stock-chart-wrapper';
+import { StockChartPresentation } from './stock-chart-presentation';
+import { ChartErrorMessage } from './chart-error-message';
 import { timeIntervals } from '../helpers/time-ranges-helpers';
 import type { InstrumentPriceProps } from '../helpers/charts-props';
 
-type StockChartContainerProps = {
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+type StockChartProps = {
   ticker: string;
 };
 
-export const StockChartContainer: React.FC<StockChartContainerProps> = ({
-  ticker,
-}) => {
+export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
+  const { t } = useTranslation();
   const [interval, setInterval] = useState('1h');
-  const [data, setData] = useState<Array<InstrumentPriceProps>>([]);
+  const [data, setData] = useState<InstrumentPriceProps[]>([]);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [currentPrice, setCurrentPrice] = useState<number>(0);
@@ -25,7 +42,7 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
       setHasError(false);
       const result = await loadStockData(ticker, newInterval);
 
-      if (result.parsed.length === 0) {
+      if (!result.parsed.length) {
         setHasError(true);
         return;
       }
@@ -41,22 +58,47 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
     }
   };
 
-  // Load once on mount
   useEffect(() => {
     updateValue(interval);
   }, []);
 
   return (
-    <StockChartWrapper
-      stockName={ticker}
-      currentPrice={currentPrice}
-      timeRanges={timeIntervals}
-      selectedInterval={interval}
-      onIntervalChange={updateValue}
-      data={data}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
-      hasError={hasError}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>{ticker}</CardTitle>
+        {!hasError && typeof currentPrice === 'number' && (
+          <CardDescription>
+            {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+          </CardDescription>
+        )}
+        <CardAction>
+          <Select value={interval} onValueChange={updateValue}>
+            <SelectTrigger className="w-40" aria-label="Select time range">
+              <SelectValue placeholder="Select range" />
+            </SelectTrigger>
+            <SelectContent>
+              {timeIntervals.map(({ label, value }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {hasError ? (
+          <ChartErrorMessage />
+        ) : (
+          <StockChartPresentation
+            stockName={ticker}
+            chartData={data}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            selectedInterval={interval}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
