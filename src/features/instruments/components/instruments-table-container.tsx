@@ -6,6 +6,7 @@ import type { Instrument } from '../helpers/instrument';
 import { Button } from '@/components/ui/button';
 import SearchInput from '@/components/ui/search-input';
 import { useTranslation } from 'react-i18next';
+import { useDebounce } from '../helpers/debounce';
 
 const PAGE_SIZE = 10;
 
@@ -17,20 +18,19 @@ type Props = {
 const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
   const [page, setPage] = useState(1);
+
   const { data, loading, hasMore } = useInstruments({
-    filter: search,
+    filter: debouncedSearch,
     page,
     perPage: PAGE_SIZE,
   });
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setPage(1);
-    }, 1000);
 
-    return () => clearTimeout(timeout);
-  }, [search]);
+  useEffect(() => {
+    setPage(1); // reset to page 1 whenever search changes
+  }, [debouncedSearch]);
 
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
