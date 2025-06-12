@@ -7,6 +7,8 @@ import enCommon from './locales/en/common';
 import plCommon from './locales/pl/common';
 import enInstruments from './locales/en/instruments';
 import plInstruments from './locales/pl/instruments';
+import enHero from './locales/en/hero';
+import plHero from './locales/pl/hero';
 
 i18n.use(initReactI18next).init({
   lng: 'pl',
@@ -23,6 +25,7 @@ i18n.use(initReactI18next).init({
         auth: enAuth,
         common: enCommon,
         instruments: enInstruments,
+        hero: enHero,
       },
     },
     pl: {
@@ -30,6 +33,7 @@ i18n.use(initReactI18next).init({
         auth: plAuth,
         common: plCommon,
         instruments: plInstruments,
+        hero: plHero,
       },
     },
   },
