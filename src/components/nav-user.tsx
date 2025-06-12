@@ -42,7 +42,8 @@ export function NavUser() {
               appearance={{
                 elements: {
                   userButtonPopoverCard: {
-                    transform: 'translateY(-8px) translateX(-8px)',
+                    marginTop: '-8px',
+                    marginLeft: '-8px',
                     borderRadius: '6px',
                   },
                 },

@@ -75,14 +75,13 @@ export function LoginForm() {
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
-        <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-          {t('auth.login_w_google')}
-        </SocialAuthButton>
+      <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
+        {t('auth.login_w_google')}
+      </SocialAuthButton>
+      <div className="py-4">
+        <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
       </div>
       <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text={t('auth.or_continue')} />
-
         <div className="grid gap-6">
           <FormInput
             id="email"
