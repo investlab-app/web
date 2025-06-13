@@ -1,4 +1,3 @@
-// src/components/home-page.tsx
 import data from '../../data.json';
 import { StockChartContainer } from '../charts/components/stock-chart-container';
 import { AppSidebar } from '@/components/app-sidebar';

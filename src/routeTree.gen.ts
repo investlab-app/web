@@ -10,15 +10,14 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as VerifyEmailImport } from './routes/verify-email';
-import { Route as SsoFailCallbackImport } from './routes/sso-fail-callback';
-import { Route as SsoCallbackImport } from './routes/sso-callback';
-import { Route as SseDemoImport } from './routes/sseDemo';
-import { Route as SignupPageImport } from './routes/signup-page';
-import { Route as LoginPageImport } from './routes/login-page';
-import { Route as NotFoundImport } from './routes/$not-found';
-import { Route as IndexImport } from './routes/index';
+import { Route as rootRoute } from './routes/__root'
+import { Route as VerifyEmailImport } from './routes/verify-email'
+import { Route as SsoFailCallbackImport } from './routes/sso-fail-callback'
+import { Route as SsoCallbackImport } from './routes/sso-callback'
+import { Route as SignupPageImport } from './routes/signup-page'
+import { Route as LoginPageImport } from './routes/login-page'
+import { Route as NotFoundImport } from './routes/$not-found'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
@@ -26,192 +25,172 @@ const VerifyEmailRoute = VerifyEmailImport.update({
   id: '/verify-email',
   path: '/verify-email',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SsoFailCallbackRoute = SsoFailCallbackImport.update({
   id: '/sso-fail-callback',
   path: '/sso-fail-callback',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SsoCallbackRoute = SsoCallbackImport.update({
   id: '/sso-callback',
   path: '/sso-callback',
   getParentRoute: () => rootRoute,
-} as any);
-
-const SseDemoRoute = SseDemoImport.update({
-  id: '/sseDemo',
-  path: '/sseDemo',
-  getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SignupPageRoute = SignupPageImport.update({
   id: '/signup-page',
   path: '/signup-page',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const LoginPageRoute = LoginPageImport.update({
   id: '/login-page',
   path: '/login-page',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const NotFoundRoute = NotFoundImport.update({
   id: '/$not-found',
   path: '/$not-found',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/$not-found': {
-      id: '/$not-found';
-      path: '/$not-found';
-      fullPath: '/$not-found';
-      preLoaderRoute: typeof NotFoundImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/$not-found'
+      path: '/$not-found'
+      fullPath: '/$not-found'
+      preLoaderRoute: typeof NotFoundImport
+      parentRoute: typeof rootRoute
+    }
     '/login-page': {
-      id: '/login-page';
-      path: '/login-page';
-      fullPath: '/login-page';
-      preLoaderRoute: typeof LoginPageImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/login-page'
+      path: '/login-page'
+      fullPath: '/login-page'
+      preLoaderRoute: typeof LoginPageImport
+      parentRoute: typeof rootRoute
+    }
     '/signup-page': {
-      id: '/signup-page';
-      path: '/signup-page';
-      fullPath: '/signup-page';
-      preLoaderRoute: typeof SignupPageImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/sseDemo': {
-      id: '/sseDemo';
-      path: '/sseDemo';
-      fullPath: '/sseDemo';
-      preLoaderRoute: typeof SseDemoImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/signup-page'
+      path: '/signup-page'
+      fullPath: '/signup-page'
+      preLoaderRoute: typeof SignupPageImport
+      parentRoute: typeof rootRoute
+    }
     '/sso-callback': {
-      id: '/sso-callback';
-      path: '/sso-callback';
-      fullPath: '/sso-callback';
-      preLoaderRoute: typeof SsoCallbackImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof SsoCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/sso-fail-callback': {
-      id: '/sso-fail-callback';
-      path: '/sso-fail-callback';
-      fullPath: '/sso-fail-callback';
-      preLoaderRoute: typeof SsoFailCallbackImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/sso-fail-callback'
+      path: '/sso-fail-callback'
+      fullPath: '/sso-fail-callback'
+      preLoaderRoute: typeof SsoFailCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/verify-email': {
-      id: '/verify-email';
-      path: '/verify-email';
-      fullPath: '/verify-email';
-      preLoaderRoute: typeof VerifyEmailImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/$not-found': typeof NotFoundRoute;
-  '/login-page': typeof LoginPageRoute;
-  '/signup-page': typeof SignupPageRoute;
-  '/sseDemo': typeof SseDemoRoute;
-  '/sso-callback': typeof SsoCallbackRoute;
-  '/sso-fail-callback': typeof SsoFailCallbackRoute;
-  '/verify-email': typeof VerifyEmailRoute;
+  '/': typeof IndexRoute
+  '/$not-found': typeof NotFoundRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
+  '/sso-fail-callback': typeof SsoFailCallbackRoute
+  '/verify-email': typeof VerifyEmailRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/$not-found': typeof NotFoundRoute;
-  '/login-page': typeof LoginPageRoute;
-  '/signup-page': typeof SignupPageRoute;
-  '/sseDemo': typeof SseDemoRoute;
-  '/sso-callback': typeof SsoCallbackRoute;
-  '/sso-fail-callback': typeof SsoFailCallbackRoute;
-  '/verify-email': typeof VerifyEmailRoute;
+  '/': typeof IndexRoute
+  '/$not-found': typeof NotFoundRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
+  '/sso-fail-callback': typeof SsoFailCallbackRoute
+  '/verify-email': typeof VerifyEmailRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  '/': typeof IndexRoute;
-  '/$not-found': typeof NotFoundRoute;
-  '/login-page': typeof LoginPageRoute;
-  '/signup-page': typeof SignupPageRoute;
-  '/sseDemo': typeof SseDemoRoute;
-  '/sso-callback': typeof SsoCallbackRoute;
-  '/sso-fail-callback': typeof SsoFailCallbackRoute;
-  '/verify-email': typeof VerifyEmailRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/$not-found': typeof NotFoundRoute
+  '/login-page': typeof LoginPageRoute
+  '/signup-page': typeof SignupPageRoute
+  '/sso-callback': typeof SsoCallbackRoute
+  '/sso-fail-callback': typeof SsoFailCallbackRoute
+  '/verify-email': typeof VerifyEmailRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/verify-email'
+  fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
+    | '/verify-email'
   id:
     | '__root__'
     | '/'
     | '/$not-found'
     | '/login-page'
     | '/signup-page'
-    | '/sseDemo'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
-  fileRoutesById: FileRoutesById;
+    | '/verify-email'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  NotFoundRoute: typeof NotFoundRoute;
-  LoginPageRoute: typeof LoginPageRoute;
-  SignupPageRoute: typeof SignupPageRoute;
-  SseDemoRoute: typeof SseDemoRoute;
-  SsoCallbackRoute: typeof SsoCallbackRoute;
-  SsoFailCallbackRoute: typeof SsoFailCallbackRoute;
-  VerifyEmailRoute: typeof VerifyEmailRoute;
+  IndexRoute: typeof IndexRoute
+  NotFoundRoute: typeof NotFoundRoute
+  LoginPageRoute: typeof LoginPageRoute
+  SignupPageRoute: typeof SignupPageRoute
+  SsoCallbackRoute: typeof SsoCallbackRoute
+  SsoFailCallbackRoute: typeof SsoFailCallbackRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -219,15 +198,14 @@ const rootRouteChildren: RootRouteChildren = {
   NotFoundRoute: NotFoundRoute,
   LoginPageRoute: LoginPageRoute,
   SignupPageRoute: SignupPageRoute,
-  SseDemoRoute: SseDemoRoute,
   SsoCallbackRoute: SsoCallbackRoute,
   SsoFailCallbackRoute: SsoFailCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -239,7 +217,6 @@ export const routeTree = rootRoute
         "/$not-found",
         "/login-page",
         "/signup-page",
-        "/sseDemo",
         "/sso-callback",
         "/sso-fail-callback",
         "/verify-email"
@@ -256,9 +233,6 @@ export const routeTree = rootRoute
     },
     "/signup-page": {
       "filePath": "signup-page.tsx"
-    },
-    "/sseDemo": {
-      "filePath": "sseDemo.tsx"
     },
     "/sso-callback": {
       "filePath": "sso-callback.tsx"
