@@ -54,7 +54,7 @@ export function LoginForm() {
 
   const handleGoogleAuth = async () => {
     if (!isLoaded) return;
-    
+
     setGoogleLoading(true);
     try {
       await signIn.authenticateWithRedirect({
@@ -143,9 +143,9 @@ export function LoginForm() {
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <Button 
-          autoFocus 
-          type="submit" 
+        <Button
+          autoFocus
+          type="submit"
           className="w-full"
           disabled={loading || googleLoading}
         >

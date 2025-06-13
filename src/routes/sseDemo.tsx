@@ -43,12 +43,12 @@ export default function Sse() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          async onopen(response) {
+          onopen(response) {
             if (
               response.ok &&
               response.headers.get('content-type') === EventStreamContentType
             ) {
-              return;
+              return Promise.resolve();
             } else if (
               response.status >= 400 &&
               response.status < 500 &&

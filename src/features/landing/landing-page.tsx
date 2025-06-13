@@ -1,16 +1,16 @@
 // src/components/landing-page.tsx
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { InvestLabLogo } from '@/components/investlab-logo';
 import {
-  TrendingUp,
+  ArrowRight,
   BarChart3,
   Shield,
   Smartphone,
-  ArrowRight,
+  TrendingUp,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { InvestLabLogo } from '@/components/investlab-logo';
 
 export function LandingPage() {
   const navigate = useNavigate();
