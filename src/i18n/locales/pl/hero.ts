@@ -34,7 +34,7 @@ const plHero = {
   feature_mobile_desc:
     'Handluj w podróży dzięki naszej responsywnej platformie, która działa płynnie na wszystkich urządzeniach.',
   // CTA section
-  cta_title: 'Gotowy na lozpoczęcie inwestowania?',
+  cta_title: 'Gotowy na rozpoczęcie inwestowania?',
   cta_description:
     'Dołącz do tysięcy inwestorów, którzy ufają naszej platformie w swoim wzroście finansowym.',
   create_free_account: 'Utwórz darmowe konto',

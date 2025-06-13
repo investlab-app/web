@@ -44,7 +44,7 @@ export function LandingPage() {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="pt-20 pb-16 text-center lg:pt-32">
@@ -164,19 +164,19 @@ export function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 bg-primary/80 dark:bg-primary/60">
+      <div className="py-16 bg-purple-900/20 dark:bg-purple-900/20">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             {t('hero.cta_title')}
           </h2>
-          <p className="text-xl text-primary-foreground/90 mb-8">
+          <p className="text-xl text-muted-foreground mb-8">
             {t('hero.cta_description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               onClick={() => navigate({ to: '/signup-page' })}
-              className="h-12 px-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+              className="h-12 px-8 bg-primary-foreground text-purple-900 hover:bg-primary-foreground/90"
             >
               {t('hero.create_free_account')}
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -185,7 +185,7 @@ export function LandingPage() {
               size="lg"
               variant="outline"
               onClick={() => navigate({ to: '/login-page' })}
-              className="h-12 px-8 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+              className="h-12 px-8 border-primary-foreground/20 text-foreground hover:bg-primary-foreground/10"
             >
               {t('hero.sign_in')}
             </Button>

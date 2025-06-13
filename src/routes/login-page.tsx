@@ -22,7 +22,7 @@ export default function LoginPage() {
     <div className="min-h-svh bg-background">
       {/* Background gradient - same as landing page */}
       <div className="relative overflow-hidden min-h-svh">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25" />
         
         <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
           <div className="flex w-full max-w-sm flex-col gap-6">
