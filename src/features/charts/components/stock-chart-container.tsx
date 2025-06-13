@@ -28,7 +28,7 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
   const [hasError, setHasError] = useState<boolean>(false);
 
   function updateValue(newVal: string) {
-    setInterval(newVal);
+    loadData(newVal);
   }
 
   const queryClient = useQueryClient();
@@ -67,6 +67,8 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
         setCurrentPrice(parsed[parsed.length - 1].close);
         setMinPrice(apiData.min_price);
         setMaxPrice(apiData.max_price);
+
+        setInterval(chosenInterval);
       } catch (err) {
         console.error('Failed to fetch stock data:', err);
         setHasError(true);
