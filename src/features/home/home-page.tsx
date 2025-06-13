@@ -18,9 +18,11 @@ export function HomePage() {
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
-              <AuthTestButton url="/api/test/admin_test" auth />
-              <AuthTestButton url="/api/test/users_test" auth />
-              <AuthTestButton url="/api/test/all_test" auth={false} />
+              <div className="flex flex-col items-center gap-4 px-4 lg:px-6">
+                <AuthTestButton url="/api/test/admin_test" auth />
+                <AuthTestButton url="/api/test/users_test" auth />
+                <AuthTestButton url="/api/test/all_test" auth={false} />
+              </div>
               <div className="px-4 lg:px-6">
                 <StockChartContainer ticker="AAPL" />
               </div>
