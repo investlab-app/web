@@ -42,6 +42,26 @@ export function LoginForm() {
         await setActive({ session: result.createdSessionId });
         setLoading(false);
         navigate({ to: '/' });
+      } else if (result.status === 'needs_first_factor') {
+        setLoading(false);
+        setError(
+          'First factor authentication required. Please check your email or phone for verification.'
+        );
+      } else if (result.status === 'needs_second_factor') {
+        setLoading(false);
+        setError(
+          'Two-factor authentication required. Please enter your verification code.'
+        );
+      } else if (result.status === 'needs_identifier') {
+        setLoading(false);
+        setError(
+          'Additional identification required. Please provide the requested information.'
+        );
+      } else {
+        setLoading(false);
+        setError(
+          'Additional verification required. Please follow the instructions to complete sign-in.'
+        );
       }
     } catch (err: unknown) {
       setLoading(false);

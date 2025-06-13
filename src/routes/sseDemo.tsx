@@ -36,9 +36,12 @@ export default function Sse() {
       const params = new URLSearchParams();
       params.append('symbols', selectedInstrument);
 
-      await fetchEventSource(
-        `http://localhost:8000/api/sse?${params.toString()}`,
-        {
+      // Use environment variable or fallback to relative path
+      const apiBaseUrl = import.meta.env.VITE_API_URL || '';
+      const apiUrl = `${apiBaseUrl}/api/sse?${params.toString()}`;
+
+      try {
+        await fetchEventSource(apiUrl, {
           signal: controller.signal,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +49,9 @@ export default function Sse() {
           onopen(response) {
             if (
               response.ok &&
-              response.headers.get('content-type') === EventStreamContentType
+              response.headers
+                .get('content-type')
+                ?.startsWith(EventStreamContentType)
             ) {
               return Promise.resolve();
             } else if (
@@ -67,15 +72,33 @@ export default function Sse() {
             setMessages((prev) => [...prev, msg.data]);
           },
           onclose() {
-            throw new RetriableError();
+            console.log('SSE connection closed. Connection may be retried.');
+            // Don't throw an error that can crash the component tree
           },
           onerror(err) {
+            console.error('SSE error occurred:', err);
             if (err instanceof FatalError) {
-              throw err;
+              console.error('Fatal SSE error, will not retry:', err.message);
+              // Instead of throwing, we could show a user notification
+              setMessages((prev) => [
+                ...prev,
+                `Connection error: ${err.message || 'Fatal error occurred'}`,
+              ]);
+            } else {
+              // For non-fatal errors, log but don't crash the component
+              setMessages((prev) => [
+                ...prev,
+                'Connection interrupted, retrying...',
+              ]);
             }
           },
+        });
+      } catch (error) {
+        console.error('Failed to establish SSE connection:', error);
+        if (!isCancelled) {
+          setMessages((prev) => [...prev, 'Failed to connect to server']);
         }
-      );
+      }
     };
 
     fetchData();

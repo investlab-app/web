@@ -19,11 +19,11 @@ export default function SignUpPage() {
   if (!isLoaded || isSignedIn) return null;
 
   return (
-    <div className="min-h-svh bg-background">
-      <div className="relative overflow-hidden min-h-svh">
+    <div className="min-h-screen bg-background">
+      <div className="relative overflow-hidden min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25" />
 
-        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-6 md:p-10">
           <div className="flex w-full max-w-sm flex-col gap-6">
             <div className="flex items-center justify-center gap-3">
               <InvestLabLogo className="!size-8" width={32} height={32} />

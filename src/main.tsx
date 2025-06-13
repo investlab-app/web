@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -35,14 +35,26 @@ if (!clerkPubKey) {
 // Component to handle Clerk with theme support
 function ClerkProviderWithTheme({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
+  const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
+    };
+
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
+  }, []);
 
   // Determine the effective theme
-  const effectiveTheme =
-    theme === 'system'
-      ? window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-      : theme;
+  const effectiveTheme = theme === 'system' ? systemTheme : theme;
   // Select the appropriate Clerk theme (undefined = light theme)
   const clerkTheme = effectiveTheme === 'dark' ? dark : undefined;
 

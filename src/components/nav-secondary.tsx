@@ -25,6 +25,7 @@ export function NavSecondary({
     title: string;
     url: string;
     icon: Icon;
+    id?: string;
   }>;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const { setTheme } = useTheme();
@@ -35,12 +36,12 @@ export function NavSecondary({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              {item.title === 'Theme' ? (
+              {item.id === 'themeSelector' ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <SidebarMenuButton>
                       <item.icon />
-                      <span>Theme</span>
+                      <span>{item.title}</span>
                       <Sun className="ml-auto h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                       <Moon className="absolute ml-auto h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     </SidebarMenuButton>

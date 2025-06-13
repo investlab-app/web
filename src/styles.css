@@ -136,6 +136,10 @@ code {
   }
 }
 
-.cl-internal-159l158:focus {
+/* Clerk component focus styles override using stable selectors */
+[data-clerk-element]:focus,
+.cl-formFieldInput:focus,
+.cl-button:focus,
+.cl-socialButtonsIconButton:focus {
   box-shadow: none !important;
 }

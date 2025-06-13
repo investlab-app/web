@@ -16,7 +16,9 @@ export function InvestLabLogo({
       height={height}
       viewBox="0 0 32 32"
       className={className}
+      role="img"
     >
+      <title>InvestLab Logo - Financial Analytics Platform</title>
       <defs>
         <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style={{ stopColor: '#7c3aed' }} />
