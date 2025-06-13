@@ -47,7 +47,7 @@ export function AuthTestButton({ url, auth }: AuthTestButtonProps) {
   return (
     <button
       onClick={handleClick}
-      className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+      className="w-full px-4 py-2 rounded bg-purple-600 text-white hover:bg-purple-700"
     >
       Test Auth Request
     </button>

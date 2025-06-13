@@ -75,38 +75,37 @@ export function LoginForm() {
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
-        <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
-          {t('auth.login_w_google')}
-        </SocialAuthButton>
+      <SocialAuthButton provider="google" onClick={handleGoogleAuth}>
+        {t('auth.login_w_google')}
+      </SocialAuthButton>
+      <div className="py-4">
+        <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
       </div>
-      <form onSubmit={handleSubmit} className="grid gap-6">
-        <Divider text={t('auth.or_continue')} />
-
-        <div className="grid gap-6">
-          <FormInput
-            id="email"
-            label="Email"
-            type="email"
-            name="email"
-            placeholder="m@example.com"
-            required
-          />
-
-          <PasswordInput
-            id="password"
-            name="password"
-            label={t('auth.password')}
-            required
-          />
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-
-          <Button autoFocus type="submit" className="w-full">
-            {t('auth.login')}
-          </Button>
-        </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {' '}
+        <FormInput
+          id="email"
+          label="Email"
+          type="email"
+          name="email"
+          placeholder={t('auth.email_placeholder')}
+          required
+        />
+        <PasswordInput
+          id="password"
+          name="password"
+          label={t('auth.password')}
+          placeholder={t('auth.password_placeholder')}
+          required
+        />
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+        <Button autoFocus type="submit" className="w-full">
+          {t('auth.login')}
+        </Button>
       </form>
-      <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
+      <div className="text-sm text-muted-foreground text-center mt-2">
+        <AuthFormFooter type="login" onBack={() => navigate({ to: '/' })} />
+      </div>
     </AuthFormContainer>
   );
 }

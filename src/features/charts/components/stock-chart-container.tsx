@@ -79,7 +79,7 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
 
   useEffect(() => {
     loadData(interval);
-  }, []);
+  }, [interval, loadData]);
 
   return (
     <StockChartWrapper

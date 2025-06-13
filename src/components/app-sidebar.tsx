@@ -9,10 +9,8 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
-  IconSearch,
   IconSettings,
   IconUsers,
 } from '@tabler/icons-react';
@@ -21,6 +19,7 @@ import { NavDocuments } from '@/components/nav-documents';
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
+import { InvestLabLogo } from '@/components/investlab-logo';
 import {
   Sidebar,
   SidebarContent,
@@ -123,11 +122,6 @@ const data = {
       url: '#',
       icon: IconHelp,
     },
-    {
-      title: 'Search',
-      url: '#',
-      icon: IconSearch,
-    },
   ],
   documents: [
     {
@@ -159,8 +153,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <InvestLabLogo />
+                <span className="text-base font-semibold">InvestLab</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
