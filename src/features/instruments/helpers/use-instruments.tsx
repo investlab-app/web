@@ -1,9 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
-import {
-  convertToInstruments,
-  type Instrument,
-} from './instrument';
+import { convertToInstruments, type Instrument } from './instrument';
 import {
   fetchAvailableInstruments,
   fetchInstrumentsOverview,
@@ -20,7 +17,7 @@ type UseInstrumentsOptions = {
 };
 
 type UseInstrumentsReturn = {
-  data: Instrument[];
+  instruments: Instrument[];
   loading: boolean;
   hasMore: boolean;
   availableInstruments: string[];
@@ -42,12 +39,8 @@ const useInstruments = ({
   const [currentPage, setCurrentPage] = useState(page);
 
   useEffect(() => {
-    if (page === 1) {
-      setCurrentPage(1);
-    } else {
-      setCurrentPage(page);
-    }
-  }, [filter, page]);
+    setCurrentPage(page);
+  }, [page]);
 
   const {
     data: availableInstruments = [],
@@ -64,8 +57,6 @@ const useInstruments = ({
 
       return fetchAvailableInstruments({ token });
     },
-    staleTime: 24 * 60 * 60 * 1000, // 24 hrs
-    gcTime: 48 * 60 * 60 * 1000, // 48 hrs
   });
 
   const filteredTickers = useMemo(() => {
@@ -172,7 +163,7 @@ const useInstruments = ({
     : combinedData.error;
 
   return {
-    data: combinedData.data,
+    instruments: combinedData.data,
     loading: availableInstrumentsLoading || combinedData.loading,
     hasMore: combinedData.hasMore,
     availableInstruments,

@@ -18,18 +18,21 @@ type Props = {
 
 const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   const { t } = useTranslation();
+
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
+
   const [page, setPage] = useState(1);
+
   const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
 
-  const { data, loading, hasMore } = useInstruments({
+  const { instruments, loading, hasMore } = useInstruments({
     filter: debouncedSearch,
     page,
     perPage: PAGE_SIZE,
   });
 
-  const tickers = data.map((instrument) => instrument.symbol); // or id
+  const tickers = instruments.map((instrument) => instrument.symbol); // or id
   const { messages } = useSSETickers(tickers);
 
   useEffect(() => {
@@ -62,12 +65,11 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
 
   const handleInstrumentPressed = (asset: Instrument) => {
     console.log('Instrument clicked:', asset);
-    // show();
     setInstrument(asset);
     setOpenSheet(true);
   };
 
-  const mergedData = data.map((instrument) => {
+  const mergedData = instruments.map((instrument) => {
     const updates = priceUpdatesRef.current[instrument.symbol] || {};
     return {
       ...instrument,
@@ -87,7 +89,6 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
         data={mergedData}
         onInstrumentPressed={handleInstrumentPressed}
       />
-
       <div className="flex justify-center mt-4">
         {hasMore && (
           <Button

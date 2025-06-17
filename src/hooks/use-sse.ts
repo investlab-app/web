@@ -91,7 +91,7 @@ export function useSSE(options: UseSSEOptions = {}): UseSSEReturn {
       setConnectionStatus('connecting');
 
       // Create callback for this ticker
-      const callback = (data: string, event?: string) => {
+      const callback = (data: string) => {
         setMessages((prev) => ({
           ...prev,
           [ticker]: [...(prev[ticker] || []), data],

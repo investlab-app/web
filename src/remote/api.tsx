@@ -95,28 +95,25 @@ export function fetchInstrumentsOverview({
 
 
 
-export async function fetchAvailableInstruments({
-  token,
-}: FetchAvailableInstrumentsOptions): Promise<string[]> {
+export async function fetchAvailableInstruments({ token }: FetchAvailableInstrumentsOptions): Promise<string[]> {
   if (!baseUrl) {
     throw new Error('API URL not defined');
   }
   if (!token) {
     throw new Error('Token not defined');
   }
-  
-  console.log('fetching api available');
+
   const response = await fetch(`${baseUrl}/api/instruments/available`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  
+
   if (!response.ok) {
     throw new Error(await response.text());
   }
-  
+
   const result = await response.json();
 
   const out = AvailableInstrumentsResponse(result);
@@ -124,7 +121,9 @@ export async function fetchAvailableInstruments({
   if (out instanceof type.errors) {
     console.error(out.summary)
     throw new Error(out.summary)
-  } 
+  }
+
+  console.log(`out.instruments: ${out.instruments}`)
 
   return out.instruments;
 }

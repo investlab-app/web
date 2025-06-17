@@ -298,7 +298,7 @@ const columns: Array<ColumnDef<typeof schema.infer>> = [
   },
 ];
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function DraggableRow({ row }: { row: Row<typeof schema.infer> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -326,7 +326,7 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 export function DataTable({
   data: initialData,
 }: {
-  data: Array<z.infer<typeof schema>>;
+  data: Array<typeof schema.infer>;
 }) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -624,7 +624,7 @@ const chartData = [
   { month: 'June', desktop: 214, mobile: 140 },
 ];
 
-function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
+function TableCellViewer({ item }: { item: typeof schema.infer }) {
   const isMobile = useIsMobile();
 
   // Prepare data for ECharts
