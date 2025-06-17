@@ -3,7 +3,6 @@ import {
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
 
-
 // Custom error classes for different error types
 class RetriableError extends Error {}
 class FatalError extends Error {}
@@ -68,7 +67,7 @@ class SSEManager {
     ticker: string,
     callback: SubscriptionCallback,
     token: string | null
-  ): Promise<() =>  void> {
+  ): Promise<() => void> {
     console.log(`Subscribing to ticker: ${ticker}`);
 
     // Initialize subscription if it doesn't exist
@@ -95,7 +94,7 @@ class SSEManager {
     } else {
       console.log('connecion lost');
     }
-    
+
     // Return unsubscribe function
     return () => this.unsubscribe(ticker, callback);
   }
@@ -111,14 +110,14 @@ class SSEManager {
     subscription.callbacks.delete(callback);
 
     // Remove subscription if no callbacks left
-    if (subscription.callbacks.size === 0) {
-    this.subscriptions.delete(ticker);
-    console.log(`Removed all subscriptions for ticker: ${ticker}`);
-    }
+    // if (subscription.callbacks.size === 0) {
+      this.subscriptions.delete(ticker);
+      console.log(`Removed all subscriptions for ticker: ${ticker}`);
+    // }
 
     // Close connection if no subscriptions left
     if (this.subscriptions.size === 0) {
-      // this.disconnect();
+      this.disconnect();
     } else if (this.isConnected) {
       // Update server subscription if still connected
       this.updateServerSubscription();
@@ -177,7 +176,7 @@ class SSEManager {
             response.ok &&
             response.headers.get('content-type') === EventStreamContentType
           ) {
-            console.log("SUPERCOOL");
+            console.log('SUPERCOOL');
             return;
           } else if (
             response.status >= 400 &&
@@ -210,8 +209,8 @@ class SSEManager {
           }
         },
       });
-      this.isConnected = true;
-      console.log("connected all is good");
+      // this.isConnected = true;
+      console.log('connected all is good');
     } catch (error) {
       console.error('Failed to establish SSE connection:', error);
       this.handleDisconnection();
