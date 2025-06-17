@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   IconDashboard,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconSettings,
 } from '@tabler/icons-react';
@@ -10,6 +9,7 @@ import {
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
+import { InvestLabLogo } from '@/components/investlab-logo';
 import {
   Sidebar,
   SidebarContent,
@@ -60,7 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
+                <InvestLabLogo className="!size-5" />
                 <span className="text-base font-semibold">
                   {t('common.app_name')}
                 </span>

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useTranslation } from 'react-i18next';
+import { ModeToggle } from '@/components/mode-toggle';
 
 export function SiteHeader() {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ export function SiteHeader() {
         />
         <h1 className="text-base font-medium">{t('common.app_name')}</h1>
         <div className="ml-auto flex items-center gap-2">
+          <ModeToggle />
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
             <a
               href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"

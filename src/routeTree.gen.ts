@@ -26,31 +26,31 @@ const VerifyEmailRoute = VerifyEmailImport.update({
   id: '/verify-email',
   path: '/verify-email',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SsoFailCallbackRoute = SsoFailCallbackImport.update({
   id: '/sso-fail-callback',
   path: '/sso-fail-callback',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SsoCallbackRoute = SsoCallbackImport.update({
   id: '/sso-callback',
   path: '/sso-callback',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const SignupPageRoute = SignupPageImport.update({
   id: '/signup-page',
   path: '/signup-page',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const LoginPageRoute = LoginPageImport.update({
   id: '/login-page',
   path: '/login-page',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const InstrumentsPageRoute = InstrumentsPageImport.update({
   id: '/instruments-page',
@@ -62,25 +62,25 @@ const NotFoundRoute = NotFoundImport.update({
   id: '/$not-found',
   path: '/$not-found',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/$not-found': {
       id: '/$not-found';
       path: '/$not-found';
@@ -96,40 +96,40 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof rootRoute;
     };
     '/login-page': {
-      id: '/login-page';
-      path: '/login-page';
-      fullPath: '/login-page';
-      preLoaderRoute: typeof LoginPageImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/login-page'
+      path: '/login-page'
+      fullPath: '/login-page'
+      preLoaderRoute: typeof LoginPageImport
+      parentRoute: typeof rootRoute
+    }
     '/signup-page': {
-      id: '/signup-page';
-      path: '/signup-page';
-      fullPath: '/signup-page';
-      preLoaderRoute: typeof SignupPageImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/signup-page'
+      path: '/signup-page'
+      fullPath: '/signup-page'
+      preLoaderRoute: typeof SignupPageImport
+      parentRoute: typeof rootRoute
+    }
     '/sso-callback': {
-      id: '/sso-callback';
-      path: '/sso-callback';
-      fullPath: '/sso-callback';
-      preLoaderRoute: typeof SsoCallbackImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof SsoCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/sso-fail-callback': {
-      id: '/sso-fail-callback';
-      path: '/sso-fail-callback';
-      fullPath: '/sso-fail-callback';
-      preLoaderRoute: typeof SsoFailCallbackImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/sso-fail-callback'
+      path: '/sso-fail-callback'
+      fullPath: '/sso-fail-callback'
+      preLoaderRoute: typeof SsoFailCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/verify-email': {
-      id: '/verify-email';
-      path: '/verify-email';
-      fullPath: '/verify-email';
-      preLoaderRoute: typeof VerifyEmailImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -170,7 +170,7 @@ export interface FileRoutesById {
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$not-found'
@@ -179,8 +179,8 @@ export interface FileRouteTypes {
     | '/signup-page'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/verify-email'
+  fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$not-found'
@@ -189,7 +189,7 @@ export interface FileRouteTypes {
     | '/signup-page'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
+    | '/verify-email'
   id:
     | '__root__'
     | '/'
@@ -199,8 +199,8 @@ export interface FileRouteTypes {
     | '/signup-page'
     | '/sso-callback'
     | '/sso-fail-callback'
-    | '/verify-email';
-  fileRoutesById: FileRoutesById;
+    | '/verify-email'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
@@ -223,11 +223,11 @@ const rootRouteChildren: RootRouteChildren = {
   SsoCallbackRoute: SsoCallbackRoute,
   SsoFailCallbackRoute: SsoFailCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
