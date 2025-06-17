@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
 import {
-  convertToInstrument,
   convertToInstruments,
   type Instrument,
 } from './instrument';
@@ -58,10 +57,12 @@ const useInstruments = ({
     queryKey: ['availableInstruments'],
     queryFn: async () => {
       const token = await getToken();
-      if (!token) throw new Error('No auth token available');
 
-      const response = await fetchAvailableInstruments({ token });
-      return response.instruments || response || [];
+      if (!token) {
+        throw new Error('No auth token available');
+      }
+
+      return fetchAvailableInstruments({ token });
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hrs
     gcTime: 48 * 60 * 60 * 1000, // 48 hrs

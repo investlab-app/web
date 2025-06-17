@@ -184,16 +184,16 @@ export function useSSETickers(
 
   useEffect(() => {
     // Subscribe to all tickers
-    tickers.forEach((ticker) => {
-      sse.subscribe(ticker);
-    });
+    // tickers.forEach((ticker) => {
+    //   sse.subscribe(ticker);
+    // });
 
     // Cleanup: unsubscribe from all tickers
-    return () => {
-      tickers.forEach((ticker) => {
-        sse.unsubscribe(ticker);
-      });
-    };
+    // return () => {
+    //   tickers.forEach((ticker) => {
+    //     sse.unsubscribe(ticker);
+    //   });
+    // };
   }, [tickers.join(',')]); // Re-run when tickers change
 
   return {

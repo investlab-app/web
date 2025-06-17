@@ -40,7 +40,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { toast } from 'sonner';
-import { z } from 'zod';
+import { type } from 'arktype';
 import ReactECharts from 'echarts-for-react';
 import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 import type {
@@ -93,14 +93,14 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export const schema = z.object({
-  id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
+export const schema = type({
+  id: 'number',
+  header: 'string',
+  type: 'string',
+  status: 'string',
+  target: 'string',
+  limit: 'string',
+  reviewer: 'string',
 });
 
 // Create a separate component for the drag handle
@@ -123,7 +123,7 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
-const columns: Array<ColumnDef<z.infer<typeof schema>>> = [
+const columns: Array<ColumnDef<typeof schema.infer>> = [
   {
     id: 'drag',
     header: () => null,

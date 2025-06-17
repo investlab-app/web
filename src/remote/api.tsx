@@ -50,9 +50,15 @@ type FetchInstrumentsOverviewOptions = {
   token: string;
 };
 
+import { type } from 'arktype';
+
 type FetchAvailableInstrumentsOptions = {
   token: string;
 };
+
+const AvailableInstrumentsResponse = type({
+  instruments: 'string[]'
+});
 
 export function fetchInstrumentsOverview({
   tickers = [],
@@ -77,7 +83,7 @@ export function fetchInstrumentsOverview({
   });
 
   console.log(params.toString());
-  return fetch(`${baseUrl}/api/instruments/instruments?${params.toString()}`, {
+  return fetch(`${baseUrl}/api/instruments?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -87,19 +93,38 @@ export function fetchInstrumentsOverview({
   });
 }
 
-export function fetchAvailableInstruments({
+
+
+export async function fetchAvailableInstruments({
   token,
-}: FetchAvailableInstrumentsOptions) {
-  if (!baseUrl || !token) {
-    throw new Error('API URL or Token not defined');
+}: FetchAvailableInstrumentsOptions): Promise<string[]> {
+  if (!baseUrl) {
+    throw new Error('API URL not defined');
   }
+  if (!token) {
+    throw new Error('Token not defined');
+  }
+  
   console.log('fetching api available');
-  return fetch(`${baseUrl}/api/instruments/instruments/available`, {
+  const response = await fetch(`${baseUrl}/api/instruments/available`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  }).then(async (res) => {
-    if (!res.ok) throw new Error(await res.text());
-    return res.json();
   });
+
+  
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+  
+  const result = await response.json();
+
+  const out = AvailableInstrumentsResponse(result);
+
+  if (out instanceof type.errors) {
+    console.error(out.summary)
+    throw new Error(out.summary)
+  } 
+
+  return out.instruments;
 }
