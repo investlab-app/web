@@ -21,7 +21,7 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
   const [page, setPage] = useState(1);
-  // const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
+  const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
 
   const { data, loading, hasMore } = useInstruments({
     filter: debouncedSearch,
@@ -29,28 +29,28 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
     perPage: PAGE_SIZE,
   });
 
-  // const tickers = data.map((instrument) => instrument.symbol); // or id
-  // const { messages } = useSSETickers(tickers);
+  const tickers = data.map((instrument) => instrument.symbol); // or id
+  const { messages } = useSSETickers(tickers);
 
-  // useEffect(() => {
-  //   tickers.forEach((ticker) => {
-  //     const tickerMessages = messages[ticker];
-  //     if (tickerMessages && tickerMessages.length > 0) {
-  //       const latestRaw = tickerMessages[tickerMessages.length - 1];
+  useEffect(() => {
+    tickers.forEach((ticker) => {
+      const tickerMessages = messages[ticker];
+      if (tickerMessages && tickerMessages.length > 0) {
+        const latestRaw = tickerMessages[tickerMessages.length - 1];
 
-  //       try {
-  //         const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
+        try {
+          const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
 
-  //         priceUpdatesRef.current[ticker] = {
-  //           currentPrice: parsed.price,
-  //           dayChange: parsed.change_percent,
-  //         };
-  //       } catch (e) {
-  //         console.warn('Invalid SSE message for', ticker, latestRaw);
-  //       }
-  //     }
-  //   });
-  // }, [messages]);
+          priceUpdatesRef.current[ticker] = {
+            currentPrice: parsed.price,
+            dayChange: parsed.change_percent,
+          };
+        } catch (e) {
+          console.warn('Invalid SSE message for', ticker, latestRaw);
+        }
+      }
+    });
+  }, [messages]);
 
   useEffect(() => {
     setPage(1); // reset to page 1 whenever search changes
@@ -67,13 +67,13 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
     setOpenSheet(true);
   };
 
-  // const mergedData = data.map((instrument) => {
-  //   const updates = priceUpdatesRef.current[instrument.symbol] || {};
-  //   return {
-  //     ...instrument,
-  //     ...updates,
-  //   };
-  // });
+  const mergedData = data.map((instrument) => {
+    const updates = priceUpdatesRef.current[instrument.symbol] || {};
+    return {
+      ...instrument,
+      ...updates,
+    };
+  });
 
   return (
     <div className="p-4">
@@ -84,7 +84,7 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
         placeholder={t('common.search')}
       />
       <InstrumentTable
-        data={data}
+        data={mergedData}
         onInstrumentPressed={handleInstrumentPressed}
       />
 

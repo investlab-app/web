@@ -7,6 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { Instrument } from '../helpers/instrument';
+import { useTranslation } from 'react-i18next';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
@@ -17,16 +18,17 @@ const InstrumentTable = ({
   data,
   onInstrumentPressed,
 }: InstrumentTableProps) => {
+  const {t} = useTranslation();
   return (
     <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Symbol</TableHead>
-            <TableHead>Current Price</TableHead>
-            <TableHead>Day Change</TableHead>
-            <TableHead>Volume</TableHead>
+            <TableHead>{t('instruments.name')}</TableHead>
+            <TableHead>{t('instruments.symbol')}</TableHead>
+            <TableHead>{t('instruments.current_price')}</TableHead>
+            <TableHead>{t('instruments.day_change')}</TableHead>
+            <TableHead>{t('instruments.volume')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -36,12 +38,12 @@ const InstrumentTable = ({
               onClick={() => onInstrumentPressed(instrument)}
               className="cursor-pointer"
             >
-              <TableCell className="text-white">{instrument.name}</TableCell>
-              <TableCell className="text-white">{instrument.symbol}</TableCell>
-              <TableCell className="text-white">
+              <TableCell>{instrument.name}</TableCell>
+              <TableCell >{instrument.symbol}</TableCell>
+              <TableCell >
                 ${instrument.currentPrice.toFixed(2)}
               </TableCell>
-              <TableCell className="text-white">
+              <TableCell >
                 <span
                   className={
                     instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
@@ -51,7 +53,7 @@ const InstrumentTable = ({
                   {Math.abs(instrument.dayChange).toFixed(2)}%
                 </span>
               </TableCell>
-              <TableCell className="text-white">{instrument.volume}</TableCell>
+              <TableCell>{instrument.volume}</TableCell>
             </TableRow>
           ))}
         </TableBody>

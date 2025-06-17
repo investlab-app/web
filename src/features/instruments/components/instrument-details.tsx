@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 import { BuySellContainer } from './buy-sell-section';
 import type { Instrument } from '../helpers/instrument';
+import { useTranslation } from 'react-i18next';
 
 const NewsSection = () => {
+  const {t} = useTranslation();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>News</CardTitle>
+        <CardTitle>{t('instruments.news')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex gap-4">
@@ -42,10 +44,11 @@ type InstrumentDetailsProps = {
 };
 
 const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
+  const {t} = useTranslation();
   return (
     <div className="p-4 space-y-4 overflow-y-auto">
       <h2 className="text-xl font-semibold text-left">
-        {instrument.name} Overview
+        {instrument.name} - {t('instruments.overview')}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

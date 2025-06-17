@@ -6,6 +6,11 @@ const enInstruments = {
   sell: 'Sell',
   volume: 'Volume',
   price: 'Price',
+  name: 'Name',
+  symbol: 'Symbol',
+  day_change: 'Day change',
+  news: 'News',
+  overview: 'Overview',
 };
 
 export default enInstruments;

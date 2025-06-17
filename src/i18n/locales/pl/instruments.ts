@@ -6,6 +6,11 @@ const plInstruments = {
   sell: 'Sprzedaj',
   volume: 'Wolumen',
   price: 'Cena',
+  name: 'Nazwa',
+  symbol: 'Symbol',
+  day_change: 'Dzienna zmiana',
+  news: 'Wiadomości',
+  overview: 'Przegląd',
 };
 
 export default plInstruments;

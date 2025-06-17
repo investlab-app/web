@@ -26,7 +26,6 @@ export function NavMain({
           <SidebarMenuItem className="flex items-center gap-0">
             <SidebarMenuButton
               tooltip="Wallet"
-              className="text-primary-foreground"
             >
               <IconWallet />
               <span>$9999.00</span>

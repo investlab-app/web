@@ -86,7 +86,7 @@ class SSEManager {
       !this.isConnecting
     ) {
       console.log('first');
-      await this.connect(token);
+       this.connect(token);
     } else if (this.isConnected) {
       // If already connected, update server subscription
       console.log('later');
@@ -253,17 +253,6 @@ class SSEManager {
           } catch (error) {
             console.error('Error in subscription callback:', error);
           }
-        });
-      } else {
-        // If no specific ticker, notify all subscriptions
-        this.subscriptions.forEach((subscription) => {
-          subscription.callbacks.forEach((callback) => {
-            try {
-              callback(msg.data, msg.event);
-            } catch (error) {
-              console.error('Error in subscription callback:', error);
-            }
-          });
         });
       }
     } catch (parseError) {
