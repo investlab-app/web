@@ -49,6 +49,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
     let newXData = [...oldXData];
 
     if (isUpdate && newSeriesData.length > 0 && newXData.length > 0) {
+      console.log('updating with value', val);
       // Update last point
       newSeriesData[newSeriesData.length - 1] = {
         value: val.close,
@@ -56,7 +57,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
         low: val.low,
         open: val.open,
       };
-      newXData[newXData.length - 1] = val.date;
+      // newXData[newXData.length - 1] = val.date;
     } else {
       // Append new point
       newSeriesData.push({

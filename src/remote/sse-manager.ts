@@ -63,7 +63,11 @@ class SSEManager {
   }
 
   // Subscribe to a ticker with a callback
-  public subscribe(ticker: string, callback: SubscriptionCallback): () => void {
+  public subscribe(
+    ticker: string,
+    callback: SubscriptionCallback,
+    token: string | null
+  ): () => void {
     console.log(`Subscribing to ticker: ${ticker}`);
 
     // Initialize subscription if it doesn't exist
@@ -81,11 +85,16 @@ class SSEManager {
       !this.isConnected &&
       !this.isConnecting
     ) {
-      this.connect();
+      console.log('first');
+      this.connect(token);
     } else if (this.isConnected) {
       // If already connected, update server subscription
+      console.log('later');
       this.updateServerSubscription();
+    } else {
+      console.log('connecion lost');
     }
+    console.log('subscribed to ticker, ,', ticker);
 
     // Return unsubscribe function
     return () => this.unsubscribe(ticker, callback);
@@ -93,7 +102,7 @@ class SSEManager {
 
   // Unsubscribe from a ticker
   public unsubscribe(ticker: string, callback: SubscriptionCallback): void {
-    console.log(`Unsubscribing from ticker: ${ticker}`);
+    console.log(`Unsubscribing super  ool from ticker: ${ticker}`);
 
     const subscription = this.subscriptions.get(ticker);
     if (!subscription) return;
@@ -102,10 +111,10 @@ class SSEManager {
     subscription.callbacks.delete(callback);
 
     // Remove subscription if no callbacks left
-    if (subscription.callbacks.size === 0) {
-      this.subscriptions.delete(ticker);
-      console.log(`Removed all subscriptions for ticker: ${ticker}`);
-    }
+    // if (subscription.callbacks.size === 0) {
+    this.subscriptions.delete(ticker);
+    console.log(`Removed all subscriptions for ticker: ${ticker}`);
+    // }
 
     // Close connection if no subscriptions left
     if (this.subscriptions.size === 0) {
@@ -132,27 +141,31 @@ class SSEManager {
   }
 
   // Private method to establish SSE connection
-  private async connect(): Promise<void> {
+  private async connect(token: string | null): Promise<void> {
     if (this.isConnecting || this.isConnected) {
       console.log('Already connecting or connected');
       return;
     }
 
+    console.log('connecting for the first time');
     this.isConnecting = true;
     this.controller = new AbortController();
+    console.log('controlele cool', this.controller);
     this.connectionId = crypto.randomUUID();
 
     try {
-      const token = await this.config.getAuthToken();
+      console.log('tests');
       if (!token) {
         throw new Error('No authentication token available');
       }
+      console.log('raz dwa trzy');
 
       const params = new URLSearchParams();
       params.append('symbols', this.getSubscribedTickers().join(','));
       params.append('connectionId', this.connectionId);
 
       console.log('Establishing SSE connection...');
+      console.log(this.controller);
 
       await fetchEventSource(`${this.config.baseUrl}?${params.toString()}`, {
         signal: this.controller.signal,
@@ -227,7 +240,7 @@ class SSEManager {
     // Assuming the message format includes ticker information
     try {
       const messageData = JSON.parse(msg.data);
-      const ticker = messageData.symbol || messageData.ticker;
+      const ticker = messageData.symbol || messageData.ticker || messageData.id;
 
       if (ticker && this.subscriptions.has(ticker)) {
         // Notify all callbacks for this ticker

@@ -34,6 +34,7 @@ export function useSSE(options: UseSSEOptions = {}): UseSSEReturn {
 
   // Initialize SSE manager
   useEffect(() => {
+    console.log('effect');
     const config = {
       baseUrl: options.baseUrl || 'http://localhost:8000/api/sse',
       getAuthToken: getToken,
@@ -74,7 +75,7 @@ export function useSSE(options: UseSSEOptions = {}): UseSSEReturn {
 
   // Subscribe to a ticker
   const subscribe = useCallback(
-    (ticker: string) => {
+    async (ticker: string) => {
       if (!sseManagerRef.current) {
         console.error('SSE Manager not initialized');
         return;
@@ -101,7 +102,11 @@ export function useSSE(options: UseSSEOptions = {}): UseSSEReturn {
       callbacksRef.current.set(ticker, callback);
 
       // Subscribe with SSE manager
-      const unsubscribeFn = sseManagerRef.current.subscribe(ticker, callback);
+      const unsubscribeFn = sseManagerRef.current.subscribe(
+        ticker,
+        callback,
+        await getToken()
+      );
 
       // Update local state
       updateStats();

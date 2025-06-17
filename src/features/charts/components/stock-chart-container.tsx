@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DateTime } from 'luxon';
 import { useLoadStockChartData } from '../helpers/use-load-stock-chart-data';
 import { StockChartPresentation } from './stock-chart-presentation';
 import { ChartErrorMessage } from './chart-error-message';
@@ -22,6 +23,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useSSETickers } from '@/hooks/use-sse';
+
 type StockChartProps = {
   ticker: string;
 };
@@ -35,6 +38,8 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [hasError, setHasError] = useState<boolean>(false);
 
+  const { messages } = useSSETickers([ticker]);
+  const liveUpdateValue = useRef<[InstrumentPriceProps, boolean] | null>(null);
   const loadStockData = useLoadStockChartData();
 
   const updateValue = async (newInterval: string) => {
@@ -57,6 +62,26 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
       setHasError(true);
     }
   };
+
+  useEffect(() => {
+    const tickerMessages = messages[ticker];
+    if (tickerMessages && tickerMessages.length > 0) {
+      const latestRaw = tickerMessages[tickerMessages.length - 1];
+      try {
+        const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
+        const price: InstrumentPriceProps = {
+          close: Number(parsed.price),
+          high: Number(parsed.price),
+          low: Number(parsed.price),
+          open: Number(parsed.price),
+          date: DateTime.now().toISO(),
+        };
+        liveUpdateValue.current = [price, true];
+      } catch (e) {
+        console.warn('Invalid price message:', latestRaw);
+      }
+    }
+  }, [messages[ticker]]);
 
   useEffect(() => {
     updateValue(interval);
@@ -96,6 +121,7 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
             minPrice={minPrice}
             maxPrice={maxPrice}
             selectedInterval={interval}
+            liveUpdateValue={liveUpdateValue.current}
           />
         )}
       </CardContent>
