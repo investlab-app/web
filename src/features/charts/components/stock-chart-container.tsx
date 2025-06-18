@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useSseTickers } from '@/hooks/use-sse';
+// import { useSseTickers } from '@/hooks/use-sse';
 
 type StockChartProps = {
   ticker: string;
@@ -36,7 +36,8 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const { messages } = useSseTickers({ symbols: [ticker] });
+  // const { messages } = useSseTickers({ symbols: [ticker] });
+  const { messages } = { messages: [] };
   const liveUpdateValue = useRef<[InstrumentPriceProps, boolean] | null>(null);
   const loadStockData = useLoadStockChartData();
 

@@ -1,18 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { useInstruments } from '../helpers/use-instruments';
-import InstrumentTable from './instrument-table';
-import type { Instrument } from '../helpers/instrument';
-import { Button } from '@/components/ui/button';
-import SearchInput from '@/components/ui/search-input';
-import { useTranslation } from 'react-i18next';
-import { useDebounce } from '../helpers/debounce';
-import { useSseTickers } from '@/hooks/use-sse';
+import type { Instrument } from '@/routes/instruments-page';
+import { useLivePrices } from '@/hooks/use-sse.ts';
 
-const PAGE_SIZE = 10;
+// const PAGE_SIZE = 10;
 
 type Props = {
   setOpenSheet: (open: boolean) => void;
-  setInstrument: (instrument: Instrument) => void;
+  setInstrument: (instrument: typeof Instrument.infer) => void;
 };
 
 const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
@@ -32,7 +25,13 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   // const tickers = instruments.map((instrument) => instrument.symbol);
   const tickers = ['AAPL', 'MSFT', 'GOOGL'];
 
-  const {} = useSseTickers({ symbols: tickers });
+  const livePrices = useLivePrices();
+  livePrices.subscribe({
+    symbols: tickers,
+    callback: (message) => {
+      console.log('Received SSE message:', message);
+    },
+  });
 
   // const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
 

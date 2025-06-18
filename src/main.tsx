@@ -11,6 +11,7 @@ import { routeTree } from './routeTree.gen';
 import '../src/i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
+import { LivePricesProvider } from './hooks/use-sse.ts.tsx';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
 // Create a new router instance
@@ -84,7 +85,9 @@ if (rootElement && !rootElement.innerHTML) {
       <ThemeProvider>
         <ClerkProviderWithTheme>
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <LivePricesProvider>
+              <RouterProvider router={router} />
+            </LivePricesProvider>
           </QueryClientProvider>
         </ClerkProviderWithTheme>
       </ThemeProvider>
