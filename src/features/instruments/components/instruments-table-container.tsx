@@ -16,73 +16,69 @@ type Props = {
 };
 
 const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
+  // const [search, setSearch] = useState('');
+  // const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
 
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
 
-  const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
+  // const { instruments, loading, hasMore } = useInstruments({
+  //   filter: debouncedSearch,
+  //   page,
+  //   perPage: PAGE_SIZE,
+  // });
 
-  const { instruments, loading, hasMore } = useInstruments({
-    filter: debouncedSearch,
-    page,
-    perPage: PAGE_SIZE,
-  });
+  // const tickers = instruments.map((instrument) => instrument.symbol);
+  const tickers = ['AAPL', 'MSFT', 'GOOGL'];
 
-  const tickers = instruments.map((instrument) => instrument.symbol); // or id
-  console.log(`Tickers: ${tickers}`);
-  const { messages } = useSseTickers({ symbols: tickers });
+  const {} = useSseTickers({ symbols: tickers });
 
-  useEffect(() => {
-    console.log(messages)
-    tickers.forEach((ticker) => {
-      const tickerMessages = messages[ticker];
-      if (tickerMessages && tickerMessages.length > 0) {
-        const latestRaw = tickerMessages[tickerMessages.length - 1];
-        try {
-          const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
+  // const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
 
-          priceUpdatesRef.current[ticker] = {
-            currentPrice: parsed.price,
-            dayChange: parsed.change_percent,
-          };
-        } catch (e) {
-          console.warn('Invalid SSE message for', ticker, latestRaw);
-        }
-      } else {
-        console.log('No messages for', ticker);
-      }
-    });
-  }, [messages]);
+  // tickers.forEach((ticker) => {
+  //   const tickerMessages = messages[ticker];
+  //   if (tickerMessages && tickerMessages.length > 0) {
+  //     const latestRaw = tickerMessages[tickerMessages.length - 1];
+  //     try {
+  //       // const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
 
-  useEffect(() => {
-    setPage(1); // reset to page 1 whenever search changes
-  }, [debouncedSearch]);
+  //       // priceUpdatesRef.current[ticker] = {
+  //       //   currentPrice: parsed.price,
+  //       //   dayChange: parsed.change_percent,
+  //       // };
+  //     } catch (e) {
+  //       console.warn('Invalid SSE message for', ticker, latestRaw);
+  //     }
+  //   }
+  // });
 
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+  // useEffect(() => {
+  //   setPage(1); // reset to page 1 whenever search changes
+  // }, [debouncedSearch]);
 
-  const handleInstrumentPressed = (asset: Instrument) => {
-    console.log('Instrument clicked:', asset);
-    // show();
-    setInstrument(asset);
-    setOpenSheet(true);
-  };
+  // const handleLoadMore = () => {
+  //   setPage((prev) => prev + 1);
+  // };
 
-  const mergedData = instruments.map((instrument) => {
-    const updates = priceUpdatesRef.current[instrument.symbol] || {};
-    return {
-      ...instrument,
-      ...updates,
-    };
-  });
+  // const handleInstrumentPressed = (asset: Instrument) => {
+  //   console.log('Instrument clicked:', asset);
+  //   setInstrument(asset);
+  //   setOpenSheet(true);
+  // };
+
+  // const mergedData = instruments;
+  // .map((instrument) => {
+  //   const updates = priceUpdatesRef.current[instrument.symbol] || {};
+  //   return {
+  //     ...instrument,
+  //     ...updates,
+  //   };
+  // });
 
   return (
     <div className="p-4">
-      <SearchInput
+      {/* <SearchInput
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-1/3"
@@ -102,7 +98,7 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
             {loading ? t('common.loading') : t('common.more')}
           </Button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

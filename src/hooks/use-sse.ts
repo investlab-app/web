@@ -1,66 +1,114 @@
-import { useEffect } from 'react';
-import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { useEffect, useState } from 'react';
+import {
+  EventStreamContentType,
+  fetchEventSource,
+} from '@microsoft/fetch-event-source';
 import { useAuth } from '@clerk/clerk-react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-async function createEventStream({
+class RetriableError extends Error {}
+class FatalError extends Error {}
+
+async function fetchLivePrices({
+  controller,
   symbols,
   token,
+  onMessage,
 }: {
+  controller: AbortController;
   symbols: string[];
   token: string;
+  onMessage: (message: string) => void;
 }) {
   const connectionId = crypto.randomUUID();
   const symbolsParam = symbols.join(',');
   const url = `${baseUrl}/api/sse?symbols=${encodeURIComponent(symbolsParam)}&connectionId=${connectionId}`;
 
-  try {
-    if (!token) {
-      console.error('No token');
-      return;
-    }
+  let isCancelled = false;
 
-    await fetchEventSource(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      onmessage: (message) => {
-        console.log(`Got message ${message}`);
-      },
-      onerror: (error) => {
-        console.error('Error in SSE:', error);
-      },
-      onclose: () => {
-        console.log(`Stream closed`);
-      },
-    });
-  } catch (error) {
-    console.error('Failed to connect to SSE:', error);
-    throw error;
+  if (isCancelled || !token) {
+    console.log('Skipping fetch because component unmounted or no token.');
+    return;
   }
+
+  const params = new URLSearchParams();
+  params.append('symbols', 'AAPL');
+  params.append('connectionId', connectionId);
+
+  await fetchEventSource(url, {
+    signal: controller.signal,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    async onopen(response) {
+      if (
+        response.ok &&
+        response.headers.get('content-type') === EventStreamContentType
+      ) {
+        return;
+      } else if (
+        response.status >= 400 &&
+        response.status < 500 &&
+        response.status !== 429
+      ) {
+        throw new FatalError();
+      } else {
+        throw new RetriableError();
+      }
+    },
+    onmessage: (msg) => {
+      if (msg.event === 'FatalError') {
+        throw new FatalError(msg.data);
+      }
+      console.log('Received SSE message:', msg.data);
+      onMessage(msg.data);
+    },
+    onclose() {
+      throw new RetriableError();
+    },
+    onerror(err) {
+      if (err instanceof FatalError) {
+        throw err;
+      }
+    },
+  });
 }
 
 export function useSseTickers({ symbols }: { symbols: string[] }) {
+  const [messages, setMessages] = useState<string[]>([]);
+
   const { getToken } = useAuth();
 
-  const getTokenAndFetch = async () => {
+  const fetch = async (controller: AbortController) => {
     const token = await getToken();
+
     if (!token) {
-      console.error('No token');
+      console.log('No auth token available');
+      return;
     }
-    else if (!symbols || symbols.length === 0) {
-      console.error('No symbols');
-    } else {
-      createEventStream({ symbols, token });
-    }
-  };
+
+    await fetchLivePrices({
+      controller,
+      symbols,
+      token,
+      onMessage: (message) => {
+        console.log(message);
+        // setMessages((prev) => [...prev, message]);
+      },
+    });
+
+  }
 
   useEffect(() => {
-    getTokenAndFetch();
-  }, [symbols, getToken]);
+    const controller = new AbortController();
 
-  return { messages: { [symbols[0]]: ["test"] } };
+    fetch(controller);
+
+    return () => {
+      controller.abort();
+    };
+  }, [symbols]);
+
+  return { messages };
 }
