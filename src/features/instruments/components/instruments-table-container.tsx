@@ -1,14 +1,15 @@
-import type { Instrument } from '@/routes/instruments-page';
+import { useCallback, useEffect } from 'react';
+// import type { Instrument } from '@/routes/instruments-page';
 import { useLivePrices } from '@/hooks/use-sse.ts';
 
 // const PAGE_SIZE = 10;
 
-type Props = {
-  setOpenSheet: (open: boolean) => void;
-  setInstrument: (instrument: typeof Instrument.infer) => void;
-};
+// type Props = {
+//   setOpenSheet: (open: boolean) => void;
+//   setInstrument: (instrument: typeof Instrument.infer) => void;
+// };
 
-const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
+const InstrumentsTableContainer = () => {
   // const { t } = useTranslation();
 
   // const [search, setSearch] = useState('');
@@ -23,15 +24,31 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   // });
 
   // const tickers = instruments.map((instrument) => instrument.symbol);
-  const tickers = ['AAPL', 'MSFT', 'GOOGL'];
 
   const livePrices = useLivePrices();
-  livePrices.subscribe({
-    symbols: tickers,
-    callback: (message) => {
-      console.log('Received SSE message:', message);
-    },
-  });
+  
+  const handleMessage = useCallback((message: string) => {
+    console.log('Received SSE message:', message);
+  }, []);
+  
+  useEffect(() => {
+    const tickers = ['AAPL', 'MSFT', 'GOOGL'];
+    
+    const handler = {
+      symbols: tickers,
+      callback: handleMessage,
+    };
+
+    console.log('Subscribing to live prices for:', tickers);
+    livePrices.subscribe(handler);
+
+    return () => {
+      livePrices.unsubscribe(handler);
+    };
+  }, [livePrices, handleMessage]);
+
+  // Avoid unused parameter warnings
+  // console.log('Props available:', { setOpenSheet, setInstrument });
 
   // const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
 

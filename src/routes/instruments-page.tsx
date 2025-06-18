@@ -17,12 +17,11 @@ export const Instrument = type({
   symbol: 'string',
 });
 
-
 export default function InstrumentsPage() {
   const { isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [instrument, setInstrument] = useState<typeof Instrument.infer>();
+  const [instrument] = useState<typeof Instrument.infer>();
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -32,7 +31,7 @@ export default function InstrumentsPage() {
 
   if (!isLoaded || !isSignedIn) return null;
 
-  console.log("INSTRUMENTS PAGE");
+  console.log('INSTRUMENTS PAGE');
 
   return (
     <SidebarProvider>
@@ -48,8 +47,8 @@ export default function InstrumentsPage() {
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                 <InstrumentsTableContainer
-                  setOpenSheet={setOpen}
-                  setInstrument={setInstrument}
+                // setOpenSheet={setOpen}
+                // setInstrument={setInstrument}
                 />
               </div>
             </div>
