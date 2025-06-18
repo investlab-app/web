@@ -12,6 +12,7 @@ export type ChartPresentationsProps = {
   minPrice: number;
   maxPrice: number;
   selectedInterval: string;
+  zoom?: number;
 };
 
 export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
@@ -20,6 +21,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   minPrice,
   maxPrice,
   selectedInterval,
+  zoom = 1,
 }) => {
   const dates = chartData.map((item) => item.date);
   const seriesData = chartData.map((item) => ({
@@ -29,7 +31,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
     open: item.open,
   }));
 
-  const startPercent = 90;
+  const startPercent = (1 - zoom) * 100;
   const endPercent = 100;
 
   const chartOptions = {
@@ -56,7 +58,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
       axisTick: { show: false },
       axisLine: { show: true },
       axisLabel: {
-        interval: createLabelIntervalFn(chartData.length),
+        interval: createLabelIntervalFn(chartData.length, zoom),
         formatter: (value: string) =>
           formatChartDateByInterval(value, selectedInterval),
       },

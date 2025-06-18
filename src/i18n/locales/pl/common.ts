@@ -4,6 +4,8 @@ const plCommon = {
   page_doesnt_exist: 'Ta strona nie istnieje.',
   back_to_home: 'Wróć do głównej',
   go_back: 'Wróć',
+  locale: 'pl-PL',
+  currency: 'USD',
 };
 
 export default plCommon;

@@ -9,6 +9,8 @@ import enInstruments from './locales/en/instruments';
 import plInstruments from './locales/pl/instruments';
 import enHero from './locales/en/hero';
 import plHero from './locales/pl/hero';
+import enInvestor from './locales/en/investor';
+import plInvestor from './locales/pl/investor';
 
 i18n.use(initReactI18next).init({
   lng: 'pl',
@@ -26,6 +28,7 @@ i18n.use(initReactI18next).init({
         common: enCommon,
         instruments: enInstruments,
         hero: enHero,
+        investor: enInvestor,
       },
     },
     pl: {
@@ -34,6 +37,7 @@ i18n.use(initReactI18next).init({
         common: plCommon,
         instruments: plInstruments,
         hero: plHero,
+        investor: plInvestor,
       },
     },
   },

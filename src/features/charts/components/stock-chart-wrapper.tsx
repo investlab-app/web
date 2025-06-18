@@ -78,6 +78,7 @@ export const StockChartWrapper: React.FC<
             minPrice={minPrice}
             maxPrice={maxPrice}
             selectedInterval={selectedInterval}
+            zoom={0.1}
           />
         )}
       </CardContent>
