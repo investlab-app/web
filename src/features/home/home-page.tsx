@@ -1,7 +1,6 @@
 import { StockChartContainer } from '../charts/components/stock-chart-container';
 import AccountOverviewRibbon from './components/account-overview-ribbon';
 import AssetAllocationContainer from './components/asset-allocation-container';
-import { AccuntValueChartContainer } from './components/account-value-chart-container';
 import { AppSidebar } from '@/components/app-sidebar';
 
 import { SiteHeader } from '@/components/site-header';
@@ -20,7 +19,7 @@ export function HomePage() {
               <AccountOverviewRibbon />
               <AssetAllocationContainer />
               <StockChartContainer ticker="aapl" />
-              <AccuntValueChartContainer />
+              {/* <AccuntValueChartContainer /> */}
               <div className="flex flex-col items-center gap-4 px-4 lg:px-6">
                 <AuthTestButton url="/api/test/admin_test" auth />
                 <AuthTestButton url="/api/test/users_test" auth />

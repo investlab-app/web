@@ -26,8 +26,6 @@ export type StockChartProps = {
   selectedInterval: string;
   onIntervalChange: (value: string) => void;
   data: Array<InstrumentPriceProps>;
-  minPrice: number;
-  maxPrice: number;
 };
 
 export const StockChartWrapper: React.FC<
@@ -39,8 +37,6 @@ export const StockChartWrapper: React.FC<
   selectedInterval: selectedInterval,
   onIntervalChange: onIntervalChange,
   data,
-  minPrice,
-  maxPrice,
   hasError = false,
 }) => {
   const { t } = useTranslation();
@@ -75,10 +71,9 @@ export const StockChartWrapper: React.FC<
           <StockChartPresentation
             stockName={stockName}
             chartData={data}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
             selectedInterval={selectedInterval}
             zoom={0.1}
+            isCandlestick={true}
           />
         )}
       </CardContent>

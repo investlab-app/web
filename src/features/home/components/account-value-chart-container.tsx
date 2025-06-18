@@ -38,8 +38,6 @@ export const AccuntValueChartContainer = () => {
   }, []);
 
   const currentValue = data[data.length - 1]?.close ?? 0;
-  const minValue = Math.min(...data.map((d) => d.low));
-  const maxValue = Math.max(...data.map((d) => d.high));
   const hasError = data.length === 0;
 
   return (
@@ -57,8 +55,6 @@ export const AccuntValueChartContainer = () => {
           <StockChartPresentation
             stockName="Test"
             chartData={data}
-            minPrice={minValue}
-            maxPrice={maxValue}
             selectedInterval="1wk"
           />
         )}

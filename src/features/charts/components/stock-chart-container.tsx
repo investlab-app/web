@@ -22,8 +22,6 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
   const [interval, setInterval] = useState('1h');
 
   const [data, setData] = useState<Array<InstrumentPriceProps>>([]);
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(0);
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [hasError, setHasError] = useState<boolean>(false);
 
@@ -43,7 +41,6 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
         const startDate = intervalToStartDate(chosenInterval);
         const endDate = new Date();
 
-        // Use React Query's programmatic fetch
         const apiData = await queryClient.fetchQuery({
           queryKey: ['stock-data', ticker, chosenInterval],
           queryFn: () =>
@@ -54,7 +51,7 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
               interval: chosenInterval,
               token,
             }),
-          staleTime: 1000 * 60, // optional: 1 min stale time
+          staleTime: 1000 * 60,
         });
 
         const parsed = transformApiResponse(apiData);
@@ -65,8 +62,6 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
 
         setData(parsed);
         setCurrentPrice(parsed[parsed.length - 1].close);
-        setMinPrice(apiData.min_price);
-        setMaxPrice(apiData.max_price);
 
         setInterval(chosenInterval);
       } catch (err) {
@@ -89,8 +84,6 @@ export const StockChartContainer: React.FC<StockChartContainerProps> = ({
       selectedInterval={interval}
       onIntervalChange={updateValue}
       data={data}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
       hasError={hasError}
     />
   );
