@@ -1,11 +1,12 @@
 import { useQueries } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
+import { Instrument } from '../types/instruments.types';
+import type { InstrumentsPageData } from '../types/instruments.types';
 import { fetchInstrumentsOverview } from '@/remote/api';
-import { convertToInstruments } from '../helpers/instrument';
-import { type InstrumentsPageData } from '../types/instruments.types';
+import { type } from 'arktype';
 
 type UseInstrumentPagesProps = {
-  tickers: string[];
+  tickers: Array<string>;
   page: number;
   perPage: number;
   sector?: string;
@@ -58,7 +59,15 @@ export const useInstrumentPages = ({
         console.log(response);
 
         return {
-          instruments: convertToInstruments(response.items || []),
+          instruments: response.items?.flatMap((item: unknown) => {
+            const out = Instrument(item);
+            if (out instanceof type.errors) {
+              console.error('Invalid instrument data:', out);
+              return [];
+            } else {
+              return [out];
+            }
+          }),
           total: response.total || 0,
           numPages: response.num_pages || 0,
           page: pageNum,

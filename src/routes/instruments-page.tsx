@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { type } from 'arktype';
+import type { InstrumentType } from '@/features/instruments/types/instruments.types';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SiteHeader } from '@/components/site-header';
@@ -9,19 +9,11 @@ import InstrumentsTableContainer from '@/features/instruments/components/instrum
 import InstrumentDetails from '@/features/instruments/components/instrument-details';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
-export const Instrument = type({
-  name: 'string',
-  volume: 'number',
-  currentPrice: 'number',
-  dayChange: 'number',
-  symbol: 'string',
-});
-
 export default function InstrumentsPage() {
   const { isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [instrument] = useState<typeof Instrument.infer>();
+  const [instrument] = useState<InstrumentType>();
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {

@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import {
-  type UseInstrumentsOptions,
-  type UseInstrumentsReturn,
-} from '../types/instruments.types';
 import { useAvailableInstruments } from '../hooks/use-available-instruments';
 import { useInstrumentPages } from '../hooks/use-instrument-pages';
+import type {
+  UseInstrumentsOptions,
+  UseInstrumentsReturn,
+} from '../types/instruments.types';
 
 export const useInstruments = ({
   filter = '',
@@ -21,7 +21,7 @@ export const useInstruments = ({
   } = useAvailableInstruments();
 
   const filteredTickers = useMemo(() => {
-    if (!filter?.trim()) return availableInstruments;
+    if (!filter.trim()) return availableInstruments;
     console.log(`availableInstruments: ${availableInstruments}`);
     return availableInstruments.filter((ticker) =>
       ticker.toLowerCase().includes(filter.toLowerCase().trim())
@@ -38,17 +38,15 @@ export const useInstruments = ({
   });
 
   const combinedData = useMemo(() => {
-    let allInstruments: any[] = [];
+    let allInstruments: Array<unknown> = [];
     let totalItems = 0;
     let numPages = 0;
-    let hasError = false;
     let errorMessage: string | null = null;
     let isLoading = false;
 
     for (const query of instrumentPages) {
       if (query.isLoading) isLoading = true;
       if (query.error) {
-        hasError = true;
         errorMessage =
           query.error instanceof Error
             ? query.error.message

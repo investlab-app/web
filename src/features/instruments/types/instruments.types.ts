@@ -1,4 +1,20 @@
-import type { Instrument } from '../helpers/instrument';
+import { type } from 'arktype';
+
+export const Instrument = type({
+  name: 'string',
+  volume: 'number',
+  current_price: 'string',
+  day_change: 'string',
+  day_change_percent: 'string',
+  ticker: 'string',
+  previous_close: 'string',
+  market_cap: 'string',
+  sector: 'string?',
+  industry: 'string?',
+  country: 'string?',
+  currency: 'string?',
+});
+export type InstrumentType = typeof Instrument.infer;
 
 export type UseInstrumentsOptions = {
   filter?: string;
@@ -10,10 +26,10 @@ export type UseInstrumentsOptions = {
 };
 
 export type UseInstrumentsReturn = {
-  instruments: Instrument[];
+  instruments: Array<InstrumentType>;
   loading: boolean;
   hasMore: boolean;
-  availableInstruments: string[];
+  availableInstruments: Array<string>;
   availableInstrumentsLoading: boolean;
   error: string | null;
   totalItems: number;
@@ -21,7 +37,7 @@ export type UseInstrumentsReturn = {
 };
 
 export type InstrumentsPageData = {
-  instruments: Instrument[];
+  instruments: Array<InstrumentType>;
   total: number;
   numPages: number;
   page: number;
