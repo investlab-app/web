@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import useInstruments from '../helpers/use-instruments';
-// import { useLiveInstrumentUpdates } from '../helpers/use-live-instrument-updates';
+import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../helpers/instrument';
 import { Button } from '@/components/ui/button';
 import SearchInput from '@/components/ui/search-input';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '../helpers/debounce';
-import { useSSETickers } from '@/hooks/use-sse';
+import { useSseTickers } from '@/hooks/use-sse';
 
 const PAGE_SIZE = 10;
 
@@ -33,14 +32,15 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
   });
 
   const tickers = instruments.map((instrument) => instrument.symbol); // or id
-  const { messages } = useSSETickers(tickers);
+  console.log(`Tickers: ${tickers}`);
+  const { messages } = useSseTickers({ symbols: tickers });
 
   useEffect(() => {
+    console.log(messages)
     tickers.forEach((ticker) => {
       const tickerMessages = messages[ticker];
       if (tickerMessages && tickerMessages.length > 0) {
         const latestRaw = tickerMessages[tickerMessages.length - 1];
-
         try {
           const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
 
@@ -51,6 +51,8 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
         } catch (e) {
           console.warn('Invalid SSE message for', ticker, latestRaw);
         }
+      } else {
+        console.log('No messages for', ticker);
       }
     });
   }, [messages]);
@@ -65,6 +67,7 @@ const InstrumentsTableContainer = ({ setOpenSheet, setInstrument }: Props) => {
 
   const handleInstrumentPressed = (asset: Instrument) => {
     console.log('Instrument clicked:', asset);
+    // show();
     setInstrument(asset);
     setOpenSheet(true);
   };

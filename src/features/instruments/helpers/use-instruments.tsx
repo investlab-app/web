@@ -1,33 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
-import { convertToInstruments, type Instrument } from './instrument';
+import { useMemo } from 'react';
 import {
-  fetchAvailableInstruments,
-  fetchInstrumentsOverview,
-} from '@/remote/api';
-import { useAuth } from '@clerk/clerk-react';
+  type UseInstrumentsOptions,
+  type UseInstrumentsReturn,
+} from '../types/instruments.types';
+import { useAvailableInstruments } from '../hooks/use-available-instruments';
+import { useInstrumentPages } from '../hooks/use-instrument-pages';
 
-type UseInstrumentsOptions = {
-  filter?: string;
-  page: number;
-  perPage: number;
-  sector?: string;
-  sortBy?: string;
-  sortDirection?: string;
-};
-
-type UseInstrumentsReturn = {
-  instruments: Instrument[];
-  loading: boolean;
-  hasMore: boolean;
-  availableInstruments: string[];
-  availableInstrumentsLoading: boolean;
-  error: string | null;
-  totalItems: number;
-  numPages: number;
-};
-
-const useInstruments = ({
+export const useInstruments = ({
   filter = '',
   page,
   perPage,
@@ -35,101 +14,39 @@ const useInstruments = ({
   sortBy,
   sortDirection,
 }: UseInstrumentsOptions): UseInstrumentsReturn => {
-  const { getToken } = useAuth();
-  const [currentPage, setCurrentPage] = useState(page);
-
-  useEffect(() => {
-    setCurrentPage(page);
-  }, [page]);
-
   const {
     data: availableInstruments = [],
     isLoading: availableInstrumentsLoading,
     error: availableInstrumentsError,
-  } = useQuery({
-    queryKey: ['availableInstruments'],
-    queryFn: async () => {
-      const token = await getToken();
-
-      if (!token) {
-        throw new Error('No auth token available');
-      }
-
-      return fetchAvailableInstruments({ token });
-    },
-  });
+  } = useAvailableInstruments();
 
   const filteredTickers = useMemo(() => {
-    if (!filter || filter.trim().length === 0) {
-      return availableInstruments;
-    }
-    return availableInstruments.filter((ticker: string) =>
-      ticker.toLowerCase().includes(filter.toLowerCase())
+    if (!filter?.trim()) return availableInstruments;
+    console.log(`availableInstruments: ${availableInstruments}`);
+    return availableInstruments.filter((ticker) =>
+      ticker.toLowerCase().includes(filter.toLowerCase().trim())
     );
   }, [availableInstruments, filter]);
 
-  const pagesToFetch = useMemo(() => {
-    return Array.from({ length: currentPage }, (_, i) => i + 1);
-  }, [currentPage]);
-
-  const instrumentQueries = useQueries({
-    queries: pagesToFetch.map((pageNum) => ({
-      queryKey: [
-        'instruments',
-        {
-          filter: filter.trim(),
-          page: pageNum,
-          perPage,
-          sector,
-          sortBy,
-          sortDirection,
-        },
-      ],
-      queryFn: async () => {
-        const token = await getToken();
-        if (!token) throw new Error('No auth token available');
-
-        const response = await fetchInstrumentsOverview({
-          tickers: filteredTickers.length > 0 ? filteredTickers : undefined,
-          page: pageNum,
-          pageSize: perPage,
-          sector,
-          sortBy,
-          sortDirection,
-          token,
-        });
-
-        const items = response.items || [];
-        const total = response.total || 0;
-        const pages = response.num_pages || 0;
-
-        return {
-          instruments: convertToInstruments(items),
-          total,
-          numPages: pages,
-          page: pageNum,
-        };
-      },
-      enabled:
-        filteredTickers.length > 0 || !filter || filter.trim().length === 0,
-      staleTime: 2 * 60 * 1000, // 2 minutes
-      gcTime: 5 * 60 * 1000, // 5 minutes
-    })),
+  const instrumentPages = useInstrumentPages({
+    tickers: filteredTickers,
+    page,
+    perPage,
+    sector,
+    sortBy,
+    sortDirection,
   });
 
   const combinedData = useMemo(() => {
-    const allInstruments: Instrument[] = [];
+    let allInstruments: any[] = [];
     let totalItems = 0;
     let numPages = 0;
     let hasError = false;
     let errorMessage: string | null = null;
     let isLoading = false;
 
-    for (const query of instrumentQueries) {
-      if (query.isLoading) {
-        isLoading = true;
-      }
-
+    for (const query of instrumentPages) {
+      if (query.isLoading) isLoading = true;
       if (query.error) {
         hasError = true;
         errorMessage =
@@ -138,40 +55,37 @@ const useInstruments = ({
             : 'Failed to load instruments';
         break;
       }
-
       if (query.data) {
-        allInstruments.push(...query.data.instruments);
+        allInstruments = [...allInstruments, ...query.data.instruments];
         totalItems = query.data.total;
         numPages = query.data.numPages;
       }
     }
 
     return {
-      data: allInstruments,
+      instruments: allInstruments,
       loading: isLoading,
-      error: hasError ? errorMessage : null,
+      error: errorMessage,
       totalItems,
       numPages,
-      hasMore: currentPage < numPages,
+      hasMore: page < numPages,
     };
-  }, [instrumentQueries, currentPage]);
+  }, [instrumentPages, page]);
 
-  const finalError = availableInstrumentsError
+  const error = availableInstrumentsError
     ? availableInstrumentsError instanceof Error
       ? availableInstrumentsError.message
       : 'Failed to load available instruments'
     : combinedData.error;
 
   return {
-    instruments: combinedData.data,
+    instruments: combinedData.instruments,
     loading: availableInstrumentsLoading || combinedData.loading,
     hasMore: combinedData.hasMore,
     availableInstruments,
     availableInstrumentsLoading,
-    error: finalError,
+    error,
     totalItems: combinedData.totalItems,
     numPages: combinedData.numPages,
   };
 };
-
-export default useInstruments;

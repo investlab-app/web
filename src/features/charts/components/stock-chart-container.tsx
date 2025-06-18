@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DateTime } from 'luxon';
 import { useLoadStockChartData } from '../helpers/use-load-stock-chart-data';
 import { StockChartPresentation } from './stock-chart-presentation';
 import { ChartErrorMessage } from './chart-error-message';
@@ -22,8 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { useSSETickers } from '@/hooks/use-sse';
+import { useSseTickers } from '@/hooks/use-sse';
 
 type StockChartProps = {
   ticker: string;
@@ -38,7 +36,7 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const { messages } = useSSETickers([ticker]);
+  const { messages } = useSseTickers({ symbols: [ticker] });
   const liveUpdateValue = useRef<[InstrumentPriceProps, boolean] | null>(null);
   const loadStockData = useLoadStockChartData();
 
@@ -74,7 +72,7 @@ export const StockChartContainer: React.FC<StockChartProps> = ({ ticker }) => {
           high: Number(parsed.price),
           low: Number(parsed.price),
           open: Number(parsed.price),
-          date: DateTime.now().toISO(),
+          date: new Date().toISOString(),
         };
         liveUpdateValue.current = [price, true];
       } catch (e) {
