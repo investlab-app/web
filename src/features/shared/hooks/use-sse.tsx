@@ -5,7 +5,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 import {
   EventStreamContentType,
@@ -37,12 +36,11 @@ export interface Handler {
   symbols: Set<string>;
 }
 
-class RetriableError extends Error {}
+// class RetriableError extends Error {}
 
-class FatalError extends Error {}
+// class FatalError extends Error {}
 
 export function LivePricesProvider({ children }: LivePricesProviderParams) {
-  const [, setTickers] = useState<Set<string>>(new Set<string>());
   const { getToken, sessionId } = useAuth();
   const connectionId = useMemo(() => crypto.randomUUID(), []);
   const connectionRef = useRef<AbortController | null>(null);
@@ -57,6 +55,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
     connectionRef.current = abortController;
 
     const connectToSSE = async () => {
+      console.log(`awaiting token for connection ID: ${connectionId}`);
       const token = await getToken();
       if (!token) {
         console.error('No authentication token available');
@@ -83,13 +82,15 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
             response.status < 500 &&
             response.status !== 429
           ) {
-            throw new FatalError(
-              `HTTP ${response.status}: ${response.statusText}`
-            );
+            console.log('Client error');
+            // throw new FatalError(
+            //   `HTTP ${response.status}: ${response.statusText}`
+            // );
           } else {
-            throw new RetriableError(
-              `Unexpected response from SSE: ${response.status} ${response.statusText}`
-            );
+            console.log('Unexpected error');
+            // throw new RetriableError(
+            //   `Unexpected response from SSE: ${response.status} ${response.statusText}`
+            // );
           }
         },
         onmessage: (msg) => {
@@ -104,21 +105,25 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
           });
         },
         onclose() {
-          if (!abortController.signal.aborted) {
-            throw new RetriableError('Connection closed');
-          }
+          console.log(`Connection closed (ID: ${connectionId})`);
+          // if (!abortController.signal.aborted) {
+          //   throw new RetriableError('Connection closed');
+          // }
         },
         onerror(error) {
-          throw new RetriableError('Connection error', error);
+          console.log(`Connection error (ID: ${connectionId}):`, error);
+          throw new Error("Connection error: " + error.message);
+          // throw new RetriableError('Connection error', error);
         },
       });
     };
 
     connectToSSE().catch((error) => {
-      console.error(`Error in SSE connection (ID: ${connectionId}):`, error);
+      console.error(`Catched error in SSE connection:`, error);
     });
 
     return () => {
+      console.log("Cleanup SSE")
       abortController.abort();
       if (connectionRef.current === abortController) {
         connectionRef.current = null;
@@ -139,10 +144,6 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         symbols: Array.from(handler.symbols),
         connectionId,
       });
-
-      setTickers((prev) => {
-        return prev.union(new Set(handler.symbols));
-      });
     },
     [connectionId, subscribeToSymbols]
   );
@@ -158,10 +159,6 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
       unsubscribeFromSymbols({
         symbols: Array.from(handler.symbols),
         connectionId,
-      });
-
-      setTickers((prev) => {
-        return prev.difference(new Set(handler.symbols));
       });
     },
     [connectionId, unsubscribeFromSymbols]
