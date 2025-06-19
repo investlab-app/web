@@ -1,3 +1,5 @@
+import { type } from 'arktype';
+
 type FetchHistoryForInstrumentOptions = {
   ticker: string;
   startDate: Date;
@@ -10,7 +12,7 @@ function formatDate(date: Date): string {
   return date.toISOString().split('.')[0];
 }
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+export const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function fetchHistoryForInstrument({
   ticker,
@@ -41,7 +43,7 @@ export function fetchHistoryForInstrument({
 }
 
 type FetchInstrumentsOverviewOptions = {
-  tickers?: string[];
+  tickers?: Array<string>;
   page: number;
   pageSize: number;
   sector?: string;
@@ -50,14 +52,12 @@ type FetchInstrumentsOverviewOptions = {
   token: string;
 };
 
-import { type } from 'arktype';
-
 type FetchAvailableInstrumentsOptions = {
   token: string;
 };
 
 const AvailableInstrumentsResponse = type({
-  instruments: 'string[]'
+  instruments: 'string[]',
 });
 
 export function fetchInstrumentsOverview({
@@ -93,9 +93,9 @@ export function fetchInstrumentsOverview({
   });
 }
 
-
-
-export async function fetchAvailableInstruments({ token }: FetchAvailableInstrumentsOptions): Promise<string[]> {
+export async function fetchAvailableInstruments({
+  token,
+}: FetchAvailableInstrumentsOptions): Promise<Array<string>> {
   if (!baseUrl) {
     throw new Error('API URL not defined');
   }
@@ -109,7 +109,6 @@ export async function fetchAvailableInstruments({ token }: FetchAvailableInstrum
     },
   });
 
-
   if (!response.ok) {
     throw new Error(await response.text());
   }
@@ -119,11 +118,11 @@ export async function fetchAvailableInstruments({ token }: FetchAvailableInstrum
   const out = AvailableInstrumentsResponse(result);
 
   if (out instanceof type.errors) {
-    console.error(out.summary)
-    throw new Error(out.summary)
+    console.error(out.summary);
+    throw new Error(out.summary);
   }
 
-  console.log(`out.instruments: ${out.instruments}`)
+  console.log(`out.instruments: ${out.instruments}`);
 
   return out.instruments;
 }

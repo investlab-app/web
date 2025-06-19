@@ -5,7 +5,10 @@ import { useDebounce } from '../helpers/debounce';
 import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../types/instruments.types';
-import { useLivePrices } from '@/features/shared/hooks/use-sse.ts';
+import type {Handler} from '@/features/shared/hooks/use-sse.ts';
+import {
+  useLivePrices
+} from '@/features/shared/hooks/use-sse';
 import SearchInput from '@/components/ui/search-input';
 import { Button } from '@/components/ui/button';
 
@@ -23,7 +26,7 @@ const InstrumentsTableContainer = ({
   const { t } = useTranslation();
 
   const [search, setSearch] = useState<string>('');
-  const debouncedSearch = useDebounce(search, 500); 
+  const debouncedSearch = useDebounce(search, 500);
 
   const [page, setPage] = useState(1);
 
@@ -41,30 +44,33 @@ const InstrumentsTableContainer = ({
 
   const handleMessage = useCallback((message: string) => {
     try {
-      const parsed = JSON.parse(message);
-      const { ticker, price } = parsed;
+      // Replace single quotes with double quotes to ensure valid JSON
+      const fixedMessage = message.replace(/'/g, '"');
+      const parsed = JSON.parse(fixedMessage);
+      const { id, price } = parsed;
 
-      if (!ticker || !price) {
+      if (!id || !price) {
         console.warn('Invalid message format:', parsed);
         return;
       }
 
       setMessages((prev) => ({
         ...prev,
-        [ticker]: [...(prev[ticker] || []), message],
+        [id]: [...(prev[id] || []), fixedMessage],
       }));
     } catch (error) {
-      console.error('Failed to parse message:', message);
+      console.error('Failed to parse message:', message, error);
     }
   }, []);
 
   useEffect(() => {
-    const tickers = instruments.map((instrument) => instrument.symbol);
+    const tickers = new Set(instruments.map((instrument) => instrument.symbol));
 
     const handler = {
+      id: crypto.randomUUID(),
       symbols: tickers,
       callback: handleMessage,
-    };
+    } as Handler;
 
     console.log('Subscribing to live prices for:', tickers);
     livePrices.subscribe(handler);

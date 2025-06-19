@@ -12,7 +12,8 @@ import {
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
 import { useAuth } from '@clerk/clerk-react';
-import { useMutation } from '@tanstack/react-query';
+import { useSubscribeToSymbols } from './use-subscribe';
+import type { ReactNode } from 'react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -26,73 +27,17 @@ const LivePricesContext = createContext<LivePricesContextType | undefined>(
 );
 
 interface LivePricesProviderParams {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-interface Handler {
+export interface Handler {
   id: string;
   callback: (message: string) => void;
   symbols: Set<string>;
 }
 
-export const useSubscribeToSymbols = () => {
-  const { getToken } = useAuth();
-  
-  return useMutation({
-    mutationFn: async (symbols: Array<string>) => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('No authentication token available');
-      }
-      
-      const response = await fetch(`${baseUrl}/sse/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ symbols })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Subscription failed: ${response.status} ${response.statusText}`);
-      }
-      
-      return await response.json();
-    }
-  });
-};
-
-export const useUnsubscribeFromSymbols = () => {
-  const { getToken } = useAuth();
-  
-  return useMutation({
-    mutationFn: async (symbols: Array<string>) => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('No authentication token available');
-      }
-      
-      const response = await fetch(`${baseUrl}/sse/unsubscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ symbols })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Unsubscription failed: ${response.status} ${response.statusText}`);
-      }
-      
-      return await response.json();
-    }
-  });
-};
-
 export function LivePricesProvider({ children }: LivePricesProviderParams) {
-  const [tickers, setTickers] = useState<Set<string>>(new Set<string>());
+  const [, setTickers] = useState<Set<string>>(new Set<string>());
 
   const { getToken } = useAuth();
 
@@ -139,7 +84,6 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         }
 
         const params = new URLSearchParams();
-        params.append('symbols', '');
         params.append('connectionId', connectionId);
         const url = `${baseUrl}/api/sse?${params.toString()}`;
         console.log(`Connecting to SSE (connectionId: ${connectionId})`);
@@ -210,12 +154,22 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
     };
   }, [getToken, connectionId]);
 
+  const { mutate } = useSubscribeToSymbols();
+
   const subscribe = useCallback((handler: Handler) => {
-    handlersRef.current = handlersRef.current.filter(
-      (h) => h.id !== handler.id
+    console.log(
+      `Subscribing handler (ID: ${handler.id}) for symbols: ${Array.from(handler.symbols)}`
     );
 
-    handlersRef.current.push(handler);
+    handlersRef.current = [
+      ...handlersRef.current.filter((h) => h.id !== handler.id),
+      handler,
+    ];
+
+    mutate({
+      symbols: Array.from(handler.symbols),
+      connectionId,
+    });
 
     setTickers((prev) => {
       return prev.union(new Set(handler.symbols));

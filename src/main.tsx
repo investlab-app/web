@@ -11,7 +11,7 @@ import { routeTree } from './routeTree.gen';
 import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
-import { LivePricesProvider } from './features/shared/hooks/use-sse.ts.tsx';
+import { LivePricesProvider } from './features/shared/hooks/use-sse.tsx';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
 // Create a new router instance
