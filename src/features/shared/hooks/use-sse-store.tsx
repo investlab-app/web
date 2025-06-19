@@ -9,29 +9,33 @@ import {
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-type ClientId = string;
-type Event = string;
-
-export interface Client {
-  clientId: ClientId;
-  events: Set<Event>;
-  handler: (data: string) => void;
+interface ClientId {
+  value: string;
 }
 
-interface SseOperation {
-  type: 'subscribe' | 'unsubscribe';
+interface SSEEvent {
+  value: string;
+}
+
+export interface ClientSubscription {
   clientId: ClientId;
-  events: Set<Event>;
-  handler?: (data: string) => void;
+  events: Set<SSEEvent>;
+  handlers: Array<(data: string) => void>;
+}
+
+export interface Operation {
+  type: 'subscription' | 'cancellation';
+  clientId: ClientId;
+  events: Set<SSEEvent>;
 }
 
 export function useSSE() {
   const store = useRef(
     new Store({
-      clients: new Map<ClientId, Client>(),
-      events: new Set<Event>(),
+      clients: new Map<ClientId, ClientSubscription>(),
+      events: new Set<SSEEvent>(),
       connectionId: crypto.randomUUID(),
-      pendingOperations: new Map<ClientId, Array<SseOperation>>(),
+      pendingOperations: new Map<ClientId, Array<Operation>>(),
     })
   );
 
@@ -88,10 +92,7 @@ export function useSSE() {
     return () => clearTimeout(timeoutId);
   });
 
-  const addOperation = ({ operation }: { operation: SseOperation }) => {
-    console.log(
-      `Adding operation: ${operation.type} for client ${operation.clientId} with events ${Array.from(operation.events).join(', ')}`
-    );
+  const addOperation = (operation: Operation) => {
     store.current.setState((state) => {
       const existingOperations =
         state.pendingOperations.get(operation.clientId) || [];
@@ -119,49 +120,13 @@ export function useSSE() {
     });
   };
 
-  const subscribe = ({
-    clientId,
-    events,
-    handler,
-  }: {
-    clientId: ClientId;
-    events: Set<string>;
-    handler: (data: string) => void;
-  }) => {
-    addOperation({
-      operation: {
-        type: 'subscribe',
-        clientId,
-        events: events,
-        handler,
-      },
-    });
-
-    console.log('Added new OPERATION');
-  };
-
-  const unsubscribe = ({
-    clientId,
-    events,
-  }: {
-    clientId: ClientId;
-    events: Set<Event>;
-  }) =>
-    addOperation({
-      operation: {
-        type: 'unsubscribe',
-        clientId,
-        events: events,
-      },
-    });
-
   const callSSE = useMutation({
     mutationFn: async ({
       events,
       connectionId,
       action,
     }: {
-      events: Array<Event>;
+      events: Array<SSEEvent>;
       connectionId: string;
       action: 'subscribe' | 'unsubscribe';
     }) => {
@@ -207,11 +172,11 @@ export function useSSE() {
             balanceAcc.set(
               symbol,
               (balanceAcc.get(symbol) || 0) +
-                (operation.type === 'subscribe' ? 1 : -1)
+                (operation.type === 'subscription' ? 1 : -1)
             );
           });
           return balanceAcc;
-        }, new Map<Event, number>());
+        }, new Map<SSEEvent, number>());
 
         const actualClientOperations = operationsBalance
           .keys()
@@ -221,18 +186,19 @@ export function useSSE() {
             if (!count || count === 0) {
               return actualAcc;
             }
-            const operation: SseOperation = {
-              type: count > 0 ? 'subscribe' : 'unsubscribe',
+
+            const operation: Operation = {
+              type: count > 0 ? 'subscription' : 'cancellation',
               clientId,
               events: new Set([symbol]),
             };
 
             actualAcc.push(operation);
             return actualAcc;
-          }, new Array<SseOperation>());
+          }, new Array<Operation>());
 
         return acc.set(clientId, actualClientOperations);
-      }, new Map<ClientId, Array<SseOperation>>());
+      }, new Map<ClientId, Array<Operation>>());
 
     // Update clients
     actualOperations.forEach((operations, clientId) => {
@@ -243,10 +209,10 @@ export function useSSE() {
 
       const newEvents = operations.reduce((acc, operation) => {
         switch (operation.type) {
-          case 'subscribe':
+          case 'subscription':
             acc.union(new Set(operation.events));
             break;
-          case 'unsubscribe':
+          case 'cancellation':
             acc.difference(new Set(operation.events));
             break;
         }
@@ -271,11 +237,11 @@ export function useSSE() {
 
     const symbolChanges = atomSubscriptions.reduce((acc, current) => {
       switch (current.type) {
-        case 'subscribe':
+        case 'subscription':
           acc = acc.filter((item) => item.events !== current.events);
           acc.push(current);
           break;
-        case 'unsubscribe':
+        case 'cancellation':
           // keep
           break;
       }
@@ -284,21 +250,21 @@ export function useSSE() {
 
     const changes = symbolChanges.reduce(
       (acc, current) => {
-        if (current.type === 'subscribe') {
+        if (current.type === 'subscription') {
           acc.subscribe.add(current.events);
         } else {
-          acc.unsubscribe.add(current.events);
+          acc.cancellation.add(current.events);
         }
         return acc;
       },
-      { subscribe: new Set<Event>(), unsubscribe: new Set<Event>() }
+      { subscribe: new Set<SSEEvent>(), cancellation: new Set<SSEEvent>() }
     );
 
     // update events in store
     store.current.setState((state) => ({
       ...state,
       events: new Set([...state.events, ...changes.subscribe]).difference(
-        changes.unsubscribe
+        changes.cancellation
       ),
       pendingOperations: new Map(),
     }));
@@ -311,9 +277,9 @@ export function useSSE() {
         action: 'subscribe',
       });
     }
-    if (changes.unsubscribe.size > 0) {
+    if (changes.cancellation.size > 0) {
       callSSE.mutate({
-        events: Array.from(changes.unsubscribe),
+        events: Array.from(changes.cancellation),
         connectionId: store.current.state.connectionId,
         action: 'unsubscribe',
       });
@@ -360,11 +326,11 @@ export function useSSE() {
         onmessage: (msg) => {
           store.current.state.clients.forEach((client) => {
             if (
-              Array.from(client.events).some((symbol) =>
-                msg.data.includes(symbol)
+              Array.from(client.events).some(
+                (event) => msg.event === event.value
               )
             ) {
-              client.handler(msg.data);
+              client.handlers.forEach((handler) => handler(msg.data));
             }
           });
         },
@@ -387,7 +353,7 @@ export function useSSE() {
   );
 
   return {
-    subscribe,
-    unsubscribe,
+    addOperation
   };
+  
 }

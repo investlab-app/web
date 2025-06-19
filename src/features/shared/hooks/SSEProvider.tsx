@@ -1,11 +1,10 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { useSSE } from './use-sse-store';
-import type { Client } from './use-sse-store';
+import type { Operation } from './use-sse-store';
 import type { ReactNode } from 'react';
 
 interface SSEContextType {
-  subscribe: (update: Client) => void;
-  unsubscribe: (update: Client) => void;
+  addOperation: (operation: Operation) => void;
 }
 
 const SSEContext = createContext<SSEContextType | undefined>(undefined);
@@ -15,11 +14,11 @@ interface SSEProviderParams {
 }
 
 export function SSEProvider({ children }: SSEProviderParams) {
-  const { subscribe, unsubscribe } = useSSE();
+  const { addOperation } = useSSE();
 
   const contextValue: SSEContextType = useMemo(
-    () => ({ subscribe, unsubscribe }),
-    [subscribe, unsubscribe]
+    () => ({ addOperation }),
+    [addOperation]
   );
 
   return (
@@ -29,6 +28,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
 
 export function useSSEMessages(events: Set<string>) {
   const context = useContext(SSEContext);
+
   if (context === undefined) {
     throw new Error('useSSEProvider must be used within a SSEProvider');
   }
@@ -36,16 +36,26 @@ export function useSSEMessages(events: Set<string>) {
   const [messages, setMessages] = useState<Array<string>>([]);
 
   useMemo(() => {
-    const handler = (message: string) => {
-      setMessages((prev) => [...prev, message]);
-    };
+    // const handler = (message: string) => {
+    //   setMessages((prev) => [...prev, message]);
+    // };
 
-    const clientId = crypto.randomUUID();
+    const clientId = { value: crypto.randomUUID() };
 
-    context.subscribe({ clientId, events, handler });
+    const eventsArray = new Set(events.values().map((e) => ({ value: e })));
+
+    context.addOperation({
+      type: 'subscription',
+      clientId,
+      events: eventsArray,
+    });
 
     return () => {
-      context.unsubscribe({ clientId, events, handler });
+      context.addOperation({
+        type: 'cancellation',
+        clientId,
+        events: eventsArray,
+      });
     };
   }, [context, events]);
 
