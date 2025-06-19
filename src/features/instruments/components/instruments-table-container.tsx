@@ -4,7 +4,7 @@ import { useDebounce } from '../helpers/debounce';
 import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../types/instruments.types';
-import type { Handler } from '@/features/shared/hooks/use-sse.ts';
+import type { Client } from '@/features/shared/hooks/use-sse.ts';
 import { useLivePrices } from '@/features/shared/hooks/use-sse';
 import SearchInput from '@/components/ui/search-input';
 import { Button } from '@/components/ui/button';
@@ -84,8 +84,8 @@ const InstrumentsTableContainer = ({
     const handler = {
       id: crypto.randomUUID(),
       symbols: tickers,
-      callback: handleMessage,
-    } as Handler;
+      handler: handleMessage,
+    } as Client;
 
     livePrices.subscribe(handler);
 
