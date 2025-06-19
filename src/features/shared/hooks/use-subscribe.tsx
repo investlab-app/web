@@ -13,6 +13,9 @@ export const useSubscribeToSymbols = () => {
       symbols: Array<string>;
       connectionId: string;
     }) => {
+      if (symbols.length === 0) {
+        return { success: true, message: 'No symbols to subscribe to' };
+      }
       const token = await getToken();
       if (!token) {
         throw new Error('No authentication token available');

@@ -13,6 +13,9 @@ export const useUnsubscribeFromSymbols = () => {
       symbols: Array<string>;
       connectionId: string;
     }) => {
+      if (symbols.length === 0) {
+        return { success: true, message: 'No symbols to unsubscribe from' };
+      }
       const token = await getToken();
       if (!token) {
         throw new Error('No authentication token available');

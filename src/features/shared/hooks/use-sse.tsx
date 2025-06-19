@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import {
   EventStreamContentType,
@@ -36,25 +37,15 @@ export interface Handler {
   symbols: Set<string>;
 }
 
-// class RetriableError extends Error {}
-
-// class FatalError extends Error {}
-
 export function LivePricesProvider({ children }: LivePricesProviderParams) {
+  const [symbols, setSymbols] = useState<Set<string>>(new Set());
   const { getToken, sessionId } = useAuth();
   const connectionId = useMemo(() => crypto.randomUUID(), []);
   const connectionRef = useRef<AbortController | null>(null);
   const handlersRef = useRef<Array<Handler>>([]);
 
-  useEffect(() => {
-    if (connectionRef.current) {
-      connectionRef.current.abort();
-    }
-
-    const abortController = new AbortController();
-    connectionRef.current = abortController;
-
-    const connectToSSE = async () => {
+  const fetchLiveSymbolsData = useCallback(
+    async ({ abortController }: { abortController: AbortController }) => {
       console.log(`awaiting token for connection ID: ${connectionId}`);
       const token = await getToken();
       if (!token) {
@@ -63,6 +54,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
       }
 
       const params = new URLSearchParams();
+      params.append('symbols', Array.from(symbols).join(','));
       params.append('connectionId', connectionId);
       const url = `${baseUrl}/api/sse?${params.toString()}`;
 
@@ -83,14 +75,8 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
             response.status !== 429
           ) {
             console.log('Client error');
-            // throw new FatalError(
-            //   `HTTP ${response.status}: ${response.statusText}`
-            // );
           } else {
             console.log('Unexpected error');
-            // throw new RetriableError(
-            //   `Unexpected response from SSE: ${response.status} ${response.statusText}`
-            // );
           }
         },
         onmessage: (msg) => {
@@ -106,30 +92,15 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         },
         onclose() {
           console.log(`Connection closed (ID: ${connectionId})`);
-          // if (!abortController.signal.aborted) {
-          //   throw new RetriableError('Connection closed');
-          // }
         },
         onerror(error) {
           console.log(`Connection error (ID: ${connectionId}):`, error);
-          throw new Error("Connection error: " + error.message);
-          // throw new RetriableError('Connection error', error);
+          throw new Error('Connection error: ' + error.message);
         },
       });
-    };
-
-    connectToSSE().catch((error) => {
-      console.error(`Catched error in SSE connection:`, error);
-    });
-
-    return () => {
-      console.log("Cleanup SSE")
-      abortController.abort();
-      if (connectionRef.current === abortController) {
-        connectionRef.current = null;
-      }
-    };
-  }, [getToken, connectionId, sessionId]);
+    },
+    [connectionId, getToken, symbols]
+  );
 
   const { mutate: subscribeToSymbols } = useSubscribeToSymbols();
 
@@ -144,6 +115,8 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         symbols: Array.from(handler.symbols),
         connectionId,
       });
+
+      setSymbols((prevSymbols) => prevSymbols.union(handler.symbols));
     },
     [connectionId, subscribeToSymbols]
   );
@@ -160,15 +133,46 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         symbols: Array.from(handler.symbols),
         connectionId,
       });
+
+      setSymbols((prevSymbols) => prevSymbols.difference(handler.symbols));
     },
     [connectionId, unsubscribeFromSymbols]
   );
 
+  useEffect(() => {
+    if (connectionRef.current) {
+      connectionRef.current.abort();
+    }
+
+    const abortController = new AbortController();
+    connectionRef.current = abortController;
+
+    fetchLiveSymbolsData({ abortController }).catch((error) => {
+      console.error(`Catched error in SSE connection:`, error);
+    });
+
+    return () => {
+      console.log('Cleanup SSE');
+      unsubscribeFromSymbols({
+        symbols: Array.from(symbols),
+        connectionId,
+      });
+      abortController.abort();
+      if (connectionRef.current === abortController) {
+        connectionRef.current = null;
+      }
+    };
+  }, [
+    connectionId,
+    sessionId,
+    symbols,
+    getToken,
+    unsubscribeFromSymbols,
+    fetchLiveSymbolsData,
+  ]);
+
   const contextValue: LivePricesContextType = useMemo(
-    () => ({
-      subscribe,
-      unsubscribe,
-    }),
+    () => ({ subscribe, unsubscribe }),
     [subscribe, unsubscribe]
   );
 
