@@ -39,7 +39,7 @@ export interface Handler {
 
 export function LivePricesProvider({ children }: LivePricesProviderParams) {
   const [symbols, setSymbols] = useState<Set<string>>(new Set());
-  const { getToken, sessionId } = useAuth();
+  const { getToken } = useAuth();
   const connectionId = useMemo(() => crypto.randomUUID(), []);
   const connectionRef = useRef<AbortController | null>(null);
   const handlersRef = useRef<Array<Handler>>([]);
@@ -92,6 +92,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         },
         onclose() {
           console.log(`Connection closed (ID: ${connectionId})`);
+          throw new Error('Connection closed unexpectedly');
         },
         onerror(error) {
           console.log(`Connection error (ID: ${connectionId}):`, error);
@@ -162,14 +163,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         connectionRef.current = null;
       }
     };
-  }, [
-    connectionId,
-    sessionId,
-    symbols,
-    getToken,
-    unsubscribeFromSymbols,
-    fetchLiveSymbolsData,
-  ]);
+  }, [connectionId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const contextValue: LivePricesContextType = useMemo(
     () => ({ subscribe, unsubscribe }),

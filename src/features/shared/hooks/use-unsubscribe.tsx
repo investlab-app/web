@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { baseUrl } from '@/features/shared/api';
 
 export const useUnsubscribeFromSymbols = () => {
+
   const { getToken } = useAuth();
 
   return useMutation({
