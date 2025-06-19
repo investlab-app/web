@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
 import { type } from 'arktype';
-import { fromDTO, instrument, instrumentDTO } from '../types/instruments.types';
+import { fromDTO, instrumentDTO } from '../types/instruments.types';
 import type { InstrumentsPageData } from '../types/instruments.types';
 import { fetchInstrumentsOverview } from '@/remote/api';
 

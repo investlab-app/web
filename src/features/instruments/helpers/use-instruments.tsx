@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useAvailableInstruments } from '../hooks/use-available-instruments';
 import { useInstrumentPages } from '../hooks/use-instrument-pages';
 import type {
+  Instrument,
   UseInstrumentsOptions,
   UseInstrumentsReturn,
 } from '../types/instruments.types';
@@ -38,7 +39,7 @@ export const useInstruments = ({
   });
 
   const combinedData = useMemo(() => {
-    let allInstruments: Array<unknown> = [];
+    let allInstruments: Array<Instrument> = [];
     let totalItems = 0;
     let numPages = 0;
     let errorMessage: string | null = null;
