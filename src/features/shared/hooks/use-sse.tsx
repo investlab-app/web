@@ -11,16 +11,15 @@ import {
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
 import { useAuth } from '@clerk/clerk-react';
-import { useStore } from '@tanstack/react-store';
-import { sseStore } from './SSEStore';
-import type { Client } from './SSEStore';
+import { useSSEStore } from './use-sse-store';
+import type { Client } from './use-sse-store';
 import type { ReactNode } from 'react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface LivePricesContextType {
-  subscribe: (handler: Client) => void;
-  unsubscribe: (handler: Client) => void;
+  subscribe: (client: Client) => void;
+  unsubscribe: (client: Client) => void;
 }
 
 const LivePricesContext = createContext<LivePricesContextType | undefined>(
@@ -35,7 +34,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
   const { getToken } = useAuth();
   const connectionRef = useRef<AbortController | null>(null);
 
-  const store = useStore(sseStore);
+  const { store, subscribe, unsubscribe } = useSSEStore();
 
   const fetchLiveSymbolsData = useCallback(
     async ({ abortController }: { abortController: AbortController }) => {
@@ -93,7 +92,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         },
       });
     },
-    [store.connectionId]
+    [getToken, store.clients, store.connectionId, store.symbols]
   );
 
   useEffect(() => {
@@ -115,10 +114,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
 
     return () => {
       console.log('Cleanup SSE');
-      unsubscribeFromSymbols({
-        symbols: Array.from(symbols),
-        connectionId,
-      });
+
       abortController.abort();
       if (connectionRef.current === abortController) {
         connectionRef.current = null;

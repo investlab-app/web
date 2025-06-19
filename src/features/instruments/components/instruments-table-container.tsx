@@ -82,10 +82,10 @@ const InstrumentsTableContainer = ({
     const tickers = new Set(instruments.map((instrument) => instrument.symbol));
 
     const handler = {
-      id: crypto.randomUUID(),
+      clientId: crypto.randomUUID(),
       symbols: tickers,
       handler: handleMessage,
-    } as Client;
+    };
 
     livePrices.subscribe(handler);
 
