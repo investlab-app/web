@@ -20,43 +20,65 @@ const InstrumentsTableContainer = ({
   setInstrument,
   setOpenSheet,
 }: InstrumentsTableContainerProps) => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
-  const [search, setSearch] = useState<string>('');
-  const debouncedSearch = useDebounce(search, 500);
+  // const [search, setSearch] = useState<string>('');
+  // const debouncedSearch = useDebounce(search, 500);
+  // const [, setPage] = useState(1);
+  // useEffect(() => {
+  //   setPage(1);
+  // }, [debouncedSearch]);
 
-  const [page, setPage] = useState(1);
+  // const { instruments, loading, hasMore } = useInstruments({
+  //   filter: debouncedSearch,
+  //   page,
+  //   perPage: PAGE_SIZE,
+  // });
 
-  const { instruments, loading, hasMore } = useInstruments({
-    filter: debouncedSearch,
-    page,
-    perPage: PAGE_SIZE,
-  });
+  const instruments: Array<Instrument> = [
+    {
+      symbol: 'AAPL',
+      name: 'Apple Inc.',
+      currentPrice: 150,
+      dayChange: 1.5,
+      volume: 1000000,
+    },
+    {
+      symbol: 'GOOGL',
+      name: 'Alphabet Inc.',
+      currentPrice: 2800,
+      dayChange: -0.5,
+      volume: 500000,
+    },
+  ];
 
   const livePrices = useLivePrices();
 
   const handleMessage = useCallback((message: string) => {
-    try {
-      // Replace single quotes with double quotes to ensure valid JSON
-      const fixedMessage = message.replace(/'/g, '"');
-      const parsed = JSON.parse(fixedMessage);
-      const { id, price, change_percent } = parsed;
+    console.log('Received message:', message);
+    // try {
+    //   // Replace single quotes with double quotes to ensure valid JSON
+    //   const fixedMessage = message.replace(/'/g, '"');
+    //   const parsed = JSON.parse(fixedMessage);
+    //   const { id, price, change_percent } = parsed;
 
-      if (!id || !price || !change_percent) {
-        console.warn('Invalid message format:', parsed);
-        return;
-      }
+    //   if (!id || !price || !change_percent) {
+    //     console.warn('Invalid message format:', parsed);
+    //     return;
+    //   }
 
-      priceUpdatesRef.current[id] = {
-        currentPrice: price,
-        dayChange: change_percent,
-      };
-    } catch (error) {
-      console.error('Failed to parse message:', message, error);
-    }
+    //   priceUpdatesRef.current[id] = {
+    //     currentPrice: price,
+    //     dayChange: change_percent,
+    //   };
+    // } catch (error) {
+    //   console.error('Failed to parse message:', message, error);
+    // }
   }, []);
 
   useEffect(() => {
+    console.log('Subscribing to live prices for instruments:', instruments);
+
     const tickers = new Set(instruments.map((instrument) => instrument.symbol));
 
     const handler = {
@@ -68,58 +90,42 @@ const InstrumentsTableContainer = ({
     livePrices.subscribe(handler);
 
     return () => {
+      console.log(
+        'Unsubscribing from live prices for instruments:',
+        instruments
+      );
       livePrices.unsubscribe(handler);
     };
-  }, [livePrices, handleMessage, instruments]);
-
-  const priceUpdatesRef = useRef<
-    Record<string, Partial<(typeof instruments)[0]>>
-  >({});
-
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch]);
-
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+  }, [instruments]);
 
   const handleInstrumentPressed = (asset: Instrument) => {
     setInstrument(asset);
     setOpenSheet(true);
   };
 
-  const mergedData = instruments.map((instrument) => {
-    const updates = priceUpdatesRef.current[instrument.symbol];
-    return {
-      ...instrument,
-      ...updates,
-    };
-  });
-
   return (
     <div className="p-4">
-      <SearchInput
+      {/* <SearchInput
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-1/3"
         placeholder={t('common.search')}
-      />
+      /> */}
       <InstrumentTable
-        data={mergedData}
+        data={instruments}
         onInstrumentPressed={handleInstrumentPressed}
       />
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         {hasMore && (
           <Button
-            onClick={handleLoadMore}
+            onClick={() => setPage((prev) => prev + 1)}
             disabled={loading}
             className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
           >
             {loading ? t('common.loading') : t('common.more')}
           </Button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

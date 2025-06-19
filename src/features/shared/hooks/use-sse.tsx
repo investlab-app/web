@@ -148,9 +148,14 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
     const abortController = new AbortController();
     connectionRef.current = abortController;
 
-    fetchLiveSymbolsData({ abortController }).catch((error) => {
-      console.error(`Catched error in SSE connection:`, error);
-    });
+    const attemptReconnect = () => {
+      fetchLiveSymbolsData({ abortController }).catch(() => {
+        console.log('Attempting to reconnect SSE');
+        setTimeout(attemptReconnect, 5000); // Retry after 5 seconds
+      });
+    };
+
+    attemptReconnect();
 
     return () => {
       console.log('Cleanup SSE');
@@ -163,7 +168,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         connectionRef.current = null;
       }
     };
-  }, [connectionId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const contextValue: LivePricesContextType = useMemo(
     () => ({ subscribe, unsubscribe }),
