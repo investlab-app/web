@@ -1,9 +1,9 @@
 import { useQueries } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
-import { Instrument } from '../types/instruments.types';
+import { type } from 'arktype';
+import { fromDTO, instrument, instrumentDTO } from '../types/instruments.types';
 import type { InstrumentsPageData } from '../types/instruments.types';
 import { fetchInstrumentsOverview } from '@/remote/api';
-import { type } from 'arktype';
 
 type UseInstrumentPagesProps = {
   tickers: Array<string>;
@@ -60,12 +60,13 @@ export const useInstrumentPages = ({
 
         return {
           instruments: response.items?.flatMap((item: unknown) => {
-            const out = Instrument(item);
+            const out = instrumentDTO(item);
             if (out instanceof type.errors) {
               console.error('Invalid instrument data:', out);
               return [];
             } else {
-              return [out];
+              const instrumentItem = fromDTO(out);
+              return instrumentItem ? [instrumentItem] : [];
             }
           }),
           total: response.total || 0,

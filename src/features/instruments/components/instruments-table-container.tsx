@@ -1,25 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useEffect, useState } from 'react';
-// import type { Instrument } from '@/routes/instruments-page';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '../helpers/debounce';
 import { useInstruments } from '../helpers/use-instruments';
-import { useLivePrices } from '@/hooks/use-sse.ts';
 import InstrumentTable from './instrument-table';
+import type { Instrument } from '../types/instruments.types';
+import { useLivePrices } from '@/hooks/use-sse.ts';
 import SearchInput from '@/components/ui/search-input';
+import { Button } from '@/components/ui/button';
 
 const PAGE_SIZE = 10;
 
-// type Props = {
-//   setOpenSheet: (open: boolean) => void;
-//   setInstrument: (instrument: typeof Instrument.infer) => void;
-// };
+type InstrumentsTableContainerProps = {
+  setInstrument: (instrument: Instrument) => void;
+  setOpenSheet: (open: boolean) => void;
+};
 
-const InstrumentsTableContainer = () => {
+const InstrumentsTableContainer = ({
+  setInstrument,
+  setOpenSheet,
+}: InstrumentsTableContainerProps) => {
   const { t } = useTranslation();
 
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 500); // only update filter after 500ms pause
+  const [search, setSearch] = useState<string>('');
+  const debouncedSearch = useDebounce(search, 500); 
 
   const [page, setPage] = useState(1);
 
@@ -31,29 +35,31 @@ const InstrumentsTableContainer = () => {
 
   const livePrices = useLivePrices();
 
-  const [messages, setMessages] = useState<Record<string, Array<string>>>({});
+  const [messages, setMessages] = useState<
+    Record<string, Array<string> | undefined>
+  >({});
 
   const handleMessage = useCallback((message: string) => {
-    console.log('Received SSE message:', message);
-    setMessages((prev) => {
+    try {
       const parsed = JSON.parse(message);
-      const ticker = parsed.ticker;
-      const price = parsed.price;
+      const { ticker, price } = parsed;
 
       if (!ticker || !price) {
         console.warn('Invalid message format:', parsed);
-        return prev;
+        return;
       }
 
-      return {
+      setMessages((prev) => ({
         ...prev,
-        [ticker]: [...prev[ticker], message],
-      };
-    });
+        [ticker]: [...(prev[ticker] || []), message],
+      }));
+    } catch (error) {
+      console.error('Failed to parse message:', message);
+    }
   }, []);
 
   useEffect(() => {
-    const tickers = instruments.map((instrument) => instrument.ticker);
+    const tickers = instruments.map((instrument) => instrument.symbol);
 
     const handler = {
       symbols: tickers,
@@ -68,27 +74,30 @@ const InstrumentsTableContainer = () => {
     };
   }, [livePrices, handleMessage, instruments]);
 
-  const priceUpdatesRef = useRef<Record<string, Partial<Instrument>>>({});
-
-  tickers.forEach((ticker) => {
-    const tickerMessages = messages[ticker];
-    if (tickerMessages && tickerMessages.length > 0) {
-      const latestRaw = tickerMessages[tickerMessages.length - 1];
-      try {
-        // const parsed = JSON.parse(latestRaw.replace(/'/g, '"'));
-
-        // priceUpdatesRef.current[ticker] = {
-        //   currentPrice: parsed.price,
-        //   dayChange: parsed.change_percent,
-        // };
-      } catch (e) {
-        console.warn('Invalid SSE message for', ticker, latestRaw);
-      }
-    }
-  });
+  const priceUpdatesRef = useRef<
+    Record<string, Partial<(typeof instruments)[0]>>
+  >({});
 
   useEffect(() => {
-    setPage(1); // reset to page 1 whenever search changes
+    instruments.forEach((instrument) => {
+      const tickerMessages = messages[instrument.symbol];
+      if (tickerMessages && tickerMessages.length > 0) {
+        const latestRaw = tickerMessages[tickerMessages.length - 1];
+        try {
+          const parsed = JSON.parse(latestRaw);
+          priceUpdatesRef.current[instrument.symbol] = {
+            currentPrice: parsed.price,
+            dayChange: parsed.change_percent,
+          };
+        } catch (e) {
+          console.warn('Invalid SSE message for', instrument.symbol, latestRaw);
+        }
+      }
+    });
+  }, [messages, instruments]);
+
+  useEffect(() => {
+    setPage(1);
   }, [debouncedSearch]);
 
   const handleLoadMore = () => {
@@ -96,13 +105,12 @@ const InstrumentsTableContainer = () => {
   };
 
   const handleInstrumentPressed = (asset: Instrument) => {
-    console.log('Instrument clicked:', asset);
     setInstrument(asset);
     setOpenSheet(true);
   };
 
   const mergedData = instruments.map((instrument) => {
-    const updates = priceUpdatesRef.current[instrument.symbol] || {};
+    const updates = priceUpdatesRef.current[instrument.symbol];
     return {
       ...instrument,
       ...updates,

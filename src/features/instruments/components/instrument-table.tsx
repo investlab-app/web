@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import type { Instrument } from '../types/instruments.types';
 import {
   Table,
   TableBody,
@@ -6,8 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Instrument } from '../helpers/instrument';
-import { useTranslation } from 'react-i18next';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
@@ -18,7 +18,7 @@ const InstrumentTable = ({
   data,
   onInstrumentPressed,
 }: InstrumentTableProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -39,11 +39,9 @@ const InstrumentTable = ({
               className="cursor-pointer"
             >
               <TableCell>{instrument.name}</TableCell>
-              <TableCell >{instrument.symbol}</TableCell>
-              <TableCell >
-                ${instrument.currentPrice.toFixed(2)}
-              </TableCell>
-              <TableCell >
+              <TableCell>{instrument.symbol}</TableCell>
+              <TableCell>${instrument.currentPrice.toFixed(2)}</TableCell>
+              <TableCell>
                 <span
                   className={
                     instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'

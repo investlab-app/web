@@ -1,20 +1,44 @@
 import { type } from 'arktype';
 
-export const Instrument = type({
+export const instrumentDTO = type({
+  country: 'string',
+  currency: 'string',
+  current_price: 'string',
+  day_change_percent: 'string',
+  day_change: 'string',
+  industry: 'string',
+  market_cap: 'string',
+  name: 'string',
+  previous_close: 'string',
+  sector: 'string',
+  ticker: 'string',
+  volume: 'number',
+});
+export type InstrumentDTO = typeof instrumentDTO.infer;
+
+export const instrument = type({
   name: 'string',
   volume: 'number',
-  current_price: 'string',
-  day_change: 'string',
-  day_change_percent: 'string',
-  ticker: 'string',
-  previous_close: 'string',
-  market_cap: 'string',
-  sector: 'string?',
-  industry: 'string?',
-  country: 'string?',
-  currency: 'string?',
+  currentPrice: 'number',
+  dayChange: 'number',
+  symbol: 'string',
 });
-export type InstrumentType = typeof Instrument.infer;
+export type Instrument = typeof instrument.infer;
+
+export function fromDTO(dto: InstrumentDTO): Instrument | undefined {
+  try {
+    const parsed = {
+      name: dto.name,
+      volume: dto.volume,
+      currentPrice: parseFloat(dto.current_price),
+      dayChange: parseFloat(dto.day_change),
+      symbol: dto.ticker,
+    };
+    return parsed;
+  } catch {
+    return undefined;
+  }
+}
 
 export type UseInstrumentsOptions = {
   filter?: string;
@@ -26,7 +50,7 @@ export type UseInstrumentsOptions = {
 };
 
 export type UseInstrumentsReturn = {
-  instruments: Array<InstrumentType>;
+  instruments: Array<Instrument>;
   loading: boolean;
   hasMore: boolean;
   availableInstruments: Array<string>;
@@ -37,7 +61,7 @@ export type UseInstrumentsReturn = {
 };
 
 export type InstrumentsPageData = {
-  instruments: Array<InstrumentType>;
+  instruments: Array<Instrument>;
   total: number;
   numPages: number;
   page: number;

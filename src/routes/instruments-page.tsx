@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import type { InstrumentType } from '@/features/instruments/types/instruments.types';
+import type { Instrument } from '@/features/instruments/types/instruments.types';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SiteHeader } from '@/components/site-header';
@@ -13,7 +13,7 @@ export default function InstrumentsPage() {
   const { isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [instrument] = useState<InstrumentType>();
+  const [instrument, setInstrument] = useState<Instrument>();
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -39,8 +39,8 @@ export default function InstrumentsPage() {
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                 <InstrumentsTableContainer
-                // setOpenSheet={setOpen}
-                // setInstrument={setInstrument}
+                  setOpenSheet={setOpen}
+                  setInstrument={setInstrument}
                 />
               </div>
             </div>
