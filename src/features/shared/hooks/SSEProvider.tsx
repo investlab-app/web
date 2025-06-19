@@ -5,6 +5,10 @@ import type { ReactNode } from 'react';
 
 interface SSEContextType {
   addOperation: (operation: Operation) => void;
+  attachHandler: (params: {
+    clientId: { value: string };
+    handler: (message: string) => void;
+  }) => void;
 }
 
 const SSEContext = createContext<SSEContextType | undefined>(undefined);
@@ -14,11 +18,11 @@ interface SSEProviderParams {
 }
 
 export function SSEProvider({ children }: SSEProviderParams) {
-  const { addOperation } = useSSE();
+  const { addOperation, attachHandler } = useSSE();
 
   const contextValue: SSEContextType = useMemo(
-    () => ({ addOperation }),
-    [addOperation]
+    () => ({ addOperation, attachHandler }),
+    [addOperation, attachHandler]
   );
 
   return (
@@ -36,9 +40,9 @@ export function useSSEMessages(events: Set<string>) {
   const [messages, setMessages] = useState<Array<string>>([]);
 
   useMemo(() => {
-    // const handler = (message: string) => {
-    //   setMessages((prev) => [...prev, message]);
-    // };
+    const handler = (message: string) => {
+      setMessages((prev) => [...prev, message]);
+    };
 
     const clientId = { value: crypto.randomUUID() };
 
@@ -49,6 +53,8 @@ export function useSSEMessages(events: Set<string>) {
       clientId,
       events: eventsArray,
     });
+
+    context.attachHandler({ clientId, handler });
 
     return () => {
       context.addOperation({

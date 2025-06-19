@@ -20,7 +20,7 @@ interface SSEEvent {
 export interface ClientSubscription {
   clientId: ClientId;
   events: Set<SSEEvent>;
-  handlers: Array<(data: string) => void>;
+  handler: (data: string) => void;
 }
 
 export interface Operation {
@@ -30,6 +30,9 @@ export interface Operation {
 }
 
 export function useSSE() {
+  const { getToken } = useAuth();
+  const connectionRef = useRef<AbortController | null>(null);
+
   const store = useRef(
     new Store({
       clients: new Map<ClientId, ClientSubscription>(),
@@ -39,78 +42,14 @@ export function useSSE() {
     })
   );
 
-  const connectionRef = useRef<AbortController | null>(null);
-
-  useEffect(() => {
-    if (connectionRef.current) {
-      connectionRef.current.abort();
-    }
-
-    const abortController = new AbortController();
-    connectionRef.current = abortController;
-
-    const attemptReconnect = () => {
-      fetchLiveEventsData({ abortController }).catch(() => {
-        console.log('Attempting to reconnect SSE');
-        setTimeout(attemptReconnect, 5000); // Retry after 5 seconds
-      });
-    };
-
-    attemptReconnect();
-
-    return () => {
-      console.log('Cleanup SSE');
-
-      abortController.abort();
-      if (connectionRef.current === abortController) {
-        connectionRef.current = null;
-      }
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const { getToken } = useAuth();
-
-  store.current.subscribe(({ prevVal, currentVal }) => {
-    console.log('update');
-    console.log(
-      `prevVal.pendingOperations: ${prevVal.pendingOperations.forEach(console.log)}`
-    );
-    console.log(
-      `currentVal.pendingOperations: ${currentVal.pendingOperations.forEach(console.log)}`
-    );
-    if (prevVal.pendingOperations === currentVal.pendingOperations) {
-      return;
-    }
-    console.log('UPDATE!');
-
-    // Add delay to batch operations
-    const timeoutId = setTimeout(() => {
-      processOperations();
-    }, 100);
-
-    // Return cleanup function
-    return () => clearTimeout(timeoutId);
-  });
-
-  const addOperation = (operation: Operation) => {
+  const batchOperation = (operation: Operation) => {
     store.current.setState((state) => {
       const existingOperations =
         state.pendingOperations.get(operation.clientId) || [];
 
-      console.log(
-        `Existing operations for client ${operation.clientId}:`,
-        existingOperations
-      );
-
-      console.log(`New operation:`, operation);
-
       const updatedOperations = state.pendingOperations.set(
         operation.clientId,
         [...existingOperations, operation]
-      );
-
-      console.log(
-        `Updated operations ${Array.from(updatedOperations.values().map((ops) => ops.map((op) => op.events).flat()))}`
       );
 
       return {
@@ -120,7 +59,30 @@ export function useSSE() {
     });
   };
 
-  const callSSE = useMutation({
+  function attachHandler({
+    clientId,
+    handler,
+  }: {
+    clientId: ClientId;
+    handler: (data: string) => void;
+  }) {
+    store.current.setState((state) => {
+      const existingClient = state.clients.get(clientId);
+
+      const newClient: ClientSubscription = {
+        clientId,
+        events: existingClient?.events ?? new Set(),
+        handler,
+      };
+
+      return {
+        ...state,
+        clients: state.clients.set(clientId, newClient),
+      };
+    });
+  }
+
+  const { mutate: callSSE } = useMutation({
     mutationFn: async ({
       events,
       connectionId,
@@ -157,11 +119,9 @@ export function useSSE() {
     },
   });
 
-  const processOperations = () => {
-    console.log('PROCESSING OPERATIONS!');
+  const processBatchedOperations = useCallback(() => {
     const { pendingOperations, clients } = store.current.state;
 
-    // Get actual clients updates
     const actualOperations = pendingOperations
       .keys()
       .reduce((acc, clientId) => {
@@ -202,10 +162,11 @@ export function useSSE() {
 
     // Update clients
     actualOperations.forEach((operations, clientId) => {
-      const client = clients.get(clientId);
-      if (!client) {
-        return;
-      }
+      const client = clients.get(clientId) ?? {
+        clientId,
+        events: new Set<SSEEvent>(),
+        handler: () => {},
+      };
 
       const newEvents = operations.reduce((acc, operation) => {
         switch (operation.type) {
@@ -271,22 +232,22 @@ export function useSSE() {
 
     // request changes to backend
     if (changes.subscribe.size > 0) {
-      callSSE.mutate({
+      callSSE({
         events: Array.from(changes.subscribe),
         connectionId: store.current.state.connectionId,
         action: 'subscribe',
       });
     }
     if (changes.cancellation.size > 0) {
-      callSSE.mutate({
+      callSSE({
         events: Array.from(changes.cancellation),
         connectionId: store.current.state.connectionId,
         action: 'unsubscribe',
       });
     }
-  };
+  }, [callSSE]);
 
-  const fetchLiveEventsData = useCallback(
+  const consumeSSE = useCallback(
     async ({ abortController }: { abortController: AbortController }) => {
       console.log(
         `awaiting token for connection ID: ${store.current.state.connectionId}`
@@ -330,7 +291,7 @@ export function useSSE() {
                 (event) => msg.event === event.value
               )
             ) {
-              client.handlers.forEach((handler) => handler(msg.data));
+              client.handler(msg.data);
             }
           });
         },
@@ -352,8 +313,53 @@ export function useSSE() {
     [getToken]
   );
 
+  useEffect(() => {
+    if (connectionRef.current) {
+      connectionRef.current.abort();
+    }
+
+    const abortController = new AbortController();
+    connectionRef.current = abortController;
+
+    const attemptReconnect = () => {
+      consumeSSE({ abortController }).catch(() => {
+        console.log('Attempting to reconnect SSE');
+        setTimeout(attemptReconnect, 5000); // Retry after 5 seconds
+      });
+    };
+
+    attemptReconnect();
+
+    return () => {
+      console.log('Cleanup SSE');
+
+      abortController.abort();
+      if (connectionRef.current === abortController) {
+        connectionRef.current = null;
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const unsubscribe = store.current.subscribe(({ prevVal, currentVal }) => {
+      if (prevVal.pendingOperations === currentVal.pendingOperations) {
+        return;
+      }
+
+      const timeoutId = setTimeout(() => {
+        processBatchedOperations();
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [processBatchedOperations]);
+
   return {
-    addOperation
+    addOperation: batchOperation,
+    attachHandler,
   };
-  
 }
