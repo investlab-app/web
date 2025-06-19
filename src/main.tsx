@@ -11,7 +11,7 @@ import { routeTree } from './routeTree.gen';
 import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
-import { LivePricesProvider } from './features/shared/hooks/use-sse.tsx';
+import { SSEProvider } from './features/shared/hooks/use-live-prices.tsx';
 import type { ReactNode } from '@tanstack/react-router';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
@@ -86,9 +86,9 @@ if (rootElement && !rootElement.innerHTML) {
       <ThemeProvider>
         <ClerkProviderWithTheme>
           <QueryClientProvider client={queryClient}>
-            <LivePricesProvider>
+            <SSEProvider>
               <RouterProvider router={router} />
-            </LivePricesProvider>
+            </SSEProvider>
           </QueryClientProvider>
         </ClerkProviderWithTheme>
       </ThemeProvider>

@@ -1,118 +1,72 @@
 import { Store } from '@tanstack/react-store';
 import { useAuth } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
-import { useRef } from 'react';
-import { baseUrl } from '@/features/shared/api';
+import { useCallback, useEffect, useRef } from 'react';
+import {
+  EventStreamContentType,
+  fetchEventSource,
+} from '@microsoft/fetch-event-source';
 
-type ClientId = string; // todo: Is there a way to have opaque types in TS?
-type Symbol = string;
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-const useSubscribeSSE = () => {
-  const { getToken } = useAuth();
-
-  return useMutation({
-    mutationFn: async ({
-      symbols,
-      connectionId,
-    }: {
-      symbols: Array<Symbol>;
-      connectionId: string;
-    }) => {
-      if (symbols.length === 0) {
-        return { success: true, message: 'No symbols to subscribe to' };
-      }
-      const token = await getToken();
-      if (!token) {
-        throw new Error('No authentication token available');
-      }
-
-      const response = await fetch(`${baseUrl}/api/sse/subscribe`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ symbols, connectionId }),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Subscription failed: ${response.status} ${response.statusText}`
-        );
-      }
-
-      return await response.json();
-    },
-  });
-};
-
-const useUnsubscribeSSE = () => {
-  const { getToken } = useAuth();
-
-  return useMutation({
-    mutationFn: async ({
-      symbols,
-      connectionId,
-    }: {
-      symbols: Array<Symbol>;
-      connectionId: string;
-    }) => {
-      if (symbols.length === 0) {
-        return { success: true, message: 'No symbols to unsubscribe from' };
-      }
-      const token = await getToken();
-      if (!token) {
-        throw new Error('No authentication token available');
-      }
-
-      const response = await fetch(`${baseUrl}/api/sse/unsubscribe`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ symbols, connectionId }),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Unsubscription failed: ${response.status} ${response.statusText}`
-        );
-      }
-
-      return await response.json();
-    },
-  });
-};
+type ClientId = string;
+type Event = string;
 
 export interface Client {
   clientId: ClientId;
-  handler: (message: string) => void;
-  symbols: Set<Symbol>;
+  events: Set<Event>;
+  handler: (data: string) => void;
 }
 
 interface SseOperation {
   type: 'subscribe' | 'unsubscribe';
   clientId: ClientId;
-  symbols: Array<Symbol>;
+  events: Set<Event>;
+  handler?: (data: string) => void;
 }
 
-export function useSSEStore() {
-  const sseStore = useRef(
+export function useSSE() {
+  const store = useRef(
     new Store({
       clients: new Map<ClientId, Client>(),
-      symbols: new Set<Symbol>(),
+      events: new Set<Event>(),
       connectionId: crypto.randomUUID(),
       pendingOperations: new Map<ClientId, Array<SseOperation>>(),
     })
   );
 
-  type SSEStore = typeof sseStore;
+  const connectionRef = useRef<AbortController | null>(null);
 
-  const subscribeSSE = useSubscribeSSE();
-  const unsubscribeSSE = useUnsubscribeSSE();
+  useEffect(() => {
+    if (connectionRef.current) {
+      connectionRef.current.abort();
+    }
 
-  sseStore.current.subscribe(({ prevVal, currentVal }) => {
+    const abortController = new AbortController();
+    connectionRef.current = abortController;
+
+    const attemptReconnect = () => {
+      fetchLiveEventsData({ abortController }).catch(() => {
+        console.log('Attempting to reconnect SSE');
+        setTimeout(attemptReconnect, 5000); // Retry after 5 seconds
+      });
+    };
+
+    attemptReconnect();
+
+    return () => {
+      console.log('Cleanup SSE');
+
+      abortController.abort();
+      if (connectionRef.current === abortController) {
+        connectionRef.current = null;
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { getToken } = useAuth();
+
+  store.current.subscribe(({ prevVal, currentVal }) => {
     console.log('update');
     console.log(
       `prevVal.pendingOperations: ${prevVal.pendingOperations.forEach(console.log)}`
@@ -127,21 +81,7 @@ export function useSSEStore() {
 
     // Add delay to batch operations
     const timeoutId = setTimeout(() => {
-      processOperations({
-        store: sseStore,
-        subscribeFn: (symbols) => {
-          subscribeSSE.mutate({
-            symbols: Array.from(symbols),
-            connectionId: currentVal.connectionId,
-          });
-        },
-        unsubscribeFn: (symbols) => {
-          unsubscribeSSE.mutate({
-            symbols: Array.from(symbols),
-            connectionId: currentVal.connectionId,
-          });
-        },
-      });
+      processOperations();
     }, 100);
 
     // Return cleanup function
@@ -150,9 +90,9 @@ export function useSSEStore() {
 
   const addOperation = ({ operation }: { operation: SseOperation }) => {
     console.log(
-      `Adding operation: ${operation.type} for client ${operation.clientId} with symbols ${operation.symbols.join(', ')}`
+      `Adding operation: ${operation.type} for client ${operation.clientId} with events ${Array.from(operation.events).join(', ')}`
     );
-    sseStore.current.setState((state) => {
+    store.current.setState((state) => {
       const existingOperations =
         state.pendingOperations.get(operation.clientId) || [];
 
@@ -169,7 +109,7 @@ export function useSSEStore() {
       );
 
       console.log(
-        `Updated operations ${Array.from(updatedOperations.values().map((ops) => ops.map((op) => op.symbols).flat()))}`
+        `Updated operations ${Array.from(updatedOperations.values().map((ops) => ops.map((op) => op.events).flat()))}`
       );
 
       return {
@@ -181,20 +121,19 @@ export function useSSEStore() {
 
   const subscribe = ({
     clientId,
-    symbols,
+    events,
+    handler,
   }: {
     clientId: ClientId;
-    symbols: Set<string>;
+    events: Set<string>;
+    handler: (data: string) => void;
   }) => {
-    console.log(
-      `Subscribing client ${clientId} to symbols: ${Array.from(symbols).join(', ')}`
-    );
-
     addOperation({
       operation: {
         type: 'subscribe',
         clientId,
-        symbols: Array.from(symbols),
+        events: events,
+        handler,
       },
     });
 
@@ -203,28 +142,57 @@ export function useSSEStore() {
 
   const unsubscribe = ({
     clientId,
-    symbols,
+    events,
   }: {
     clientId: ClientId;
-    symbols: Set<string>;
+    events: Set<Event>;
   }) =>
     addOperation({
       operation: {
         type: 'unsubscribe',
         clientId,
-        symbols: Array.from(symbols),
+        events: events,
       },
     });
 
-  const processOperations = ({
-    store,
-    subscribeFn,
-    unsubscribeFn,
-  }: {
-    store: SSEStore;
-    subscribeFn: (symbols: Set<string>) => void;
-    unsubscribeFn: (symbols: Set<string>) => void;
-  }) => {
+  const callSSE = useMutation({
+    mutationFn: async ({
+      events,
+      connectionId,
+      action,
+    }: {
+      events: Array<Event>;
+      connectionId: string;
+      action: 'subscribe' | 'unsubscribe';
+    }) => {
+      if (events.length === 0) {
+        return { success: true, message: 'No events to unsubscribe from' };
+      }
+      const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+
+      const response = await fetch(`${baseUrl}/api/sse/${action}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ events, connectionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `${action.charAt(0).toUpperCase() + action.slice(1)} failed: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return await response.json();
+    },
+  });
+
+  const processOperations = () => {
     console.log('PROCESSING OPERATIONS!');
     const { pendingOperations, clients } = store.current.state;
 
@@ -235,7 +203,7 @@ export function useSSEStore() {
         const operations = pendingOperations.get(clientId) || [];
 
         const operationsBalance = operations.reduce((balanceAcc, operation) => {
-          operation.symbols.forEach((symbol) => {
+          operation.events.forEach((symbol) => {
             balanceAcc.set(
               symbol,
               (balanceAcc.get(symbol) || 0) +
@@ -243,7 +211,7 @@ export function useSSEStore() {
             );
           });
           return balanceAcc;
-        }, new Map<Symbol, number>());
+        }, new Map<Event, number>());
 
         const actualClientOperations = operationsBalance
           .keys()
@@ -256,7 +224,7 @@ export function useSSEStore() {
             const operation: SseOperation = {
               type: count > 0 ? 'subscribe' : 'unsubscribe',
               clientId,
-              symbols: [symbol],
+              events: new Set([symbol]),
             };
 
             actualAcc.push(operation);
@@ -273,30 +241,30 @@ export function useSSEStore() {
         return;
       }
 
-      const newSymbols = operations.reduce((acc, operation) => {
+      const newEvents = operations.reduce((acc, operation) => {
         switch (operation.type) {
           case 'subscribe':
-            acc.union(new Set(operation.symbols));
+            acc.union(new Set(operation.events));
             break;
           case 'unsubscribe':
-            acc.difference(new Set(operation.symbols));
+            acc.difference(new Set(operation.events));
             break;
         }
         return acc;
-      }, client.symbols);
+      }, client.events);
 
       clients.set(clientId, {
         ...client,
-        symbols: newSymbols,
+        events: newEvents,
       });
     });
 
-    // Update store symbols
+    // Update store events
     const atomSubscriptions = Array.from(actualOperations.values())
       .flatMap((ops) => Array.from(ops.values()))
       .flatMap((op) => {
-        return op.symbols.map((symbol) => ({
-          symbols: symbol,
+        return Array.from(op.events).map((event) => ({
+          events: event,
           type: op.type,
         }));
       });
@@ -304,7 +272,7 @@ export function useSSEStore() {
     const symbolChanges = atomSubscriptions.reduce((acc, current) => {
       switch (current.type) {
         case 'subscribe':
-          acc = acc.filter((item) => item.symbols !== current.symbols);
+          acc = acc.filter((item) => item.events !== current.events);
           acc.push(current);
           break;
         case 'unsubscribe':
@@ -317,19 +285,19 @@ export function useSSEStore() {
     const changes = symbolChanges.reduce(
       (acc, current) => {
         if (current.type === 'subscribe') {
-          acc.subscribe.add(current.symbols);
+          acc.subscribe.add(current.events);
         } else {
-          acc.unsubscribe.add(current.symbols);
+          acc.unsubscribe.add(current.events);
         }
         return acc;
       },
-      { subscribe: new Set<Symbol>(), unsubscribe: new Set<Symbol>() }
+      { subscribe: new Set<Event>(), unsubscribe: new Set<Event>() }
     );
 
-    // update symbols in store
+    // update events in store
     store.current.setState((state) => ({
       ...state,
-      symbols: new Set([...state.symbols, ...changes.subscribe]).difference(
+      events: new Set([...state.events, ...changes.subscribe]).difference(
         changes.unsubscribe
       ),
       pendingOperations: new Map(),
@@ -337,15 +305,88 @@ export function useSSEStore() {
 
     // request changes to backend
     if (changes.subscribe.size > 0) {
-      subscribeFn(changes.subscribe);
+      callSSE.mutate({
+        events: Array.from(changes.subscribe),
+        connectionId: store.current.state.connectionId,
+        action: 'subscribe',
+      });
     }
     if (changes.unsubscribe.size > 0) {
-      unsubscribeFn(changes.unsubscribe);
+      callSSE.mutate({
+        events: Array.from(changes.unsubscribe),
+        connectionId: store.current.state.connectionId,
+        action: 'unsubscribe',
+      });
     }
   };
 
+  const fetchLiveEventsData = useCallback(
+    async ({ abortController }: { abortController: AbortController }) => {
+      console.log(
+        `awaiting token for connection ID: ${store.current.state.connectionId}`
+      );
+      const token = await getToken();
+      if (!token) {
+        console.error('No authentication token available');
+        return;
+      }
+
+      const params = new URLSearchParams();
+      params.append('events', Array.from(store.current.state.events).join(','));
+      params.append('connectionId', store.current.state.connectionId);
+      const url = `${baseUrl}/api/sse?${params.toString()}`;
+
+      await fetchEventSource(url, {
+        signal: abortController.signal,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        async onopen(response) {
+          if (
+            response.ok &&
+            response.headers.get('content-type') === EventStreamContentType
+          ) {
+            return Promise.resolve();
+          } else if (
+            response.status >= 400 &&
+            response.status < 500 &&
+            response.status !== 429
+          ) {
+            console.log('Client error');
+          } else {
+            console.log('Unexpected error');
+          }
+        },
+        onmessage: (msg) => {
+          store.current.state.clients.forEach((client) => {
+            if (
+              Array.from(client.events).some((symbol) =>
+                msg.data.includes(symbol)
+              )
+            ) {
+              client.handler(msg.data);
+            }
+          });
+        },
+        onclose() {
+          console.log(
+            `Connection closed (ID: ${store.current.state.connectionId})`
+          );
+          throw new Error('Connection closed unexpectedly');
+        },
+        onerror(error) {
+          console.log(
+            `Connection error (ID: ${store.current.state.connectionId}):`,
+            error
+          );
+          throw new Error('Connection error: ' + error.message);
+        },
+      });
+    },
+    [getToken]
+  );
+
   return {
-    store: sseStore.current.state,
     subscribe,
     unsubscribe,
   };

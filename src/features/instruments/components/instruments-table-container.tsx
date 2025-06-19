@@ -1,15 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDebounce } from '../helpers/debounce';
-import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../types/instruments.types';
-import type { Client } from '@/features/shared/hooks/use-sse.ts';
-import { useLivePrices } from '@/features/shared/hooks/use-sse';
-import SearchInput from '@/components/ui/search-input';
-import { Button } from '@/components/ui/button';
 
-const PAGE_SIZE = 10;
+// const PAGE_SIZE = 10;
 
 type InstrumentsTableContainerProps = {
   setInstrument: (instrument: Instrument) => void;
@@ -52,51 +44,51 @@ const InstrumentsTableContainer = ({
     },
   ];
 
-  const livePrices = useLivePrices();
+  // const livePrices = useLivePrices();
 
-  const handleMessage = useCallback((message: string) => {
-    console.log('Received message:', message);
-    // try {
-    //   // Replace single quotes with double quotes to ensure valid JSON
-    //   const fixedMessage = message.replace(/'/g, '"');
-    //   const parsed = JSON.parse(fixedMessage);
-    //   const { id, price, change_percent } = parsed;
+  // const handleMessage = useCallback((message: string) => {
+  //   console.log('Received message:', message);
+  //   // try {
+  //   //   // Replace single quotes with double quotes to ensure valid JSON
+  //   //   const fixedMessage = message.replace(/'/g, '"');
+  //   //   const parsed = JSON.parse(fixedMessage);
+  //   //   const { id, price, change_percent } = parsed;
 
-    //   if (!id || !price || !change_percent) {
-    //     console.warn('Invalid message format:', parsed);
-    //     return;
-    //   }
+  //   //   if (!id || !price || !change_percent) {
+  //   //     console.warn('Invalid message format:', parsed);
+  //   //     return;
+  //   //   }
 
-    //   priceUpdatesRef.current[id] = {
-    //     currentPrice: price,
-    //     dayChange: change_percent,
-    //   };
-    // } catch (error) {
-    //   console.error('Failed to parse message:', message, error);
-    // }
-  }, []);
+  //   //   priceUpdatesRef.current[id] = {
+  //   //     currentPrice: price,
+  //   //     dayChange: change_percent,
+  //   //   };
+  //   // } catch (error) {
+  //   //   console.error('Failed to parse message:', message, error);
+  //   // }
+  // }, []);
 
-  useEffect(() => {
-    console.log('Subscribing to live prices for instruments:', instruments);
+  // useEffect(() => {
+  //   console.log('Subscribing to live prices for instruments:', instruments);
 
-    const tickers = new Set(instruments.map((instrument) => instrument.symbol));
+  //   const tickers = new Set(instruments.map((instrument) => instrument.symbol));
 
-    const handler = {
-      clientId: crypto.randomUUID(),
-      symbols: tickers,
-      handler: handleMessage,
-    };
+  //   const handler = {
+  //     clientId: crypto.randomUUID(),
+  //     symbols: tickers,
+  //     handler: handleMessage,
+  //   };
 
-    livePrices.subscribe(handler);
+  //   livePrices.subscribe(handler);
 
-    return () => {
-      console.log(
-        'Unsubscribing from live prices for instruments:',
-        instruments
-      );
-      livePrices.unsubscribe(handler);
-    };
-  }, [instruments]);
+  //   return () => {
+  //     console.log(
+  //       'Unsubscribing from live prices for instruments:',
+  //       instruments
+  //     );
+  //     livePrices.unsubscribe(handler);
+  //   };
+  // }, [instruments]);
 
   const handleInstrumentPressed = (asset: Instrument) => {
     setInstrument(asset);
