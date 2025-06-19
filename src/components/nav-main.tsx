@@ -2,6 +2,7 @@ import { IconPlus, IconWallet } from '@tabler/icons-react';
 import { Button } from './ui/button';
 import type { Icon } from '@tabler/icons-react';
 
+import type { LinkProps } from '@tanstack/react-router';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -10,23 +11,19 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-export function NavMain({
-  items,
-}: {
-  items: Array<{
-    title: string;
-    url: string;
-    icon?: Icon;
-  }>;
-}) {
+export interface NavItem {
+  title: string;
+  to: LinkProps['to'];
+  icon: Icon;
+}
+
+export function NavMain({ items }: { items: Array<NavItem> }) {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-0">
-            <SidebarMenuButton
-              tooltip="Wallet"
-            >
+            <SidebarMenuButton tooltip="Wallet">
               <IconWallet />
               <span>$9999.00</span>
             </SidebarMenuButton>
@@ -41,8 +38,8 @@ export function NavMain({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} navigateTo={item.url}>
-                {item.icon && <item.icon />}
+              <SidebarMenuButton tooltip={item.title} navigateTo={item.to}>
+                <item.icon />
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

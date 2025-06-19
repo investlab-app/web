@@ -1,12 +1,11 @@
-import data from '../../data.json';
-import { StockChartContainer } from '../charts/components/stock-chart-container';
 import { AppSidebar } from '@/components/app-sidebar';
-
 import { DataTable } from '@/components/data-table';
 import { SectionCards } from '@/components/section-cards';
 import { SiteHeader } from '@/components/site-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 import { AuthTestButton } from '@/features/login/components/auth-test-button';
+import data from '@/data.json';
 
 export function HomePage() {
   return (

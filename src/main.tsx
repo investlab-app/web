@@ -8,10 +8,10 @@ import { dark } from '@clerk/themes';
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
 
-import '../src/i18n/config.ts';
+import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
-import { LivePricesProvider } from './hooks/use-sse.ts.tsx';
+import { LivePricesProvider } from './features/shared/hooks/use-sse.ts.tsx';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
 // Create a new router instance

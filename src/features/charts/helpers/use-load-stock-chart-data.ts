@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { intervalToStartDate } from './time-ranges-helpers';
 import { transformApiResponse } from './api-reasponse-helpers';
-import { fetchHistoryForInstrument } from '@/remote/api';
+import { fetchHistoryForInstrument } from '@/features/shared/api';
 import type { InstrumentPriceProps } from './charts-props';
 
 type LoadResult = {

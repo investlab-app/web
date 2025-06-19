@@ -6,6 +6,8 @@ import {
   IconSettings,
 } from '@tabler/icons-react';
 
+import { useTranslation } from 'react-i18next';
+import type { NavItem } from '@/components/nav-main';
 import { NavMain } from '@/components/nav-main';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
@@ -19,32 +21,36 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { useTranslation } from 'react-i18next';
+
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
-  const data = {
+  const data: {
+    navMain: Array<NavItem>;
+    navSecondary: Array<NavItem>;
+  } = {
     navMain: [
       {
         title: t('common.dashboard'),
-        url: '/',
+        to: '/',
         icon: IconDashboard,
       },
       {
         title: t('common.stocks'),
-        url: '/instruments-page',
+        to: '/instruments',
         icon: IconListDetails,
       },
     ],
     navSecondary: [
       {
         title: t('common.settings'),
-        url: '#',
+        to: '/',
         icon: IconSettings,
       },
       {
         title: t('common.help'),
-        url: '#',
+        to: '/',
         icon: IconHelp,
       },
     ],

@@ -12,6 +12,7 @@ import {
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
 import { useAuth } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,32 +29,89 @@ interface LivePricesProviderParams {
   children: React.ReactNode;
 }
 
-class RetriableError extends Error {}
-
-class FatalError extends Error {}
-
 interface Handler {
+  id: string;
   callback: (message: string) => void;
-  symbols: Array<string>;
+  symbols: Set<string>;
 }
 
-export function LivePricesProvider({ children }: LivePricesProviderParams) {
-  const [tickers, setTickers] = useState<Array<string>>([]);
+export const useSubscribeToSymbols = () => {
   const { getToken } = useAuth();
+  
+  return useMutation({
+    mutationFn: async (symbols: Array<string>) => {
+      const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+      
+      const response = await fetch(`${baseUrl}/sse/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ symbols })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Subscription failed: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    }
+  });
+};
+
+export const useUnsubscribeFromSymbols = () => {
+  const { getToken } = useAuth();
+  
+  return useMutation({
+    mutationFn: async (symbols: Array<string>) => {
+      const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+      
+      const response = await fetch(`${baseUrl}/sse/unsubscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ symbols })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Unsubscription failed: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    }
+  });
+};
+
+export function LivePricesProvider({ children }: LivePricesProviderParams) {
+  const [tickers, setTickers] = useState<Set<string>>(new Set<string>());
+
+  const { getToken } = useAuth();
+
+  const connectionId = useMemo(() => crypto.randomUUID(), []);
   const connectionRef = useRef<AbortController | null>(null);
   const handlersRef = useRef<Array<Handler>>([]);
   const mountedRef = useRef(false);
-    // Generate a proper UUID for connectionId
-  const connectionId = useMemo(() => crypto.randomUUID(), []);
+
   useEffect(() => {
     if (mountedRef.current) {
-      console.log(`LivePricesProvider re-mount detected, skipping (ID: ${connectionId})`);
+      console.log(
+        `LivePricesProvider re-mount detected, skipping (ID: ${connectionId})`
+      );
       return;
     }
-    
+
     mountedRef.current = true;
     console.log(`LivePricesProvider mounted (ID: ${connectionId})`);
-    
+
     return () => {
       mountedRef.current = false;
     };
@@ -63,12 +121,7 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
     if (!mountedRef.current) {
       return;
     }
-      if (tickers.length === 0) {
-      console.log(`No tickers to subscribe to, skipping SSE connection (ID: ${connectionId})`);
-      return;
-    }
 
-    // Abort any existing connection
     if (connectionRef.current) {
       console.log(`Aborting existing connection (ID: ${connectionId})`);
       connectionRef.current.abort();
@@ -76,20 +129,20 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
 
     const abortController = new AbortController();
     connectionRef.current = abortController;
-      const connectToSSE = async () => {
-      try {
-        const params = new URLSearchParams();
-        params.append('symbols', tickers.join(','));
-        params.append('connectionId', connectionId);
-        const url = `${baseUrl}/api/sse?${params.toString()}`;
 
+    const connectToSSE = async () => {
+      try {
         const token = await getToken();
         if (!token) {
           console.error('No authentication token available');
           return;
         }
 
-        console.log(`Connecting to SSE with tickers: ${tickers.join(',')} (connectionId: ${connectionId})`);
+        const params = new URLSearchParams();
+        params.append('symbols', '');
+        params.append('connectionId', connectionId);
+        const url = `${baseUrl}/api/sse?${params.toString()}`;
+        console.log(`Connecting to SSE (connectionId: ${connectionId})`);
 
         await fetchEventSource(url, {
           signal: abortController.signal,
@@ -108,21 +161,18 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
               response.status < 500 &&
               response.status !== 429
             ) {
-              throw new FatalError(
+              throw new Error(
                 `HTTP ${response.status}: ${response.statusText}`
               );
             } else {
-              throw new RetriableError(
-                `HTTP ${response.status}: ${response.statusText}`
+              throw new Error(
+                `Unexpected response from SSE: ${response.status} ${response.statusText}`
               );
             }
-          },          onmessage: (msg) => {
-            if (msg.event === 'FatalError') {
-              throw new FatalError(msg.data);
-            }
+          },
+          onmessage: (msg) => {
             console.log('Received SSE message:', msg.data);
 
-            // Call handlers that are subscribed to this symbol
             handlersRef.current.forEach((handler) => {
               // if (handler.symbols.some((symbol) => msg.data.includes(symbol))) {
               handler.callback(msg.data);
@@ -132,17 +182,14 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
           onclose() {
             if (!abortController.signal.aborted) {
               console.log('SSE connection closed unexpectedly');
-              throw new RetriableError('Connection closed');
+              throw new Error('SSE connection closed unexpectedly');
             } else {
               console.log('SSE connection closed by cleanup');
             }
           },
           onerror(err) {
             console.error('SSE error:', err);
-            if (err instanceof FatalError) {
-              throw err;
-            }
-            throw new RetriableError('Connection error');
+            throw err;
           },
         });
       } catch (error) {
@@ -152,7 +199,8 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
       }
     };
 
-    connectToSSE();    // Cleanup function to abort the connection
+    connectToSSE();
+
     return () => {
       console.log(`Cleaning up SSE connection (ID: ${connectionId})`);
       abortController.abort();
@@ -160,40 +208,27 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
         connectionRef.current = null;
       }
     };
-  }, [tickers, getToken, connectionId]);  const subscribe = useCallback((handler: Handler) => {
-    // Check if handler already exists to prevent duplicates
-    const existingHandler = handlersRef.current.find(h => 
-      h.callback === handler.callback && 
-      JSON.stringify(h.symbols) === JSON.stringify(handler.symbols)
+  }, [getToken, connectionId]);
+
+  const subscribe = useCallback((handler: Handler) => {
+    handlersRef.current = handlersRef.current.filter(
+      (h) => h.id !== handler.id
     );
-    
-    if (existingHandler) {
-      console.log('Handler already exists, skipping subscription');
-      return;
-    }
-    
-    handlersRef.current = [...handlersRef.current, handler];
-    
+
+    handlersRef.current.push(handler);
+
     setTickers((prev) => {
-      const newSymbols = handler.symbols.filter(
-        (symbol) => !prev.includes(symbol)
-      );
-      if (newSymbols.length > 0) {
-        console.log('SUBSCRIBE: Adding new symbols:', newSymbols);
-      }
-      return [...prev, ...newSymbols];
+      return prev.union(new Set(handler.symbols));
     });
   }, []);
 
   const unsubscribe = useCallback((handler: Handler) => {
-    const newHandlers = handlersRef.current.filter((h) => h !== handler);
-    handlersRef.current = newHandlers;
-    
+    handlersRef.current = handlersRef.current.filter(
+      (h) => h.id !== handler.id
+    );
+
     setTickers((prevTickers) => {
-      const stillNeededSymbols = new Set(
-        newHandlers.flatMap((h) => h.symbols)
-      );
-      return prevTickers.filter((symbol) => stillNeededSymbols.has(symbol));
+      return prevTickers.difference(new Set(handler.symbols));
     });
   }, []);
 

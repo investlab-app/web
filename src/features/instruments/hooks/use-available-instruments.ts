@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
-import { fetchAvailableInstruments } from '@/remote/api';
+import { fetchAvailableInstruments } from '@/features/shared/api';
 
 export const useAvailableInstruments = () => {
   const { getToken } = useAuth();

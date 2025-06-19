@@ -5,8 +5,8 @@ import { PanelLeftIcon } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import type { VariantProps } from 'class-variance-authority';
 
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/features/shared/hooks/use-mobile';
+import { cn } from '@/features/shared/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';

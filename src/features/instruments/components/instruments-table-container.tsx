@@ -5,7 +5,7 @@ import { useDebounce } from '../helpers/debounce';
 import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../types/instruments.types';
-import { useLivePrices } from '@/hooks/use-sse.ts';
+import { useLivePrices } from '@/features/shared/hooks/use-sse.ts';
 import SearchInput from '@/components/ui/search-input';
 import { Button } from '@/components/ui/button';
 

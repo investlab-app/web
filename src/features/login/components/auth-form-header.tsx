@@ -1,5 +1,5 @@
 import { CardDescription, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn } from '@/features/shared/utils';
 
 interface AuthFormHeaderProps {
   title: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactECharts from 'echarts-for-react';
 
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/features/shared/hooks/use-mobile';
 import {
   Card,
   CardAction,

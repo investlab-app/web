@@ -51,6 +51,6 @@ export default function InstrumentsPage() {
   );
 }
 
-export const Route = createFileRoute('/instruments-page')({
+export const Route = createFileRoute('/instruments/')({
   component: InstrumentsPage,
 });

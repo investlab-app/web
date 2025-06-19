@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import type { ClerkError } from '@/lib/clerk-error';
+import type { ClerkError } from '@/features/login/clerk-error';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { FormInput } from '@/components/ui/form-input';
@@ -10,7 +10,7 @@ import { Divider } from '@/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/components/ui/button';
 import { PasswordInput } from '@/components/ui/password-input';
-import { THIS_URL } from '@/lib/constants';
+import { THIS_URL } from '@/features/shared/constants';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();

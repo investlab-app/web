@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { type } from 'arktype';
 import { fromDTO, instrumentDTO } from '../types/instruments.types';
 import type { InstrumentsPageData } from '../types/instruments.types';
-import { fetchInstrumentsOverview } from '@/remote/api';
+import { fetchInstrumentsOverview } from '@/features/shared/api';
 
 type UseInstrumentPagesProps = {
   tickers: Array<string>;
