@@ -18,10 +18,6 @@ export const useSubscribeToSymbols = () => {
         throw new Error('No authentication token available');
       }
 
-      console.log(
-        `Subscribing to symbols: ${symbols.join(', ')} with connection ID: ${connectionId}`
-      );
-
       const response = await fetch(`${baseUrl}/api/sse/subscribe`, {
         method: 'PUT',
         headers: {

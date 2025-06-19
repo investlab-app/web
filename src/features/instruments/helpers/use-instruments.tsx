@@ -23,7 +23,6 @@ export const useInstruments = ({
 
   const filteredTickers = useMemo(() => {
     if (!filter.trim()) return availableInstruments;
-    console.log(`availableInstruments: ${availableInstruments}`);
     return availableInstruments.filter((ticker) =>
       ticker.toLowerCase().includes(filter.toLowerCase().trim())
     );

@@ -23,8 +23,6 @@ export default function InstrumentsPage() {
 
   if (!isLoaded || !isSignedIn) return null;
 
-  console.log('INSTRUMENTS PAGE');
-
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />

@@ -13,6 +13,7 @@ import {
 } from '@microsoft/fetch-event-source';
 import { useAuth } from '@clerk/clerk-react';
 import { useSubscribeToSymbols } from './use-subscribe';
+import { useUnsubscribeFromSymbols } from './use-unsubscribe';
 import type { ReactNode } from 'react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -36,39 +37,19 @@ export interface Handler {
   symbols: Set<string>;
 }
 
+class RetriableError extends Error {}
+
+class FatalError extends Error {}
+
 export function LivePricesProvider({ children }: LivePricesProviderParams) {
   const [, setTickers] = useState<Set<string>>(new Set<string>());
-
-  const { getToken } = useAuth();
-
+  const { getToken, sessionId } = useAuth();
   const connectionId = useMemo(() => crypto.randomUUID(), []);
   const connectionRef = useRef<AbortController | null>(null);
   const handlersRef = useRef<Array<Handler>>([]);
-  const mountedRef = useRef(false);
 
   useEffect(() => {
-    if (mountedRef.current) {
-      console.log(
-        `LivePricesProvider re-mount detected, skipping (ID: ${connectionId})`
-      );
-      return;
-    }
-
-    mountedRef.current = true;
-    console.log(`LivePricesProvider mounted (ID: ${connectionId})`);
-
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [connectionId]);
-
-  useEffect(() => {
-    if (!mountedRef.current) {
-      return;
-    }
-
     if (connectionRef.current) {
-      console.log(`Aborting existing connection (ID: ${connectionId})`);
       connectionRef.current.abort();
     }
 
@@ -76,115 +57,115 @@ export function LivePricesProvider({ children }: LivePricesProviderParams) {
     connectionRef.current = abortController;
 
     const connectToSSE = async () => {
-      try {
-        const token = await getToken();
-        if (!token) {
-          console.error('No authentication token available');
-          return;
-        }
-
-        const params = new URLSearchParams();
-        params.append('connectionId', connectionId);
-        const url = `${baseUrl}/api/sse?${params.toString()}`;
-        console.log(`Connecting to SSE (connectionId: ${connectionId})`);
-
-        await fetchEventSource(url, {
-          signal: abortController.signal,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          async onopen(response) {
-            if (
-              response.ok &&
-              response.headers.get('content-type') === EventStreamContentType
-            ) {
-              console.log('SSE connection opened successfully');
-              return Promise.resolve();
-            } else if (
-              response.status >= 400 &&
-              response.status < 500 &&
-              response.status !== 429
-            ) {
-              throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-              );
-            } else {
-              throw new Error(
-                `Unexpected response from SSE: ${response.status} ${response.statusText}`
-              );
-            }
-          },
-          onmessage: (msg) => {
-            console.log('Received SSE message:', msg.data);
-
-            handlersRef.current.forEach((handler) => {
-              // if (handler.symbols.some((symbol) => msg.data.includes(symbol))) {
-              handler.callback(msg.data);
-              // }
-            });
-          },
-          onclose() {
-            if (!abortController.signal.aborted) {
-              console.log('SSE connection closed unexpectedly');
-              throw new Error('SSE connection closed unexpectedly');
-            } else {
-              console.log('SSE connection closed by cleanup');
-            }
-          },
-          onerror(err) {
-            console.error('SSE error:', err);
-            throw err;
-          },
-        });
-      } catch (error) {
-        if (!abortController.signal.aborted) {
-          console.error('Failed to establish SSE connection:', error);
-        }
+      const token = await getToken();
+      if (!token) {
+        console.error('No authentication token available');
+        return;
       }
+
+      const params = new URLSearchParams();
+      params.append('connectionId', connectionId);
+      const url = `${baseUrl}/api/sse?${params.toString()}`;
+
+      await fetchEventSource(url, {
+        signal: abortController.signal,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        async onopen(response) {
+          if (
+            response.ok &&
+            response.headers.get('content-type') === EventStreamContentType
+          ) {
+            return Promise.resolve();
+          } else if (
+            response.status >= 400 &&
+            response.status < 500 &&
+            response.status !== 429
+          ) {
+            throw new FatalError(
+              `HTTP ${response.status}: ${response.statusText}`
+            );
+          } else {
+            throw new RetriableError(
+              `Unexpected response from SSE: ${response.status} ${response.statusText}`
+            );
+          }
+        },
+        onmessage: (msg) => {
+          handlersRef.current.forEach((handler) => {
+            if (
+              Array.from(handler.symbols).some((symbol) =>
+                msg.data.includes(symbol)
+              )
+            ) {
+              handler.callback(msg.data);
+            }
+          });
+        },
+        onclose() {
+          if (!abortController.signal.aborted) {
+            throw new RetriableError('Connection closed');
+          }
+        },
+        onerror(error) {
+          throw new RetriableError('Connection error', error);
+        },
+      });
     };
 
-    connectToSSE();
+    connectToSSE().catch((error) => {
+      console.error(`Error in SSE connection (ID: ${connectionId}):`, error);
+    });
 
     return () => {
-      console.log(`Cleaning up SSE connection (ID: ${connectionId})`);
       abortController.abort();
       if (connectionRef.current === abortController) {
         connectionRef.current = null;
       }
     };
-  }, [getToken, connectionId]);
+  }, [getToken, connectionId, sessionId]);
 
-  const { mutate } = useSubscribeToSymbols();
+  const { mutate: subscribeToSymbols } = useSubscribeToSymbols();
 
-  const subscribe = useCallback((handler: Handler) => {
-    console.log(
-      `Subscribing handler (ID: ${handler.id}) for symbols: ${Array.from(handler.symbols)}`
-    );
+  const subscribe = useCallback(
+    (handler: Handler) => {
+      handlersRef.current = [
+        ...handlersRef.current.filter((h) => h.id !== handler.id),
+        handler,
+      ];
 
-    handlersRef.current = [
-      ...handlersRef.current.filter((h) => h.id !== handler.id),
-      handler,
-    ];
+      subscribeToSymbols({
+        symbols: Array.from(handler.symbols),
+        connectionId,
+      });
 
-    mutate({
-      symbols: Array.from(handler.symbols),
-      connectionId,
-    });
+      setTickers((prev) => {
+        return prev.union(new Set(handler.symbols));
+      });
+    },
+    [connectionId, subscribeToSymbols]
+  );
 
-    setTickers((prev) => {
-      return prev.union(new Set(handler.symbols));
-    });
-  }, []);
+  const { mutate: unsubscribeFromSymbols } = useUnsubscribeFromSymbols();
 
-  const unsubscribe = useCallback((handler: Handler) => {
-    handlersRef.current = handlersRef.current.filter(
-      (h) => h.id !== handler.id
-    );
+  const unsubscribe = useCallback(
+    (handler: Handler) => {
+      handlersRef.current = handlersRef.current.filter(
+        (h) => h.id !== handler.id
+      );
 
-    setTickers((prevTickers) => {
-      return prevTickers.difference(new Set(handler.symbols));
-    });
-  }, []);
+      unsubscribeFromSymbols({
+        symbols: Array.from(handler.symbols),
+        connectionId,
+      });
+
+      setTickers((prev) => {
+        return prev.difference(new Set(handler.symbols));
+      });
+    },
+    [connectionId, unsubscribeFromSymbols]
+  );
 
   const contextValue: LivePricesContextType = useMemo(
     () => ({

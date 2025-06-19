@@ -40,11 +40,8 @@ export const useInstrumentPages = ({
         },
       ],
       queryFn: async (): Promise<InstrumentsPageData> => {
-        console.log(`Fetching tickers ${tickers}`);
         const token = await getToken();
         if (!token) throw new Error('No auth token available');
-
-        console.log(`Token: ${token}`);
 
         const response = await fetchInstrumentsOverview({
           tickers: tickers.length > 0 ? tickers : undefined,
@@ -55,8 +52,6 @@ export const useInstrumentPages = ({
           sortDirection,
           token,
         });
-
-        console.log(response);
 
         return {
           instruments: response.items?.flatMap((item: unknown) => {

@@ -16,7 +16,6 @@ export function transformApiResponse(
   apiData: ApiItem
 ): Array<InstrumentPriceProps> {
   if (!Array.isArray(apiData.data)) return [];
-  console.log(apiData);
   return apiData.data.map((item) => ({
     date: item.timestamp,
     open: parseFloat(item.open),

@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '../helpers/debounce';
 import { useInstruments } from '../helpers/use-instruments';
 import InstrumentTable from './instrument-table';
 import type { Instrument } from '../types/instruments.types';
-import type {Handler} from '@/features/shared/hooks/use-sse.ts';
-import {
-  useLivePrices
-} from '@/features/shared/hooks/use-sse';
+import type { Handler } from '@/features/shared/hooks/use-sse.ts';
+import { useLivePrices } from '@/features/shared/hooks/use-sse';
 import SearchInput from '@/components/ui/search-input';
 import { Button } from '@/components/ui/button';
 
@@ -38,26 +35,22 @@ const InstrumentsTableContainer = ({
 
   const livePrices = useLivePrices();
 
-  const [messages, setMessages] = useState<
-    Record<string, Array<string> | undefined>
-  >({});
-
   const handleMessage = useCallback((message: string) => {
     try {
       // Replace single quotes with double quotes to ensure valid JSON
       const fixedMessage = message.replace(/'/g, '"');
       const parsed = JSON.parse(fixedMessage);
-      const { id, price } = parsed;
+      const { id, price, change_percent } = parsed;
 
-      if (!id || !price) {
+      if (!id || !price || !change_percent) {
         console.warn('Invalid message format:', parsed);
         return;
       }
 
-      setMessages((prev) => ({
-        ...prev,
-        [id]: [...(prev[id] || []), fixedMessage],
-      }));
+      priceUpdatesRef.current[id] = {
+        currentPrice: price,
+        dayChange: change_percent,
+      };
     } catch (error) {
       console.error('Failed to parse message:', message, error);
     }
@@ -72,7 +65,6 @@ const InstrumentsTableContainer = ({
       callback: handleMessage,
     } as Handler;
 
-    console.log('Subscribing to live prices for:', tickers);
     livePrices.subscribe(handler);
 
     return () => {
@@ -83,24 +75,6 @@ const InstrumentsTableContainer = ({
   const priceUpdatesRef = useRef<
     Record<string, Partial<(typeof instruments)[0]>>
   >({});
-
-  useEffect(() => {
-    instruments.forEach((instrument) => {
-      const tickerMessages = messages[instrument.symbol];
-      if (tickerMessages && tickerMessages.length > 0) {
-        const latestRaw = tickerMessages[tickerMessages.length - 1];
-        try {
-          const parsed = JSON.parse(latestRaw);
-          priceUpdatesRef.current[instrument.symbol] = {
-            currentPrice: parsed.price,
-            dayChange: parsed.change_percent,
-          };
-        } catch (e) {
-          console.warn('Invalid SSE message for', instrument.symbol, latestRaw);
-        }
-      }
-    });
-  }, [messages, instruments]);
 
   useEffect(() => {
     setPage(1);

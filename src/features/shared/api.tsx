@@ -82,7 +82,6 @@ export function fetchInstrumentsOverview({
     ...(sortDirection && { sort_direction: sortDirection }),
   });
 
-  console.log(params.toString());
   return fetch(`${baseUrl}/api/instruments?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -121,8 +120,6 @@ export async function fetchAvailableInstruments({
     console.error(out.summary);
     throw new Error(out.summary);
   }
-
-  console.log(`out.instruments: ${out.instruments}`);
 
   return out.instruments;
 }

@@ -20,7 +20,7 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
   selectedInterval,
   liveUpdateValue = null,
 }) => {
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<ReactECharts | undefined>(undefined);
 
   const chartOptions = useMemo(
     () =>
@@ -38,18 +38,16 @@ export const StockChartPresentation: React.FC<ChartPresentationsProps> = ({
     if (!liveUpdateValue || !chartRef.current) return;
 
     const chartInstance = chartRef.current.getEchartsInstance();
-    if (!chartInstance) return;
 
     const [val, isUpdate] = liveUpdateValue;
 
     const oldSeriesData = chartInstance.getOption()?.series?.[0]?.data ?? [];
     const oldXData = chartInstance.getOption()?.xAxis?.[0]?.data ?? [];
 
-    let newSeriesData = [...oldSeriesData];
-    let newXData = [...oldXData];
+    const newSeriesData = [...oldSeriesData];
+    const newXData = [...oldXData];
 
     if (isUpdate && newSeriesData.length > 0 && newXData.length > 0) {
-      console.log('updating with value', val);
       // Update last point
       newSeriesData[newSeriesData.length - 1] = {
         value: val.close,

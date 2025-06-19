@@ -12,6 +12,7 @@ import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
 import { LivePricesProvider } from './features/shared/hooks/use-sse.tsx';
+import type { ReactNode } from '@tanstack/react-router';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
 // Create a new router instance
@@ -34,7 +35,7 @@ if (!clerkPubKey) {
 }
 
 // Component to handle Clerk with theme support
-function ClerkProviderWithTheme({ children }: { children: React.ReactNode }) {
+function ClerkProviderWithTheme({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
   const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'

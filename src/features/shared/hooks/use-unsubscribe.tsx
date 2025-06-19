@@ -6,19 +6,25 @@ export const useUnsubscribeFromSymbols = () => {
   const { getToken } = useAuth();
 
   return useMutation({
-    mutationFn: async (symbols: Array<string>) => {
+    mutationFn: async ({
+      symbols,
+      connectionId,
+    }: {
+      symbols: Array<string>;
+      connectionId: string;
+    }) => {
       const token = await getToken();
       if (!token) {
         throw new Error('No authentication token available');
       }
 
-      const response = await fetch(`${baseUrl}/sse/unsubscribe`, {
-        method: 'POST',
+      const response = await fetch(`${baseUrl}/api/sse/unsubscribe`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ symbols }),
+        body: JSON.stringify({ symbols, connectionId }),
       });
 
       if (!response.ok) {
