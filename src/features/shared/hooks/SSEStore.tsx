@@ -1,7 +1,88 @@
 import { Store } from '@tanstack/react-store';
+import { useAuth } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
+import { baseUrl } from '@/features/shared/api';
 
-type ClientId = string;
+type ClientId = string; // todo: Is there a way to have opaque types in TS?
 type Symbol = string;
+
+const useSubscribe = () => {
+  const { getToken } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({
+      symbols,
+      connectionId,
+    }: {
+      symbols: Array<Symbol>;
+      connectionId: string;
+    }) => {
+      if (symbols.length === 0) {
+        return { success: true, message: 'No symbols to subscribe to' };
+      }
+      const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+
+      const response = await fetch(`${baseUrl}/api/sse/subscribe`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ symbols, connectionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Subscription failed: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return await response.json();
+    },
+  });
+};
+
+const useUnsubscribe = () => {
+  const { getToken } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({
+      symbols,
+      connectionId,
+    }: {
+      symbols: Array<Symbol>;
+      connectionId: string;
+    }) => {
+      if (symbols.length === 0) {
+        return { success: true, message: 'No symbols to unsubscribe from' };
+      }
+      const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+
+      const response = await fetch(`${baseUrl}/api/sse/unsubscribe`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ symbols, connectionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Unsubscription failed: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return await response.json();
+    },
+  });
+};
 
 export interface Client {
   clientId: ClientId;
@@ -9,55 +90,147 @@ export interface Client {
   symbols: Set<Symbol>;
 }
 
-export interface SseOperation {
+interface SseOperation {
   type: 'subscribe' | 'unsubscribe';
   clientId: ClientId;
-  symbols: Symbol[];
+  symbols: Array<Symbol>;
 }
 
-const sseStore = new Store({
+export const sseStore = new Store({
   clients: new Map<ClientId, Client>(),
   symbols: new Set<Symbol>(),
   connectionId: crypto.randomUUID(),
   pendingOperations: new Map<ClientId, Array<SseOperation>>(),
 });
+
 type SSEStore = typeof sseStore;
 
-const processOperations = (store: SSEStore) => {
+sseStore.subscribe((state) => {
+  const subscribe = useSubscribe();
+  const unsubscribeMutation = useUnsubscribe();
+
+  // Add delay to batch operations
+  const timeoutId = setTimeout(() => {
+    processOperations({
+      store: sseStore,
+      subscribeFn: (symbols) => {
+        subscribe.mutate({
+          symbols: Array.from(symbols),
+          connectionId: state.currentVal.connectionId,
+        });
+      },
+      unsubscribe: (symbols) => {
+        unsubscribeMutation.mutate({
+          symbols: Array.from(symbols),
+          connectionId: state.currentVal.connectionId,
+        });
+      },
+    });
+  }, 100);
+
+  // Return cleanup function
+  return () => clearTimeout(timeoutId);
+});
+
+const addOperation = ({
+  client,
+  operation,
+}: {
+  client: Client;
+  operation: SseOperation;
+}) => {
+  sseStore.setState((state) => {
+    const existingOperations =
+      state.pendingOperations.get(client.clientId) || [];
+
+    return {
+      ...state,
+      clients: new Map(state.clients).set(client.clientId, client),
+      pendingOperations: state.pendingOperations.set(client.clientId, [
+        ...existingOperations,
+        operation,
+      ]),
+    };
+  });
+};
+
+export const subscribe = ({
+  client,
+  symbols,
+}: {
+  client: Client;
+  symbols: Set<string>;
+}) =>
+  addOperation({
+    client,
+    operation: {
+      type: 'subscribe',
+      clientId: client.clientId,
+      symbols: Array.from(symbols),
+    },
+  });
+
+export const unsubscribe = ({
+  client,
+  symbols,
+}: {
+  client: Client;
+  symbols: Set<string>;
+}) =>
+  addOperation({
+    client,
+    operation: {
+      type: 'unsubscribe',
+      clientId: client.clientId,
+      symbols: Array.from(symbols),
+    },
+  });
+
+const processOperations = ({
+  store,
+  subscribeFn,
+  unsubscribeFn,
+}: {
+  store: SSEStore;
+  subscribeFn: (symbols: Set<string>) => void;
+  unsubscribeFn: (symbols: Set<string>) => void;
+}) => {
   const { pendingOperations, clients } = store.state;
 
-  // Process pending operations
+  // Get actual clients updates
   const actualOperations = pendingOperations.keys().reduce((acc, clientId) => {
     const operations = pendingOperations.get(clientId) || [];
 
-    const operationsBalance =
-      operations.reduce((acc, operation) => {
-        operation.symbols.forEach((symbol) => {
-          acc.set(
-            symbol,
-            (acc.get(symbol) || 0) + (operation.type === 'subscribe' ? 1 : -1)
-          );
-        });
-        return acc;
-      }, new Map<Symbol, number>());
+    const operationsBalance = operations.reduce((balanceAcc, operation) => {
+      operation.symbols.forEach((symbol) => {
+        balanceAcc.set(
+          symbol,
+          (balanceAcc.get(symbol) || 0) +
+            (operation.type === 'subscribe' ? 1 : -1)
+        );
+      });
+      return balanceAcc;
+    }, new Map<Symbol, number>());
 
-    const actualOperations = operationsBalance.keys().reduce((acc, symbol) => {
-      const count = operationsBalance.get(symbol);
+    const actualClientOperations = operationsBalance
+      .keys()
+      .reduce((actualAcc, symbol) => {
+        const count = operationsBalance.get(symbol);
 
-      if (!count || count === 0) {
-        return acc;
-      }
-      const operation: SseOperation = {
-        type: count > 0 ? 'subscribe' : 'unsubscribe',
-        clientId,
-        symbols: [symbol],
-      };
+        if (!count || count === 0) {
+          return actualAcc;
+        }
+        const operation: SseOperation = {
+          type: count > 0 ? 'subscribe' : 'unsubscribe',
+          clientId,
+          symbols: [symbol],
+        };
 
-      acc.push(operation);
-      return acc;
-    }, new Array<SseOperation>());
+        actualAcc.push(operation);
+        return actualAcc;
+      }, new Array<SseOperation>());
 
-    return acc.set(clientId, actualOperations);
+    return acc.set(clientId, actualClientOperations);
   }, new Map<ClientId, Array<SseOperation>>());
 
   // Update clients
@@ -121,12 +294,18 @@ const processOperations = (store: SSEStore) => {
   );
 
   // update symbols in store
+  store.setState((state) => ({
+    ...state,
+    symbols: new Set([...state.symbols, ...changes.subscribe]).difference(
+      changes.unsubscribe
+    ),
+  }));
+
+  // request changes to backend
   if (changes.subscribe.size > 0) {
-    store.setState((state) => ({
-      ...state,
-      symbols: new Set([...state.symbols, ...changes.subscribe]).difference(
-        changes.unsubscribe
-      ),
-    }));
+    subscribeFn(changes.subscribe);
+  }
+  if (changes.unsubscribe.size > 0) {
+    unsubscribeFn(changes.unsubscribe);
   }
 };

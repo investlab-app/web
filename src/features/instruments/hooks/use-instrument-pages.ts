@@ -69,6 +69,7 @@ export const useInstrumentPages = ({
           page: pageNum,
         };
       },
+      refetchOnWindowFocus: false,
       enabled: tickers.length > 0 || !tickers,
       staleTime: 2 * 60 * 1000, // 2 minutes
       gcTime: 5 * 60 * 1000, // 5 minutes
