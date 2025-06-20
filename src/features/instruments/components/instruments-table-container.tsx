@@ -68,30 +68,29 @@ const InstrumentsTableContainer = ({
 
   const sseCallback = useCallback(
     (data: string) => {
-        const fixedMessage = data.replace(/'/g, '"');
+      const fixedMessage = data.replace(/'/g, '"');
 
-        const out = livePriceDataDTO(JSON.parse(fixedMessage));
+      const out = livePriceDataDTO(JSON.parse(fixedMessage));
 
-        if (out instanceof type.errors) {
-          console.error('Invalid live price data received:', out);
-          return;
-        }
+      if (out instanceof type.errors) {
+        console.error('Invalid live price data received:', out);
+        return;
+      }
 
-        setLiveInstruments((prev) => {
-          const updated = { ...prev };
-          updated[out.id] = {
-            ...updated[out.id],
-            currentPrice: out.price,
-            dayChange: out.change || updated[out.id].dayChange,
-          };
-          return updated;
-        });
+      setLiveInstruments((prev) => {
+        const updated = { ...prev };
+        updated[out.id] = {
+          ...updated[out.id],
+          currentPrice: out.price,
+          dayChange: out.change || updated[out.id].dayChange,
+        };
+        return updated;
+      });
     },
     [setLiveInstruments]
   );
 
-  useEffect(() => {
-  }, [setLiveInstruments]);
+  useEffect(() => {}, [setLiveInstruments]);
 
   const { cleanup: cleanupSSE } = useSSE({
     events: tickersSet,

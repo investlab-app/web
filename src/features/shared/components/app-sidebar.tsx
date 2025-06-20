@@ -22,8 +22,6 @@ import {
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 
-
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
   const data: {

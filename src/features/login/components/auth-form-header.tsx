@@ -1,4 +1,7 @@
-import { CardDescription, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  CardDescription,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { cn } from '@/features/shared/utils';
 
 interface AuthFormHeaderProps {

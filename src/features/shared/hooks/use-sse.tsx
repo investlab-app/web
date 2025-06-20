@@ -24,7 +24,11 @@ export function useSSE({
   eventsRef.current = events;
 
   useEffect(() => {
-    const handler = new Handler(handlerId.current, callbackRef.current, eventsRef.current);
+    const handler = new Handler(
+      handlerId.current,
+      callbackRef.current,
+      eventsRef.current
+    );
     sse.updateHandler(handler);
   }, [sse, events, callback]);
 

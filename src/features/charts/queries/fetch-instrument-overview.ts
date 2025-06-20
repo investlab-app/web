@@ -1,5 +1,8 @@
 import { type } from 'arktype';
-import { instrumentOverview, instrumentOverviewItemToInstrument } from '../types/types';
+import {
+  instrumentOverview,
+  instrumentOverviewItemToInstrument,
+} from '../types/types';
 import type { FetchInstrumentsOverviewOptions } from '../types/types';
 import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
@@ -37,7 +40,5 @@ export async function fetchInstrumentsOverview({
   return {
     ...out,
     items: instruments,
-  }
+  };
 }
-
-

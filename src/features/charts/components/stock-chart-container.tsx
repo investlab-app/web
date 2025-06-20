@@ -64,7 +64,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         jsonData = JSON.parse(eventData.replace(/'/g, '"'));
       } catch (error) {
         console.error('Failed to parse SSE event data:', eventData, error);
-      };
+      }
       const out = livePriceDataDTO(jsonData);
       if (out instanceof type.errors) {
         console.error('Invalid data point received:', out.summary);

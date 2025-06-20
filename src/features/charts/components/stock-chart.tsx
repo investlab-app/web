@@ -15,7 +15,7 @@ type EChartSeries = {
 };
 
 type EChartXAxis = {
-  data: Array<string>
+  data: Array<string>;
 };
 
 export type ChartPresentationsProps = {

@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { BuySellContainer } from './buy-sell-action';
 import type { Instrument } from '../types/';
-import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 
 const NewsSection = () => {
