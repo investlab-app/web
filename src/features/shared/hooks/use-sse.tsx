@@ -1,11 +1,11 @@
 import { Store } from '@tanstack/react-store';
 import { useAuth } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef } from 'react';
 import {
   EventStreamContentType,
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
+import { useCallback, useEffect, useRef } from 'react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,14 +23,11 @@ export interface ClientSubscription {
 
 interface Subscription {
   type: 'subscription';
-  clientId: ClientId;
   events: Set<SSEEvent>;
-  handler: (data: string) => void;
 }
 
 interface Cancellation {
   type: 'cancellation';
-  clientId: ClientId;
   events: Set<SSEEvent>;
 }
 
@@ -40,26 +37,21 @@ const store = new Store({
   clients: new Map<ClientId, ClientSubscription>(),
   events: new Set<SSEEvent>(),
   connectionId: crypto.randomUUID(),
-  pendingOperations: new Map<ClientId, Array<Operation>>(),
+  pendingOperations: new Array<Operation>(),
 });
 
 export function useSSE() {
   const { getToken } = useAuth();
   const connectionRef = useRef<AbortController | null>(null);
+  const lastUpdateRef = useRef<number>(0);
 
   const batchOperation = (operation: Operation) => {
+    console.log(operation.type);
+    lastUpdateRef.current = Date.now();
     store.setState((state) => {
-      const existingOperations =
-        state.pendingOperations.get(operation.clientId) || [];
-
-      const updatedOperations = state.pendingOperations.set(
-        operation.clientId,
-        [...existingOperations, operation]
-      );
-
       return {
         ...state,
-        pendingOperations: updatedOperations,
+        pendingOperations: [...state.pendingOperations, operation],
       };
     });
   };
@@ -102,145 +94,49 @@ export function useSSE() {
   });
 
   const processBatchedOperations = useCallback(() => {
-    const { pendingOperations, clients } = store.state;
+    const { pendingOperations } = store.state;
 
-    const actualOperations = pendingOperations
-      .keys()
-      .reduce((acc, clientId) => {
-        const operations = pendingOperations.get(clientId) || [];
-
-        const operationsBalance = operations.reduce((balanceAcc, operation) => {
-          operation.events.forEach((symbol) => {
-            balanceAcc.set(
-              symbol,
-              (balanceAcc.get(symbol) || 0) +
-                (operation.type === 'subscription' ? 1 : -1)
-            );
-          });
-          return balanceAcc;
-        }, new Map<SSEEvent, number>());
-
-        const actualClientOperations = operationsBalance
-          .entries()
-          .reduce((actualAcc, [symbol, count]) => {
-            if (count === 0) {
-              return actualAcc;
-            }
-
-            const operation =
-              count > 0
-                ? operations.findLast(
-                    (op) => op.events.has(symbol) && op.type === 'subscription'
-                  )
-                : ({
-                    type: 'cancellation',
-                    clientId,
-                    events: new Set([symbol]),
-                  } as Cancellation);
-
-            if (!operation) {
-              console.warn(
-                `No operation found for client ${clientId.value} and event ${symbol}`
-              );
-              return actualAcc;
-            }
-
-            actualAcc.push(operation);
-
-            return actualAcc;
-          }, new Array<Operation>());
-
-        return acc.set(clientId, actualClientOperations);
-      }, new Map<ClientId, Array<Operation>>());
-
-    // Update clients
-    actualOperations.forEach((operations, clientId) => {
-      const client = clients.get(clientId) ?? {
-        clientId,
-        events: new Set<SSEEvent>(),
-        handler: () => {},
-      };
-
-      const newEvents = operations.reduce((acc, operation) => {
-        switch (operation.type) {
-          case 'subscription':
-            acc.union(new Set(operation.events));
-            break;
-          case 'cancellation':
-            acc.difference(new Set(operation.events));
-            break;
-        }
+    const { subscribe, cancellation } = pendingOperations
+      .reduce((acc, operation) => {
+        operation.events.forEach((symbol) => {
+          acc.set(
+            symbol,
+            (acc.get(symbol) || 0) +
+              (operation.type === 'subscription' ? 1 : -1)
+          );
+        });
         return acc;
-      }, client.events);
+      }, new Map<SSEEvent, number>())
+      .entries()
+      .reduce(
+        (acc, [symbol, count]) => {
+          if (count > 0) {
+            acc.subscribe.add(symbol);
+          } else if (count < 0) {
+            acc.cancellation.add(symbol);
+          }
+          return acc;
+        },
+        { subscribe: new Set<SSEEvent>(), cancellation: new Set<SSEEvent>() }
+      );
 
-      clients.set(clientId, {
-        ...client,
-        events: newEvents,
-      });
-    });
-
-    // Update store events
-    const atomSubscriptions = Array.from(actualOperations.values())
-      .flatMap((ops) => Array.from(ops.values()))
-      .flatMap((op) => {
-        return Array.from(op.events).map((event) => ({
-          events: event,
-          type: op.type,
-        }));
-      });
-
-    const symbolChanges = atomSubscriptions.reduce((acc, current) => {
-      switch (current.type) {
-        case 'subscription':
-          acc = acc.filter((item) => item.events !== current.events);
-          acc.push(current);
-          break;
-        case 'cancellation':
-          // keep
-          break;
-      }
-      return acc;
-    }, atomSubscriptions);
-
-    const changes = symbolChanges.reduce(
-      (acc, current) => {
-        if (
-          current.type === 'subscription' &&
-          !store.state.events.has(current.events)
-        ) {
-          acc.subscribe.add(current.events);
-        } else if (
-          current.type === 'cancellation' &&
-          store.state.events.has(current.events)
-        ) {
-          acc.cancellation.add(current.events);
-        }
-
-        return acc;
-      },
-      { subscribe: new Set<SSEEvent>(), cancellation: new Set<SSEEvent>() }
-    );
-
-    // update events in store
     store.setState((state) => ({
       ...state,
-      events: new Set([...state.events, ...changes.subscribe]).difference(
-        changes.cancellation
-      ),
-      pendingOperations: new Map(),
+      events: new Set([...state.events, ...subscribe]).difference(cancellation),
+      pendingOperations: [],
     }));
 
     // request changes to backend
-    if (changes.subscribe.size > 0) {
+    if (subscribe.size > 0) {
       callSSE({
-        events: Array.from(changes.subscribe),
+        events: Array.from(subscribe),
         connectionId: store.state.connectionId,
         action: 'subscribe',
       });
     }
-    if (changes.cancellation.size > 0) {
+    if (cancellation.size > 0) {
       callSSE({
-        events: Array.from(changes.cancellation),
+        events: Array.from(cancellation),
         connectionId: store.state.connectionId,
         action: 'unsubscribe',
       });
@@ -277,11 +173,19 @@ export function useSSE() {
             response.status !== 429
           ) {
             console.log('Client error');
+            throw new Error(`Client error: ${response.status}`);
           } else {
             console.log('Unexpected error');
+            throw new Error(`Server error: ${response.status}`);
           }
         },
         onmessage: (msg) => {
+          if (msg.event === 'connection_established') {
+            batchOperation({
+              type: 'subscription',
+              events: new Set(store.state.events),
+            });
+          }
           store.state.clients.forEach((client) => {
             if (
               Array.from(client.events).some((event) => msg.event === event)
@@ -299,11 +203,13 @@ export function useSSE() {
             `Connection error (ID: ${store.state.connectionId}):`,
             error
           );
-          throw new Error('Connection error: ' + error.message);
+          // Throw error to prevent fetchEventSource from retrying
+          // Let our React logic handle the retry with fresh state
+          throw error;
         },
       });
     },
-    [getToken]
+    [callSSE, getToken]
   );
 
   useEffect(() => {
@@ -333,34 +239,31 @@ export function useSSE() {
     };
   }, [consumeSSE]);
 
-  const lastUpdateRef = useRef<number>(0);
+  const waitForProcessing = useCallback(async () => {
+    return await new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        if (
+          store.state.pendingOperations.length !== 0 &&
+          Date.now() - lastUpdateRef.current > 1000
+        ) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100); // Check every 100ms
+    });
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = store.subscribe(({ currentVal }) => {
-      if (
-        currentVal.pendingOperations.size === 0 ||
-        Date.now() - lastUpdateRef.current < 1000
-      ) {
-        return;
-      }
-      lastUpdateRef.current = Date.now();
-
-      // console.log("its actually an update");
-
-      const timeoutId = setTimeout(() => {
+    const unsubscribe = store.subscribe(() => {
+      waitForProcessing().then(() => {
         processBatchedOperations();
-      }, 100);
-
-      return () => {
-        console.log('Clearing timeout for batched operations');
-        clearTimeout(timeoutId);
-      };
+      });
     });
 
     return () => {
       unsubscribe();
     };
-  }, [processBatchedOperations]);
+  }, [processBatchedOperations, waitForProcessing]);
 
   return {
     batchOperation,

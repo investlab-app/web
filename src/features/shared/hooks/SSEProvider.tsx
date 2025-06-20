@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useSSE } from './use-sse';
-import type { ClientId, Operation} from './use-sse';
+import type { ClientId, Operation } from './use-sse';
 import type { ReactNode } from 'react';
 
 interface SSEContextType {
@@ -40,15 +40,12 @@ export function useSSEMessages(events: Set<string>) {
 
     context.addOperation({
       type: 'subscription',
-      clientId,
       events: events,
-      handler: (data: string) => setMessages((prev) => [...prev, data]),
     });
 
     return () => {
       context.addOperation({
         type: 'cancellation',
-        clientId,
         events: events,
       });
     };
