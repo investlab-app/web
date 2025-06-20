@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { instrumentOverview } from '../types/types';
+import { instrumentOverview, instrumentOverviewItemToInstrument } from '../types/types';
 import type { FetchInstrumentsOverviewOptions } from '../types/types';
 import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
@@ -32,5 +32,12 @@ export async function fetchInstrumentsOverview({
     throw new Error(out.summary);
   }
 
-  return out;
+  const instruments = out.items.map(instrumentOverviewItemToInstrument);
+
+  return {
+    ...out,
+    items: instruments,
+  }
 }
+
+

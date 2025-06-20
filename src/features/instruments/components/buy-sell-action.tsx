@@ -1,10 +1,16 @@
 // BuySellSection.tsx
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TabsContent } from '@radix-ui/react-tabs';
+import { IconChevronDown } from '@tabler/icons-react';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/features/shared/components/ui/tabs';
-import { TabsContent } from '@radix-ui/react-tabs';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@/features/shared/components/ui/tabs';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
-import { IconChevronDown } from '@tabler/icons-react';
 
 interface BuySellSectionProps {
   mode: 'price' | 'volume';
@@ -90,9 +96,6 @@ export const BuySellSection = ({
     </Card>
   );
 };
-
-import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
   const [mode, setMode] = useState<'price' | 'volume'>('price');

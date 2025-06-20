@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { type } from 'arktype';
 import { useInstruments } from '../hooks/use-instruments';
 import { useDebounce } from '../hooks/use-debounce';
+import { livePriceDataDTO } from '../types/types';
 import InstrumentTable from './instruments-table';
 import type { Instrument } from '../types/types';
 import { Button } from '@/features/shared/components/ui/button';
 import SearchInput from '@/features/shared/components/ui/search-input';
+import { useSSE } from '@/features/shared/hooks/use-sse';
 
 const PAGE_SIZE = 10;
 
@@ -33,56 +36,57 @@ const InstrumentsTableContainer = ({
     perPage: PAGE_SIZE,
   });
 
-  // const [liveInstruments, setLiveInstruments] = useState<Record<string, Instrument>>({});
+  const [liveInstruments, setLiveInstruments] = useState<
+    Record<string, Instrument>
+  >({});
 
   useEffect(() => {
-    // const instrumentsMap = instruments.reduce((acc, instrument) => {
-    //   acc[instrument.symbol] = instrument;
-    //   return acc;
-    // }, {} as Record<string, Instrument>);
+    const instrumentsMap = instruments.reduce(
+      (acc, instrument) => {
+        acc[instrument.symbol] = instrument;
+        return acc;
+      },
+      {} as Record<string, Instrument>
+    );
 
-    // console.log('Setting live instruments:', instrumentsMap);
-
-    // setLiveInstruments(instrumentsMap);
-
-    console.log('Setting live instruments:', instruments);
+    setLiveInstruments(instrumentsMap);
   }, [instruments]);
 
-  // const tickers = instruments.map((i) => i.symbol);
+  const tickers = instruments.map((i) => i.symbol);
 
-  // const tickersSet = useMemo(
-  //   () => new Set(tickers),
-  //   [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
-  // );
+  const tickersSet = useMemo(
+    () => new Set(tickers),
+    [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
-  // useSSE({
-  //   events: tickersSet,
-  //   callback: (data) => {
-  //     console.log('SSE callback triggered for tickers:', tickersSet);
-  //     try {
-  //       const fixedMessage = data.replace(/'/g, '"');
-  //       const parsed = JSON.parse(fixedMessage);
-  //       const { id, price, change_percent } = parsed;
+  useSSE({
+    events: tickersSet,
+    callback: (data) => {
+      console.log('SSE callback triggered for tickers:', tickersSet);
+      try {
+        const fixedMessage = data.replace(/'/g, '"');
 
-  //       if (!id || !price || !change_percent) {
-  //         console.warn('Invalid message format:', parsed);
-  //         return;
-  //       }
+        const out = livePriceDataDTO(JSON.parse(fixedMessage));
 
-  //       setLiveInstruments((prev) => {
-  //         const updated = { ...prev };
-  //         updated[id] = {
-  //           ...updated[id],
-  //           currentPrice: price,
-  //           dayChange: change_percent,
-  //         };
-  //         return updated;
-  //       });
-  //     } catch (error) {
-  //       console.error('Failed to parse message:', data, error);
-  //     }
-  //   },
-  // });
+        if (out instanceof type.errors) {
+          console.error('Invalid live price data received:', out);
+          return;
+        }
+
+        setLiveInstruments((prev) => {
+          const updated = { ...prev };
+          updated[out.id] = {
+            ...updated[out.id],
+            currentPrice: out.price,
+            dayChange: out.change,
+          };
+          return updated;
+        });
+      } catch (error) {
+        console.error('Failed to parse message:', data, error);
+      }
+    },
+  });
 
   const handleInstrumentPressed = useCallback(
     (asset: Instrument) => {

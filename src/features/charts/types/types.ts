@@ -1,4 +1,5 @@
 import { type } from 'arktype';
+import type { Instrument } from '@/features/instruments/types/types';
 
 export const dataPoint = type({
   timestamp: 'string',
@@ -36,22 +37,40 @@ export function dataPointToInstrumentPriceProps(
   };
 }
 
-const instrumentOverviewInstrument = type({
+export const instrumentOverviewItem = type({
   ticker: 'string',
   name: 'string',
   sector: 'string',
-  price: 'number',
-  change: 'number',
-  change_percent: 'number',
+  industry: 'string',
+  country: 'string',
+  currency: 'string',
+  current_price: 'string',
+  previous_close: 'string',
+  day_change: 'string',
+  day_change_percent: 'string',
+  market_cap: 'string',
+  volume: 'number',
 });
-export type InstrumentOverviewInstrument =
-  typeof instrumentOverviewInstrument.infer;
+export type InstrumentOverviewItem = typeof instrumentOverviewItem.infer;
+
+export const instrumentOverviewItemToInstrument = (
+  item: InstrumentOverviewItem
+): Instrument => {
+  return {
+    name: item.name,
+    volume: item.volume,
+    currentPrice: parseFloat(item.current_price),
+    dayChange: parseFloat(item.day_change),
+    symbol: item.ticker,
+  };
+};
 
 export const instrumentOverview = type({
-  instruments: [instrumentOverviewInstrument],
+  items: instrumentOverviewItem.array(),
   total: 'number',
-  numPages: 'number',
+  num_pages: 'number',
   page: 'number',
+  page_size: 'number',
 });
 export type InstrumentOverview = typeof instrumentOverview.infer;
 

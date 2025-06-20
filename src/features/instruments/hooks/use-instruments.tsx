@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
 import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
-import type { InstrumentOverviewInstrument } from '@/features/charts/types/types';
+import type { Instrument } from '../types/types';
 import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';
 
 type UseInstrumentsOptions = {
@@ -82,7 +82,7 @@ export const useInstruments = ({
   });
 
   const combinedData = useMemo(() => {
-    let allInstruments: Array<InstrumentOverviewInstrument> = [];
+    let allInstruments: Array<Instrument> = [];
     let totalItems = 0;
     let numPages = 0;
     let errorMessage: string | null = null;
@@ -98,9 +98,9 @@ export const useInstruments = ({
         break;
       }
       if (query.data) {
-        allInstruments = [...allInstruments, ...query.data.instruments];
+        allInstruments = [...allInstruments, ...query.data.items];
         totalItems = query.data.total;
-        numPages = query.data.numPages;
+        numPages = query.data.num_pages;
       }
     }
 
