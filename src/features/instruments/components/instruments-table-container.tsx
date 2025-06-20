@@ -26,6 +26,8 @@ const instruments: Array<Instrument> = [
   },
 ];
 
+const tickers = new Set(instruments.map((i) => i.symbol));
+
 const InstrumentsTableContainer = ({
   setInstrument,
   setOpenSheet,
@@ -45,16 +47,10 @@ const InstrumentsTableContainer = ({
   //   perPage: PAGE_SIZE,
   // });
 
-  const { messages } = useSSEMessages(
-    new Set(instruments.map((i) => i.symbol))
-  );
+  const { messages } = useSSEMessages(tickers);
 
   useEffect(() => {
-    console.log('Listening to messages for instruments:', instruments);
-
-    messages.forEach((message) => {
-      console.log('Received message:', message);
-    });
+    console.log('New messages are collected of size:', messages.length);
   }, [messages]);
 
   // const livePrices = useLivePrices();
@@ -109,7 +105,7 @@ const InstrumentsTableContainer = ({
   // };
 
   return (
-    <h1>This is SSE DEMO</h1>
+    <h1>messages: {messages}</h1>
     // <div className="p-4">
     //   <SearchInput
     //     value={search}

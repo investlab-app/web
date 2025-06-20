@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useSSE } from './use-sse';
-import type { ClientId, Operation } from './use-sse';
+import type { ClientId, ClientSubscription } from './use-sse';
 import type { ReactNode } from 'react';
 
 interface SSEContextType {
-  addOperation: (operation: Operation) => void;
+  subscribe: (operation: ClientSubscription) => void;
+  unsubscribe: (clientId: ClientId) => void;
 }
 
 const SSEContext = createContext<SSEContextType | undefined>(undefined);
@@ -14,11 +15,11 @@ interface SSEProviderParams {
 }
 
 export function SSEProvider({ children }: SSEProviderParams) {
-  const { batchOperation } = useSSE();
+  const { subscribe, unsubscribe } = useSSE();
 
   const contextValue: SSEContextType = useMemo(
-    () => ({ addOperation: batchOperation }),
-    [batchOperation]
+    () => ({ subscribe, unsubscribe }),
+    [subscribe, unsubscribe]
   );
 
   return (
@@ -27,29 +28,37 @@ export function SSEProvider({ children }: SSEProviderParams) {
 }
 
 export function useSSEMessages(events: Set<string>) {
-  const context = useContext(SSEContext);
+  const sse = useContext(SSEContext);
 
-  if (context === undefined) {
+  if (sse === undefined) {
     throw new Error('useSSEProvider must be used within a SSEProvider');
   }
 
   const [messages, setMessages] = useState<Array<string>>([]);
 
   useEffect(() => {
-    const clientId: ClientId = { value: crypto.randomUUID() };
+    const clientId: ClientId = crypto.randomUUID();
 
-    context.addOperation({
-      type: 'subscription',
-      events: events,
+    console.log(
+      'Subscribing to SSE events:',
+      events,
+      'with clientId:',
+      clientId
+    );
+
+    sse.subscribe({
+      clientId,
+      events,
+      handler: (data: string) => {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      },
     });
 
     return () => {
-      context.addOperation({
-        type: 'cancellation',
-        events: events,
-      });
+      console.log('Should unsubscribe from SSE events:', events);
+      sse.unsubscribe(clientId);
     };
-  }, [context, events]);
+  }, [sse, events]);
 
   return { messages };
 }
