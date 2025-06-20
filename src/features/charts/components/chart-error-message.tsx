@@ -1,13 +1,10 @@
-import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
 type ChartErrorMessageProps = {
   message?: string;
 };
 
-export const ChartErrorMessage: React.FC<ChartErrorMessageProps> = ({
-  message,
-}) => {
+export const ChartErrorMessage = ({ message }: ChartErrorMessageProps) => {
   const { t } = useTranslation();
 
   return (

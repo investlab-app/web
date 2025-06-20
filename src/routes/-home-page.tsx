@@ -1,8 +1,8 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import { DataTable } from '@/components/data-table';
-import { SectionCards } from '@/components/section-cards';
-import { SiteHeader } from '@/components/site-header';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/features/shared/components/app-sidebar';
+import { DataTable } from '@/features/shared/components/data-table';
+import { SectionCards } from '@/features/shared/components/section-cards';
+import { SiteHeader } from '@/features/shared/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/features/shared/components/ui/sidebar';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 import { AuthTestButton } from '@/features/login/components/auth-test-button';
 import data from '@/data.json';

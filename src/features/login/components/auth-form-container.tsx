@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/features/shared/utils';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/features/shared/components/ui/card';
 
 interface AuthFormContainerProps {
   className?: string;

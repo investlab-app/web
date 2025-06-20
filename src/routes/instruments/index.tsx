@@ -2,12 +2,12 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import type { Instrument } from '@/features/instruments/types/instruments.types';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
-import { SiteHeader } from '@/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/features/shared/components/ui/sidebar';
+import { AppSidebar } from '@/features/shared/components/app-sidebar';
+import { SiteHeader } from '@/features/shared/components/site-header';
 import InstrumentsTableContainer from '@/features/instruments/components/instruments-table-container';
 import InstrumentDetails from '@/features/instruments/components/instrument-details';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/features/shared/components/ui/sheet';
 
 export default function InstrumentsPage() {
   const { isSignedIn, isLoaded } = useUser();

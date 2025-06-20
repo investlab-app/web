@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
 import type { ClerkError } from '@/features/login/clerk-error';
-import { Button } from '@/components/ui/button';
-import { SixDigitOTPInput } from '@/components/ui/six-digit-otp-input';
+import { Button } from '@/features/shared/components/ui/button';
+import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 

@@ -1,13 +1,11 @@
-// components/NetflixDetailView.tsx
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
-import { BuySellContainer } from './buy-sell-section';
-import type { Instrument } from '../helpers/instrument';
 import { useTranslation } from 'react-i18next';
+import { BuySellContainer } from './buy-sell-action';
+import type { Instrument } from '../types/';
+import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 
 const NewsSection = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
@@ -44,7 +42,7 @@ type InstrumentDetailsProps = {
 };
 
 const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="p-4 space-y-4 overflow-y-auto">
       <h2 className="text-xl font-semibold text-left">

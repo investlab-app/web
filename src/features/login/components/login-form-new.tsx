@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 import type { ClerkError } from '@/features/login/clerk-error';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
-import { FormInput } from '@/components/ui/form-input';
-import { Divider } from '@/components/ui/divider';
+import { FormInput } from '@/features/shared/components/ui/form-input';
+import { Divider } from '@/features/shared/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
-import { Button } from '@/components/ui/button';
-import { PasswordInput } from '@/components/ui/password-input';
+import { Button } from '@/features/shared/components/ui/button';
+import { PasswordInput } from '@/features/shared/components/ui/password-input';
 import { THIS_URL } from '@/features/shared/constants';
 
 export function LoginForm() {

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from 'react';
-import { Handler, SSEContext } from './SSEProvider';
-import type { HandlerId } from './SSEProvider';
+import { Handler, SSEContext } from '../providers/sse-provider';
+import type { HandlerId } from '../providers/sse-provider';
 
 export function useSSE({
   events,

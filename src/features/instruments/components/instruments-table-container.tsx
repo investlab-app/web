@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInstruments } from '../helpers/use-instruments';
-import { useDebounce } from '../helpers/debounce';
-import InstrumentTable from './instrument-table';
-import type { Instrument } from '../types/instruments.types';
-import { useSSE } from '@/features/shared/hooks/use-sse';
-import { Button } from '@/components/ui/button';
-import SearchInput from '@/components/ui/search-input';
+import { useInstruments } from '../hooks/use-instruments';
+import { useDebounce } from '../hooks/use-debounce';
+import InstrumentTable from './instruments-table';
+import type { Instrument } from '../types/types';
+import { Button } from '@/features/shared/components/ui/button';
+import SearchInput from '@/features/shared/components/ui/search-input';
 
 const PAGE_SIZE = 10;
 
@@ -24,7 +23,6 @@ const InstrumentsTableContainer = ({
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
   const [page, setPage] = useState(1);
-
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch]);
@@ -35,7 +33,7 @@ const InstrumentsTableContainer = ({
     perPage: PAGE_SIZE,
   });
 
-  const [liveInstruments, setLiveInstruments] = useState<Record<string, Instrument>>({});
+  // const [liveInstruments, setLiveInstruments] = useState<Record<string, Instrument>>({});
 
   useEffect(() => {
     // const instrumentsMap = instruments.reduce((acc, instrument) => {
@@ -44,47 +42,47 @@ const InstrumentsTableContainer = ({
     // }, {} as Record<string, Instrument>);
 
     // console.log('Setting live instruments:', instrumentsMap);
-    
+
     // setLiveInstruments(instrumentsMap);
 
     console.log('Setting live instruments:', instruments);
   }, [instruments]);
 
-  const tickers = instruments.map((i) => i.symbol);
+  // const tickers = instruments.map((i) => i.symbol);
 
-  const tickersSet = useMemo(
-    () => new Set(tickers),
-    [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  // const tickersSet = useMemo(
+  //   () => new Set(tickers),
+  //   [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
+  // );
 
-  useSSE({
-    events: tickersSet,
-    callback: (data) => {
-      console.log('SSE callback triggered for tickers:', tickersSet);
-      try {
-        const fixedMessage = data.replace(/'/g, '"');
-        const parsed = JSON.parse(fixedMessage);
-        const { id, price, change_percent } = parsed;
+  // useSSE({
+  //   events: tickersSet,
+  //   callback: (data) => {
+  //     console.log('SSE callback triggered for tickers:', tickersSet);
+  //     try {
+  //       const fixedMessage = data.replace(/'/g, '"');
+  //       const parsed = JSON.parse(fixedMessage);
+  //       const { id, price, change_percent } = parsed;
 
-        if (!id || !price || !change_percent) {
-          console.warn('Invalid message format:', parsed);
-          return;
-        }
+  //       if (!id || !price || !change_percent) {
+  //         console.warn('Invalid message format:', parsed);
+  //         return;
+  //       }
 
-        setLiveInstruments((prev) => {
-          const updated = { ...prev };
-          updated[id] = {
-            ...updated[id],
-            currentPrice: price,
-            dayChange: change_percent,
-          };
-          return updated;
-        });
-      } catch (error) {
-        console.error('Failed to parse message:', data, error);
-      }
-    },
-  });
+  //       setLiveInstruments((prev) => {
+  //         const updated = { ...prev };
+  //         updated[id] = {
+  //           ...updated[id],
+  //           currentPrice: price,
+  //           dayChange: change_percent,
+  //         };
+  //         return updated;
+  //       });
+  //     } catch (error) {
+  //       console.error('Failed to parse message:', data, error);
+  //     }
+  //   },
+  // });
 
   const handleInstrumentPressed = useCallback(
     (asset: Instrument) => {
@@ -103,7 +101,7 @@ const InstrumentsTableContainer = ({
         placeholder={t('common.search')}
       />
       <InstrumentTable
-        data={Object.values(liveInstruments)}
+        data={[]}
         onInstrumentPressed={handleInstrumentPressed}
       />
       <div className="flex justify-center mt-4">
