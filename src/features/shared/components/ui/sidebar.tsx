@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
+import React from 'react';
 import type { VariantProps } from 'class-variance-authority';
 
 import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
@@ -74,7 +74,6 @@ function SidebarProvider({
   const [_open, _setOpen] = React.useState(defaultOpen);
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
-    // eslint-disable-next-line no-shadow
     (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === 'function' ? value(open) : value;
       if (setOpenProp) {

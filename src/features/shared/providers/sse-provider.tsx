@@ -121,7 +121,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
         throw error;
       },
     });
-  }, [syncBackend, getToken]);
+  }, [getToken]);
 
   useEffect(() => {
     const consumeWithReconnection = () => {

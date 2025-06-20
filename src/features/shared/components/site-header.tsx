@@ -1,7 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 import { Separator } from '@/features/shared/components/ui/separator';
 import { SidebarTrigger } from '@/features/shared/components/ui/sidebar';
-import { useTranslation } from 'react-i18next';
 import { ModeToggle } from '@/features/shared/components/mode-toggle';
 
 export function SiteHeader() {

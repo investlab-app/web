@@ -103,12 +103,12 @@ export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
   const [volume, setVolume] = useState(initialPrice / currentPrice);
 
   const calcVolumeFromPrice = useCallback(
-    (price: number) => price / currentPrice,
+    (priceValue: number) => priceValue / currentPrice,
     [currentPrice]
   );
 
   const calcPriceFromVolume = useCallback(
-    (volume: number) => volume * currentPrice,
+    (volumeValue: number) => volumeValue * currentPrice,
     [currentPrice]
   );
 
