@@ -41,8 +41,8 @@ export function fromDTO(dto: InstrumentDTO): Instrument | undefined {
 }
 
 export const livePriceDataDTO = type({
-  change_percent: 'number',
-  change: 'number',
+  change_percent: 'number?',
+  change: 'number?',
   day_volume: 'string?',
   exchange: 'string',
   id: 'string',

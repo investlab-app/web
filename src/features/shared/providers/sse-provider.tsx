@@ -177,6 +177,8 @@ export function SSEProvider({ children }: SSEProviderParams) {
 
   const cleanup = useCallback(
     (handlerId: HandlerId) => {
+      console.log('Cleaning up SSE handler:', handlerId);
+
       const handlers = new Map(store.state.handlers);
       handlers.delete(handlerId);
 

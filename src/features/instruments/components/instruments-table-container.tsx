@@ -34,12 +34,17 @@ const InstrumentsTableContainer = ({
     filter: debouncedSearch,
     page,
     perPage: PAGE_SIZE,
-  });  const [liveInstruments, setLiveInstruments] = useState<
+  });
+  const [liveInstruments, setLiveInstruments] = useState<
     Record<string, Instrument>
   >({});
   // Create a stable key based on instruments content to avoid infinite loops
-  const instrumentsKey = useMemo(() => 
-    instruments.map(i => `${i.symbol}-${i.name}`).sort().join('|'),
+  const instrumentsKey = useMemo(
+    () =>
+      instruments
+        .map((i) => `${i.symbol}-${i.name}`)
+        .sort()
+        .join('|'),
     [instruments]
   );
 
@@ -58,11 +63,8 @@ const InstrumentsTableContainer = ({
     () => new Set(tickers),
     [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
   );
-
-  useSSE({
-    events: tickersSet,
-    callback: (data) => {
-      console.log('SSE callback triggered for tickers:', tickersSet);
+  const sseCallback = useCallback(
+    (data: string) => {
       try {
         const fixedMessage = data.replace(/'/g, '"');
 
@@ -78,7 +80,7 @@ const InstrumentsTableContainer = ({
           updated[out.id] = {
             ...updated[out.id],
             currentPrice: out.price,
-            dayChange: out.change,
+            dayChange: out.change || updated[out.id].dayChange,
           };
           return updated;
         });
@@ -86,7 +88,16 @@ const InstrumentsTableContainer = ({
         console.error('Failed to parse message:', data, error);
       }
     },
+    [setLiveInstruments]
+  );
+  const { cleanup: cleanupSSE } = useSSE({
+    events: tickersSet,
+    callback: sseCallback,
   });
+
+  useEffect(() => {
+    return cleanupSSE;
+  }, [cleanupSSE]);
 
   const handleInstrumentPressed = useCallback(
     (asset: Instrument) => {
@@ -95,7 +106,6 @@ const InstrumentsTableContainer = ({
     },
     [setInstrument, setOpenSheet]
   );
-
   return (
     <div className="p-4">
       <SearchInput
@@ -104,10 +114,16 @@ const InstrumentsTableContainer = ({
         className="w-1/3"
         placeholder={t('common.search')}
       />
-      <InstrumentTable
-        data={Object.values(liveInstruments)}
-        onInstrumentPressed={handleInstrumentPressed}
-      />
+      {loading && Object.keys(liveInstruments).length === 0 ? (
+        <div className="flex justify-center items-center py-8">
+          <div className="text-muted-foreground">{t('common.loading')}</div>
+        </div>
+      ) : (
+        <InstrumentTable
+          data={Object.values(liveInstruments)}
+          onInstrumentPressed={handleInstrumentPressed}
+        />
+      )}
       <div className="flex justify-center mt-4">
         {hasMore && (
           <Button

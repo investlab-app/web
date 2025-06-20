@@ -4,7 +4,6 @@ import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
 import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
 import { timeIntervals } from '../utils/time-ranges';
-import { dataPoint, dataPointToInstrumentPriceProps } from '../types/types';
 import { StockChart } from './stock-chart';
 import { ChartErrorMessage } from './chart-error-message';
 import type { InstrumentPriceProps } from '../types/types';
@@ -24,6 +23,7 @@ import {
   SelectValue,
 } from '@/features/shared/components/ui/select';
 import { useSSE } from '@/features/shared/hooks/use-sse';
+import { livePriceDataDTO } from '@/features/instruments/types/types';
 
 type StockChartProps = {
   ticker: string;
@@ -59,7 +59,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   useSSE({
     events: new Set([ticker]),
     callback: (eventData) => {
-      const out = dataPoint(eventData);
+      const out = livePriceDataDTO(eventData);
       if (out instanceof type.errors) {
         console.error('Invalid data point received:', out);
         store.setState((state) => ({
@@ -68,14 +68,19 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         }));
         return;
       }
-      const instrumentPriceProps = dataPointToInstrumentPriceProps(out);
       store.setState((state) => {
-        const newData = [...state.data, instrumentPriceProps];
+        const newDataPoint = {
+          date: out.time,
+          open: out.price,
+          high: out.price,
+          low: out.price,
+          close: out.price,
+        } as InstrumentPriceProps;
+        const newData = [...state.data, newDataPoint];
         return {
           ...state,
           data: newData,
-          liveUpdateValue: [instrumentPriceProps, true],
-          currentPrice: instrumentPriceProps.close,
+          liveUpdateValue: [newDataPoint, true],
         };
       });
     },
