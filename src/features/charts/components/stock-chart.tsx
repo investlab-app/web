@@ -3,6 +3,21 @@ import ReactECharts from 'echarts-for-react';
 import { createChartOptions } from '../utils/chart-options';
 import type { InstrumentPriceProps } from '../types/types';
 
+type SeriesData = {
+  value: number;
+  high: number;
+  low: number;
+  open: number;
+};
+
+type EChartSeries = {
+  data: Array<SeriesData>;
+};
+
+type EChartXAxis = {
+  data: Array<string>
+};
+
 export type ChartPresentationsProps = {
   stockName: string;
   chartData: Array<InstrumentPriceProps>;
@@ -20,7 +35,7 @@ export const StockChart = ({
   selectedInterval,
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
-  const chartRef = useRef<ReactECharts | undefined>(undefined);
+  const chartRef = useRef<ReactECharts | null>(null);
 
   const chartOptions = useMemo(
     () =>
@@ -41,8 +56,10 @@ export const StockChart = ({
 
     const [val, isUpdate] = liveUpdateValue;
 
-    const oldSeriesData = chartInstance.getOption()?.series?.[0]?.data ?? [];
-    const oldXData = chartInstance.getOption()?.xAxis?.[0]?.data ?? [];
+    const oldSeriesData =
+      (chartInstance.getOption().series as Array<EChartSeries>)[0]?.data ?? [];
+    const oldXData =
+      (chartInstance.getOption().xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
     const newSeriesData = [...oldSeriesData];
     const newXData = [...oldXData];
