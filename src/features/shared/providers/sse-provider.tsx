@@ -203,6 +203,12 @@ export function SSEProvider({ children }: SSEProviderParams) {
       ) {
         syncBackend();
       }
+
+      store.setState({
+        ...store.state,
+        handlers,
+        events,
+      });
     },
     [syncBackend]
   );

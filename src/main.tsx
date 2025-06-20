@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StrictMode } from 'react';
 import { routeTree } from './routeTree.gen';
 import './i18n/config.ts';
 import './styles.css';
@@ -30,17 +31,17 @@ const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    // <StrictMode>
-    <ThemeProvider>
-      <ClerkThemedProvider>
-        <QueryClientProvider client={queryClient}>
-          <SSEProvider>
-            <RouterProvider router={router} />
-          </SSEProvider>
-        </QueryClientProvider>
-      </ClerkThemedProvider>
-    </ThemeProvider>
-    // </StrictMode>
+    <StrictMode>
+      <ThemeProvider>
+        <ClerkThemedProvider>
+          <QueryClientProvider client={queryClient}>
+            <SSEProvider>
+              <RouterProvider router={router} />
+            </SSEProvider>
+          </QueryClientProvider>
+        </ClerkThemedProvider>
+      </ThemeProvider>
+    </StrictMode>
   );
 }
 
