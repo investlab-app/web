@@ -46,7 +46,6 @@ export function SSEProvider({ children }: SSEProviderParams) {
     mutationFn: async () => {
       const events = Array.from(store.state.events.keys());
       const connectionId = store.state.connectionId;
-      console.log('Updating SSE subscriptions:', events, connectionId);
 
       const token = await getToken();
       if (!token) {
@@ -108,7 +107,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
       onmessage: (msg) => {
         store.state.handlers.forEach((handler) => {
           // if (Array.from(handler.events).some((event) => msg.event === event)) {
-          handler.handler(msg.data);
+            handler.handler(msg.data);
           // }
         });
       },
@@ -124,7 +123,6 @@ export function SSEProvider({ children }: SSEProviderParams) {
   useEffect(() => {
     const consumeWithReconnection = () => {
       consume().catch(() => {
-        console.log('Attempting to reconnect SSE');
         setTimeout(consumeWithReconnection, 1000);
       });
     };
@@ -177,8 +175,6 @@ export function SSEProvider({ children }: SSEProviderParams) {
 
   const cleanup = useCallback(
     (handlerId: HandlerId) => {
-      console.log('Cleaning up SSE handler:', handlerId);
-
       const handlers = new Map(store.state.handlers);
       handlers.delete(handlerId);
 

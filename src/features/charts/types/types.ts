@@ -13,7 +13,7 @@ export type DataPoint = typeof dataPoint.infer;
 export const instrumentHistory = type({
   min_price: 'number',
   max_price: 'number',
-  data: type([dataPoint]),
+  data: dataPoint.array(),
 });
 export type InstrumentHistory = typeof instrumentHistory.infer;
 

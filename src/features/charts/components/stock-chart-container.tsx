@@ -59,9 +59,15 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   useSSE({
     events: new Set([ticker]),
     callback: (eventData) => {
-      const out = livePriceDataDTO(eventData);
+      let jsonData;
+      try {
+        jsonData = JSON.parse(eventData.replace(/'/g, '"'));
+      } catch (error) {
+        console.error('Failed to parse SSE event data:', eventData, error);
+      };
+      const out = livePriceDataDTO(jsonData);
       if (out instanceof type.errors) {
-        console.error('Invalid data point received:', out);
+        console.error('Invalid data point received:', out.summary);
         store.setState((state) => ({
           ...state,
           hasError: true,
@@ -80,7 +86,9 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         return {
           ...state,
           data: newData,
+          currentPrice: out.price,
           liveUpdateValue: [newDataPoint, true],
+          hasError: false,
         };
       });
     },

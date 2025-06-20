@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import type { Instrument } from '../types/';
+import type { Instrument } from '../types/types';
 import {
   Table,
   TableBody,

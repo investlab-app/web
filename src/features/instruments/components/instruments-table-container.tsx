@@ -60,9 +60,12 @@ const InstrumentsTableContainer = ({
   const tickers = instruments.map((i) => i.symbol);
 
   const tickersSet = useMemo(
-    () => new Set(tickers),
+    () => {
+      return new Set(tickers);
+    },
     [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
   );
+
   const sseCallback = useCallback(
     (data: string) => {
       try {
@@ -90,6 +93,10 @@ const InstrumentsTableContainer = ({
     },
     [setLiveInstruments]
   );
+
+  useEffect(() => {
+  }, [setLiveInstruments]);
+
   const { cleanup: cleanupSSE } = useSSE({
     events: tickersSet,
     callback: sseCallback,
