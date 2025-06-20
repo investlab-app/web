@@ -9,13 +9,11 @@ import {
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-interface ClientId {
+export interface ClientId {
   value: string;
 }
 
-interface SSEEvent {
-  value: string;
-}
+type SSEEvent = string;
 
 export interface ClientSubscription {
   clientId: ClientId;
@@ -23,27 +21,34 @@ export interface ClientSubscription {
   handler: (data: string) => void;
 }
 
-export interface Operation {
-  type: 'subscription' | 'cancellation';
+interface Subscription {
+  type: 'subscription';
+  clientId: ClientId;
+  events: Set<SSEEvent>;
+  handler: (data: string) => void;
+}
+
+interface Cancellation {
+  type: 'cancellation';
   clientId: ClientId;
   events: Set<SSEEvent>;
 }
+
+export type Operation = Subscription | Cancellation;
+
+const store = new Store({
+  clients: new Map<ClientId, ClientSubscription>(),
+  events: new Set<SSEEvent>(),
+  connectionId: crypto.randomUUID(),
+  pendingOperations: new Map<ClientId, Array<Operation>>(),
+});
 
 export function useSSE() {
   const { getToken } = useAuth();
   const connectionRef = useRef<AbortController | null>(null);
 
-  const store = useRef(
-    new Store({
-      clients: new Map<ClientId, ClientSubscription>(),
-      events: new Set<SSEEvent>(),
-      connectionId: crypto.randomUUID(),
-      pendingOperations: new Map<ClientId, Array<Operation>>(),
-    })
-  );
-
   const batchOperation = (operation: Operation) => {
-    store.current.setState((state) => {
+    store.setState((state) => {
       const existingOperations =
         state.pendingOperations.get(operation.clientId) || [];
 
@@ -58,29 +63,6 @@ export function useSSE() {
       };
     });
   };
-
-  function attachHandler({
-    clientId,
-    handler,
-  }: {
-    clientId: ClientId;
-    handler: (data: string) => void;
-  }) {
-    store.current.setState((state) => {
-      const existingClient = state.clients.get(clientId);
-
-      const newClient: ClientSubscription = {
-        clientId,
-        events: existingClient?.events ?? new Set(),
-        handler,
-      };
-
-      return {
-        ...state,
-        clients: state.clients.set(clientId, newClient),
-      };
-    });
-  }
 
   const { mutate: callSSE } = useMutation({
     mutationFn: async ({
@@ -106,7 +88,7 @@ export function useSSE() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ events, connectionId }),
+        body: JSON.stringify({ symbols: events, connectionId }),
       });
 
       if (!response.ok) {
@@ -120,7 +102,7 @@ export function useSSE() {
   });
 
   const processBatchedOperations = useCallback(() => {
-    const { pendingOperations, clients } = store.current.state;
+    const { pendingOperations, clients } = store.state;
 
     const actualOperations = pendingOperations
       .keys()
@@ -139,21 +121,32 @@ export function useSSE() {
         }, new Map<SSEEvent, number>());
 
         const actualClientOperations = operationsBalance
-          .keys()
-          .reduce((actualAcc, symbol) => {
-            const count = operationsBalance.get(symbol);
-
-            if (!count || count === 0) {
+          .entries()
+          .reduce((actualAcc, [symbol, count]) => {
+            if (count === 0) {
               return actualAcc;
             }
 
-            const operation: Operation = {
-              type: count > 0 ? 'subscription' : 'cancellation',
-              clientId,
-              events: new Set([symbol]),
-            };
+            const operation =
+              count > 0
+                ? operations.findLast(
+                    (op) => op.events.has(symbol) && op.type === 'subscription'
+                  )
+                : ({
+                    type: 'cancellation',
+                    clientId,
+                    events: new Set([symbol]),
+                  } as Cancellation);
+
+            if (!operation) {
+              console.warn(
+                `No operation found for client ${clientId.value} and event ${symbol}`
+              );
+              return actualAcc;
+            }
 
             actualAcc.push(operation);
+
             return actualAcc;
           }, new Array<Operation>());
 
@@ -211,18 +204,25 @@ export function useSSE() {
 
     const changes = symbolChanges.reduce(
       (acc, current) => {
-        if (current.type === 'subscription') {
+        if (
+          current.type === 'subscription' &&
+          !store.state.events.has(current.events)
+        ) {
           acc.subscribe.add(current.events);
-        } else {
+        } else if (
+          current.type === 'cancellation' &&
+          store.state.events.has(current.events)
+        ) {
           acc.cancellation.add(current.events);
         }
+
         return acc;
       },
       { subscribe: new Set<SSEEvent>(), cancellation: new Set<SSEEvent>() }
     );
 
     // update events in store
-    store.current.setState((state) => ({
+    store.setState((state) => ({
       ...state,
       events: new Set([...state.events, ...changes.subscribe]).difference(
         changes.cancellation
@@ -234,14 +234,14 @@ export function useSSE() {
     if (changes.subscribe.size > 0) {
       callSSE({
         events: Array.from(changes.subscribe),
-        connectionId: store.current.state.connectionId,
+        connectionId: store.state.connectionId,
         action: 'subscribe',
       });
     }
     if (changes.cancellation.size > 0) {
       callSSE({
         events: Array.from(changes.cancellation),
-        connectionId: store.current.state.connectionId,
+        connectionId: store.state.connectionId,
         action: 'unsubscribe',
       });
     }
@@ -249,9 +249,6 @@ export function useSSE() {
 
   const consumeSSE = useCallback(
     async ({ abortController }: { abortController: AbortController }) => {
-      console.log(
-        `awaiting token for connection ID: ${store.current.state.connectionId}`
-      );
       const token = await getToken();
       if (!token) {
         console.error('No authentication token available');
@@ -259,8 +256,8 @@ export function useSSE() {
       }
 
       const params = new URLSearchParams();
-      params.append('events', Array.from(store.current.state.events).join(','));
-      params.append('connectionId', store.current.state.connectionId);
+      params.append('symbols', Array.from(store.state.events).join(','));
+      params.append('connectionId', store.state.connectionId);
       const url = `${baseUrl}/api/sse?${params.toString()}`;
 
       await fetchEventSource(url, {
@@ -285,25 +282,21 @@ export function useSSE() {
           }
         },
         onmessage: (msg) => {
-          store.current.state.clients.forEach((client) => {
+          store.state.clients.forEach((client) => {
             if (
-              Array.from(client.events).some(
-                (event) => msg.event === event.value
-              )
+              Array.from(client.events).some((event) => msg.event === event)
             ) {
               client.handler(msg.data);
             }
           });
         },
         onclose() {
-          console.log(
-            `Connection closed (ID: ${store.current.state.connectionId})`
-          );
+          console.log(`Connection closed (ID: ${store.state.connectionId})`);
           throw new Error('Connection closed unexpectedly');
         },
         onerror(error) {
           console.log(
-            `Connection error (ID: ${store.current.state.connectionId}):`,
+            `Connection error (ID: ${store.state.connectionId}):`,
             error
           );
           throw new Error('Connection error: ' + error.message);
@@ -338,19 +331,30 @@ export function useSSE() {
         connectionRef.current = null;
       }
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [consumeSSE]);
+
+  const lastUpdateRef = useRef<number>(0);
 
   useEffect(() => {
-    const unsubscribe = store.current.subscribe(({ prevVal, currentVal }) => {
-      if (prevVal.pendingOperations === currentVal.pendingOperations) {
+    const unsubscribe = store.subscribe(({ currentVal }) => {
+      if (
+        currentVal.pendingOperations.size === 0 ||
+        Date.now() - lastUpdateRef.current < 1000
+      ) {
         return;
       }
+      lastUpdateRef.current = Date.now();
+
+      // console.log("its actually an update");
 
       const timeoutId = setTimeout(() => {
         processBatchedOperations();
       }, 100);
 
-      return () => clearTimeout(timeoutId);
+      return () => {
+        console.log('Clearing timeout for batched operations');
+        clearTimeout(timeoutId);
+      };
     });
 
     return () => {
@@ -359,7 +363,6 @@ export function useSSE() {
   }, [processBatchedOperations]);
 
   return {
-    addOperation: batchOperation,
-    attachHandler,
+    batchOperation,
   };
 }

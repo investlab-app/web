@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ import { routeTree } from './routeTree.gen';
 import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
-import { SSEProvider } from './features/shared/hooks/use-live-prices.tsx';
+import { SSEProvider } from './features/shared/hooks/SSEProvider.tsx';
 import type { ReactNode } from '@tanstack/react-router';
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
@@ -82,7 +82,7 @@ const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <StrictMode>
+    // <StrictMode>
       <ThemeProvider>
         <ClerkProviderWithTheme>
           <QueryClientProvider client={queryClient}>
@@ -92,7 +92,7 @@ if (rootElement && !rootElement.innerHTML) {
           </QueryClientProvider>
         </ClerkProviderWithTheme>
       </ThemeProvider>
-    </StrictMode>
+    // </StrictMode>
   );
 }
 

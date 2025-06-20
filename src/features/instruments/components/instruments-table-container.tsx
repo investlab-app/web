@@ -1,5 +1,6 @@
-import InstrumentTable from './instrument-table';
+import { useEffect } from 'react';
 import type { Instrument } from '../types/instruments.types';
+import { useSSEMessages } from '@/features/shared/hooks/SSEProvider';
 
 // const PAGE_SIZE = 10;
 
@@ -7,6 +8,23 @@ type InstrumentsTableContainerProps = {
   setInstrument: (instrument: Instrument) => void;
   setOpenSheet: (open: boolean) => void;
 };
+
+const instruments: Array<Instrument> = [
+  {
+    symbol: 'AAPL',
+    name: 'Apple Inc.',
+    currentPrice: 150,
+    dayChange: 1.5,
+    volume: 1000000,
+  },
+  {
+    symbol: 'GOOGL',
+    name: 'Alphabet Inc.',
+    currentPrice: 2800,
+    dayChange: -0.5,
+    volume: 500000,
+  },
+];
 
 const InstrumentsTableContainer = ({
   setInstrument,
@@ -27,22 +45,17 @@ const InstrumentsTableContainer = ({
   //   perPage: PAGE_SIZE,
   // });
 
-  const instruments: Array<Instrument> = [
-    {
-      symbol: 'AAPL',
-      name: 'Apple Inc.',
-      currentPrice: 150,
-      dayChange: 1.5,
-      volume: 1000000,
-    },
-    {
-      symbol: 'GOOGL',
-      name: 'Alphabet Inc.',
-      currentPrice: 2800,
-      dayChange: -0.5,
-      volume: 500000,
-    },
-  ];
+  const { messages } = useSSEMessages(
+    new Set(instruments.map((i) => i.symbol))
+  );
+
+  useEffect(() => {
+    console.log('Listening to messages for instruments:', instruments);
+
+    messages.forEach((message) => {
+      console.log('Received message:', message);
+    });
+  }, [messages]);
 
   // const livePrices = useLivePrices();
 
@@ -90,35 +103,36 @@ const InstrumentsTableContainer = ({
   //   };
   // }, [instruments]);
 
-  const handleInstrumentPressed = (asset: Instrument) => {
-    setInstrument(asset);
-    setOpenSheet(true);
-  };
+  // const handleInstrumentPressed = (asset: Instrument) => {
+  //   setInstrument(asset);
+  //   setOpenSheet(true);
+  // };
 
   return (
-    <div className="p-4">
-      {/* <SearchInput
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-1/3"
-        placeholder={t('common.search')}
-      /> */}
-      <InstrumentTable
-        data={instruments}
-        onInstrumentPressed={handleInstrumentPressed}
-      />
-      {/* <div className="flex justify-center mt-4">
-        {hasMore && (
-          <Button
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={loading}
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-          >
-            {loading ? t('common.loading') : t('common.more')}
-          </Button>
-        )}
-      </div> */}
-    </div>
+    <h1>This is SSE DEMO</h1>
+    // <div className="p-4">
+    //   <SearchInput
+    //     value={search}
+    //     onChange={(e) => setSearch(e.target.value)}
+    //     className="w-1/3"
+    //     placeholder={t('common.search')}
+    //   />
+    //   <InstrumentTable
+    //     data={instruments}
+    //     onInstrumentPressed={handleInstrumentPressed}
+    //   />
+    //   <div className="flex justify-center mt-4">
+    //     {hasMore && (
+    //       <Button
+    //         onClick={() => setPage((prev) => prev + 1)}
+    //         disabled={loading}
+    //         className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+    //       >
+    //         {loading ? t('common.loading') : t('common.more')}
+    //       </Button>
+    //     )}
+    //   </div>
+    // </div>
   );
 };
 

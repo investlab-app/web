@@ -1,14 +1,10 @@
-import { createContext, useContext, useMemo, useState } from 'react';
-import { useSSE } from './use-sse-store';
-import type { Operation } from './use-sse-store';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useSSE } from './use-sse';
+import type { ClientId, Operation} from './use-sse';
 import type { ReactNode } from 'react';
 
 interface SSEContextType {
   addOperation: (operation: Operation) => void;
-  attachHandler: (params: {
-    clientId: { value: string };
-    handler: (message: string) => void;
-  }) => void;
 }
 
 const SSEContext = createContext<SSEContextType | undefined>(undefined);
@@ -18,11 +14,11 @@ interface SSEProviderParams {
 }
 
 export function SSEProvider({ children }: SSEProviderParams) {
-  const { addOperation, attachHandler } = useSSE();
+  const { batchOperation } = useSSE();
 
   const contextValue: SSEContextType = useMemo(
-    () => ({ addOperation, attachHandler }),
-    [addOperation, attachHandler]
+    () => ({ addOperation: batchOperation }),
+    [batchOperation]
   );
 
   return (
@@ -39,28 +35,21 @@ export function useSSEMessages(events: Set<string>) {
 
   const [messages, setMessages] = useState<Array<string>>([]);
 
-  useMemo(() => {
-    const handler = (message: string) => {
-      setMessages((prev) => [...prev, message]);
-    };
-
-    const clientId = { value: crypto.randomUUID() };
-
-    const eventsArray = new Set(events.values().map((e) => ({ value: e })));
+  useEffect(() => {
+    const clientId: ClientId = { value: crypto.randomUUID() };
 
     context.addOperation({
       type: 'subscription',
       clientId,
-      events: eventsArray,
+      events: events,
+      handler: (data: string) => setMessages((prev) => [...prev, data]),
     });
-
-    context.attachHandler({ clientId, handler });
 
     return () => {
       context.addOperation({
         type: 'cancellation',
         clientId,
-        events: eventsArray,
+        events: events,
       });
     };
   }, [context, events]);
