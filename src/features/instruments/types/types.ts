@@ -43,10 +43,10 @@ export function fromDTO(dto: InstrumentDTO): Instrument | undefined {
 export const livePriceDataDTO = type({
   change_percent: 'number',
   change: 'number',
-  day_volume: 'string',
+  day_volume: 'string?',
   exchange: 'string',
   id: 'string',
-  market_hours: 'number',
+  market_hours: 'number?',
   price_hint: 'string',
   price: 'number',
   quote_type: 'number',
