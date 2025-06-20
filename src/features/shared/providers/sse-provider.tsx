@@ -92,7 +92,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
           response.ok &&
           response.headers.get('content-type') === EventStreamContentType
         ) {
-          syncBackend();
+          // syncBackend();
           return Promise.resolve();
         } else if (
           response.status >= 400 &&
@@ -107,8 +107,11 @@ export function SSEProvider({ children }: SSEProviderParams) {
       onmessage: (msg) => {
         store.state.handlers.forEach((handler) => {
           // if (Array.from(handler.events).some((event) => msg.event === event)) {
+          try {
             handler.handler(msg.data);
-          // }
+          } catch (error) {
+            console.error('Error handling SSE message:', error);
+          }
         });
       },
       onclose() {

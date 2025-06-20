@@ -68,7 +68,6 @@ const InstrumentsTableContainer = ({
 
   const sseCallback = useCallback(
     (data: string) => {
-      try {
         const fixedMessage = data.replace(/'/g, '"');
 
         const out = livePriceDataDTO(JSON.parse(fixedMessage));
@@ -87,9 +86,6 @@ const InstrumentsTableContainer = ({
           };
           return updated;
         });
-      } catch (error) {
-        console.error('Failed to parse message:', data, error);
-      }
     },
     [setLiveInstruments]
   );
@@ -121,7 +117,7 @@ const InstrumentsTableContainer = ({
         className="w-1/3"
         placeholder={t('common.search')}
       />
-      {loading && Object.keys(liveInstruments).length === 0 ? (
+      {loading && instruments.length === 0 ? (
         <div className="flex justify-center items-center py-8">
           <div className="text-muted-foreground">{t('common.loading')}</div>
         </div>
