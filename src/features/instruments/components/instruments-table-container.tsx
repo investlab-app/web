@@ -41,16 +41,11 @@ const InstrumentsTableContainer = ({
   >({});
 
   useEffect(() => {
-  //   const instrumentsMap = instruments.reduce(
-  //     (acc, instrument) => {
-  //       acc[instrument.symbol] = instrument;
-  //       return acc;
-  //     },
-  //     {} as Record<string, Instrument>
-  //   );
-
-  //   setLiveInstruments(instrumentsMap);
-    console.log('Instruments updated:', instruments);
+    const instrumentsMap = {} as Record<string, Instrument>;
+    instruments.forEach((instrument) => {
+      instrumentsMap[instrument.symbol] = { ...instrument };
+    });
+    setLiveInstruments(instrumentsMap);
   }, [instruments]);
 
   const tickers = instruments.map((i) => i.symbol);
