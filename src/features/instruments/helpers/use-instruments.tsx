@@ -1,11 +1,16 @@
 import { useMemo } from 'react';
+import { useQueries } from '@tanstack/react-query';
+import { useAuth } from '@clerk/clerk-react';
+import { type } from 'arktype';
 import { useAvailableInstruments } from '../hooks/use-available-instruments';
-import { useInstrumentPages } from '../hooks/use-instrument-pages';
+import { fromDTO, instrumentDTO } from '../types/instruments.types';
 import type {
   Instrument,
+  InstrumentsPageData,
   UseInstrumentsOptions,
   UseInstrumentsReturn,
 } from '../types/instruments.types';
+import { fetchInstrumentsOverview } from '@/features/shared/api';
 
 export const useInstruments = ({
   filter = '',
@@ -28,13 +33,58 @@ export const useInstruments = ({
     );
   }, [availableInstruments, filter]);
 
-  const instrumentPages = useInstrumentPages({
-    tickers: filteredTickers,
-    page,
-    perPage,
-    sector,
-    sortBy,
-    sortDirection,
+  const { getToken } = useAuth();
+
+  const pagesToFetch = Array.from({ length: page }, (_, i) => i + 1);
+
+  const instrumentPages = useQueries({
+    queries: pagesToFetch.map((pageNum) => ({
+      queryKey: [
+        'instruments',
+        {
+          tickers: filteredTickers,
+          page: pageNum,
+          perPage,
+          sector,
+          sortBy,
+          sortDirection,
+        },
+      ],
+      queryFn: async (): Promise<InstrumentsPageData> => {
+        const token = await getToken();
+        if (!token) throw new Error('No auth token available');
+
+        const response = await fetchInstrumentsOverview({
+          tickers: filteredTickers.length > 0 ? filteredTickers : undefined,
+          page: pageNum,
+          pageSize: perPage,
+          sector,
+          sortBy,
+          sortDirection,
+          token,
+        });
+
+        return {
+          instruments: response.items?.flatMap((item: unknown) => {
+            const out = instrumentDTO(item);
+            if (out instanceof type.errors) {
+              console.error('Invalid instrument data:', out);
+              return [];
+            } else {
+              const instrumentItem = fromDTO(out);
+              return instrumentItem ? [instrumentItem] : [];
+            }
+          }),
+          total: response.total || 0,
+          numPages: response.num_pages || 0,
+          page: pageNum,
+        };
+      },
+      refetchOnWindowFocus: false,
+      enabled: filteredTickers.length > 0 || !filteredTickers,
+      staleTime: 2 * 60 * 1000, // 2 minutes
+      gcTime: 5 * 60 * 1000, // 5 minutes
+    })),
   });
 
   const combinedData = useMemo(() => {
@@ -68,6 +118,7 @@ export const useInstruments = ({
       numPages,
       hasMore: page < numPages,
     };
+    // eslint-disable-next-line @tanstack/query/no-unstable-deps
   }, [instrumentPages, page]);
 
   const error = availableInstrumentsError

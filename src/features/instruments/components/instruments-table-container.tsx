@@ -35,7 +35,20 @@ const InstrumentsTableContainer = ({
     perPage: PAGE_SIZE,
   });
 
-  const [liveInstruments, setLiveInstruments] = useState<Array<Instrument>>(instruments);
+  const [liveInstruments, setLiveInstruments] = useState<Record<string, Instrument>>({});
+
+  useEffect(() => {
+    // const instrumentsMap = instruments.reduce((acc, instrument) => {
+    //   acc[instrument.symbol] = instrument;
+    //   return acc;
+    // }, {} as Record<string, Instrument>);
+
+    // console.log('Setting live instruments:', instrumentsMap);
+    
+    // setLiveInstruments(instrumentsMap);
+
+    console.log('Setting live instruments:', instruments);
+  }, [instruments]);
 
   const tickers = instruments.map((i) => i.symbol);
 
@@ -59,24 +72,16 @@ const InstrumentsTableContainer = ({
         }
 
         setLiveInstruments((prev) => {
-          const index = prev.findIndex((instrument) => instrument.id === id);
-          if (index !== -1) {
-            const updatedInstrument = {
-              ...prev[index],
-              price,
-              change_percent,
-            };
-            return [...prev.slice(0, index), updatedInstrument, ...prev.slice(index + 1)];
-          }
-          return prev;
+          const updated = { ...prev };
+          updated[id] = {
+            ...updated[id],
+            currentPrice: price,
+            dayChange: change_percent,
+          };
+          return updated;
         });
-
-        priceUpdatesRef.current[id] = {
-          currentPrice: price,
-          dayChange: change_percent,
-        };
       } catch (error) {
-        console.error('Failed to parse message:', message, error);
+        console.error('Failed to parse message:', data, error);
       }
     },
   });
@@ -98,7 +103,7 @@ const InstrumentsTableContainer = ({
         placeholder={t('common.search')}
       />
       <InstrumentTable
-        data={instruments}
+        data={Object.values(liveInstruments)}
         onInstrumentPressed={handleInstrumentPressed}
       />
       <div className="flex justify-center mt-4">

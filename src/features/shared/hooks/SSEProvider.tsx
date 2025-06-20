@@ -107,9 +107,9 @@ export function SSEProvider({ children }: SSEProviderParams) {
       },
       onmessage: (msg) => {
         store.state.handlers.forEach((handler) => {
-          if (Array.from(handler.events).some((event) => msg.event === event)) {
+          // if (Array.from(handler.events).some((event) => msg.event === event)) {
             handler.handler(msg.data);
-          }
+          // }
         });
       },
       onclose() {
