@@ -41,15 +41,16 @@ const InstrumentsTableContainer = ({
   >({});
 
   useEffect(() => {
-    const instrumentsMap = instruments.reduce(
-      (acc, instrument) => {
-        acc[instrument.symbol] = instrument;
-        return acc;
-      },
-      {} as Record<string, Instrument>
-    );
+  //   const instrumentsMap = instruments.reduce(
+  //     (acc, instrument) => {
+  //       acc[instrument.symbol] = instrument;
+  //       return acc;
+  //     },
+  //     {} as Record<string, Instrument>
+  //   );
 
-    setLiveInstruments(instrumentsMap);
+  //   setLiveInstruments(instrumentsMap);
+    console.log('Instruments updated:', instruments);
   }, [instruments]);
 
   const tickers = instruments.map((i) => i.symbol);
@@ -105,7 +106,7 @@ const InstrumentsTableContainer = ({
         placeholder={t('common.search')}
       />
       <InstrumentTable
-        data={[]}
+        data={Object.values(liveInstruments)}
         onInstrumentPressed={handleInstrumentPressed}
       />
       <div className="flex justify-center mt-4">

@@ -41,16 +41,15 @@ export function fromDTO(dto: InstrumentDTO): Instrument | undefined {
 }
 
 export const livePriceDataDTO = type({
-  id: 'string',
-  price: 'number',
-  time: 'string',
-  exchange: 'string',
-  quote_type: 'number',
-  market_hours: 'number',
   change_percent: 'number',
-  day_volume: 'string',
   change: 'number',
-  last_size: 'string',
+  day_volume: 'string',
+  exchange: 'string',
+  id: 'string',
+  market_hours: 'number',
   price_hint: 'string',
+  price: 'number',
+  quote_type: 'number',
+  time: 'string',
 });
 export type LivePriceDataDTO = typeof livePriceDataDTO.infer;
