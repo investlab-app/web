@@ -83,15 +83,15 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     // <StrictMode>
-      <ThemeProvider>
-        <ClerkProviderWithTheme>
-          <QueryClientProvider client={queryClient}>
-            <SSEProvider>
-              <RouterProvider router={router} />
-            </SSEProvider>
-          </QueryClientProvider>
-        </ClerkProviderWithTheme>
-      </ThemeProvider>
+    <ThemeProvider>
+      <ClerkProviderWithTheme>
+        <QueryClientProvider client={queryClient}>
+          <SSEProvider>
+            <RouterProvider router={router} />
+          </SSEProvider>
+        </QueryClientProvider>
+      </ClerkProviderWithTheme>
+    </ThemeProvider>
     // </StrictMode>
   );
 }
