@@ -7,7 +7,6 @@ export const dataPoint = type({
   high: 'string',
   low: 'string',
 });
-
 export type DataPoint = typeof dataPoint.infer;
 
 export const instrumentHistory = type({
@@ -15,7 +14,6 @@ export const instrumentHistory = type({
   max_price: 'number',
   data: type([dataPoint]),
 });
-
 export type InstrumentHistory = typeof instrumentHistory.infer;
 
 export interface InstrumentPriceProps {
@@ -24,7 +22,7 @@ export interface InstrumentPriceProps {
   close: number;
   high: number;
   low: number;
-};
+}
 
 export function dataPointToInstrumentPriceProps(
   item: DataPoint
@@ -38,15 +36,19 @@ export function dataPointToInstrumentPriceProps(
   };
 }
 
+const instrumentOverviewInstrument = type({
+  ticker: 'string',
+  name: 'string',
+  sector: 'string',
+  price: 'number',
+  change: 'number',
+  change_percent: 'number',
+});
+export type InstrumentOverviewInstrument =
+  typeof instrumentOverviewInstrument.infer;
+
 export const instrumentOverview = type({
-  instruments: [{
-      ticker: 'string',
-      name: 'string',
-      sector: 'string',
-      price: 'number',
-      change: 'number',
-      change_percent: 'number',
-    }],
+  instruments: [instrumentOverviewInstrument],
   total: 'number',
   numPages: 'number',
   page: 'number',
@@ -62,7 +64,6 @@ export type FetchInstrumentsOverviewOptions = {
   sortDirection?: string;
   token: string;
 };
-
 export const AvailableInstrumentsResponse = type({
   instruments: 'string[]',
 });

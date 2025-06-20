@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
+import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
+import type { InstrumentOverviewInstrument } from '@/features/charts/types/types';
 import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';
-import type { Instrument } from '../types/types';
 
 type UseInstrumentsOptions = {
   filter?: string;
@@ -63,8 +64,7 @@ export const useInstruments = ({
       queryFn: async () => {
         const token = await getToken();
         if (!token) throw new Error('No auth token available');
-
-        const response = await fetchInstrumentsOverview({
+        return await fetchInstrumentsOverview({
           tickers: filteredTickers.length > 0 ? filteredTickers : undefined,
           page: pageNum,
           pageSize: perPage,
@@ -73,8 +73,6 @@ export const useInstruments = ({
           sortDirection,
           token,
         });
-
-        return response;
       },
       refetchOnWindowFocus: false,
       enabled: filteredTickers.length > 0 || !filteredTickers,
@@ -84,7 +82,7 @@ export const useInstruments = ({
   });
 
   const combinedData = useMemo(() => {
-    let allInstruments: Array<Instrument> = [];
+    let allInstruments: Array<InstrumentOverviewInstrument> = [];
     let totalItems = 0;
     let numPages = 0;
     let errorMessage: string | null = null;
