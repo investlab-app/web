@@ -28,8 +28,9 @@ export function createChartOptions(
       backgroundColor: 'rgba(47, 5, 77, 0.9)',
       textStyle: { color: 'white' },
       // eslint-disable-next-line
-      formatter: (params: Array<any>) => {
-        const { axisValue, data } = params[0];
+      formatter: (params: any) => {
+        const paramArray = Array.isArray(params) ? params : [params];
+        const { axisValue, data } = paramArray[0];
         return `<div><strong>
             ${formatChartDateByInterval(axisValue, selectedInterval, true)}
           </strong><br />

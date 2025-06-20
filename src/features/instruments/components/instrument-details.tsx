@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { BuySellContainer } from './buy-sell-action';
-import type { Instrument } from '../types/';
+import type { Instrument } from '../types/types';
 import {
   Card,
   CardContent,
