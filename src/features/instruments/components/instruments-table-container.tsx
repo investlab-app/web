@@ -34,11 +34,14 @@ const InstrumentsTableContainer = ({
     filter: debouncedSearch,
     page,
     perPage: PAGE_SIZE,
-  });
-
-  const [liveInstruments, setLiveInstruments] = useState<
+  });  const [liveInstruments, setLiveInstruments] = useState<
     Record<string, Instrument>
   >({});
+  // Create a stable key based on instruments content to avoid infinite loops
+  const instrumentsKey = useMemo(() => 
+    instruments.map(i => `${i.symbol}-${i.name}`).sort().join('|'),
+    [instruments]
+  );
 
   useEffect(() => {
     const instrumentsMap = {} as Record<string, Instrument>;
@@ -46,7 +49,8 @@ const InstrumentsTableContainer = ({
       instrumentsMap[instrument.symbol] = { ...instrument };
     });
     setLiveInstruments(instrumentsMap);
-  }, [instruments]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instrumentsKey]); // Use stable key instead of instruments array
 
   const tickers = instruments.map((i) => i.symbol);
 
