@@ -23,7 +23,8 @@ export class Handler {
 }
 
 const store = new Store({
-  connectionId: crypto.randomUUID(),
+  connectionId:
+    Math.random().toString(36).substring(2) + Date.now().toString(36),
   handlers: new Map<HandlerId, Handler>(),
   events: new Map<SSEEvent, Array<HandlerId>>(),
 });

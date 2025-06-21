@@ -1,1 +1,1 @@
-export const THIS_URL = 'http://localhost:3000';
+export const THIS_URL = import.meta.env.VITE_THIS_URL;

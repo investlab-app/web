@@ -3,3 +3,12 @@ excludes:
     - pattern: 'devDependencies'
       reason: 'DEV_DEPENDENCY_OF'
       comment: 'Packages for development only.'
+
+curations:
+  packages:
+    - id: 'NPM::posthog-js:1.255.1'
+      curations:
+        declared_license_mapping:
+          'NOASSERTION': 'Apache-2.0'
+        concluded_license: 'Apache-2.0'
+        comment: 'Based on GitHub repository, this package is Apache License 2.0'

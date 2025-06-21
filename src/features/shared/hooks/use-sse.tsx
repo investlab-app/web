@@ -15,7 +15,9 @@ export function useSSE({
     throw new Error('useSSEProvider must be used within a SSEProvider');
   }
 
-  const handlerId = useRef<HandlerId>(crypto.randomUUID());
+  const handlerId = useRef<HandlerId>(
+    Math.random().toString(36).substring(2) + Date.now().toString(36)
+  );
   const callbackRef = useRef(callback);
   const eventsRef = useRef(events);
 
