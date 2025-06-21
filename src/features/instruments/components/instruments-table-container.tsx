@@ -90,8 +90,6 @@ const InstrumentsTableContainer = ({
     [setLiveInstruments]
   );
 
-  useEffect(() => {}, [setLiveInstruments]);
-
   const { cleanup: cleanupSSE } = useSSE({
     events: tickersSet,
     callback: sseCallback,

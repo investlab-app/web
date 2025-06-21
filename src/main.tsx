@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals.ts';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
+import { StrictMode } from 'react';
 
 const router = createRouter({
   routeTree,
@@ -30,17 +31,17 @@ const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    // <StrictMode>
-    <ThemeProvider>
-      <ClerkThemedProvider>
-        <QueryClientProvider client={queryClient}>
-          <SSEProvider>
-            <RouterProvider router={router} />
-          </SSEProvider>
-        </QueryClientProvider>
-      </ClerkThemedProvider>
-    </ThemeProvider>
-    // </StrictMode>
+    <StrictMode>
+      <ThemeProvider>
+        <ClerkThemedProvider>
+          <QueryClientProvider client={queryClient}>
+            <SSEProvider>
+              <RouterProvider router={router} />
+            </SSEProvider>
+          </QueryClientProvider>
+        </ClerkThemedProvider>
+      </ThemeProvider>
+    </StrictMode>
   );
 }
 

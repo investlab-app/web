@@ -23,11 +23,6 @@ export default defineConfig({
       },
     },
   },
-  // test: {
-  //   globals: true,
-  //   environment: 'jsdom',
-  //   include: ['src/**/*.test.{js,jsx,ts,tsx}'],
-  // },
   resolve: {
     alias: {
       '@': resolve(dirname(fileURLToPath(import.meta.url)), 'src'),

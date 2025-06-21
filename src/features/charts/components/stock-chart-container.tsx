@@ -56,14 +56,15 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
 
   const loadStockData = useLoadStockChartData();
 
-  useSSE({
+  const { cleanup } = useSSE({
     events: new Set([ticker]),
     callback: (eventData) => {
       let jsonData;
       try {
         jsonData = JSON.parse(eventData.replace(/'/g, '"'));
-      } catch (error) {
-        console.error('Failed to parse SSE event data:', eventData, error);
+      } catch {
+        // ignore
+        return;
       }
       const out = livePriceDataDTO(jsonData);
       if (out instanceof type.errors) {
@@ -74,18 +75,19 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         }));
         return;
       }
+      if (out.id !== ticker) {
+        return;
+      }
       store.setState((state) => {
         const newDataPoint = {
-          date: out.time,
+          date: new Date(parseInt(out.time)).toLocaleTimeString(),
           open: out.price,
           high: out.price,
           low: out.price,
           close: out.price,
         } as InstrumentPriceProps;
-        const newData = [...state.data, newDataPoint];
         return {
           ...state,
-          data: newData,
           currentPrice: out.price,
           liveUpdateValue: [newDataPoint, true],
           hasError: false,
@@ -100,6 +102,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
       store.setState((state) => {
         return {
           ...state,
+          interval: newInterval,
           data: result.parsed,
           minPrice: result.minPrice,
           maxPrice: result.maxPrice,
@@ -111,8 +114,11 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   );
 
   useEffect(() => {
-    changeInterval(interval);
-  }, [changeInterval, interval]);
+    changeInterval('1h');
+    return () => {
+      cleanup();
+    };
+  }, [changeInterval, cleanup]);
 
   return (
     <Card>
@@ -124,12 +130,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           </CardDescription>
         )}
         <CardAction>
-          <Select
-            value={interval}
-            onValueChange={(value) =>
-              store.setState((state) => ({ ...state, interval: value }))
-            }
-          >
+          <Select value={interval} onValueChange={changeInterval}>
             <SelectTrigger className="w-40" aria-label="Select time range">
               <SelectValue placeholder="Select range" />
             </SelectTrigger>
