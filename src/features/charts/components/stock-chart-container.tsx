@@ -117,7 +117,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     changeInterval('1h');
     return () => {
       cleanup();
-    }
+    };
   }, [changeInterval, cleanup]);
 
   return (
