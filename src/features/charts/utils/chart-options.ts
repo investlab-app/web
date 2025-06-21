@@ -3,7 +3,11 @@ import {
   formatChartDateByRange as formatChartDateByInterval,
 } from './chart-formatting';
 import type { InstrumentPriceProps } from '../types/types';
-import type { EChartsOption } from 'echarts';
+import type {
+  EChartsOption,
+  TooltipComponentFormatterCallbackParams,
+  DefaultLabelFormatterCallbackParams,
+} from 'echarts';
 
 export function createChartOptions(
   stockName: string,
@@ -22,7 +26,7 @@ export function createChartOptions(
       }))
     : chartData.map((item) => [item.open, item.close, item.low, item.high]);
 
-  zoom = isCandlestick ? zoom / 5 : zoom;
+  zoom = isCandlestick ? zoom / 3 : zoom;
   const startPercent = (1 - zoom) * 100;
 
   return {
@@ -39,10 +43,12 @@ export function createChartOptions(
       textStyle: {
         color: isCandlestick ? 'var(--foreground)' : 'var(--foreground)',
       },
-      // eslint-disable-next-line
-      formatter: (params: Array<any>) => {
+      formatter: (params: TooltipComponentFormatterCallbackParams) => {
         const paramArray = Array.isArray(params) ? params : [params];
-        const { axisValue, data } = paramArray[0];
+        const { axisValue, data } =
+          paramArray[0] as DefaultLabelFormatterCallbackParams & {
+            axisValue: string;
+          };
         const formattedDate = formatChartDateByInterval(
           axisValue,
           selectedInterval,
@@ -50,17 +56,23 @@ export function createChartOptions(
         );
 
         if (isCandlestick) {
-          const [, open, close, low, high] = data
+          const candlestickData = Array.isArray(data)
             ? data
-            : [null, null, null, null, null];
+            : [null, null, null, null];
+          if (!candlestickData.every((d) => typeof d === 'number')) return '';
+          const [open, close, low, high] = candlestickData;
           return `<div><strong>${formattedDate}</strong><br />
             Open: $${open?.toFixed(2)}<br />
             Close: $${close?.toFixed(2)}<br />
             High: $${high?.toFixed(2)}<br />
             Low: $${low?.toFixed(2)}</div>`;
         } else {
+          const value =
+            typeof data === 'object' && data !== null && 'value' in data
+              ? (data as any).value
+              : data;
           return `<div><strong>${formattedDate}</strong><br />
-            Price: $${data.value?.toFixed(2)}</div>`;
+            Price: $${value?.toFixed(2)}</div>`;
         }
       },
     },
@@ -97,7 +109,7 @@ export function createChartOptions(
         ? {
             name: stockName,
             type: 'candlestick',
-            data: seriesData,
+            data: seriesData as number[][],
             itemStyle: {
               color: '#00b894',
               color0: '#d63031',
@@ -109,7 +121,12 @@ export function createChartOptions(
             name: stockName,
             type: 'line',
             smooth: false,
-            data: seriesData,
+            data: seriesData as Array<{
+              value: number;
+              high: number;
+              low: number;
+              open: number;
+            }>,
             showSymbol: false,
             areaStyle: {
               color: {

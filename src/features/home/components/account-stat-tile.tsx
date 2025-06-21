@@ -7,9 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-
-const cn = (...classes: Array<string | undefined | false>) =>
-  classes.filter(Boolean).join(' ');
+import { cn } from '@/features/shared/utils';
 
 interface StatTileProps {
   title: string;

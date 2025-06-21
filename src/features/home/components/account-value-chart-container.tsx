@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 
-export const AccuntValueChartContainer = () => {
+export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
   const data: Array<InstrumentPriceProps> = useMemo(() => {
     const today = new Date();

@@ -58,7 +58,7 @@ export const BuySellSection = ({
                     onValueChange={handleInputChange}
                     prefix={mode === 'price' ? '$' : undefined}
                     fixedDecimalScale
-                    stepper={mode === 'price' ? 0.5 : 0.1}
+                    stepper={mode === 'price' ? 0.5 : 0.05}
                     decimalScale={mode === 'price' ? 2 : 5}
                   />
                 </div>
