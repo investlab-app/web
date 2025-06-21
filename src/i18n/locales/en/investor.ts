@@ -10,6 +10,8 @@ const enInvestor = {
   gain: 'Gain',
   gain_percent: 'Gain percent',
   value: 'Value',
+  owned_shares: 'Owned assets',
+  account_value_over_time: 'Account value over time',
 };
 
 export default enInvestor;

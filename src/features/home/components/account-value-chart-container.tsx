@@ -9,28 +9,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 export const AccuntValueChartContainer = () => {
+  const { t } = useTranslation();
   const data: Array<InstrumentPriceProps> = useMemo(() => {
     const today = new Date();
     const prices: Array<InstrumentPriceProps> = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 120; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() - i * 7);
 
-      const base = 100 + Math.random() * 20;
-      const high = base + Math.random() * 5;
-      const low = base - Math.random() * 5;
-      const open = base + (Math.random() - 0.5) * 2;
-      const close = base + (Math.random() - 0.5) * 2;
+      const base = 100 + Math.random() * 5;
+      const price = base + Math.random() * 3;
 
       prices.unshift({
         date: date.toISOString().split('T')[0],
-        open: parseFloat(open.toFixed(2)),
-        close: parseFloat(close.toFixed(2)),
-        high: parseFloat(high.toFixed(2)),
-        low: parseFloat(low.toFixed(2)),
+        open: parseFloat(price.toFixed(2)),
+        close: parseFloat(price.toFixed(2)),
+        high: parseFloat(price.toFixed(2)),
+        low: parseFloat(price.toFixed(2)),
       });
     }
 
@@ -43,9 +42,14 @@ export const AccuntValueChartContainer = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Total investments</CardTitle>
+        <CardTitle className="text-xl font-semibold">
+          {t('investor.account_value_over_time')}
+        </CardTitle>
+
         {!hasError && typeof currentValue === 'number' && (
-          <CardDescription>${currentValue.toFixed(2)}</CardDescription>
+          <div className="text-4xl font-bold tabular-nums">
+            {currentValue.toFixed(2)} {t('common.currency')}
+          </div>
         )}
       </CardHeader>
       <CardContent>

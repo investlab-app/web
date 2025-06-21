@@ -27,18 +27,16 @@ const AccountOverviewRibbon = () => {
   ];
 
   return (
-    <div className="p-4">
-      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-        {tiles.map((tile, index) => (
-          <StatTile
-            key={index}
-            title={tile.title}
-            value={tile.value}
-            isProgress={tile.isProgress}
-            currency={t('common.currency')}
-          />
-        ))}
-      </div>
+    <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+      {tiles.map((tile, index) => (
+        <StatTile
+          key={index}
+          title={tile.title}
+          value={tile.value}
+          isProgress={tile.isProgress}
+          currency={t('common.currency')}
+        />
+      ))}
     </div>
   );
 };

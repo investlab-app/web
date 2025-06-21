@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { getDerivedPrimaryColor } from '../helpers/color-selector';
-import { Card, CardContent } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 
 interface AssetAllocationProps {
   totalValue: number;
@@ -31,24 +36,20 @@ export const AssetAllocationTile = ({
 
   console.log(assets);
   return (
-    <Card className=" @container/card border border-[color:var(--color-border)] shadow-lg bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)]">
-      <CardContent className="p-6 space-y-6">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">
-            {t('investor.asset_allocation')}
-          </h2>
-
-          <div className="space-y-2">
-            <div className="text-4xl font-bold tabular-nums">
-              {formatValue(totalValue)} {currency}
-            </div>
-
-            <span className="text-gray-400 text-sm">
-              {formatValue(yearlyGain)} {currency} {t('investor.this_year')}
-            </span>
-          </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
+          {t('investor.asset_allocation')}
+        </CardTitle>
+        <div className="text-4xl font-bold tabular-nums">
+          {formatValue(totalValue)} {currency}
         </div>
 
+        <span className="text-gray-400 text-sm">
+          {formatValue(yearlyGain)} {currency} {t('investor.this_year')}
+        </span>
+      </CardHeader>
+      <CardContent className="p-6 space-y-6">
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">
             {t('investor.distribution')}

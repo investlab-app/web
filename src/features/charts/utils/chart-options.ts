@@ -60,9 +60,7 @@ export function createChartOptions(
             Low: $${low?.toFixed(2)}</div>`;
         } else {
           return `<div><strong>${formattedDate}</strong><br />
-            Price: $${data.value?.toFixed(2)}<br />
-            High: $${data.high?.toFixed(2)}<br />
-            Low: $${data.low?.toFixed(2)}</div>`;
+            Price: $${data.value?.toFixed(2)}</div>`;
         }
       },
     },

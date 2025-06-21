@@ -10,6 +10,8 @@ const plInvestor = {
   gain: 'Zysk',
   gain_percent: 'Zysk procentowy',
   value: 'Wartość',
+  owned_shares: 'Posiadane udziały',
+  account_value_over_time: 'Wartość konta w czasie',
 };
 
 export default plInvestor;
