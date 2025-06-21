@@ -4,9 +4,9 @@ import {
 } from './chart-formatting';
 import type { InstrumentPriceProps } from '../types/types';
 import type {
+  DefaultLabelFormatterCallbackParams,
   EChartsOption,
   TooltipComponentFormatterCallbackParams,
-  DefaultLabelFormatterCallbackParams,
 } from 'echarts';
 
 export function createChartOptions(
@@ -62,17 +62,18 @@ export function createChartOptions(
           if (!candlestickData.every((d) => typeof d === 'number')) return '';
           const [open, close, low, high] = candlestickData;
           return `<div><strong>${formattedDate}</strong><br />
-            Open: $${open?.toFixed(2)}<br />
-            Close: $${close?.toFixed(2)}<br />
-            High: $${high?.toFixed(2)}<br />
-            Low: $${low?.toFixed(2)}</div>`;
+            Open: $${open.toFixed(2)}<br />
+            Close: $${close.toFixed(2)}<br />
+            High: $${high.toFixed(2)}<br />
+            Low: $${low.toFixed(2)}</div>`;
         } else {
           const value =
             typeof data === 'object' && data !== null && 'value' in data
-              ? (data as any).value
+              ? data.value
               : data;
+          if (!(typeof value === 'number')) return '';
           return `<div><strong>${formattedDate}</strong><br />
-            Price: $${value?.toFixed(2)}</div>`;
+            Price: $${value.toFixed(2)}</div>`;
         }
       },
     },
@@ -109,7 +110,7 @@ export function createChartOptions(
         ? {
             name: stockName,
             type: 'candlestick',
-            data: seriesData as number[][],
+            data: seriesData as Array<Array<number>>,
             itemStyle: {
               color: '#00b894',
               color0: '#d63031',
