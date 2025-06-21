@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { StockChart } from '../../charts/components/stock-chart';
 import type { InstrumentPriceProps } from '../../charts/types/types';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { useTranslation } from 'react-i18next';
 
 export const AccuntValueChartContainer = () => {
   const { t } = useTranslation();

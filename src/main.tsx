@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StrictMode } from 'react';
 import { routeTree } from './routeTree.gen';
 import './i18n/config.ts';
 import './styles.css';
@@ -8,7 +9,6 @@ import reportWebVitals from './reportWebVitals.ts';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
-import { StrictMode } from 'react';
 
 const router = createRouter({
   routeTree,

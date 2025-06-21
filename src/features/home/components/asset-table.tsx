@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import type { Asset } from '../types/types';
 import {
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/features/shared/components/ui/table';
-import type { Asset } from '../types/types';
 import { cn } from '@/features/shared/utils';
 
 type AssetTableProps = {

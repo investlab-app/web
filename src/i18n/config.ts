@@ -11,6 +11,8 @@ import enHero from './locales/en/hero';
 import plHero from './locales/pl/hero';
 import enInvestor from './locales/en/investor';
 import plInvestor from './locales/pl/investor';
+import enSettings from './locales/en/settings';
+import plSettings from './locales/pl/settings';
 
 i18n.use(initReactI18next).init({
   lng: 'pl',
@@ -26,18 +28,20 @@ i18n.use(initReactI18next).init({
       translation: {
         auth: enAuth,
         common: enCommon,
-        instruments: enInstruments,
         hero: enHero,
+        instruments: enInstruments,
         investor: enInvestor,
+        settings: enSettings,
       },
     },
     pl: {
       translation: {
         auth: plAuth,
         common: plCommon,
-        instruments: plInstruments,
         hero: plHero,
+        instruments: plInstruments,
         investor: plInvestor,
+        settings: plSettings,
       },
     },
   },

@@ -1,6 +1,6 @@
 import type { Asset } from '../types/types';
 
-export const dummyAssets: Asset[] = [
+export const dummyAssets: Array<Asset> = [
   {
     name: 'Apple Inc.',
     symbol: 'AAPL',

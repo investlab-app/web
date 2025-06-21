@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
+import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
+import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
 import { timeIntervals } from '../utils/time-ranges';
 import { StockChart } from './stock-chart';
@@ -24,8 +26,6 @@ import {
 } from '@/features/shared/components/ui/select';
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
-import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
-import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { cn } from '@/features/shared/utils';
 
 type StockChartProps = {

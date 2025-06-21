@@ -1,5 +1,6 @@
-import AssetTable from './asset-table';
+import { useTranslation } from 'react-i18next';
 import { dummyAssets } from '../helpers/dummy-assets'; // adjust the import path to match your project structure
+import AssetTable from './asset-table';
 import type { Asset } from '../types/types';
 import {
   Card,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { useTranslation } from 'react-i18next';
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
