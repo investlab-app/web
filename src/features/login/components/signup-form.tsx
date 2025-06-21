@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import type { ClerkError } from '@/lib/clerk-error';
-import { PasswordInput } from '@/components/ui/password-input';
+import type { ClerkError } from '@/features/login/clerk-error';
+import { PasswordInput } from '@/features/shared/components/ui/password-input';
 import { SocialAuthButton } from '@/features/login/components/social-auth-button';
-import { Divider } from '@/components/ui/divider';
+import { Divider } from '@/features/shared/components/ui/divider';
 import { AuthFormContainer } from '@/features/login/components/auth-form-container';
 import { AuthFormHeader } from '@/features/login/components/auth-form-header';
-import { FormInput } from '@/components/ui/form-input';
+import { FormInput } from '@/features/shared/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
-import { Button } from '@/components/ui/button';
-import { THIS_URL } from '@/lib/constants';
+import { Button } from '@/features/shared/components/ui/button';
+import { THIS_URL } from '@/features/shared/constants';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();

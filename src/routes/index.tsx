@@ -1,13 +1,13 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { LandingPage } from '@/features/landing/landing-page'; // You create this
-import { HomePage } from '@/features/home/home-page'; // You already have this
+import { LandingPage } from '@/routes/-landing-page'; // You create this
+import { HomePage } from '@/routes/-home-page'; // You create this
 
 export const Route = createFileRoute('/')({
-  component: IndexPage,
+  component: Index,
 });
 
-function IndexPage() {
+function Index() {
   return (
     <>
       <SignedOut>

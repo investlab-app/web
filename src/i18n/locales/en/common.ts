@@ -4,6 +4,13 @@ const enCommon = {
   page_doesnt_exist: "This page doesn't exist.",
   back_to_home: 'Back to home',
   go_back: 'Go Back',
+  search: 'Search...',
+  dashboard: 'Dashboard',
+  stocks: 'Stocks',
+  help: 'Help',
+  settings: 'Settings',
+  loading: 'Loading...',
+  more: 'More',
 };
 
 export default enCommon;

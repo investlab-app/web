@@ -1,97 +1,163 @@
-import { useAuth } from '@clerk/clerk-react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Store, useStore } from '@tanstack/react-store';
+import { type } from 'arktype';
+import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
+import { timeIntervals } from '../utils/time-ranges';
+import { StockChart } from './stock-chart';
+import { ChartErrorMessage } from './chart-error-message';
+import type { InstrumentPriceProps } from '../types/types';
 import {
-  intervalToStartDate,
-  timeIntervals,
-} from '../helpers/time-ranges-helpers';
-import { transformApiResponse } from '../helpers/api-reasponse-helpers';
-import { StockChartWrapper } from './stock-chart-wrapper';
-import type { InstrumentPriceProps } from '../helpers/charts-props';
-import { fetchHistoryForInstrument } from '@/remote/api';
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/features/shared/components/ui/select';
+import { useSSE } from '@/features/shared/hooks/use-sse';
+import { livePriceDataDTO } from '@/features/instruments/types/types';
 
-type StockChartContainerProps = {
+type StockChartProps = {
   ticker: string;
 };
 
-export const StockChartContainer: React.FC<StockChartContainerProps> = ({
-  ticker,
-}) => {
-  const { getToken } = useAuth();
+export const StockChartContainer = ({ ticker }: StockChartProps) => {
+  const { t } = useTranslation();
 
-  const [interval, setInterval] = useState('1h');
+  const store = useMemo(() => {
+    return new Store({
+      interval: '1h',
+      data: new Array<InstrumentPriceProps>(),
+      minPrice: 0,
+      maxPrice: 0,
+      currentPrice: 0,
+      hasError: false,
+      liveUpdateValue: null as [InstrumentPriceProps, boolean] | null,
+    });
+  }, []);
 
-  const [data, setData] = useState<Array<InstrumentPriceProps>>([]);
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(0);
-  const [currentPrice, setCurrentPrice] = useState<number>(0);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const {
+    interval,
+    data,
+    minPrice,
+    maxPrice,
+    currentPrice,
+    hasError,
+    liveUpdateValue,
+  } = useStore(store);
 
-  function updateValue(newVal: string) {
-    loadData(newVal);
-  }
+  const loadStockData = useLoadStockChartData();
 
-  const queryClient = useQueryClient();
-
-  const loadData = useCallback(
-    async (chosenInterval: string) => {
-      setHasError(false);
+  const { cleanup } = useSSE({
+    events: new Set([ticker]),
+    callback: (eventData) => {
+      let jsonData;
       try {
-        const token = await getToken();
-        if (!token) throw new Error('No auth token available');
-
-        const startDate = intervalToStartDate(chosenInterval);
-        const endDate = new Date();
-
-        // Use React Query's programmatic fetch
-        const apiData = await queryClient.fetchQuery({
-          queryKey: ['stock-data', ticker, chosenInterval],
-          queryFn: () =>
-            fetchHistoryForInstrument({
-              ticker,
-              startDate,
-              endDate,
-              interval: chosenInterval,
-              token,
-            }),
-          staleTime: 1000 * 60, // optional: 1 min stale time
-        });
-
-        const parsed = transformApiResponse(apiData);
-        if (parsed.length === 0) {
-          setHasError(true);
-          return;
-        }
-
-        setData(parsed);
-        setCurrentPrice(parsed[parsed.length - 1].close);
-        setMinPrice(apiData.min_price);
-        setMaxPrice(apiData.max_price);
-
-        setInterval(chosenInterval);
-      } catch (err) {
-        console.error('Failed to fetch stock data:', err);
-        setHasError(true);
+        jsonData = JSON.parse(eventData.replace(/'/g, '"'));
+      } catch {
+        // ignore
+        return;
       }
+      const out = livePriceDataDTO(jsonData);
+      if (out instanceof type.errors) {
+        console.error('Invalid data point received:', out.summary);
+        store.setState((state) => ({
+          ...state,
+          hasError: true,
+        }));
+        return;
+      }
+      if (out.id !== ticker) {
+        return;
+      }
+      store.setState((state) => {
+        const newDataPoint = {
+          date: new Date(parseInt(out.time)).toLocaleTimeString(),
+          open: out.price,
+          high: out.price,
+          low: out.price,
+          close: out.price,
+        } as InstrumentPriceProps;
+        return {
+          ...state,
+          currentPrice: out.price,
+          liveUpdateValue: [newDataPoint, true],
+          hasError: false,
+        };
+      });
     },
-    [getToken, queryClient, ticker]
+  });
+
+  const changeInterval = useCallback(
+    async (newInterval: string) => {
+      const result = await loadStockData(ticker, newInterval);
+      store.setState((state) => {
+        return {
+          ...state,
+          interval: newInterval,
+          data: result.parsed,
+          minPrice: result.minPrice,
+          maxPrice: result.maxPrice,
+          currentPrice: result.parsed[result.parsed.length - 1]?.close || 0,
+        };
+      });
+    },
+    [loadStockData, store, ticker]
   );
 
   useEffect(() => {
-    loadData(interval);
-  }, [interval, loadData]);
+    changeInterval('1h');
+    return () => {
+      cleanup();
+    };
+  }, [changeInterval, cleanup]);
 
   return (
-    <StockChartWrapper
-      stockName={ticker}
-      currentPrice={currentPrice}
-      timeRanges={timeIntervals}
-      selectedInterval={interval}
-      onIntervalChange={updateValue}
-      data={data}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
-      hasError={hasError}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>{ticker}</CardTitle>
+        {!hasError && typeof currentPrice === 'number' && (
+          <CardDescription>
+            {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+          </CardDescription>
+        )}
+        <CardAction>
+          <Select value={interval} onValueChange={changeInterval}>
+            <SelectTrigger className="w-40" aria-label="Select time range">
+              <SelectValue placeholder="Select range" />
+            </SelectTrigger>
+            <SelectContent>
+              {timeIntervals.map(({ label, value }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {hasError ? (
+          <ChartErrorMessage />
+        ) : (
+          <StockChart
+            stockName={ticker}
+            chartData={data}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            selectedInterval={interval}
+            liveUpdateValue={liveUpdateValue}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
