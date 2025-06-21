@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
-import { StockChartPresentation } from '../../charts/components/stock-chart-presentation';
-import type { InstrumentPriceProps } from '../../charts/helpers/charts-props';
+import { StockChart } from '../../charts/components/stock-chart';
+import type { InstrumentPriceProps } from '../../charts/types/types';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/features/shared/components/ui/card';
 
 export const AccuntValueChartContainer = () => {
   const data: Array<InstrumentPriceProps> = useMemo(() => {
@@ -52,7 +52,7 @@ export const AccuntValueChartContainer = () => {
         {hasError ? (
           <ChartErrorMessage />
         ) : (
-          <StockChartPresentation
+          <StockChart
             stockName="Test"
             chartData={data}
             selectedInterval="1wk"

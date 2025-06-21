@@ -150,10 +150,9 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           <StockChart
             stockName={ticker}
             chartData={data}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
             selectedInterval={interval}
             liveUpdateValue={liveUpdateValue}
+            zoom={0.1}
           />
         )}
       </CardContent>

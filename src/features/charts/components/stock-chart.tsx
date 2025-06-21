@@ -21,32 +21,23 @@ type EChartXAxis = {
 export type ChartPresentationsProps = {
   stockName: string;
   chartData: Array<InstrumentPriceProps>;
-  minPrice: number;
-  maxPrice: number;
   selectedInterval: string;
+  zoom?: number;
   liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
 };
 
 export const StockChart = ({
   stockName,
   chartData,
-  minPrice,
-  maxPrice,
   selectedInterval,
+  zoom,
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
   const chartRef = useRef<ReactECharts | null>(null);
 
   const chartOptions = useMemo(
-    () =>
-      createChartOptions(
-        stockName,
-        chartData,
-        minPrice,
-        maxPrice,
-        selectedInterval
-      ),
-    [stockName, chartData, minPrice, maxPrice, selectedInterval]
+    () => createChartOptions(stockName, chartData, selectedInterval, zoom),
+    [stockName, chartData, selectedInterval]
   );
 
   useEffect(() => {

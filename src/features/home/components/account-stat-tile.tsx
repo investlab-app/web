@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/features/shared/components/ui/card';
 
 const cn = (...classes: Array<string | undefined | false>) =>
   classes.filter(Boolean).join(' ');

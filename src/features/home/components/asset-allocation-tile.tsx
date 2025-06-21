@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { getDerivedPrimaryColor } from '../helpers/color-selector';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/features/shared/components/ui/card';
 
 interface AssetAllocationProps {
   totalValue: number;

@@ -5,7 +5,6 @@ import {
 import type { InstrumentPriceProps } from '../types/types';
 import type { EChartsOption } from 'echarts';
 
-
 export function createChartOptions(
   stockName: string,
   chartData: Array<InstrumentPriceProps>,
