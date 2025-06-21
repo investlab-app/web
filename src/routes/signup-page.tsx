@@ -3,7 +3,7 @@ import { useUser } from '@clerk/clerk-react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { SignUpForm } from '@/features/login/components/signup-form';
-import { InvestLabLogo } from '@/components/investlab-logo';
+import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export default function SignUpPage() {
   const { isSignedIn, isLoaded } = useUser();

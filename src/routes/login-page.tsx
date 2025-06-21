@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { LoginForm } from '@/features/login/components/login-form';
-import { InvestLabLogo } from '@/components/investlab-logo';
+import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export default function LoginPage() {
   const { isSignedIn, isLoaded } = useUser();

@@ -12,7 +12,6 @@ export function AuthTestButton({ url, auth }: AuthTestButtonProps) {
     if (auth) {
       try {
         const token = await getToken();
-        console.log(token);
 
         const response = await fetch(url, {
           method: 'GET',
@@ -22,8 +21,7 @@ export function AuthTestButton({ url, auth }: AuthTestButtonProps) {
           },
         });
 
-        const data = await response.json();
-        console.log('Server response:', data);
+        await response.json();
       } catch (error) {
         console.error('Error sending request:', error);
       }
@@ -36,8 +34,7 @@ export function AuthTestButton({ url, auth }: AuthTestButtonProps) {
           },
         });
 
-        const data = await response.json();
-        console.log('Server response:', data);
+        await response.json();
       } catch (error) {
         console.error('Error sending request:', error);
       }

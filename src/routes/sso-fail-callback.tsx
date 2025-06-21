@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useEffect } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/features/shared/components/ui/button';
 
 export default function SsoCallback() {
   const { isSignedIn } = useAuth();

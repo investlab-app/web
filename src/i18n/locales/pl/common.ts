@@ -6,6 +6,13 @@ const plCommon = {
   go_back: 'Wróć',
   locale: 'pl-PL',
   currency: 'USD',
+  search: 'Wyszukaj...',
+  dashboard: 'Strona Główna',
+  stocks: 'Instrumenty',
+  help: 'Pomoc',
+  settings: 'Ustawienia',
+  loading: 'Ładowanie...',
+  more: 'Więcej',
 };
 
 export default plCommon;

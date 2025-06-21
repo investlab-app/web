@@ -1,19 +1,14 @@
-import { StrictMode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ClerkProvider } from '@clerk/clerk-react';
-import { dark } from '@clerk/themes';
-
-// Import the generated route tree
 import { routeTree } from './routeTree.gen';
-
-import '../src/i18n/config.ts';
+import './i18n/config.ts';
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
-import { ThemeProvider, useTheme } from '@/components/theme-provider';
+import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
+import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
+import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 
-// Create a new router instance
 const router = createRouter({
   routeTree,
   context: {},
@@ -23,72 +18,29 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
 });
 
-const queryClient = new QueryClient();
-
-// Get the Clerk publishable key
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if (!clerkPubKey) {
-  throw new Error('Missing Clerk Publishable Key');
-}
-
-// Component to handle Clerk with theme support
-function ClerkProviderWithTheme({ children }: { children: React.ReactNode }) {
-  const { theme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  );
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      setSystemTheme(e.matches ? 'dark' : 'light');
-    };
-
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleSystemThemeChange);
-    };
-  }, []);
-
-  // Determine the effective theme
-  const effectiveTheme = theme === 'system' ? systemTheme : theme;
-  // Select the appropriate Clerk theme (undefined = light theme)
-  const clerkTheme = effectiveTheme === 'dark' ? dark : undefined;
-
-  return (
-    <ClerkProvider
-      publishableKey={clerkPubKey}
-      appearance={{ baseTheme: clerkTheme }}
-    >
-      {children}
-    </ClerkProvider>
-  );
-}
-
-// Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
 }
 
-// Render the app
+const queryClient = new QueryClient();
+
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <StrictMode>
-      <ThemeProvider>
-        <ClerkProviderWithTheme>
-          <QueryClientProvider client={queryClient}>
+    // <StrictMode>
+    <ThemeProvider>
+      <ClerkThemedProvider>
+        <QueryClientProvider client={queryClient}>
+          <SSEProvider>
             <RouterProvider router={router} />
-          </QueryClientProvider>
-        </ClerkProviderWithTheme>
-      </ThemeProvider>
-    </StrictMode>
+          </SSEProvider>
+        </QueryClientProvider>
+      </ClerkThemedProvider>
+    </ThemeProvider>
+    // </StrictMode>
   );
 }
 
