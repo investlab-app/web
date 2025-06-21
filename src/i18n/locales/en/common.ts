@@ -4,6 +4,8 @@ const enCommon = {
   page_doesnt_exist: "This page doesn't exist.",
   back_to_home: 'Back to home',
   go_back: 'Go Back',
+  locale: 'us-US',
+  currency: 'USD',
   search: 'Search...',
   dashboard: 'Dashboard',
   stocks: 'Stocks',

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Moon, Sun } from 'lucide-react';
 
+import { useTranslation } from 'react-i18next';
 import type { NavItem } from './nav-main';
 import {
   SidebarGroup,
@@ -24,6 +25,7 @@ export function NavSecondary({
   items: Array<NavItem>;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const { setTheme } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <SidebarGroup {...props}>
@@ -34,20 +36,19 @@ export function NavSecondary({
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
                   <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <span>Theme</span>
-                  <Sun className="ml-auto h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <span>{t('settings.theme')}</span>
                   <Moon className="absolute ml-auto h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setTheme('light')}>
-                  Light
+                  {t('settings.light')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  Dark
+                  {t('settings.dark')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('system')}>
-                  System
+                  {t('settings.system')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

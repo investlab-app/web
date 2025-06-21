@@ -1,12 +1,12 @@
 export function createLabelIntervalFn(
-  dataLength: number
+  dataLength: number,
+  zoom: number
 ): (index: number, value: string) => boolean {
   if (dataLength <= 10) {
-    // Show all labels if there are 10 or fewer
     return () => true;
   }
 
-  const interval = Math.floor(dataLength / 30);
+  const interval = Math.floor(dataLength / (3 * (1 / zoom)));
 
   return (index: number) => index % interval === 0;
 }

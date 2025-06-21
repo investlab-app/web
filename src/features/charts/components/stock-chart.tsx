@@ -21,18 +21,18 @@ type EChartXAxis = {
 export type ChartPresentationsProps = {
   stockName: string;
   chartData: Array<InstrumentPriceProps>;
-  minPrice: number;
-  maxPrice: number;
   selectedInterval: string;
+  zoom?: number;
+  isCandlestick: boolean;
   liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
 };
 
 export const StockChart = ({
   stockName,
   chartData,
-  minPrice,
-  maxPrice,
   selectedInterval,
+  zoom,
+  isCandlestick,
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
   const chartRef = useRef<ReactECharts | null>(null);
@@ -42,11 +42,11 @@ export const StockChart = ({
       createChartOptions(
         stockName,
         chartData,
-        minPrice,
-        maxPrice,
-        selectedInterval
+        selectedInterval,
+        zoom,
+        isCandlestick
       ),
-    [stockName, chartData, minPrice, maxPrice, selectedInterval]
+    [stockName, chartData, selectedInterval, isCandlestick, zoom]
   );
 
   useEffect(() => {

@@ -5,6 +5,8 @@ dist-ssr
 *.local
 .vscode
 .env
+.tanstack/
+
 # Vitest
 /coverage
 
