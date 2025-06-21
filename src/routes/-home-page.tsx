@@ -1,14 +1,13 @@
 import { AppSidebar } from '@/features/shared/components/app-sidebar';
-import { DataTable } from '@/features/shared/components/data-table';
-import { SectionCards } from '@/features/shared/components/section-cards';
 import { SiteHeader } from '@/features/shared/components/site-header';
 import {
   SidebarInset,
   SidebarProvider,
 } from '@/features/shared/components/ui/sidebar';
-import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
-import { AuthTestButton } from '@/features/login/components/auth-test-button';
-import data from '@/data.json';
+import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
+import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
+import { AccuntValueChartContainer } from '@/features/home/components/account-value-chart-container';
+import AssetTableContainer from '@/features/home/components/asset-table-container';
 
 export function HomePage() {
   return (
@@ -16,21 +15,13 @@ export function HomePage() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <div className="flex flex-col items-center gap-4 px-4 lg:px-6">
-                <AuthTestButton url="/api/test/admin_test" auth />
-                <AuthTestButton url="/api/test/users_test" auth />
-                <AuthTestButton url="/api/test/all_test" auth={false} />
-              </div>
-              <div className="px-4 lg:px-6">
-                <StockChartContainer ticker="AAPL" />
-              </div>
-              <DataTable data={data} />
-            </div>
+        <div className="flex flex-col gap-4 p-4">
+          <AccountOverviewRibbon />
+          <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <AssetAllocationContainer />
+            <AccuntValueChartContainer />
           </div>
+          <AssetTableContainer />
         </div>
       </SidebarInset>
     </SidebarProvider>

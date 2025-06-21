@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
+import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
+import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
 import { timeIntervals } from '../utils/time-ranges';
 import { StockChart } from './stock-chart';
@@ -24,6 +26,7 @@ import {
 } from '@/features/shared/components/ui/select';
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
+import { cn } from '@/features/shared/utils';
 
 type StockChartProps = {
   ticker: string;
@@ -36,22 +39,20 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     return new Store({
       interval: '1h',
       data: new Array<InstrumentPriceProps>(),
-      minPrice: 0,
-      maxPrice: 0,
       currentPrice: 0,
       hasError: false,
       liveUpdateValue: null as [InstrumentPriceProps, boolean] | null,
+      isCandlestick: true,
     });
   }, []);
 
   const {
     interval,
     data,
-    minPrice,
-    maxPrice,
     currentPrice,
     hasError,
     liveUpdateValue,
+    isCandlestick,
   } = useStore(store);
 
   const loadStockData = useLoadStockChartData();
@@ -96,6 +97,16 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     },
   });
 
+  const chartTypeToggle = (value: string) => {
+    console.log('love you', value);
+    store.setState((state) => {
+      return {
+        ...state,
+        isCandlestick: value === 'candle',
+      };
+    });
+  };
+
   const changeInterval = useCallback(
     async (newInterval: string) => {
       const result = await loadStockData(ticker, newInterval);
@@ -130,18 +141,46 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           </CardDescription>
         )}
         <CardAction>
-          <Select value={interval} onValueChange={changeInterval}>
-            <SelectTrigger className="w-40" aria-label="Select time range">
-              <SelectValue placeholder="Select range" />
-            </SelectTrigger>
-            <SelectContent>
-              {timeIntervals.map(({ label, value }) => (
-                <SelectItem key={value} value={value}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex items-center gap-1">
+            <ToggleGroup
+              type="single"
+              onValueChange={chartTypeToggle}
+              aria-label="Toggle chart type"
+            >
+              <ToggleGroupItem
+                value="line"
+                aria-label="Line chart"
+                className={cn(
+                  'p-2 rounded-md',
+                  !isCandlestick ? 'bg-muted text-foreground' : ''
+                )}
+              >
+                <LineChartIcon />
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="candle"
+                aria-label="Candlestick chart"
+                className={cn(
+                  'p-2 rounded-md',
+                  isCandlestick ? 'bg-muted text-foreground' : ''
+                )}
+              >
+                <CandlestickChartIcon />
+              </ToggleGroupItem>
+            </ToggleGroup>
+            <Select value={interval} onValueChange={changeInterval}>
+              <SelectTrigger className="w-40" aria-label="Select time range">
+                <SelectValue placeholder="Select range" />
+              </SelectTrigger>
+              <SelectContent>
+                {timeIntervals.map(({ label, value }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </CardAction>
       </CardHeader>
       <CardContent>
@@ -151,10 +190,10 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           <StockChart
             stockName={ticker}
             chartData={data}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
             selectedInterval={interval}
             liveUpdateValue={liveUpdateValue}
+            zoom={0.1}
+            isCandlestick={isCandlestick}
           />
         )}
       </CardContent>
