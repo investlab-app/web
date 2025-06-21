@@ -7,6 +7,9 @@ const enInvestor = {
   this_year: 'in this year',
   distribution: 'Distribution',
   unallocated: 'Unallocated',
+  gain: 'Gain',
+  gain_percent: 'Gain percent',
+  value: 'Value',
 };
 
 export default enInvestor;

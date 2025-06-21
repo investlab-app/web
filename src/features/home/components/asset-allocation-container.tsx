@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { AssetAllocationTile } from './asset-allocation-tile';
 
-const AssetAllocationContainer: React.FC = () => {
+const AssetAllocationContainer = () => {
   const { t } = useTranslation();
   const sampleAssets: Array<[string, number]> = [
     ['tocks', 23635.23],

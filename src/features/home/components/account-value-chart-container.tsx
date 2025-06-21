@@ -56,6 +56,7 @@ export const AccuntValueChartContainer = () => {
             stockName="Test"
             chartData={data}
             selectedInterval="1wk"
+            isCandlestick={false}
           />
         )}
       </CardContent>

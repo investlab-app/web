@@ -9,6 +9,7 @@ import { AuthTestButton } from '@/features/login/components/auth-test-button';
 import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
 import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
 import { AccuntValueChartContainer } from '@/features/home/components/account-value-chart-container';
+import AssetTableContainer from '@/features/home/components/asset-table-container';
 
 export function HomePage() {
   return (
@@ -23,6 +24,7 @@ export function HomePage() {
               <AssetAllocationContainer />
               <StockChartContainer ticker="aapl" />
               <AccuntValueChartContainer />
+              <AssetTableContainer />
               <div className="flex flex-col items-center gap-4 px-4 lg:px-6">
                 <AuthTestButton url="/api/test/admin_test" auth />
                 <AuthTestButton url="/api/test/users_test" auth />

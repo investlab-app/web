@@ -23,6 +23,7 @@ export type ChartPresentationsProps = {
   chartData: Array<InstrumentPriceProps>;
   selectedInterval: string;
   zoom?: number;
+  isCandlestick: boolean;
   liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
 };
 
@@ -31,13 +32,21 @@ export const StockChart = ({
   chartData,
   selectedInterval,
   zoom,
+  isCandlestick,
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
   const chartRef = useRef<ReactECharts | null>(null);
 
   const chartOptions = useMemo(
-    () => createChartOptions(stockName, chartData, selectedInterval, zoom),
-    [stockName, chartData, selectedInterval]
+    () =>
+      createChartOptions(
+        stockName,
+        chartData,
+        selectedInterval,
+        zoom,
+        isCandlestick
+      ),
+    [stockName, chartData, selectedInterval, isCandlestick, zoom]
   );
 
   useEffect(() => {

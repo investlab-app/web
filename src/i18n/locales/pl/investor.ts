@@ -7,6 +7,9 @@ const plInvestor = {
   this_year: 'w tym roku',
   distribution: 'Rozkład',
   unallocated: 'Nierozmieszczone',
+  gain: 'Zysk',
+  gain_percent: 'Zysk procentowy',
+  value: 'Wartość',
 };
 
 export default plInvestor;

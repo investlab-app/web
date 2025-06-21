@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { getDerivedPrimaryColor } from '../helpers/color-selector';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
@@ -10,12 +9,12 @@ interface AssetAllocationProps {
   assets: Array<[string, number]>;
 }
 
-export const AssetAllocationTile: React.FC<AssetAllocationProps> = ({
+export const AssetAllocationTile = ({
   totalValue,
   yearlyGain,
   currency = 'USD',
   assets,
-}) => {
+}: AssetAllocationProps) => {
   const totalAssetValue = assets.reduce((sum, [, value]) => sum + value, 0);
   const { t } = useTranslation();
 

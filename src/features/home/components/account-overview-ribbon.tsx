@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { StatTile } from './account-stat-tile';
 
-const AccountOverviewRibbon: React.FC = () => {
+const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
   const tiles = [
     {

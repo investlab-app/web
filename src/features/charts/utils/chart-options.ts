@@ -10,7 +10,7 @@ export function createChartOptions(
   chartData: Array<InstrumentPriceProps>,
   selectedInterval: string,
   zoom: number = 1,
-  isCandlestick?: boolean
+  isCandlestick: boolean = false
 ): EChartsOption {
   const dates = chartData.map((item) => item.date);
   const seriesData = !isCandlestick

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TrendingDown, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,14 +20,14 @@ interface StatTileProps {
   trendNote?: string | null;
 }
 
-export const StatTile: React.FC<StatTileProps> = ({
+export const StatTile = ({
   title,
   value,
   currency = 'USD',
   isProgress = false,
   footerNote,
   trendNote,
-}) => {
+}: StatTileProps) => {
   const { t } = useTranslation();
   const isPositive = value >= 0;
   const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;

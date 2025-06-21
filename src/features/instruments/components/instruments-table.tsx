@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/features/shared/components/ui/table';
+import { cn } from '@/features/shared/utils';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
@@ -24,11 +25,19 @@ const InstrumentTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('instruments.name')}</TableHead>
+            <TableHead className="hidden sm:table-cell">
+              {t('instruments.name')}
+            </TableHead>
             <TableHead>{t('instruments.symbol')}</TableHead>
-            <TableHead>{t('instruments.current_price')}</TableHead>
-            <TableHead>{t('instruments.day_change')}</TableHead>
-            <TableHead>{t('instruments.volume')}</TableHead>
+            <TableHead className="text-right">
+              {t('instruments.current_price')}
+            </TableHead>
+            <TableHead className="text-right">
+              {t('instruments.day_change')}
+            </TableHead>
+            <TableHead className="text-right">
+              {t('instruments.volume')}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,20 +47,23 @@ const InstrumentTable = ({
               onClick={() => onInstrumentPressed(instrument)}
               className="cursor-pointer"
             >
-              <TableCell>{instrument.name}</TableCell>
-              <TableCell>{instrument.symbol}</TableCell>
-              <TableCell>${instrument.currentPrice.toFixed(2)}</TableCell>
-              <TableCell>
-                <span
-                  className={
-                    instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
-                  }
-                >
-                  {instrument.dayChange < 0 ? '-' : '+'}
-                  {Math.abs(instrument.dayChange).toFixed(2)}%
-                </span>
+              <TableCell className="hidden sm:table-cell">
+                {instrument.name}
               </TableCell>
-              <TableCell>{instrument.volume}</TableCell>
+              <TableCell>{instrument.symbol}</TableCell>
+              <TableCell className="text-right">
+                {instrument.currentPrice.toFixed(2)} {t('common.currency')}
+              </TableCell>
+              <TableCell
+                className={cn(
+                  'text-right',
+                  instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
+                )}
+              >
+                {instrument.dayChange < 0 ? '-' : '+'}
+                {Math.abs(instrument.dayChange).toFixed(2)}%
+              </TableCell>
+              <TableCell className="text-right">{instrument.volume}</TableCell>
             </TableRow>
           ))}
         </TableBody>
