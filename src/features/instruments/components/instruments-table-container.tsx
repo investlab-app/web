@@ -114,16 +114,11 @@ const InstrumentsTableContainer = ({
         className="w-1/3"
         placeholder={t('common.search')}
       />
-      {loading && instruments.length === 0 ? (
-        <div className="flex justify-center items-center py-8">
-          <div className="text-muted-foreground">{t('common.loading')}</div>
-        </div>
-      ) : (
-        <InstrumentTable
-          data={Object.values(liveInstruments)}
-          onInstrumentPressed={handleInstrumentPressed}
-        />
-      )}
+      <InstrumentTable
+        data={Object.values(liveInstruments)}
+        onInstrumentPressed={handleInstrumentPressed}
+        loading={loading && instruments.length === 0}
+      />
       <div className="flex justify-center mt-4">
         {hasMore && (
           <Button
