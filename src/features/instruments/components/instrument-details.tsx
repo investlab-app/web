@@ -58,46 +58,51 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
     );
   }
 
-  const firstNews = news[0];
-  const thumbnailUrl = firstNews.content.thumbnail?.original_url || 
-                      (firstNews.content.thumbnail?.resolutions?.[0] as { url: string } | undefined)?.url;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t('instruments.news')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-4">
-          {thumbnailUrl && (
-            <img
-              src={thumbnailUrl}
-              alt={firstNews.content.thumbnail?.caption || 'news thumbnail'}
-              className="w-20 h-20 rounded object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          )}
-          <div className="flex-1">
-            <div className="font-semibold">
-              {firstNews.content.title || 'No title available'}
-            </div>
-            <div className="text-muted-foreground text-sm mt-1">
-              {firstNews.content.description || firstNews.content.summary || 'No description available'}
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {firstNews.content.pub_date 
-                ? formatTimeAgo(firstNews.content.pub_date)
-                : firstNews.content.display_time || 'Unknown time'
-              }
-            </div>
-            {firstNews.content.provider?.display_name && (
-              <div className="text-xs text-muted-foreground mt-1">
-                {firstNews.content.provider.display_name}
+        <div className="space-y-4">
+          {news.map((newsItem, index) => {
+            const thumbnailUrl = newsItem.content.thumbnail?.original_url || 
+                                (newsItem.content.thumbnail?.resolutions[0] as { url: string } | undefined)?.url;
+
+            return (
+              <div key={index} className="flex gap-4 pb-4 border-b border-border last:border-b-0 last:pb-0">
+                {thumbnailUrl && (
+                  <img
+                    src={thumbnailUrl}
+                    alt={newsItem.content.thumbnail?.caption || 'news thumbnail'}
+                    className="w-20 h-20 rounded object-cover flex-shrink-0"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold line-clamp-2">
+                    {newsItem.content.title || 'No title available'}
+                  </div>
+                  <div className="text-muted-foreground text-sm mt-1 line-clamp-3">
+                    {newsItem.content.description || newsItem.content.summary || 'No description available'}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {newsItem.content.pub_date 
+                      ? formatTimeAgo(newsItem.content.pub_date)
+                      : newsItem.content.display_time || 'Unknown time'
+                    }
+                  </div>
+                  {newsItem.content.provider?.display_name && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {newsItem.content.provider.display_name}
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>

@@ -32,10 +32,17 @@ export const useInstrumentNews = ({
     refetchOnWindowFocus: false,
   });
 
+  console.log("error?")
+
+  if (error) {
+    console.error("ERROR=", error);
+  } 
+
+
   return {
     news,
     loading: isLoading,
-    error: error instanceof Error ? error.message : 'Failed to load news',
+    error: error instanceof Error ? error.message : null,
     refetch,
   };
 }; 

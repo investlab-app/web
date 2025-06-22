@@ -14,38 +14,38 @@ const resolution = type({
 });
 
 const thumbnail = type({
-  original_url: 'string?',
-  original_width: 'number?',
-  original_height: 'number?',
-  caption: 'string?',
+  original_url: 'string | null',
+  original_width: 'number | null',
+  original_height: 'number | null',
+  caption: 'string | null',
   resolutions: resolution.array(),
 });
 
 const provider = type({
-  display_name: 'string?',
-  url: 'string?',
+  display_name: 'string | null',
+  url: 'string | null',
 });
 
 const newsItem = type({
   id: 'string',
   content: {
     id: 'string',
-    content_type: 'string?',
+    content_type: 'string | null',
     title: 'string',
     description: 'string',
     summary: 'string',
-    pub_date: 'string?',
-    display_time: 'string?',
-    is_hosted: 'boolean?',
-    bypass_modal: 'boolean?',
-    preview_url: 'string?',
-    thumbnail: thumbnail,
+    pub_date: 'string | null',
+    display_time: 'string | null',
+    is_hosted: 'boolean | null',
+    bypass_modal: 'boolean | null',
+    preview_url: 'string | null',
+    thumbnail: thumbnail.or('null'),
     provider: provider.optional(),
-    canonical_url: 'object?',
-    click_through_url: 'object?',
-    metadata: 'object?',
-    finance: 'object?',
-    storyline: 'object?',
+    canonical_url: 'object | null',
+    click_through_url: 'object | null',
+    metadata: 'object | null',
+    finance: 'object | null',
+    storyline: 'object | null',
   },
 });
 
