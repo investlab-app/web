@@ -6,31 +6,21 @@ const accountValueData = type({
   value: 'number',
 });
 
+const accountValueOverTime = type({
+  data: accountValueData.array(),
+});
+
 export type AccountValueData = typeof accountValueData.infer;
-export type AccountValueOverTime = {
-  data: AccountValueData[];
-};
+export type AccountValueOverTime = typeof accountValueOverTime.infer;
 
 export async function fetchAccountValueOverTime(token: string): Promise<AccountValueOverTime> {
   const response = await fetchWithAuth<AccountValueOverTime>('/api/investors/me/account-value/', token);
   
-  // Validate the response structure
-  if (!response || typeof response !== 'object' || !Array.isArray(response.data)) {
-    throw new Error('Invalid account value over time response: missing data array');
+  const result = accountValueOverTime(response);
+  if (result instanceof type.errors) {
+    console.error('Invalid account value over time response:', result.summary);
+    throw new Error(`Invalid account value over time response: ${result.summary}`);
   }
   
-  // Validate each data point
-  const validatedData: AccountValueData[] = [];
-  for (const item of response.data) {
-    const dataResult = accountValueData(item);
-    if (dataResult instanceof type.errors) {
-      console.error('Invalid account value data point:', dataResult.summary);
-      throw new Error(`Invalid account value data point: ${dataResult.summary}`);
-    }
-    validatedData.push(dataResult);
-  }
-  
-  return {
-    data: validatedData,
-  };
+  return result;
 } 
