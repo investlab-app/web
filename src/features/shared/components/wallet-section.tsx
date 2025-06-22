@@ -6,8 +6,8 @@ import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
 import {
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 
 export function WalletSection() {
@@ -51,4 +51,4 @@ export function WalletSection() {
       </Button>
     </SidebarMenuItem>
   );
-} 
+}

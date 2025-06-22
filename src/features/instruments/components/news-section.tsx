@@ -121,4 +121,4 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
   );
 };
 
-export default NewsSection; 
+export default NewsSection;
