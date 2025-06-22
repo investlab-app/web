@@ -1,4 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@clerk/clerk-react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import AssetTable from './asset-table';
 import type { OwnedShareItem as Asset } from '../types/types';
 import {
@@ -7,9 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { useAuth } from '@clerk/clerk-react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 const AssetTableContainer = () => {

@@ -27,5 +27,5 @@ export type OwnedShareItem = {
 };
 
 export type OwnedShares = {
-  owned_shares: OwnedShareItem[];
+  owned_shares: Array<OwnedShareItem>;
 };

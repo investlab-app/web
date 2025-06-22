@@ -1,6 +1,8 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
+import { AssetAllocationTile } from './asset-allocation-tile';
 import {
   Card,
   CardContent,
@@ -8,8 +10,6 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
-import { AssetAllocationTile } from './asset-allocation-tile';
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
