@@ -31,28 +31,6 @@ export function NavSecondary({
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <span>{t('settings.theme')}</span>
-                  <Moon className="absolute ml-auto h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
-                  {t('settings.light')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  {t('settings.dark')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
-                  {t('settings.system')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
