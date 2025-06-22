@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
@@ -49,17 +50,17 @@ export const AccountValueChartContainer = () => {
           {t('investor.account_value_over_time')}
         </CardTitle>
 
-        {!hasError && typeof currentValue === 'number' && (
+        {isLoading ? (
+          <Skeleton className="h-10 w-48 mt-2" />
+        ) : !hasError && typeof currentValue === 'number' ? (
           <div className="text-4xl font-bold tabular-nums">
             {currentValue.toFixed(2)} {t('common.currency')}
           </div>
-        )}
+        ) : null}
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="h-32 flex items-center justify-center">
-            {t('common.loading')}
-          </div>
+          <Skeleton className="h-[400px] w-full" />
         ) : hasError ? (
           <ChartErrorMessage />
         ) : (

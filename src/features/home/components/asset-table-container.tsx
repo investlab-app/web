@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
@@ -35,7 +36,16 @@ const AssetTableContainer = () => {
   });
 
   if (isError) {
-    return <div>Error fetching data</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('investor.owned_shares')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartErrorMessage message={t('investor.error_fetching_data')} />
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

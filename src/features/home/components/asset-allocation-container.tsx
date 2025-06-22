@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
@@ -65,7 +66,16 @@ const AssetAllocationContainer = () => {
   }
 
   if (isError || !assetAllocation) {
-    return <div>Error fetching data</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('investor.asset_allocation')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartErrorMessage message={t('investor.error_fetching_data')} />
+        </CardContent>
+      </Card>
+    );
   }
 
   const assets: Array<[string, number]> = assetAllocation.allocations.map(
