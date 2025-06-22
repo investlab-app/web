@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { StockChart } from '../../charts/components/stock-chart';
+import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
 import {
   Card,
@@ -11,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
@@ -69,8 +69,7 @@ export const AccountValueChartContainer = () => {
             stockName="Account Value"
             chartData={chartData}
             selectedInterval="1wk"
-            minPrice={Math.min(...chartData.map((d) => d.low))}
-            maxPrice={Math.max(...chartData.map((d) => d.high))}
+            isCandlestick={false}
           />
         )}
       </CardContent>

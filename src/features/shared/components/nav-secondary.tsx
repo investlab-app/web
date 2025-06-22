@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
-
-import { useTranslation } from 'react-i18next';
 import type { NavItem } from './nav-main';
 import {
   SidebarGroup,
@@ -10,13 +7,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/features/shared/components/ui/dropdown-menu';
-import { useTheme } from '@/features/shared/components/theme-provider';
 
 export function NavSecondary({
   items,
@@ -24,9 +14,6 @@ export function NavSecondary({
 }: {
   items: Array<NavItem>;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
-  const { setTheme } = useTheme();
-  const { t } = useTranslation();
-
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
