@@ -16,11 +16,11 @@ const assetAllocation = type({
 export type AssetAllocation = typeof assetAllocation.infer;
 
 export const fetchAssetAllocation = async (
-  token: string,
+  token: string
 ): Promise<AssetAllocation> => {
   const response = await fetchWithAuth<AssetAllocation>(
     `/api/investors/me/asset-allocation`,
-    token,
+    token
   );
 
   const result = assetAllocation(response);
@@ -30,4 +30,4 @@ export const fetchAssetAllocation = async (
   }
 
   return result;
-}; 
+};

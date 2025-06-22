@@ -19,7 +19,7 @@ export type OwnedShares = typeof ownedShares.infer;
 export const fetchOwnedShares = async (token: string): Promise<OwnedShares> => {
   const response = await fetchWithAuth<OwnedShares>(
     `/api/investors/me/owned-shares`,
-    token,
+    token
   );
 
   const result = ownedShares(response);
@@ -29,4 +29,4 @@ export const fetchOwnedShares = async (token: string): Promise<OwnedShares> => {
   }
 
   return result;
-}; 
+};

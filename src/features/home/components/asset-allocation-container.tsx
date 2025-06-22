@@ -1,7 +1,12 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
 import { AssetAllocationTile } from './asset-allocation-tile';
@@ -35,7 +40,9 @@ const AssetAllocationContainer = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">{t('investor.distribution')}</h3>
+            <h3 className="text-lg font-semibold">
+              {t('investor.distribution')}
+            </h3>
             <Skeleton className="h-4 w-full" />
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
@@ -54,7 +61,7 @@ const AssetAllocationContainer = () => {
           </div>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   if (isError || !assetAllocation) {
@@ -62,7 +69,7 @@ const AssetAllocationContainer = () => {
   }
 
   const assets: Array<[string, number]> = assetAllocation.allocations.map(
-    (item) => [item.asset_class_display_name, item.value],
+    (item) => [item.asset_class_display_name, item.value]
   );
 
   return (

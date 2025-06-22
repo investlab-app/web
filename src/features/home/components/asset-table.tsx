@@ -64,7 +64,9 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
               <TableCell
                 className={cn(
                   'text-right hidden sm:table-cell',
-                  asset.profit_percentage < 0 ? 'text-red-500' : 'text-green-500'
+                  asset.profit_percentage < 0
+                    ? 'text-red-500'
+                    : 'text-green-500'
                 )}
               >
                 {asset.profit_percentage.toFixed(2)}%
