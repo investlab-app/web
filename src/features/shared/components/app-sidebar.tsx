@@ -1,28 +1,21 @@
-import * as React from 'react';
 import {
   IconDashboard,
   IconHelp,
   IconListDetails,
   IconSettings,
 } from '@tabler/icons-react';
-
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
-import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { NavUser } from '@/features/shared/components/nav-user';
+import * as sidebar from '@/features/shared/components/ui/sidebar';
+import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/features/shared/components/ui/sidebar';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(
+  props: React.ComponentProps<typeof sidebar.Sidebar>
+) {
   const { t } = useTranslation();
   const data: {
     navMain: Array<NavItem>;
@@ -55,11 +48,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
+    <sidebar.Sidebar {...props}>
+      <sidebar.SidebarHeader>
+        <sidebar.SidebarMenu>
+          <sidebar.SidebarMenuItem>
+            <sidebar.SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
@@ -69,17 +62,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   {t('common.app_name')}
                 </span>
               </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
+            </sidebar.SidebarMenuButton>
+          </sidebar.SidebarMenuItem>
+        </sidebar.SidebarMenu>
+      </sidebar.SidebarHeader>
+      <sidebar.SidebarContent>
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
-      <SidebarFooter>
+      </sidebar.SidebarContent>
+      <sidebar.SidebarFooter>
         <NavUser />
-      </SidebarFooter>
-    </Sidebar>
+      </sidebar.SidebarFooter>
+    </sidebar.Sidebar>
   );
 }

@@ -13,6 +13,8 @@ const plCommon = {
   settings: 'Ustawienia',
   loading: 'Ładowanie...',
   more: 'Więcej',
+  error: 'Wystąpił błąd',
+  error_loading_data: 'Błąd ładowania danych',
 };
 
 export default plCommon;

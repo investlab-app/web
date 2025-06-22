@@ -13,6 +13,8 @@ const enCommon = {
   settings: 'Settings',
   loading: 'Loading...',
   more: 'More',
+  error: 'An error occurred',
+  error_loading_data: 'Error loading data',
 };
 
 export default enCommon;
