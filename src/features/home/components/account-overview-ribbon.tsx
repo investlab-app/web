@@ -26,7 +26,7 @@ const AccountOverviewRibbon = () => {
     return (
       <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
         {Array.from({ length: 4 }).map((_, index) => (
-          <StatTile.Skeleton key={index} />
+          <StatTile.Skeleton key={index} isProgress={index < 2} />
         ))}
       </div>
     );

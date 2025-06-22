@@ -102,16 +102,18 @@ export const StatTile = ({
   );
 };
 
-const StatTileSkeleton = () => {
+const StatTileSkeleton = ({ isProgress }: { isProgress?: boolean }) => {
   return (
     <Card className="min-w-[280px] @container/card border-border shadow-lg">
       <CardHeader>
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-8 w-40 mt-1" />
-        <div className="mt-2 flex items-center gap-2">
-          <Skeleton className="size-4" />
-          <Skeleton className="h-5 w-16" />
-        </div>
+        {isProgress && (
+          <div className="mt-2 flex items-center gap-2">
+            <Skeleton className="size-4" />
+            <Skeleton className="h-5 w-16" />
+          </div>
+        )}
       </CardHeader>
     </Card>
   );
