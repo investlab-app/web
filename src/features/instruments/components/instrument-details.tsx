@@ -59,8 +59,8 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
   }
 
   const firstNews = news[0];
-  const thumbnailUrl = firstNews.content.thumbnail.original_url || 
-                      (firstNews.content.thumbnail.resolutions?.[0] as { url: string }).url;
+  const thumbnailUrl = firstNews.content.thumbnail?.original_url || 
+                      (firstNews.content.thumbnail?.resolutions?.[0] as { url: string } | undefined)?.url;
 
   return (
     <Card>
@@ -72,7 +72,7 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
           {thumbnailUrl && (
             <img
               src={thumbnailUrl}
-              alt={firstNews.content.thumbnail.caption || 'news thumbnail'}
+              alt={firstNews.content.thumbnail?.caption || 'news thumbnail'}
               className="w-20 h-20 rounded object-cover"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
@@ -92,7 +92,7 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
                 : firstNews.content.display_time || 'Unknown time'
               }
             </div>
-            {firstNews.content.provider.display_name && (
+            {firstNews.content.provider?.display_name && (
               <div className="text-xs text-muted-foreground mt-1">
                 {firstNews.content.provider.display_name}
               </div>

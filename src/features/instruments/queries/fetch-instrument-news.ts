@@ -6,51 +6,45 @@ type FetchInstrumentNewsOptions = {
   token: string;
 };
 
+const resolution = type({
+    url: 'string',
+    width: 'number',
+    height: 'number',
+    tag: 'string',
+});
+
+const thumbnail = type({
+  original_url: 'string?',
+  original_width: 'number?',
+  original_height: 'number?',
+  caption: 'string?',
+  resolutions: resolution.array(),
+});
+
+const provider = type({
+  display_name: 'string?',
+  url: 'string?',
+});
+
 const newsItem = type({
-  id: 'string?',
+  id: 'string',
   content: {
-    id: 'string?',
+    id: 'string',
     content_type: 'string?',
-    title: 'string?',
-    description: 'string?',
-    summary: 'string?',
+    title: 'string',
+    description: 'string',
+    summary: 'string',
     pub_date: 'string?',
     display_time: 'string?',
     is_hosted: 'boolean?',
     bypass_modal: 'boolean?',
     preview_url: 'string?',
-    thumbnail: {
-      original_url: 'string?',
-      original_width: 'number?',
-      original_height: 'number?',
-      caption: 'string?',
-      resolutions: 'object[]?',
-    },
-    provider: {
-      display_name: 'string?',
-      url: 'string?',
-    },
-    canonical_url: {
-      url: 'string?',
-      site: 'string?',
-      region: 'string?',
-      lang: 'string?',
-    },
-    click_through_url: {
-      url: 'string?',
-      site: 'string?',
-      region: 'string?',
-      lang: 'string?',
-    },
-    metadata: {
-      editors_pick: 'boolean?',
-    },
-    finance: {
-      premium_finance: {
-        is_premium_news: 'boolean?',
-        is_premium_free_news: 'boolean?',
-      },
-    },
+    thumbnail: thumbnail,
+    provider: provider.optional(),
+    canonical_url: 'object?',
+    click_through_url: 'object?',
+    metadata: 'object?',
+    finance: 'object?',
     storyline: 'object?',
   },
 });
