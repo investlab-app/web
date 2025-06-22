@@ -9,6 +9,7 @@ const enCommon = {
   search: 'Search...',
   dashboard: 'Dashboard',
   stocks: 'Stocks',
+  wallet: 'Wallet',
   help: 'Help',
   settings: 'Settings',
   loading: 'Loading...',
