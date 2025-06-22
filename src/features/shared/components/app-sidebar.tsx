@@ -6,6 +6,7 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import { Link } from '@tanstack/react-router';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
 import { NavUser } from '@/features/shared/components/nav-user';
@@ -56,12 +57,12 @@ export function AppSidebar(
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link to="/">
                 <InvestLabLogo className="!size-5" />
                 <span className="text-base font-semibold">
                   {t('common.app_name')}
                 </span>
-              </a>
+              </Link>
             </sidebar.SidebarMenuButton>
           </sidebar.SidebarMenuItem>
         </sidebar.SidebarMenu>
