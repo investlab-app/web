@@ -23,10 +23,18 @@ const AccountOverviewRibbon = () => {
   });
 
   if (isLoading) {
-    return <div className="h-24 flex items-center justify-center">{t('common.loading')}</div>;
+    return (
+      <div className="h-24 flex items-center justify-center">
+        {t('common.loading')}
+      </div>
+    );
   }
   if (error || !stats) {
-    return <div className="h-24 flex items-center justify-center text-red-500">{t('common.error')}</div>;
+    return (
+      <div className="h-24 flex items-center justify-center text-red-500">
+        {t('common.error')}
+      </div>
+    );
   }
 
   const tiles = [

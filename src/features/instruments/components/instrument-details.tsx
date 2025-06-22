@@ -17,15 +17,19 @@ type NewsSectionProps = {
 const NewsSection = ({ ticker }: NewsSectionProps) => {
   const { t } = useTranslation();
   const { news, loading, error } = useInstrumentNews({ ticker });
+  const MAX_NEWS_ITEMS = 2;
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
+
     if (diffInHours < 1) return 'Less than an hour ago';
-    if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-    
+    if (diffInHours < 24)
+      return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+
     const diffInDays = Math.floor(diffInHours / 24);
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   };
@@ -65,16 +69,26 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {news.map((newsItem, index) => {
-            const thumbnailUrl = newsItem.content.thumbnail?.original_url || 
-                                (newsItem.content.thumbnail?.resolutions[0] as { url: string } | undefined)?.url;
+          {news.slice(0, MAX_NEWS_ITEMS).map((newsItem, index) => {
+            const thumbnailUrl =
+              newsItem.content.thumbnail?.original_url ||
+              (
+                newsItem.content.thumbnail?.resolutions[0] as
+                  | { url: string }
+                  | undefined
+              )?.url;
 
             return (
-              <div key={index} className="flex gap-4 pb-4 border-b border-border last:border-b-0 last:pb-0">
+              <div
+                key={index}
+                className="flex gap-4 pb-4 border-b border-border last:border-b-0 last:pb-0"
+              >
                 {thumbnailUrl && (
                   <img
                     src={thumbnailUrl}
-                    alt={newsItem.content.thumbnail?.caption || 'news thumbnail'}
+                    alt={
+                      newsItem.content.thumbnail?.caption || 'news thumbnail'
+                    }
                     className="w-20 h-20 rounded object-cover flex-shrink-0"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
@@ -86,13 +100,14 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
                     {newsItem.content.title || 'No title available'}
                   </div>
                   <div className="text-muted-foreground text-sm mt-1 line-clamp-3">
-                    {newsItem.content.description || newsItem.content.summary || 'No description available'}
+                    {newsItem.content.description ||
+                      newsItem.content.summary ||
+                      'No description available'}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
-                    {newsItem.content.pub_date 
+                    {newsItem.content.pub_date
                       ? formatTimeAgo(newsItem.content.pub_date)
-                      : newsItem.content.display_time || 'Unknown time'
-                    }
+                      : newsItem.content.display_time || 'Unknown time'}
                   </div>
                   {newsItem.content.provider?.display_name && (
                     <div className="text-xs text-muted-foreground mt-1">
@@ -139,4 +154,3 @@ const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
 };
 
 export default InstrumentDetails;
-

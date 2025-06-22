@@ -32,12 +32,11 @@ export const useInstrumentNews = ({
     refetchOnWindowFocus: false,
   });
 
-  console.log("error?")
+  console.log('error?');
 
   if (error) {
-    console.error("ERROR=", error);
-  } 
-
+    console.error('ERROR=', error);
+  }
 
   return {
     news,
@@ -45,4 +44,4 @@ export const useInstrumentNews = ({
     error: error instanceof Error ? error.message : null,
     refetch,
   };
-}; 
+};

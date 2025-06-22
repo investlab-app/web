@@ -17,11 +17,7 @@ export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
   const { getToken } = useAuth();
 
-  const {
-    data,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['accountValueOverTime'],
     queryFn: async () => {
       const token = await getToken();
@@ -61,7 +57,9 @@ export const AccountValueChartContainer = () => {
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="h-32 flex items-center justify-center">{t('common.loading')}</div>
+          <div className="h-32 flex items-center justify-center">
+            {t('common.loading')}
+          </div>
         ) : hasError ? (
           <ChartErrorMessage />
         ) : (

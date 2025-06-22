@@ -7,10 +7,10 @@ type FetchInstrumentNewsOptions = {
 };
 
 const resolution = type({
-    url: 'string',
-    width: 'number',
-    height: 'number',
-    tag: 'string',
+  url: 'string',
+  width: 'number',
+  height: 'number',
+  tag: 'string',
 });
 
 const thumbnail = type({
@@ -49,9 +49,7 @@ const newsItem = type({
   },
 });
 
-const newsResponse = type(
-    newsItem.array()
-);
+const newsResponse = type(newsItem.array());
 
 export type NewsItem = typeof newsItem.infer;
 export type NewsResponse = typeof newsResponse.infer;
@@ -60,7 +58,10 @@ export async function fetchInstrumentNews({
   ticker,
   token,
 }: FetchInstrumentNewsOptions): Promise<NewsResponse> {
-  const response = await fetchWithAuth(`/api/instruments/${ticker}/news/`, token);
+  const response = await fetchWithAuth(
+    `/api/instruments/${ticker}/news/`,
+    token
+  );
 
   const out = newsResponse(response);
 
@@ -70,4 +71,4 @@ export async function fetchInstrumentNews({
   }
 
   return out;
-} 
+}
