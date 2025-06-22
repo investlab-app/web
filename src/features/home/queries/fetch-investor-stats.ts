@@ -1,14 +1,7 @@
 import { type } from 'arktype';
+import { investorStats } from '../types/types';
+import type { InvestorStats } from '../types/types';
 import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
-
-const investorStats = type({
-  todays_return: 'number',
-  total_return: 'number',
-  invested: 'number',
-  total_value: 'number',
-});
-
-export type InvestorStats = typeof investorStats.infer;
 
 export async function fetchInvestorStats(
   token: string

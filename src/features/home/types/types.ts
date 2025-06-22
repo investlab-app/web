@@ -10,12 +10,13 @@ export const asset = type({
 });
 export type Asset = typeof asset.infer;
 
-export type InvestorStats = {
-  todays_return: number;
-  total_return: number;
-  invested: number;
-  total_value: number;
-};
+export const investorStats = type({
+  todays_return: 'number',
+  total_return: 'number',
+  invested: 'number',
+  total_value: 'number',
+});
+export type InvestorStats = typeof investorStats.infer;
 
 export type OwnedShareItem = {
   name: string;

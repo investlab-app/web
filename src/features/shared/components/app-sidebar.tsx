@@ -7,16 +7,22 @@ import {
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from './ui/sidebar';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
 import { NavUser } from '@/features/shared/components/nav-user';
-import * as sidebar from '@/features/shared/components/ui/sidebar';
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
-export function AppSidebar(
-  props: React.ComponentProps<typeof sidebar.Sidebar>
-) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
   const data: {
     navMain: Array<NavItem>;
@@ -49,11 +55,11 @@ export function AppSidebar(
   };
 
   return (
-    <sidebar.Sidebar {...props}>
-      <sidebar.SidebarHeader>
-        <sidebar.SidebarMenu>
-          <sidebar.SidebarMenuItem>
-            <sidebar.SidebarMenuButton
+    <Sidebar {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
@@ -63,17 +69,17 @@ export function AppSidebar(
                   {t('common.app_name')}
                 </span>
               </Link>
-            </sidebar.SidebarMenuButton>
-          </sidebar.SidebarMenuItem>
-        </sidebar.SidebarMenu>
-      </sidebar.SidebarHeader>
-      <sidebar.SidebarContent>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </sidebar.SidebarContent>
-      <sidebar.SidebarFooter>
+      </SidebarContent>
+      <SidebarFooter>
         <NavUser />
-      </sidebar.SidebarFooter>
-    </sidebar.Sidebar>
+      </SidebarFooter>
+    </Sidebar>
   );
 }
