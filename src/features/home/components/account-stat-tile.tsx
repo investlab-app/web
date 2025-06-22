@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { cn } from '@/features/shared/utils';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 interface StatTileProps {
   title: string;
@@ -100,3 +101,20 @@ export const StatTile = ({
     </Card>
   );
 };
+
+const StatTileSkeleton = () => {
+  return (
+    <Card className="min-w-[280px] @container/card border-border shadow-lg">
+      <CardHeader>
+        <Skeleton className="h-5 w-24" />
+        <Skeleton className="h-8 w-40 mt-1" />
+        <div className="mt-2 flex items-center gap-2">
+          <Skeleton className="size-4" />
+          <Skeleton className="h-5 w-16" />
+        </div>
+      </CardHeader>
+    </Card>
+  );
+};
+
+StatTile.Skeleton = StatTileSkeleton;

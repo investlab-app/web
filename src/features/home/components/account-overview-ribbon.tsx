@@ -24,8 +24,10 @@ const AccountOverviewRibbon = () => {
 
   if (isLoading) {
     return (
-      <div className="h-24 flex items-center justify-center">
-        {t('common.loading')}
+      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <StatTile.Skeleton key={index} />
+        ))}
       </div>
     );
   }
