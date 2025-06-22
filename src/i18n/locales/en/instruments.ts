@@ -11,6 +11,7 @@ const enInstruments = {
   day_change: 'Day change',
   news: 'News',
   overview: 'Overview',
+  no_description_available: 'No description available',
 };
 
 export default enInstruments;

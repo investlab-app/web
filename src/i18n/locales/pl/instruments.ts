@@ -11,6 +11,7 @@ const plInstruments = {
   day_change: 'Dzienna zmiana',
   news: 'Wiadomości',
   overview: 'Przegląd',
+  no_description_available: 'Brak opisu',
 };
 
 export default plInstruments;

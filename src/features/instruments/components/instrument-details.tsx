@@ -102,7 +102,7 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
                   <div className="text-muted-foreground text-sm mt-1 line-clamp-3">
                     {newsItem.content.description ||
                       newsItem.content.summary ||
-                      'No description available'}
+                      t('instruments.no_description_available')}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     {newsItem.content.pub_date
