@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@clerk/clerk-react';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { StockChart } from '../../charts/components/stock-chart';
 import type { InstrumentPriceProps } from '../../charts/types/types';
@@ -9,34 +11,40 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
-  const data: Array<InstrumentPriceProps> = useMemo(() => {
-    const today = new Date();
-    const prices: Array<InstrumentPriceProps> = [];
+  const { getToken } = useAuth();
 
-    for (let i = 0; i < 120; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i * 7);
+  const {
+    data,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['accountValueOverTime'],
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) throw new Error('No auth token');
+      return fetchAccountValueOverTime(token);
+    },
+    staleTime: 60 * 1000,
+  });
 
-      const base = 100 + Math.random() * 5;
-      const price = base + Math.random() * 3;
+  const chartData: Array<InstrumentPriceProps> = useMemo(() => {
+    if (!data) return [];
+    // Map backend data to InstrumentPriceProps for StockChart
+    return data.data.map((point) => ({
+      date: point.date,
+      open: point.value,
+      close: point.value,
+      high: point.value,
+      low: point.value,
+    }));
+  }, [data]);
 
-      prices.unshift({
-        date: date.toISOString().split('T')[0],
-        open: parseFloat(price.toFixed(2)),
-        close: parseFloat(price.toFixed(2)),
-        high: parseFloat(price.toFixed(2)),
-        low: parseFloat(price.toFixed(2)),
-      });
-    }
-
-    return prices;
-  }, []);
-
-  const currentValue = data[data.length - 1]?.close ?? 0;
-  const hasError = data.length === 0;
+  const currentValue = chartData[chartData.length - 1]?.close ?? 0;
+  const hasError = !!error || !data;
 
   return (
     <Card>
@@ -52,14 +60,17 @@ export const AccountValueChartContainer = () => {
         )}
       </CardHeader>
       <CardContent>
-        {hasError ? (
+        {isLoading ? (
+          <div className="h-32 flex items-center justify-center">{t('common.loading')}</div>
+        ) : hasError ? (
           <ChartErrorMessage />
         ) : (
           <StockChart
-            stockName="Test"
-            chartData={data}
+            stockName="Account Value"
+            chartData={chartData}
             selectedInterval="1wk"
-            isCandlestick={false}
+            minPrice={Math.min(...chartData.map((d) => d.low))}
+            maxPrice={Math.max(...chartData.map((d) => d.high))}
           />
         )}
       </CardContent>

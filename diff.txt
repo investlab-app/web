@@ -1,0 +1,1753 @@
+diff --git a/.env.example b/.env.example
+index 3f69219..789fe0e 100644
+--- a/.env.example
++++ b/.env.example
+@@ -1,3 +1,4 @@
+ VITE_CLERK_PUBLISHABLE_KEY=pk_test_Y2hhcm1lZC1mbGVhLTc1LmNsZXJrLmFjY291bnRzLmRldiQ
+ BACKEND_URL=http://localhost:8000
+-
++VITE_PUBLIC_POSTHOG_KEY=phc_Xnqz0DIBd7uJahl2djOSMNjmNInPOR7mvE265enlCsh
++VITE_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
+diff --git a/.github/workflows/dependency-check.yml b/.github/workflows/dependency-check.yml
+index ddfebfc..3146b70 100644
+--- a/.github/workflows/dependency-check.yml
++++ b/.github/workflows/dependency-check.yml
+@@ -24,6 +24,8 @@ jobs:
+         uses: actions/checkout@v4
+       - name: Run GitHub Action for ORT
+         uses: oss-review-toolkit/ort-ci-github-action@v1
++        env:
++          ORT_DATA_DIR: /home/ort/work/stocks-web/stocks-web/.ort
+         with:
+           allow-dynamic-versions: 'true'
+           fail-on: 'violations'
+diff --git a/.gitignore b/.gitignore
+index 7314a80..118adc4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -5,8 +5,6 @@ dist-ssr
+ *.local
+ .vscode
+ .env
+-.tanstack/
+-
+ # Vitest
+ /coverage
+ 
+diff --git a/.ort/config/config.yml b/.ort/config/config.yml
+new file mode 100644
+index 0000000..ddbfe7f
+--- /dev/null
++++ b/.ort/config/config.yml
+@@ -0,0 +1,2 @@
++ort:
++  enableRepositoryPackageCurations: true 
+\ No newline at end of file
+diff --git a/.ort/config/curations.yml b/.ort/config/curations.yml
+new file mode 100644
+index 0000000..199467e
+--- /dev/null
++++ b/.ort/config/curations.yml
+@@ -0,0 +1,8 @@
++curations:
++  packages:
++    - id: 'NPM::posthog-js:1.255.1'
++      curations:
++        declared_license_mapping:
++          'NOASSERTION': 'Apache-2.0'
++        concluded_license: 'Apache-2.0'
++        comment: 'Based on GitHub repository, this package is Apache License 2.0' 
+\ No newline at end of file
+diff --git a/package.json b/package.json
+index a47fc07..e1edf77 100644
+--- a/package.json
++++ b/package.json
+@@ -51,6 +51,7 @@
+     "lucide-react": "^0.511.0",
+     "luxon": "^3.6.1",
+     "next-themes": "^0.4.6",
++    "posthog-js": "^1.255.1",
+     "react": "^19.1.0",
+     "react-dom": "^19.1.0",
+     "react-i18next": "^15.5.3",
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index c784780..0155b2a 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -116,6 +116,9 @@ importers:
+       next-themes:
+         specifier: ^0.4.6
+         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
++      posthog-js:
++        specifier: ^1.255.1
++        version: 1.255.1
+       react:
+         specifier: ^19.1.0
+         version: 19.1.0
+@@ -1918,6 +1921,9 @@ packages:
+   convert-source-map@2.0.0:
+     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+ 
++  core-js@3.43.0:
++    resolution: {integrity: sha512-N6wEbTTZSYOY2rYAn85CuvWWkCK6QweMn7/4Nr3w+gDBeBhk/x4EJeY6FPo4QzDoJZxVTv8U7CMvgWk6pOHHqA==}
++
+   cross-spawn@7.0.6:
+     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
+     engines: {node: '>= 8'}
+@@ -2174,6 +2180,9 @@ packages:
+       picomatch:
+         optional: true
+ 
++  fflate@0.4.8:
++    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
++
+   file-entry-cache@8.0.0:
+     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
+     engines: {node: '>=16.0.0'}
+@@ -2664,6 +2673,20 @@ packages:
+     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
+     engines: {node: ^10 || ^12 || >=14}
+ 
++  posthog-js@1.255.1:
++    resolution: {integrity: sha512-KMh0o9MhORhEZVjXpktXB5rJ8PfDk+poqBoTSoLzWgNjhJf6D8jcyB9jUMA6vVPfn4YeepVX5NuclDRqOwr5Mw==}
++    peerDependencies:
++      '@rrweb/types': 2.0.0-alpha.17
++      rrweb-snapshot: 2.0.0-alpha.17
++    peerDependenciesMeta:
++      '@rrweb/types':
++        optional: true
++      rrweb-snapshot:
++        optional: true
++
++  preact@10.26.9:
++    resolution: {integrity: sha512-SSjF9vcnF27mJK1XyFMNJzFd5u3pQiATFqoaDy03XuN00u4ziveVVEGt5RKJrDR8MHE/wJo9Nnad56RLzS2RMA==}
++
+   prelude-ls@1.2.1:
+     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
+     engines: {node: '>= 0.8.0'}
+@@ -3157,6 +3180,9 @@ packages:
+     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
+     engines: {node: '>=18'}
+ 
++  web-vitals@4.2.4:
++    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
++
+   web-vitals@5.0.3:
+     resolution: {integrity: sha512-4KmOFYxj7qT6RAdCH0SWwq8eKeXNhAFXR4PmgF6nrWFmrJ41n7lq3UCA6UK0GebQ4uu+XP8e8zGjaDO3wZlqTg==}
+ 
+@@ -4934,6 +4960,8 @@ snapshots:
+ 
+   convert-source-map@2.0.0: {}
+ 
++  core-js@3.43.0: {}
++
+   cross-spawn@7.0.6:
+     dependencies:
+       path-key: 3.1.1
+@@ -5227,6 +5255,8 @@ snapshots:
+     optionalDependencies:
+       picomatch: 4.0.2
+ 
++  fflate@0.4.8: {}
++
+   file-entry-cache@8.0.0:
+     dependencies:
+       flat-cache: 4.0.1
+@@ -5661,6 +5691,15 @@ snapshots:
+       picocolors: 1.1.1
+       source-map-js: 1.2.1
+ 
++  posthog-js@1.255.1:
++    dependencies:
++      core-js: 3.43.0
++      fflate: 0.4.8
++      preact: 10.26.9
++      web-vitals: 4.2.4
++
++  preact@10.26.9: {}
++
+   prelude-ls@1.2.1: {}
+ 
+   prettier@3.5.3: {}
+@@ -6159,6 +6198,8 @@ snapshots:
+     dependencies:
+       xml-name-validator: 5.0.0
+ 
++  web-vitals@4.2.4: {}
++
+   web-vitals@5.0.3: {}
+ 
+   webidl-conversions@7.0.0: {}
+diff --git a/src/features/charts/components/stock-chart-container.tsx b/src/features/charts/components/stock-chart-container.tsx
+index 0a80a44..b7902d1 100644
+--- a/src/features/charts/components/stock-chart-container.tsx
++++ b/src/features/charts/components/stock-chart-container.tsx
+@@ -2,8 +2,6 @@ import { useCallback, useEffect, useMemo } from 'react';
+ import { useTranslation } from 'react-i18next';
+ import { Store, useStore } from '@tanstack/react-store';
+ import { type } from 'arktype';
+-import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
+-import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
+ import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
+ import { timeIntervals } from '../utils/time-ranges';
+ import { StockChart } from './stock-chart';
+@@ -26,7 +24,6 @@ import {
+ } from '@/features/shared/components/ui/select';
+ import { useSSE } from '@/features/shared/hooks/use-sse';
+ import { livePriceDataDTO } from '@/features/instruments/types/types';
+-import { cn } from '@/features/shared/utils';
+ 
+ type StockChartProps = {
+   ticker: string;
+@@ -39,20 +36,22 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
+     return new Store({
+       interval: '1h',
+       data: new Array<InstrumentPriceProps>(),
++      minPrice: 0,
++      maxPrice: 0,
+       currentPrice: 0,
+       hasError: false,
+       liveUpdateValue: null as [InstrumentPriceProps, boolean] | null,
+-      isCandlestick: true,
+     });
+   }, []);
+ 
+   const {
+     interval,
+     data,
++    minPrice,
++    maxPrice,
+     currentPrice,
+     hasError,
+     liveUpdateValue,
+-    isCandlestick,
+   } = useStore(store);
+ 
+   const loadStockData = useLoadStockChartData();
+@@ -97,16 +96,6 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
+     },
+   });
+ 
+-  const chartTypeToggle = (value: string) => {
+-    console.log('love you', value);
+-    store.setState((state) => {
+-      return {
+-        ...state,
+-        isCandlestick: value === 'candle',
+-      };
+-    });
+-  };
+-
+   const changeInterval = useCallback(
+     async (newInterval: string) => {
+       const result = await loadStockData(ticker, newInterval);
+@@ -141,46 +130,18 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
+           </CardDescription>
+         )}
+         <CardAction>
+-          <div className="flex items-center gap-1">
+-            <ToggleGroup
+-              type="single"
+-              onValueChange={chartTypeToggle}
+-              aria-label="Toggle chart type"
+-            >
+-              <ToggleGroupItem
+-                value="line"
+-                aria-label="Line chart"
+-                className={cn(
+-                  'p-2 rounded-md',
+-                  !isCandlestick ? 'bg-muted text-foreground' : ''
+-                )}
+-              >
+-                <LineChartIcon />
+-              </ToggleGroupItem>
+-              <ToggleGroupItem
+-                value="candle"
+-                aria-label="Candlestick chart"
+-                className={cn(
+-                  'p-2 rounded-md',
+-                  isCandlestick ? 'bg-muted text-foreground' : ''
+-                )}
+-              >
+-                <CandlestickChartIcon />
+-              </ToggleGroupItem>
+-            </ToggleGroup>
+-            <Select value={interval} onValueChange={changeInterval}>
+-              <SelectTrigger className="w-40" aria-label="Select time range">
+-                <SelectValue placeholder="Select range" />
+-              </SelectTrigger>
+-              <SelectContent>
+-                {timeIntervals.map(({ label, value }) => (
+-                  <SelectItem key={value} value={value}>
+-                    {label}
+-                  </SelectItem>
+-                ))}
+-              </SelectContent>
+-            </Select>
+-          </div>
++          <Select value={interval} onValueChange={changeInterval}>
++            <SelectTrigger className="w-40" aria-label="Select time range">
++              <SelectValue placeholder="Select range" />
++            </SelectTrigger>
++            <SelectContent>
++              {timeIntervals.map(({ label, value }) => (
++                <SelectItem key={value} value={value}>
++                  {label}
++                </SelectItem>
++              ))}
++            </SelectContent>
++          </Select>
+         </CardAction>
+       </CardHeader>
+       <CardContent>
+@@ -190,10 +151,10 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
+           <StockChart
+             stockName={ticker}
+             chartData={data}
++            minPrice={minPrice}
++            maxPrice={maxPrice}
+             selectedInterval={interval}
+             liveUpdateValue={liveUpdateValue}
+-            zoom={0.1}
+-            isCandlestick={isCandlestick}
+           />
+         )}
+       </CardContent>
+diff --git a/src/features/charts/components/stock-chart.tsx b/src/features/charts/components/stock-chart.tsx
+index f00dc41..f06d355 100644
+--- a/src/features/charts/components/stock-chart.tsx
++++ b/src/features/charts/components/stock-chart.tsx
+@@ -21,18 +21,18 @@ type EChartXAxis = {
+ export type ChartPresentationsProps = {
+   stockName: string;
+   chartData: Array<InstrumentPriceProps>;
++  minPrice: number;
++  maxPrice: number;
+   selectedInterval: string;
+-  zoom?: number;
+-  isCandlestick: boolean;
+   liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
+ };
+ 
+ export const StockChart = ({
+   stockName,
+   chartData,
++  minPrice,
++  maxPrice,
+   selectedInterval,
+-  zoom,
+-  isCandlestick,
+   liveUpdateValue = null,
+ }: ChartPresentationsProps) => {
+   const chartRef = useRef<ReactECharts | null>(null);
+@@ -42,11 +42,11 @@ export const StockChart = ({
+       createChartOptions(
+         stockName,
+         chartData,
+-        selectedInterval,
+-        zoom,
+-        isCandlestick
++        minPrice,
++        maxPrice,
++        selectedInterval
+       ),
+-    [stockName, chartData, selectedInterval, isCandlestick, zoom]
++    [stockName, chartData, minPrice, maxPrice, selectedInterval]
+   );
+ 
+   useEffect(() => {
+diff --git a/src/features/charts/utils/chart-formatting.ts b/src/features/charts/utils/chart-formatting.ts
+index 963dda1..929620c 100644
+--- a/src/features/charts/utils/chart-formatting.ts
++++ b/src/features/charts/utils/chart-formatting.ts
+@@ -1,12 +1,12 @@
+ export function createLabelIntervalFn(
+-  dataLength: number,
+-  zoom: number
++  dataLength: number
+ ): (index: number, value: string) => boolean {
+   if (dataLength <= 10) {
++    // Show all labels if there are 10 or fewer
+     return () => true;
+   }
+ 
+-  const interval = Math.floor(dataLength / (3 * (1 / zoom)));
++  const interval = Math.floor(dataLength / 30);
+ 
+   return (index: number) => index % interval === 0;
+ }
+diff --git a/src/features/charts/utils/chart-options.ts b/src/features/charts/utils/chart-options.ts
+index 4b26fc4..fa2dbe4 100644
+--- a/src/features/charts/utils/chart-options.ts
++++ b/src/features/charts/utils/chart-options.ts
+@@ -3,78 +3,40 @@ import {
+   formatChartDateByRange as formatChartDateByInterval,
+ } from './chart-formatting';
+ import type { InstrumentPriceProps } from '../types/types';
+-import type {
+-  DefaultLabelFormatterCallbackParams,
+-  EChartsOption,
+-  TooltipComponentFormatterCallbackParams,
+-} from 'echarts';
++import type { EChartsOption } from 'echarts';
+ 
+ export function createChartOptions(
+   stockName: string,
+   chartData: Array<InstrumentPriceProps>,
+-  selectedInterval: string,
+-  zoom: number = 1,
+-  isCandlestick: boolean = false
++  minPrice: number,
++  maxPrice: number,
++  selectedInterval: string
+ ): EChartsOption {
+   const dates = chartData.map((item) => item.date);
+-  const seriesData = !isCandlestick
+-    ? chartData.map((item) => ({
+-        value: item.close,
+-        high: item.high,
+-        low: item.low,
+-        open: item.open,
+-      }))
+-    : chartData.map((item) => [item.open, item.close, item.low, item.high]);
+-
+-  zoom = isCandlestick ? zoom / 3 : zoom;
+-  const startPercent = (1 - zoom) * 100;
++  const seriesData = chartData.map((item) => ({
++    value: item.close,
++    high: item.high,
++    low: item.low,
++    open: item.open,
++  }));
+ 
+   return {
+     animation: false,
+     tooltip: {
+       trigger: 'axis',
+-      axisPointer: {
+-        animation: false,
+-        type: isCandlestick ? 'shadow' : 'line',
+-      },
+-      backgroundColor: isCandlestick
+-        ? 'var(--color-card)'
+-        : 'var(--blended-primary)',
+-      textStyle: {
+-        color: isCandlestick ? 'var(--foreground)' : 'var(--foreground)',
+-      },
+-      formatter: (params: TooltipComponentFormatterCallbackParams) => {
++      axisPointer: { animation: false },
++      backgroundColor: 'rgba(47, 5, 77, 0.9)',
++      textStyle: { color: 'white' },
++      // eslint-disable-next-line
++      formatter: (params: any) => {
+         const paramArray = Array.isArray(params) ? params : [params];
+-        const { axisValue, data } =
+-          paramArray[0] as DefaultLabelFormatterCallbackParams & {
+-            axisValue: string;
+-          };
+-        const formattedDate = formatChartDateByInterval(
+-          axisValue,
+-          selectedInterval,
+-          true
+-        );
+-
+-        if (isCandlestick) {
+-          const candlestickData = Array.isArray(data)
+-            ? data
+-            : [null, null, null, null];
+-          if (!candlestickData.every((d) => typeof d === 'number')) return '';
+-          const [open, close, low, high] = candlestickData;
+-          return `<div><strong>${formattedDate}</strong><br />
+-            Open: $${open.toFixed(2)}<br />
+-            Close: $${close.toFixed(2)}<br />
+-            High: $${high.toFixed(2)}<br />
+-            Low: $${low.toFixed(2)}</div>`;
+-        } else {
+-          const value =
+-            typeof data === 'object' && data !== null && 'value' in data
+-              ? data.value
+-              : data;
+-          if (!(typeof value === 'number')) return '';
+-          return `<div><strong>${formattedDate}</strong><br />
+-            Price: $${value.toFixed(2)}</div>`;
+-        }
++        const { axisValue, data } = paramArray[0];
++        return `<div><strong>
++            ${formatChartDateByInterval(axisValue, selectedInterval, true)}
++          </strong><br />
++          Price: $${data.value?.toFixed(2)}<br />
++          High: $${data.high?.toFixed(2)}<br />
++          Low: $${data.low?.toFixed(2)}</div>`;
+       },
+     },
+     xAxis: {
+@@ -83,7 +45,7 @@ export function createChartOptions(
+       axisTick: { show: false },
+       axisLine: { show: true },
+       axisLabel: {
+-        interval: createLabelIntervalFn(chartData.length, zoom),
++        interval: createLabelIntervalFn(chartData.length),
+         formatter: (value: string) =>
+           formatChartDateByInterval(value, selectedInterval),
+       },
+@@ -91,14 +53,15 @@ export function createChartOptions(
+     yAxis: {
+       type: 'value',
+       axisLine: { show: true },
+-      scale: true,
++      min: Math.floor(minPrice),
++      max: Math.ceil(maxPrice),
+       splitLine: { lineStyle: { opacity: 0.2 } },
+     },
+     dataZoom: [
+       {
+         type: 'inside',
+         zoomLock: true,
+-        start: startPercent,
++        start: 90,
+         end: 100,
+         moveOnMouseWheel: true,
+         moveOnMouseMove: true,
+@@ -106,45 +69,28 @@ export function createChartOptions(
+       },
+     ],
+     series: [
+-      isCandlestick
+-        ? {
+-            name: stockName,
+-            type: 'candlestick',
+-            data: seriesData as Array<Array<number>>,
+-            itemStyle: {
+-              color: '#00b894',
+-              color0: '#d63031',
+-              borderColor: '#00b894',
+-              borderColor0: '#d63031',
+-            },
+-          }
+-        : {
+-            name: stockName,
+-            type: 'line',
+-            smooth: false,
+-            data: seriesData as Array<{
+-              value: number;
+-              high: number;
+-              low: number;
+-              open: number;
+-            }>,
+-            showSymbol: false,
+-            areaStyle: {
+-              color: {
+-                type: 'linear',
+-                x: 0,
+-                y: 0,
+-                x2: 0,
+-                y2: 1,
+-                colorStops: [
+-                  { offset: 0, color: 'rgba(117, 33, 232, 0.5)' },
+-                  { offset: 1, color: 'rgba(117, 33, 232, 0)' },
+-                ],
+-              },
+-            },
+-            lineStyle: { color: 'rgba(117, 33, 232, 1)' },
+-            itemStyle: { color: 'rgba(117, 33, 232, 1)' },
++      {
++        name: stockName,
++        type: 'line',
++        smooth: false,
++        data: seriesData,
++        showSymbol: false,
++        areaStyle: {
++          color: {
++            type: 'linear',
++            x: 0,
++            y: 0,
++            x2: 0,
++            y2: 1,
++            colorStops: [
++              { offset: 0, color: 'rgba(117, 33, 232, 0.5)' },
++              { offset: 1, color: 'rgba(117, 33, 232, 0)' },
++            ],
+           },
++        },
++        lineStyle: { color: 'rgba(117, 33, 232, 1)' },
++        itemStyle: { color: 'rgba(117, 33, 232, 1)' },
++      },
+     ],
+   };
+ }
+diff --git a/src/features/home/components/account-overview-ribbon.tsx b/src/features/home/components/account-overview-ribbon.tsx
+deleted file mode 100644
+index 3ed0d9e..0000000
+--- a/src/features/home/components/account-overview-ribbon.tsx
++++ /dev/null
+@@ -1,44 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import { StatTile } from './account-stat-tile';
+-
+-const AccountOverviewRibbon = () => {
+-  const { t } = useTranslation();
+-  const tiles = [
+-    {
+-      title: t('investor.todays_return'),
+-      value: 39.35,
+-      isProgress: true,
+-    },
+-    {
+-      title: t('investor.total_return'),
+-      value: -432.34,
+-      isProgress: true,
+-    },
+-    {
+-      title: t('investor.invested'),
+-      value: 523.35,
+-      isProgress: false,
+-    },
+-    {
+-      title: t('investor.total_value'),
+-      value: 2353.52,
+-      isProgress: false,
+-    },
+-  ];
+-
+-  return (
+-    <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+-      {tiles.map((tile, index) => (
+-        <StatTile
+-          key={index}
+-          title={tile.title}
+-          value={tile.value}
+-          isProgress={tile.isProgress}
+-          currency={t('common.currency')}
+-        />
+-      ))}
+-    </div>
+-  );
+-};
+-
+-export default AccountOverviewRibbon;
+diff --git a/src/features/home/components/account-stat-tile.tsx b/src/features/home/components/account-stat-tile.tsx
+deleted file mode 100644
+index c4571e3..0000000
+--- a/src/features/home/components/account-stat-tile.tsx
++++ /dev/null
+@@ -1,102 +0,0 @@
+-import { TrendingDown, TrendingUp } from 'lucide-react';
+-import { useTranslation } from 'react-i18next';
+-import {
+-  Card,
+-  CardDescription,
+-  CardFooter,
+-  CardHeader,
+-  CardTitle,
+-} from '@/features/shared/components/ui/card';
+-import { cn } from '@/features/shared/utils';
+-
+-interface StatTileProps {
+-  title: string;
+-  value: number;
+-  currency?: string;
+-  isProgress?: boolean;
+-  footerNote?: string | null;
+-  trendNote?: string | null;
+-}
+-
+-export const StatTile = ({
+-  title,
+-  value,
+-  currency = 'USD',
+-  isProgress = false,
+-  footerNote,
+-  trendNote,
+-}: StatTileProps) => {
+-  const { t } = useTranslation();
+-  const isPositive = value >= 0;
+-  const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;
+-
+-  const formatValue = (val: number) => {
+-    return Math.abs(val).toLocaleString(t('common.locale'), {
+-      minimumFractionDigits: 2,
+-      maximumFractionDigits: 2,
+-    });
+-  };
+-
+-  return (
+-    <Card
+-      className={cn(
+-        'min-w-[280px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+-        isProgress
+-          ? isPositive
+-            ? 'bg-[color:var(--card-positive)] text-[color:var(--positive-foreground)]'
+-            : 'bg-[color:var(--card-negative)] text-[color:var(--negative-foreground)]'
+-          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)]'
+-      )}
+-    >
+-      <CardHeader>
+-        <CardDescription className={cn('text-sm font-medium')}>
+-          {title}
+-        </CardDescription>
+-
+-        <CardTitle
+-          className={cn(
+-            'text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'
+-          )}
+-        >
+-          {isProgress && isPositive ? '+' : ''}
+-          {isProgress && !isPositive ? '-' : ''}
+-          {formatValue(value)} {currency}
+-        </CardTitle>
+-
+-        {isProgress && (
+-          <div className="mt-2 flex items-center gap-2">
+-            {isPositive ? (
+-              <TrendingUp className="size-4 " />
+-            ) : (
+-              <TrendingDown className="size-4 " />
+-            )}
+-            <span className={cn('text-sm font-medium')}>
+-              {percentage.toFixed(2)}%
+-            </span>
+-          </div>
+-        )}
+-      </CardHeader>
+-
+-      {(trendNote || footerNote) && (
+-        <CardFooter className="flex-col items-start gap-1.5 text-sm mt-2">
+-          {trendNote && isProgress && (
+-            <div className={cn('line-clamp-1 flex gap-2 font-medium')}>
+-              {trendNote}
+-              {isPositive ? (
+-                <TrendingUp className="size-4" />
+-              ) : (
+-                <TrendingDown className="size-4" />
+-              )}
+-            </div>
+-          )}
+-
+-          {footerNote && (
+-            <div className="text-[color:var(--color-muted-foreground)]">
+-              {footerNote}
+-            </div>
+-          )}
+-        </CardFooter>
+-      )}
+-    </Card>
+-  );
+-};
+diff --git a/src/features/home/components/account-value-chart-container.tsx b/src/features/home/components/account-value-chart-container.tsx
+deleted file mode 100644
+index c3dd85a..0000000
+--- a/src/features/home/components/account-value-chart-container.tsx
++++ /dev/null
+@@ -1,68 +0,0 @@
+-import { useMemo } from 'react';
+-import { useTranslation } from 'react-i18next';
+-import { ChartErrorMessage } from '../../charts/components/chart-error-message';
+-import { StockChart } from '../../charts/components/stock-chart';
+-import type { InstrumentPriceProps } from '../../charts/types/types';
+-import {
+-  Card,
+-  CardContent,
+-  CardHeader,
+-  CardTitle,
+-} from '@/features/shared/components/ui/card';
+-
+-export const AccountValueChartContainer = () => {
+-  const { t } = useTranslation();
+-  const data: Array<InstrumentPriceProps> = useMemo(() => {
+-    const today = new Date();
+-    const prices: Array<InstrumentPriceProps> = [];
+-
+-    for (let i = 0; i < 120; i++) {
+-      const date = new Date(today);
+-      date.setDate(today.getDate() - i * 7);
+-
+-      const base = 100 + Math.random() * 5;
+-      const price = base + Math.random() * 3;
+-
+-      prices.unshift({
+-        date: date.toISOString().split('T')[0],
+-        open: parseFloat(price.toFixed(2)),
+-        close: parseFloat(price.toFixed(2)),
+-        high: parseFloat(price.toFixed(2)),
+-        low: parseFloat(price.toFixed(2)),
+-      });
+-    }
+-
+-    return prices;
+-  }, []);
+-
+-  const currentValue = data[data.length - 1]?.close ?? 0;
+-  const hasError = data.length === 0;
+-
+-  return (
+-    <Card>
+-      <CardHeader>
+-        <CardTitle className="text-xl font-semibold">
+-          {t('investor.account_value_over_time')}
+-        </CardTitle>
+-
+-        {!hasError && typeof currentValue === 'number' && (
+-          <div className="text-4xl font-bold tabular-nums">
+-            {currentValue.toFixed(2)} {t('common.currency')}
+-          </div>
+-        )}
+-      </CardHeader>
+-      <CardContent>
+-        {hasError ? (
+-          <ChartErrorMessage />
+-        ) : (
+-          <StockChart
+-            stockName="Test"
+-            chartData={data}
+-            selectedInterval="1wk"
+-            isCandlestick={false}
+-          />
+-        )}
+-      </CardContent>
+-    </Card>
+-  );
+-};
+diff --git a/src/features/home/components/asset-allocation-container.tsx b/src/features/home/components/asset-allocation-container.tsx
+deleted file mode 100644
+index 1b9b6b5..0000000
+--- a/src/features/home/components/asset-allocation-container.tsx
++++ /dev/null
+@@ -1,22 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import { AssetAllocationTile } from './asset-allocation-tile';
+-
+-const AssetAllocationContainer = () => {
+-  const { t } = useTranslation();
+-  const sampleAssets: Array<[string, number]> = [
+-    ['Stocks', 23635.23],
+-    ['Bonds', 4823],
+-    ['Unallocated', 4862.23],
+-  ];
+-
+-  return (
+-    <AssetAllocationTile
+-      totalValue={235223}
+-      yearlyGain={32253.53}
+-      currency={t('common.currency')}
+-      assets={sampleAssets}
+-    />
+-  );
+-};
+-
+-export default AssetAllocationContainer;
+diff --git a/src/features/home/components/asset-allocation-tile.tsx b/src/features/home/components/asset-allocation-tile.tsx
+deleted file mode 100644
+index 1755222..0000000
+--- a/src/features/home/components/asset-allocation-tile.tsx
++++ /dev/null
+@@ -1,99 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import { getDerivedPrimaryColor } from '../helpers/color-selector';
+-import {
+-  Card,
+-  CardContent,
+-  CardHeader,
+-  CardTitle,
+-} from '@/features/shared/components/ui/card';
+-
+-interface AssetAllocationProps {
+-  totalValue: number;
+-  yearlyGain: number;
+-  currency?: string;
+-  assets: Array<[string, number]>;
+-}
+-
+-export const AssetAllocationTile = ({
+-  totalValue,
+-  yearlyGain,
+-  currency = 'USD',
+-  assets,
+-}: AssetAllocationProps) => {
+-  const totalAssetValue = assets.reduce((sum, [, value]) => sum + value, 0);
+-  const { t } = useTranslation();
+-
+-  const formatValue = (val: number) => {
+-    return val.toLocaleString(t('common.locale'), {
+-      minimumFractionDigits: 2,
+-      maximumFractionDigits: 2,
+-    });
+-  };
+-
+-  const formatPercentage = (val: number) => {
+-    return Math.round((val / totalAssetValue) * 100);
+-  };
+-
+-  console.log(assets);
+-  return (
+-    <Card>
+-      <CardHeader>
+-        <CardTitle className="text-xl font-semibold">
+-          {t('investor.asset_allocation')}
+-        </CardTitle>
+-        <div className="text-4xl font-bold tabular-nums">
+-          {formatValue(totalValue)} {currency}
+-        </div>
+-
+-        <span className="text-gray-400 text-sm">
+-          {formatValue(yearlyGain)} {currency} {t('investor.this_year')}
+-        </span>
+-      </CardHeader>
+-      <CardContent className="p-6 space-y-6">
+-        <div className="space-y-4">
+-          <h3 className="text-lg font-semibold">
+-            {t('investor.distribution')}
+-          </h3>
+-
+-          <div className="flex w-full h-8 rounded-lg">
+-            {assets.map(([name, value], index) => {
+-              const percentage = (value / totalAssetValue) * 100;
+-              return (
+-                <div
+-                  key={name}
+-                  className="rounded-md h-4 mx-1"
+-                  style={{
+-                    width: `${percentage}%`,
+-                    backgroundColor: getDerivedPrimaryColor(index),
+-                  }}
+-                />
+-              );
+-            })}
+-          </div>
+-
+-          <div className="space-y-4">
+-            {assets.map(([name, value], index) => (
+-              <div key={name} className="flex items-center justify-between">
+-                <div key={name} className="flex items-center gap-3">
+-                  <div
+-                    className="w-4 h-4 rounded-full"
+-                    style={{ backgroundColor: getDerivedPrimaryColor(index) }}
+-                  />
+-                  <div className="space-y-1">
+-                    <div className="font-medium">{name}</div>
+-                    <div className="text-gray-400 text-sm">
+-                      {formatPercentage(value)}%
+-                    </div>
+-                  </div>
+-                </div>
+-                <div className="font-semibold tabular-nums">
+-                  {formatValue(value)} {currency}
+-                </div>
+-              </div>
+-            ))}
+-          </div>
+-        </div>
+-      </CardContent>
+-    </Card>
+-  );
+-};
+diff --git a/src/features/home/components/asset-table-container.tsx b/src/features/home/components/asset-table-container.tsx
+deleted file mode 100644
+index 832d9e6..0000000
+--- a/src/features/home/components/asset-table-container.tsx
++++ /dev/null
+@@ -1,30 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import { dummyAssets } from '../helpers/dummy-assets'; // adjust the import path to match your project structure
+-import AssetTable from './asset-table';
+-import type { Asset } from '../types/types';
+-import {
+-  Card,
+-  CardContent,
+-  CardHeader,
+-  CardTitle,
+-} from '@/features/shared/components/ui/card';
+-
+-const AssetTableContainer = () => {
+-  const { t } = useTranslation();
+-  const handleAssetPressed = (asset: Asset) => {
+-    console.log('Asset clicked:', asset);
+-  };
+-
+-  return (
+-    <Card className="text-xl font-semibold">
+-      <CardHeader>
+-        <CardTitle>{t('investor.owned_shares')}</CardTitle>
+-      </CardHeader>
+-      <CardContent>
+-        <AssetTable data={dummyAssets} onAssetPressed={handleAssetPressed} />
+-      </CardContent>
+-    </Card>
+-  );
+-};
+-
+-export default AssetTableContainer;
+diff --git a/src/features/home/components/asset-table.tsx b/src/features/home/components/asset-table.tsx
+deleted file mode 100644
+index 02daa59..0000000
+--- a/src/features/home/components/asset-table.tsx
++++ /dev/null
+@@ -1,80 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import type { Asset } from '../types/types';
+-import {
+-  Table,
+-  TableBody,
+-  TableCell,
+-  TableHead,
+-  TableHeader,
+-  TableRow,
+-} from '@/features/shared/components/ui/table';
+-import { cn } from '@/features/shared/utils';
+-
+-type AssetTableProps = {
+-  data: Array<Asset>;
+-  onAssetPressed: (asset: Asset) => void;
+-};
+-
+-const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
+-  const { t } = useTranslation();
+-  return (
+-    <div className="overflow-x-auto">
+-      <Table>
+-        <TableHeader>
+-          <TableRow>
+-            <TableHead className="hidden sm:table-cell">
+-              {t('instruments.name')}
+-            </TableHead>
+-            <TableHead>{t('instruments.symbol')}</TableHead>
+-            <TableHead className="text-right">
+-              {t('instruments.volume')}
+-            </TableHead>
+-            <TableHead className="text-right">{t('investor.value')}</TableHead>
+-            <TableHead className="text-right">{t('investor.gain')}</TableHead>
+-            <TableHead className="text-right hidden sm:table-cell">
+-              {t('investor.gain_percent')}
+-            </TableHead>
+-          </TableRow>
+-        </TableHeader>
+-        <TableBody>
+-          {data.map((asset, idx) => (
+-            <TableRow
+-              key={idx}
+-              onClick={() => onAssetPressed(asset)}
+-              className="cursor-pointer"
+-            >
+-              <TableCell className="hidden sm:table-cell">
+-                {asset.name}
+-              </TableCell>
+-              <TableCell>{asset.symbol}</TableCell>
+-              <TableCell className="text-right">
+-                {asset.volume.toFixed(5)}
+-              </TableCell>
+-              <TableCell className="text-right">
+-                {asset.value.toFixed(2)} {t('common.currency')}
+-              </TableCell>
+-              <TableCell
+-                className={cn(
+-                  'text-right',
+-                  asset.gain < 0 ? 'text-red-500' : 'text-green-500'
+-                )}
+-              >
+-                {asset.gain.toFixed(2)} {t('common.currency')}
+-              </TableCell>
+-              <TableCell
+-                className={cn(
+-                  'text-right hidden sm:table-cell',
+-                  asset.gain_percent < 0 ? 'text-red-500' : 'text-green-500'
+-                )}
+-              >
+-                {asset.gain_percent.toFixed(2)}%
+-              </TableCell>
+-            </TableRow>
+-          ))}
+-        </TableBody>
+-      </Table>
+-    </div>
+-  );
+-};
+-
+-export default AssetTable;
+diff --git a/src/features/home/helpers/color-selector.ts b/src/features/home/helpers/color-selector.ts
+deleted file mode 100644
+index 6ae7497..0000000
+--- a/src/features/home/helpers/color-selector.ts
++++ /dev/null
+@@ -1,25 +0,0 @@
+-export function getDerivedPrimaryColor(level: number): string {
+-  const primary = getComputedStyle(document.documentElement)
+-    .getPropertyValue('--primary')
+-    .trim();
+-
+-  const match = primary.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+-
+-  if (!match) {
+-    console.warn('Invalid --primary format:', primary);
+-    return '';
+-  }
+-
+-  const [, lStr, cStr, hStr] = match;
+-  const l = parseFloat(lStr);
+-  const c = parseFloat(cStr);
+-  const h = parseFloat(hStr);
+-
+-  const clamped = Math.min(Math.max(level, 0), 5);
+-
+-  const newL = (l * (1 - clamped * 0.2)).toFixed(3);
+-  const newC = (c * (1 - clamped * 0.1)).toFixed(3);
+-  console.log(`oklch(${newL},${c},${h})`);
+-
+-  return `oklch(${newL} ${newC} ${h})`;
+-}
+diff --git a/src/features/home/helpers/dummy-assets.ts b/src/features/home/helpers/dummy-assets.ts
+deleted file mode 100644
+index b3a3859..0000000
+--- a/src/features/home/helpers/dummy-assets.ts
++++ /dev/null
+@@ -1,52 +0,0 @@
+-import type { Asset } from '../types/types';
+-
+-export const dummyAssets: Array<Asset> = [
+-  {
+-    name: 'Apple Inc.',
+-    symbol: 'AAPL',
+-    volume: 1.5233523,
+-    value: 195.34,
+-    gain: 2.15,
+-    gain_percent: 1.11,
+-  },
+-  {
+-    name: 'Tesla, Inc.',
+-    symbol: 'TSLA',
+-    volume: 8.532532,
+-    value: 254.12,
+-    gain: -4.62,
+-    gain_percent: -1.78,
+-  },
+-  {
+-    name: 'Amazon.com, Inc.',
+-    symbol: 'AMZN',
+-    volume: 0.555332,
+-    value: 132.45,
+-    gain: 1.08,
+-    gain_percent: 0.82,
+-  },
+-  {
+-    name: 'Microsoft Corp.',
+-    symbol: 'MSFT',
+-    volume: 2.00042,
+-    value: 341.2,
+-    gain: 0.52,
+-    gain_percent: 0.15,
+-  },
+-  {
+-    name: 'NVIDIA Corp.',
+-    symbol: 'NVDA',
+-    volume: 0.66666,
+-    value: 982.44,
+-    gain: -10.15,
+-    gain_percent: -1.02,
+-  },
+-  {
+-    name: 'Alphabet Inc.',
+-    symbol: 'GOOGL',
+-    volume: 1,
+-    value: 143.11,
+-    gain: 14.0,
+-    gain_percent: 10.1,
+-  },
+-];
+diff --git a/src/features/home/types/types.ts b/src/features/home/types/types.ts
+deleted file mode 100644
+index 172a622..0000000
+--- a/src/features/home/types/types.ts
++++ /dev/null
+@@ -1,11 +0,0 @@
+-import { type } from 'arktype';
+-
+-export const asset = type({
+-  name: 'string',
+-  volume: 'number',
+-  value: 'number',
+-  gain: 'number',
+-  gain_percent: 'number',
+-  symbol: 'string',
+-});
+-export type Asset = typeof asset.infer;
+diff --git a/src/features/instruments/components/buy-sell-action.tsx b/src/features/instruments/components/buy-sell-action.tsx
+index 2bb5313..3f29939 100644
+--- a/src/features/instruments/components/buy-sell-action.tsx
++++ b/src/features/instruments/components/buy-sell-action.tsx
+@@ -58,7 +58,7 @@ export const BuySellSection = ({
+                     onValueChange={handleInputChange}
+                     prefix={mode === 'price' ? '$' : undefined}
+                     fixedDecimalScale
+-                    stepper={mode === 'price' ? 0.5 : 0.05}
++                    stepper={mode === 'price' ? 0.5 : 0.1}
+                     decimalScale={mode === 'price' ? 2 : 5}
+                   />
+                 </div>
+diff --git a/src/features/instruments/components/instruments-table.tsx b/src/features/instruments/components/instruments-table.tsx
+index 74a5f37..00beabc 100644
+--- a/src/features/instruments/components/instruments-table.tsx
++++ b/src/features/instruments/components/instruments-table.tsx
+@@ -8,7 +8,6 @@ import {
+   TableHeader,
+   TableRow,
+ } from '@/features/shared/components/ui/table';
+-import { cn } from '@/features/shared/utils';
+ 
+ type InstrumentTableProps = {
+   data: Array<Instrument>;
+@@ -25,19 +24,11 @@ const InstrumentTable = ({
+       <Table>
+         <TableHeader>
+           <TableRow>
+-            <TableHead className="hidden sm:table-cell">
+-              {t('instruments.name')}
+-            </TableHead>
++            <TableHead>{t('instruments.name')}</TableHead>
+             <TableHead>{t('instruments.symbol')}</TableHead>
+-            <TableHead className="text-right">
+-              {t('instruments.current_price')}
+-            </TableHead>
+-            <TableHead className="text-right">
+-              {t('instruments.day_change')}
+-            </TableHead>
+-            <TableHead className="text-right">
+-              {t('instruments.volume')}
+-            </TableHead>
++            <TableHead>{t('instruments.current_price')}</TableHead>
++            <TableHead>{t('instruments.day_change')}</TableHead>
++            <TableHead>{t('instruments.volume')}</TableHead>
+           </TableRow>
+         </TableHeader>
+         <TableBody>
+@@ -47,23 +38,20 @@ const InstrumentTable = ({
+               onClick={() => onInstrumentPressed(instrument)}
+               className="cursor-pointer"
+             >
+-              <TableCell className="hidden sm:table-cell">
+-                {instrument.name}
+-              </TableCell>
++              <TableCell>{instrument.name}</TableCell>
+               <TableCell>{instrument.symbol}</TableCell>
+-              <TableCell className="text-right">
+-                {instrument.currentPrice.toFixed(2)} {t('common.currency')}
+-              </TableCell>
+-              <TableCell
+-                className={cn(
+-                  'text-right',
+-                  instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
+-                )}
+-              >
+-                {instrument.dayChange < 0 ? '-' : '+'}
+-                {Math.abs(instrument.dayChange).toFixed(2)}%
++              <TableCell>${instrument.currentPrice.toFixed(2)}</TableCell>
++              <TableCell>
++                <span
++                  className={
++                    instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
++                  }
++                >
++                  {instrument.dayChange < 0 ? '-' : '+'}
++                  {Math.abs(instrument.dayChange).toFixed(2)}%
++                </span>
+               </TableCell>
+-              <TableCell className="text-right">{instrument.volume}</TableCell>
++              <TableCell>{instrument.volume}</TableCell>
+             </TableRow>
+           ))}
+         </TableBody>
+diff --git a/src/features/shared/components/language-toggle.tsx b/src/features/shared/components/language-toggle.tsx
+deleted file mode 100644
+index e91c59c..0000000
+--- a/src/features/shared/components/language-toggle.tsx
++++ /dev/null
+@@ -1,51 +0,0 @@
+-import { useTranslation } from 'react-i18next';
+-import { Globe } from 'lucide-react';
+-
+-import { Button } from '@/features/shared/components/ui/button';
+-import {
+-  DropdownMenu,
+-  DropdownMenuContent,
+-  DropdownMenuItem,
+-  DropdownMenuTrigger,
+-} from '@/features/shared/components/ui/dropdown-menu';
+-
+-const LANGUAGES = [
+-  { code: 'en', label: 'English', symbol: 'EN' },
+-  { code: 'pl', label: 'Polski', symbol: 'PL' },
+-];
+-
+-export function LanguageToggle() {
+-  const { i18n } = useTranslation();
+-
+-  const handleChangeLanguage = (lang: string) => {
+-    i18n.changeLanguage(lang);
+-  };
+-
+-  const currentLang = LANGUAGES.find((lang) => lang.code === i18n.language);
+-
+-  return (
+-    <DropdownMenu>
+-      <DropdownMenuTrigger asChild>
+-        <Button variant="ghost" size="icon" className="size-7">
+-          {currentLang ? (
+-            <div className="font-semibold"> {currentLang.symbol} </div>
+-          ) : (
+-            <Globe className="h-[1.2rem] w-[1.2rem]" />
+-          )}
+-          <span className="sr-only">Toggle language</span>
+-        </Button>
+-      </DropdownMenuTrigger>
+-      <DropdownMenuContent align="end">
+-        {LANGUAGES.map(({ code, label }) => (
+-          <DropdownMenuItem
+-            key={code}
+-            onClick={() => handleChangeLanguage(code)}
+-            className={i18n.language === code ? 'font-semibold' : ''}
+-          >
+-            {label}
+-          </DropdownMenuItem>
+-        ))}
+-      </DropdownMenuContent>
+-    </DropdownMenu>
+-  );
+-}
+diff --git a/src/features/shared/components/nav-secondary.tsx b/src/features/shared/components/nav-secondary.tsx
+index 53c8946..c5623d7 100644
+--- a/src/features/shared/components/nav-secondary.tsx
++++ b/src/features/shared/components/nav-secondary.tsx
+@@ -1,7 +1,6 @@
+ import * as React from 'react';
+ import { Moon, Sun } from 'lucide-react';
+ 
+-import { useTranslation } from 'react-i18next';
+ import type { NavItem } from './nav-main';
+ import {
+   SidebarGroup,
+@@ -25,7 +24,6 @@ export function NavSecondary({
+   items: Array<NavItem>;
+ } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+   const { setTheme } = useTheme();
+-  const { t } = useTranslation();
+ 
+   return (
+     <SidebarGroup {...props}>
+@@ -36,19 +34,20 @@ export function NavSecondary({
+               <DropdownMenuTrigger asChild>
+                 <SidebarMenuButton>
+                   <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+-                  <span>{t('settings.theme')}</span>
++                  <span>Theme</span>
++                  <Sun className="ml-auto h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                   <Moon className="absolute ml-auto h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                 </SidebarMenuButton>
+               </DropdownMenuTrigger>
+               <DropdownMenuContent align="end">
+                 <DropdownMenuItem onClick={() => setTheme('light')}>
+-                  {t('settings.light')}
++                  Light
+                 </DropdownMenuItem>
+                 <DropdownMenuItem onClick={() => setTheme('dark')}>
+-                  {t('settings.dark')}
++                  Dark
+                 </DropdownMenuItem>
+                 <DropdownMenuItem onClick={() => setTheme('system')}>
+-                  {t('settings.system')}
++                  System
+                 </DropdownMenuItem>
+               </DropdownMenuContent>
+             </DropdownMenu>
+diff --git a/src/features/shared/components/site-header.tsx b/src/features/shared/components/site-header.tsx
+index d9b48e9..86c6886 100644
+--- a/src/features/shared/components/site-header.tsx
++++ b/src/features/shared/components/site-header.tsx
+@@ -1,5 +1,4 @@
+ import { useTranslation } from 'react-i18next';
+-import { LanguageToggle } from './language-toggle';
+ import { Button } from '@/features/shared/components/ui/button';
+ import { Separator } from '@/features/shared/components/ui/separator';
+ import { SidebarTrigger } from '@/features/shared/components/ui/sidebar';
+@@ -17,7 +16,6 @@ export function SiteHeader() {
+         />
+         <h1 className="text-base font-medium">{t('common.app_name')}</h1>
+         <div className="ml-auto flex items-center gap-2">
+-          <LanguageToggle />
+           <ModeToggle />
+           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
+             <a
+diff --git a/src/features/shared/components/theme-provider.tsx b/src/features/shared/components/theme-provider.tsx
+index 5cb87dd..6a9f93f 100644
+--- a/src/features/shared/components/theme-provider.tsx
++++ b/src/features/shared/components/theme-provider.tsx
+@@ -1,6 +1,6 @@
+ import { createContext, useContext, useEffect, useState } from 'react';
+ 
+-type Theme = 'dark' | 'light' | 'system';
++export type Theme = 'dark' | 'light' | 'system';
+ 
+ type ThemeProviderProps = {
+   children: React.ReactNode;
+@@ -51,10 +51,9 @@ export function ThemeProvider({
+ 
+   const value = {
+     theme,
+-    // eslint-disable-next-line no-shadow
+-    setTheme: (theme: Theme) => {
+-      localStorage.setItem(storageKey, theme);
+-      setTheme(theme);
++    setTheme: (newTheme: Theme) => {
++      localStorage.setItem(storageKey, newTheme);
++      setTheme(newTheme);
+     },
+   };
+ 
+diff --git a/src/features/shared/components/ui/sidebar.tsx b/src/features/shared/components/ui/sidebar.tsx
+index 9418c77..0212d17 100644
+--- a/src/features/shared/components/ui/sidebar.tsx
++++ b/src/features/shared/components/ui/sidebar.tsx
+@@ -219,7 +219,7 @@ function Sidebar({
+       <div
+         data-slot="sidebar-gap"
+         className={cn(
+-          'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-out',
++          'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear',
+           'group-data-[collapsible=offcanvas]:w-0',
+           'group-data-[side=right]:rotate-180',
+           variant === 'floating' || variant === 'inset'
+@@ -230,7 +230,7 @@ function Sidebar({
+       <div
+         data-slot="sidebar-container"
+         className={cn(
+-          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-out md:flex',
++          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
+           side === 'left'
+             ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
+             : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
+diff --git a/src/features/shared/components/ui/toggle.tsx b/src/features/shared/components/ui/toggle.tsx
+index 012a222..267253b 100644
+--- a/src/features/shared/components/ui/toggle.tsx
++++ b/src/features/shared/components/ui/toggle.tsx
+@@ -2,6 +2,7 @@ import * as React from 'react';
+ import * as TogglePrimitive from '@radix-ui/react-toggle';
+ import { cva } from 'class-variance-authority';
+ import type { VariantProps } from 'class-variance-authority';
++
+ import { cn } from '@/features/shared/utils';
+ 
+ const toggleVariants = cva(
+diff --git a/src/features/shared/providers/clerk-themed-provider.tsx b/src/features/shared/providers/clerk-themed-provider.tsx
+index 4366c6c..a874ed7 100644
+--- a/src/features/shared/providers/clerk-themed-provider.tsx
++++ b/src/features/shared/providers/clerk-themed-provider.tsx
+@@ -4,13 +4,13 @@ import { dark } from '@clerk/themes';
+ import type { ReactNode } from '@tanstack/react-router';
+ import { useTheme } from '@/features/shared/components/theme-provider.tsx';
+ 
+-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+-
+-if (!clerkPubKey) {
+-  throw new Error('Missing Clerk Publishable Key');
+-}
+-
+-export function ClerkThemedProvider({ children }: { children: ReactNode }) {
++export function ClerkThemedProvider({
++  children,
++  publicKey: clerkPubKey,
++}: {
++  children: ReactNode;
++  publicKey: string;
++}) {
+   const { theme } = useTheme();
+   const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
+     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+diff --git a/src/i18n/config.ts b/src/i18n/config.ts
+index d7b7180..96ae74f 100644
+--- a/src/i18n/config.ts
++++ b/src/i18n/config.ts
+@@ -9,10 +9,6 @@ import enInstruments from './locales/en/instruments';
+ import plInstruments from './locales/pl/instruments';
+ import enHero from './locales/en/hero';
+ import plHero from './locales/pl/hero';
+-import enInvestor from './locales/en/investor';
+-import plInvestor from './locales/pl/investor';
+-import enSettings from './locales/en/settings';
+-import plSettings from './locales/pl/settings';
+ 
+ i18n.use(initReactI18next).init({
+   lng: 'pl',
+@@ -28,20 +24,16 @@ i18n.use(initReactI18next).init({
+       translation: {
+         auth: enAuth,
+         common: enCommon,
+-        hero: enHero,
+         instruments: enInstruments,
+-        investor: enInvestor,
+-        settings: enSettings,
++        hero: enHero,
+       },
+     },
+     pl: {
+       translation: {
+         auth: plAuth,
+         common: plCommon,
+-        hero: plHero,
+         instruments: plInstruments,
+-        investor: plInvestor,
+-        settings: plSettings,
++        hero: plHero,
+       },
+     },
+   },
+diff --git a/src/i18n/locales/en/common.ts b/src/i18n/locales/en/common.ts
+index 5fd5505..d869efe 100644
+--- a/src/i18n/locales/en/common.ts
++++ b/src/i18n/locales/en/common.ts
+@@ -4,8 +4,6 @@ const enCommon = {
+   page_doesnt_exist: "This page doesn't exist.",
+   back_to_home: 'Back to home',
+   go_back: 'Go Back',
+-  locale: 'us-US',
+-  currency: 'USD',
+   search: 'Search...',
+   dashboard: 'Dashboard',
+   stocks: 'Stocks',
+diff --git a/src/i18n/locales/en/investor.ts b/src/i18n/locales/en/investor.ts
+deleted file mode 100644
+index 47493bb..0000000
+--- a/src/i18n/locales/en/investor.ts
++++ /dev/null
+@@ -1,17 +0,0 @@
+-const enInvestor = {
+-  todays_return: "Today's return",
+-  total_return: 'Total return',
+-  invested: 'Invested',
+-  total_value: 'Total account value',
+-  asset_allocation: 'Asset allocation',
+-  this_year: 'in this year',
+-  distribution: 'Distribution',
+-  unallocated: 'Unallocated',
+-  gain: 'Gain',
+-  gain_percent: 'Gain percent',
+-  value: 'Value',
+-  owned_shares: 'Owned assets',
+-  account_value_over_time: 'Account value over time',
+-};
+-
+-export default enInvestor;
+diff --git a/src/i18n/locales/en/settings.ts b/src/i18n/locales/en/settings.ts
+deleted file mode 100644
+index 39f4a1b..0000000
+--- a/src/i18n/locales/en/settings.ts
++++ /dev/null
+@@ -1,8 +0,0 @@
+-const enSettings = {
+-  theme: 'Theme',
+-  light: 'Light',
+-  dark: 'Dark',
+-  system: 'System',
+-};
+-
+-export default enSettings;
+diff --git a/src/i18n/locales/pl/common.ts b/src/i18n/locales/pl/common.ts
+index abf2f34..a3aa9e0 100644
+--- a/src/i18n/locales/pl/common.ts
++++ b/src/i18n/locales/pl/common.ts
+@@ -4,8 +4,6 @@ const plCommon = {
+   page_doesnt_exist: 'Ta strona nie istnieje.',
+   back_to_home: 'Wróć do głównej',
+   go_back: 'Wróć',
+-  locale: 'pl-PL',
+-  currency: 'USD',
+   search: 'Wyszukaj...',
+   dashboard: 'Strona Główna',
+   stocks: 'Instrumenty',
+diff --git a/src/i18n/locales/pl/investor.ts b/src/i18n/locales/pl/investor.ts
+deleted file mode 100644
+index 2eed1c9..0000000
+--- a/src/i18n/locales/pl/investor.ts
++++ /dev/null
+@@ -1,17 +0,0 @@
+-const plInvestor = {
+-  todays_return: 'Dzisiejszy zwrot',
+-  total_return: 'Całkowity zwrot',
+-  invested: 'Zainwestowano',
+-  total_value: 'Całkowita wartość konta',
+-  asset_allocation: 'Rozkład środków',
+-  this_year: 'w tym roku',
+-  distribution: 'Rozkład',
+-  unallocated: 'Nierozmieszczone',
+-  gain: 'Zysk',
+-  gain_percent: 'Zysk procentowy',
+-  value: 'Wartość',
+-  owned_shares: 'Posiadane udziały',
+-  account_value_over_time: 'Wartość konta w czasie',
+-};
+-
+-export default plInvestor;
+diff --git a/src/i18n/locales/pl/settings.ts b/src/i18n/locales/pl/settings.ts
+deleted file mode 100644
+index 936049c..0000000
+--- a/src/i18n/locales/pl/settings.ts
++++ /dev/null
+@@ -1,8 +0,0 @@
+-const plSettings = {
+-  theme: 'Motyw',
+-  light: 'Jasny',
+-  dark: 'Ciemny',
+-  system: 'Systemowy',
+-};
+-
+-export default plSettings;
+diff --git a/src/main.tsx b/src/main.tsx
+index cd2b798..81dff12 100644
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -2,13 +2,14 @@ import ReactDOM from 'react-dom/client';
+ import { RouterProvider, createRouter } from '@tanstack/react-router';
+ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+ import { StrictMode } from 'react';
++import { PostHogProvider } from 'posthog-js/react';
+ import { routeTree } from './routeTree.gen';
+-import './i18n/config.ts';
+-import './styles.css';
+-import reportWebVitals from './reportWebVitals.ts';
+ import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
++import reportWebVitals from './reportWebVitals.ts';
+ import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
+ import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
++import './i18n/config.ts';
++import './styles.css';
+ 
+ const router = createRouter({
+   routeTree,
+@@ -25,6 +26,21 @@ declare module '@tanstack/react-router' {
+   }
+ }
+ 
++const CLERK_PUBLIC_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
++if (!CLERK_PUBLIC_KEY) {
++  throw new Error('Missing Clerk Publishable Key');
++}
++
++const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
++if (!POSTHOG_KEY) {
++  throw new Error('VITE_PUBLIC_POSTHOG_KEY is not defined');
++}
++
++const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
++if (!POSTHOG_HOST) {
++  throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
++}
++
+ const queryClient = new QueryClient();
+ 
+ const rootElement = document.getElementById('app');
+@@ -33,12 +49,17 @@ if (rootElement && !rootElement.innerHTML) {
+   root.render(
+     <StrictMode>
+       <ThemeProvider>
+-        <ClerkThemedProvider>
+-          <QueryClientProvider client={queryClient}>
+-            <SSEProvider>
+-              <RouterProvider router={router} />
+-            </SSEProvider>
+-          </QueryClientProvider>
++        <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
++          <PostHogProvider
++            apiKey={POSTHOG_KEY}
++            options={{ api_host: POSTHOG_HOST }}
++          >
++            <QueryClientProvider client={queryClient}>
++              <SSEProvider>
++                <RouterProvider router={router} />
++              </SSEProvider>
++            </QueryClientProvider>
++          </PostHogProvider>
+         </ClerkThemedProvider>
+       </ThemeProvider>
+     </StrictMode>
+diff --git a/src/routes/-home-page.tsx b/src/routes/-home-page.tsx
+index 8774b99..e5b4e0c 100644
+--- a/src/routes/-home-page.tsx
++++ b/src/routes/-home-page.tsx
+@@ -1,13 +1,14 @@
+ import { AppSidebar } from '@/features/shared/components/app-sidebar';
++import { DataTable } from '@/features/shared/components/data-table';
++import { SectionCards } from '@/features/shared/components/section-cards';
+ import { SiteHeader } from '@/features/shared/components/site-header';
+ import {
+   SidebarInset,
+   SidebarProvider,
+ } from '@/features/shared/components/ui/sidebar';
+-import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
+-import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
+-import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';
+-import AssetTableContainer from '@/features/home/components/asset-table-container';
++import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
++import { AuthTestButton } from '@/features/login/components/auth-test-button';
++import data from '@/data.json';
+ 
+ export function HomePage() {
+   return (
+@@ -15,13 +16,21 @@ export function HomePage() {
+       <AppSidebar variant="inset" />
+       <SidebarInset>
+         <SiteHeader />
+-        <div className="flex flex-col gap-4 p-4">
+-          <AccountOverviewRibbon />
+-          <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
+-            <AssetAllocationContainer />
+-            <AccountValueChartContainer />
++        <div className="flex flex-1 flex-col">
++          <div className="@container/main flex flex-1 flex-col gap-2">
++            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
++              <SectionCards />
++              <div className="flex flex-col items-center gap-4 px-4 lg:px-6">
++                <AuthTestButton url="/api/test/admin_test" auth />
++                <AuthTestButton url="/api/test/users_test" auth />
++                <AuthTestButton url="/api/test/all_test" auth={false} />
++              </div>
++              <div className="px-4 lg:px-6">
++                <StockChartContainer ticker="AAPL" />
++              </div>
++              <DataTable data={data} />
++            </div>
+           </div>
+-          <AssetTableContainer />
+         </div>
+       </SidebarInset>
+     </SidebarProvider>
+diff --git a/src/styles.css b/src/styles.css
+index 9a9ad1f..b7e988e 100644
+--- a/src/styles.css
++++ b/src/styles.css
+@@ -24,15 +24,9 @@ code {
+   --foreground: oklch(0.141 0.005 285.823);
+   --card: oklch(1 0 0);
+   --card-foreground: oklch(0.141 0.005 285.823);
+-  --card-positive: oklch(0.97 0.0471 145.2);
+-  --card-negative: oklch(0.93 0.0332 17.76);
+-  --positive-foreground: oklch(0.31 0.0968 140.63);
+-  --negative-foreground: oklch(0.25 0.098 28.97);
+   --popover: oklch(1 0 0);
+   --popover-foreground: oklch(0.141 0.005 285.823);
+   --primary: oklch(0.606 0.25 292.717);
+-  --blended-primary: oklch(0.84 0.0951 300.09);
+-  --primary-step: oklch(0.65 0.2173 299.43);
+   --primary-foreground: oklch(0.969 0.016 293.756);
+   --secondary: oklch(0.967 0.001 286.375);
+   --secondary-foreground: oklch(0.21 0.006 285.885);
+@@ -64,15 +58,9 @@ code {
+   --foreground: oklch(0.985 0 0);
+   --card: oklch(0.21 0.006 285.885);
+   --card-foreground: oklch(0.985 0 0);
+-  --card-positive: oklch(0.25 0.0852 142.5);
+-  --card-negative: oklch(0.18 0.0755 29.23);
+-  --positive-foreground: oklch(0.96 0.0757 140.41);
+-  --negative-foreground: oklch(0.89 0.0592 18.33);
+   --popover: oklch(0.21 0.006 285.885);
+   --popover-foreground: oklch(0.985 0 0);
+   --primary: oklch(0.541 0.281 293.009);
+-  --blended-primary: oklch(0.23 0.0978 293.72);
+-  --primary-step: oklch(0.51 0.2933 286.69);
+   --primary-foreground: oklch(0.969 0.016 293.756);
+   --secondary: oklch(0.274 0.006 286.033);
+   --secondary-foreground: oklch(0.985 0 0);
