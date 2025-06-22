@@ -42,7 +42,7 @@ const AssetTableContainer = () => {
           <CardTitle>{t('investor.owned_shares')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartErrorMessage message={t('investor.error_fetching_data')} />
+          <ChartErrorMessage message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );

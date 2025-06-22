@@ -12,7 +12,6 @@ const plInvestor = {
   value: 'Wartość',
   owned_shares: 'Posiadane udziały',
   account_value_over_time: 'Wartość konta w czasie',
-  error_fetching_data: 'Błąd podczas pobierania danych',
 };
 
 export default plInvestor;

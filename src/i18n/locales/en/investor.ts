@@ -12,7 +12,6 @@ const enInvestor = {
   value: 'Value',
   owned_shares: 'Owned assets',
   account_value_over_time: 'Account value over time',
-  error_fetching_data: 'Error fetching data',
 };
 
 export default enInvestor;

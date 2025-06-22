@@ -72,7 +72,7 @@ const AssetAllocationContainer = () => {
           <CardTitle>{t('investor.asset_allocation')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartErrorMessage message={t('investor.error_fetching_data')} />
+          <ChartErrorMessage message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );
