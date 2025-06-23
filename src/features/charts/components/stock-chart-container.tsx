@@ -164,7 +164,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                   !isCandlestick ? 'bg-muted text-foreground' : ''
                 )}
               >
-                <LineChartIcon />
+                <LineChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="candle"
@@ -174,7 +174,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                   isCandlestick ? 'bg-muted text-foreground' : ''
                 )}
               >
-                <CandlestickChartIcon />
+                <CandlestickChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
             </ToggleGroup>
             <Select value={interval} onValueChange={changeInterval}>
