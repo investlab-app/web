@@ -12,6 +12,8 @@ const enInstruments = {
   news: 'News',
   overview: 'Overview',
   no_description_available: 'No description available',
+  history_empty:
+    "History couldn't be found for ticker {{ticker}} for interval {{interval}}",
 };
 
 export default enInstruments;

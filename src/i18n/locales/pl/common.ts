@@ -16,6 +16,16 @@ const plCommon = {
   more: 'Więcej',
   error: 'Wystąpił błąd',
   error_loading_data: 'Błąd ładowania danych',
+  save: 'Zapisz',
+  cancel: 'Anuluj',
+  intervals: {
+    one_minute: '1 minuta',
+    five_minutes: '5 minut',
+    thirty_minutes: '30 minut',
+    one_hour: '1 godzina',
+    one_day: '1 dzień',
+    one_week: '1 tydzień',
+  },
 };
 
 export default plCommon;
