@@ -178,10 +178,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
               </ToggleGroupItem>
             </ToggleGroup>
             <Select value={interval} onValueChange={changeInterval}>
-              <SelectTrigger
-                className="w-40"
-                aria-label="Select time range"
-              >
+              <SelectTrigger className="w-40" aria-label="Select time range">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
