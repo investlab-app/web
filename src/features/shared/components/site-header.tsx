@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { LanguageToggle } from './language-toggle';
-import { Button } from '@/features/shared/components/ui/button';
 import { Separator } from '@/features/shared/components/ui/separator';
 import { SidebarTrigger } from '@/features/shared/components/ui/sidebar';
 import { ModeToggle } from '@/features/shared/components/mode-toggle';
@@ -19,16 +18,6 @@ export function SiteHeader() {
         <div className="ml-auto flex items-center gap-2">
           <LanguageToggle />
           <ModeToggle />
-          <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <a
-              href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
-            >
-              GitHub
-            </a>
-          </Button>
         </div>
       </div>
     </header>

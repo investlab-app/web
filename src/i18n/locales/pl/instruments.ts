@@ -11,6 +11,9 @@ const plInstruments = {
   day_change: 'Dzienna zmiana',
   news: 'Wiadomości',
   overview: 'Przegląd',
+  no_description_available: 'Brak opisu',
+  history_empty:
+    'Nie znaleziono historii dla instrumentu {{ticker}} w interwale {{interval}}',
 };
 
 export default plInstruments;

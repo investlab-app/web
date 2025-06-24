@@ -1,10 +1,10 @@
 export const timeIntervals = [
-  { label: '1 Minute', value: '1m' },
-  { label: '5 Minutes', value: '5m' },
-  { label: '30 Minutes', value: '30m' },
-  { label: '1 Hour', value: '1h' },
-  { label: '1 Day', value: '1d' },
-  { label: '1 Week', value: '1wk' },
+  { labelKey: 'common.intervals.one_minute', value: '1m' },
+  { labelKey: 'common.intervals.five_minutes', value: '5m' },
+  { labelKey: 'common.intervals.thirty_minutes', value: '30m' },
+  { labelKey: 'common.intervals.one_hour', value: '1h' },
+  { labelKey: 'common.intervals.one_day', value: '1d' },
+  { labelKey: 'common.intervals.one_week', value: '1wk' },
 ];
 
 export const intervalToStartDate = (range: string, date?: Date): Date => {

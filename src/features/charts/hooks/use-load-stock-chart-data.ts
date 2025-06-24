@@ -17,6 +17,10 @@ type LoadResult = {
   maxPrice: number;
 };
 
+type LoadResultError = {
+  error: unknown;
+};
+
 type FetchHistoryForInstrumentOptions = {
   ticker: string;
   startDate: Date;
@@ -59,32 +63,39 @@ export const useLoadStockChartData = () => {
   const queryClient = useQueryClient();
 
   return useCallback(
-    async (ticker: string, interval: string): Promise<LoadResult> => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token available');
+    async (
+      ticker: string,
+      interval: string
+    ): Promise<LoadResult | LoadResultError> => {
+      try {
+        const token = await getToken();
+        if (!token) throw new Error('No auth token available');
 
-      const startDate = intervalToStartDate(interval);
-      const endDate = new Date();
+        const startDate = intervalToStartDate(interval);
+        const endDate = new Date();
 
-      const apiData = await queryClient.fetchQuery({
-        queryKey: ['stock-data', ticker, interval],
-        queryFn: () =>
-          fetchHistoryForInstrument({
-            ticker,
-            startDate,
-            endDate,
-            interval,
-            token,
-          }),
-        staleTime: 1000 * 60,
-      });
+        const apiData = await queryClient.fetchQuery({
+          queryKey: ['stock-data', ticker, interval],
+          queryFn: () =>
+            fetchHistoryForInstrument({
+              ticker,
+              startDate,
+              endDate,
+              interval,
+              token,
+            }),
+          staleTime: 1000 * 60,
+        });
 
-      const parsed = apiData.data.map(dataPointToInstrumentPriceProps);
-      return {
-        parsed,
-        minPrice: apiData.min_price,
-        maxPrice: apiData.max_price,
-      };
+        const parsed = apiData.data.map(dataPointToInstrumentPriceProps);
+        return {
+          parsed,
+          minPrice: apiData.min_price,
+          maxPrice: apiData.max_price,
+        };
+      } catch (error) {
+        return { error };
+      }
     },
     [getToken, queryClient]
   );

@@ -110,6 +110,15 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const changeInterval = useCallback(
     async (newInterval: string) => {
       const result = await loadStockData(ticker, newInterval);
+      if ('error' in result) {
+        store.setState((state) => ({
+          ...state,
+          hasError: true,
+          data: [],
+          interval: newInterval,
+        }));
+        return;
+      }
       store.setState((state) => {
         return {
           ...state,
@@ -155,7 +164,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                   !isCandlestick ? 'bg-muted text-foreground' : ''
                 )}
               >
-                <LineChartIcon />
+                <LineChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="candle"
@@ -165,7 +174,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                   isCandlestick ? 'bg-muted text-foreground' : ''
                 )}
               >
-                <CandlestickChartIcon />
+                <CandlestickChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
             </ToggleGroup>
             <Select value={interval} onValueChange={changeInterval}>
@@ -173,9 +182,9 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
-                {timeIntervals.map(({ label, value }) => (
+                {timeIntervals.map(({ labelKey, value }) => (
                   <SelectItem key={value} value={value}>
-                    {label}
+                    {t(labelKey)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -185,7 +194,15 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
       </CardHeader>
       <CardContent>
         {hasError ? (
-          <ChartErrorMessage />
+          <ChartErrorMessage
+            message={t('instruments.history_empty', {
+              ticker,
+              interval: t(
+                timeIntervals.find(({ value }) => value === interval)
+                  ?.labelKey || 'intervals.one_hour'
+              ),
+            })}
+          />
         ) : (
           <StockChart
             stockName={ticker}

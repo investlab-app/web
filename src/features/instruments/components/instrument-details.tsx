@@ -1,46 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { BuySellContainer } from './buy-sell-action';
+import NewsSection from './news-section';
 import type { Instrument } from '../types/types';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/features/shared/components/ui/card';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
-
-const NewsSection = () => {
-  const { t } = useTranslation();
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('instruments.news')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-4">
-          <img
-            src="https://image.tmdb.org/t/p/w185/5zmiBoMzeeVdQ62no55JOJMY498.jpg"
-            alt="news thumbnail"
-            className="w-20 h-20 rounded object-cover"
-          />
-          <div>
-            <div className="font-semibold">
-              Netflix will show generative AI ads midway through streams in 2026
-            </div>
-            <div className="text-muted-foreground text-sm mt-1">
-              Netflix is joining its streaming rivals in testing the amount and
-              types of advertisements its subscribers are willing to endure for
-              lower...
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              16 hours ago
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
 
 type InstrumentDetailsProps = {
   instrument: Instrument;
@@ -64,7 +26,7 @@ const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
         </div>
 
         <div className="space-y-4 md:space-y-0 md:col-span-1 h-full">
-          <NewsSection />
+          <NewsSection ticker={instrument.symbol} />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import type { Asset } from '../types/types';
+import type { OwnedShareItem } from '../types/types';
 import {
   Table,
   TableBody,
@@ -11,8 +11,8 @@ import {
 import { cn } from '@/features/shared/utils';
 
 type AssetTableProps = {
-  data: Array<Asset>;
-  onAssetPressed: (asset: Asset) => void;
+  data: Array<OwnedShareItem>;
+  onAssetPressed: (asset: OwnedShareItem) => void;
 };
 
 const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
@@ -56,18 +56,20 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
               <TableCell
                 className={cn(
                   'text-right',
-                  asset.gain < 0 ? 'text-red-500' : 'text-green-500'
+                  asset.profit < 0 ? 'text-red-500' : 'text-green-500'
                 )}
               >
-                {asset.gain.toFixed(2)} {t('common.currency')}
+                {asset.profit.toFixed(2)} {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
                   'text-right hidden sm:table-cell',
-                  asset.gain_percent < 0 ? 'text-red-500' : 'text-green-500'
+                  asset.profit_percentage < 0
+                    ? 'text-red-500'
+                    : 'text-green-500'
                 )}
               >
-                {asset.gain_percent.toFixed(2)}%
+                {asset.profit_percentage.toFixed(2)}%
               </TableCell>
             </TableRow>
           ))}

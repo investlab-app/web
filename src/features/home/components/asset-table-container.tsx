@@ -1,19 +1,52 @@
 import { useTranslation } from 'react-i18next';
-import { dummyAssets } from '../helpers/dummy-assets'; // adjust the import path to match your project structure
+import { useAuth } from '@clerk/clerk-react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import AssetTable from './asset-table';
-import type { Asset } from '../types/types';
+import type { OwnedShareItem as Asset } from '../types/types';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
+  const { getToken } = useAuth();
   const handleAssetPressed = (asset: Asset) => {
     console.log('Asset clicked:', asset);
   };
+
+  const {
+    data: ownedSharesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['owned-shares'],
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) {
+        throw new Error('Unauthenticated');
+      }
+      return fetchOwnedShares(token);
+    },
+  });
+
+  if (isError) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('investor.owned_shares')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartErrorMessage message={t('common.error_loading_data')} />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="text-xl font-semibold">
@@ -21,7 +54,19 @@ const AssetTableContainer = () => {
         <CardTitle>{t('investor.owned_shares')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <AssetTable data={dummyAssets} onAssetPressed={handleAssetPressed} />
+        {isLoading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+        ) : (
+          <AssetTable
+            data={ownedSharesData?.owned_shares || []}
+            onAssetPressed={handleAssetPressed}
+          />
+        )}
       </CardContent>
     </Card>
   );

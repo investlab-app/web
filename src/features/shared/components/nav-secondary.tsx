@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
-
-import { useTranslation } from 'react-i18next';
 import type { NavItem } from './nav-main';
 import {
   SidebarGroup,
@@ -10,13 +7,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/features/shared/components/ui/dropdown-menu';
-import { useTheme } from '@/features/shared/components/theme-provider';
 
 export function NavSecondary({
   items,
@@ -24,35 +14,10 @@ export function NavSecondary({
 }: {
   items: Array<NavItem>;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
-  const { setTheme } = useTheme();
-  const { t } = useTranslation();
-
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <span>{t('settings.theme')}</span>
-                  <Moon className="absolute ml-auto h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
-                  {t('settings.light')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  {t('settings.dark')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
-                  {t('settings.system')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>

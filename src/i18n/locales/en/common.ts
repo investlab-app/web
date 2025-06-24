@@ -9,10 +9,23 @@ const enCommon = {
   search: 'Search...',
   dashboard: 'Dashboard',
   stocks: 'Stocks',
+  wallet: 'Wallet',
   help: 'Help',
   settings: 'Settings',
   loading: 'Loading...',
   more: 'More',
+  error: 'An error occurred',
+  error_loading_data: 'Error loading data',
+  save: 'Save',
+  cancel: 'Cancel',
+  intervals: {
+    one_minute: '1 minute',
+    five_minutes: '5 minutes',
+    thirty_minutes: '30 minutes',
+    one_hour: '1 hour',
+    one_day: '1 day',
+    one_week: '1 week',
+  },
 };
 
 export default enCommon;

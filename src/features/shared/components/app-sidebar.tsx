@@ -1,17 +1,12 @@
-import * as React from 'react';
 import {
   IconDashboard,
   IconHelp,
   IconListDetails,
   IconSettings,
 } from '@tabler/icons-react';
-
 import { useTranslation } from 'react-i18next';
-import type { NavItem } from '@/features/shared/components/nav-main';
-import { NavMain } from '@/features/shared/components/nav-main';
-import { NavSecondary } from '@/features/shared/components/nav-secondary';
-import { NavUser } from '@/features/shared/components/nav-user';
-import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import React from 'react';
+import { Link } from '@tanstack/react-router';
 import {
   Sidebar,
   SidebarContent,
@@ -20,9 +15,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/features/shared/components/ui/sidebar';
+} from './ui/sidebar';
+import type { NavItem } from '@/features/shared/components/nav-main';
+import { NavMain } from '@/features/shared/components/nav-main';
+import { NavUser } from '@/features/shared/components/nav-user';
+import { NavSecondary } from '@/features/shared/components/nav-secondary';
+import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
   const data: {
     navMain: Array<NavItem>;
@@ -55,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -63,12 +63,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link to="/">
                 <InvestLabLogo className="!size-5" />
                 <span className="text-base font-semibold">
                   {t('common.app_name')}
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

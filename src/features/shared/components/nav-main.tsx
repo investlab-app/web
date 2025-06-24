@@ -1,7 +1,5 @@
-import { IconPlus, IconWallet } from '@tabler/icons-react';
-import { Button } from './ui/button';
+import { WalletSection } from './wallet-section';
 import type { Icon } from '@tabler/icons-react';
-
 import type { LinkProps } from '@tanstack/react-router';
 import {
   SidebarGroup,
@@ -22,18 +20,7 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-0">
-            <SidebarMenuButton tooltip="Wallet">
-              <IconWallet />
-              <span>$9999.00</span>
-            </SidebarMenuButton>
-            <Button
-              size="icon"
-              className="size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"
-            >
-              <IconPlus />
-            </Button>
-          </SidebarMenuItem>
+          <WalletSection />
         </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (

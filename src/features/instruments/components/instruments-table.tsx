@@ -8,18 +8,44 @@ import {
   TableHeader,
   TableRow,
 } from '@/features/shared/components/ui/table';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
   onInstrumentPressed: (instrument: Instrument) => void;
+  loading?: boolean;
 };
 
 const InstrumentTable = ({
   data,
   onInstrumentPressed,
+  loading = false,
 }: InstrumentTableProps) => {
   const { t } = useTranslation();
+
+  const renderSkeletonRows = () => {
+    return Array.from({ length: 5 }).map((_, idx) => (
+      <TableRow key={`skeleton-${idx}`}>
+        <TableCell className="hidden sm:table-cell h-10">
+          <Skeleton className="h-4 w-32" />
+        </TableCell>
+        <TableCell className="h-10">
+          <Skeleton className="h-4 w-16" />
+        </TableCell>
+        <TableCell className="text-right h-10">
+          <Skeleton className="h-4 w-20 ml-auto" />
+        </TableCell>
+        <TableCell className="text-right h-10">
+          <Skeleton className="h-4 w-16 ml-auto" />
+        </TableCell>
+        <TableCell className="text-right h-10">
+          <Skeleton className="h-4 w-16 ml-auto" />
+        </TableCell>
+      </TableRow>
+    ));
+  };
+
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -41,31 +67,37 @@ const InstrumentTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((instrument, idx) => (
-            <TableRow
-              key={idx}
-              onClick={() => onInstrumentPressed(instrument)}
-              className="cursor-pointer"
-            >
-              <TableCell className="hidden sm:table-cell">
-                {instrument.name}
-              </TableCell>
-              <TableCell>{instrument.symbol}</TableCell>
-              <TableCell className="text-right">
-                {instrument.currentPrice.toFixed(2)} {t('common.currency')}
-              </TableCell>
-              <TableCell
-                className={cn(
-                  'text-right',
-                  instrument.dayChange < 0 ? 'text-red-500' : 'text-green-500'
-                )}
-              >
-                {instrument.dayChange < 0 ? '-' : '+'}
-                {Math.abs(instrument.dayChange).toFixed(2)}%
-              </TableCell>
-              <TableCell className="text-right">{instrument.volume}</TableCell>
-            </TableRow>
-          ))}
+          {loading
+            ? renderSkeletonRows()
+            : data.map((instrument, idx) => (
+                <TableRow
+                  key={idx}
+                  onClick={() => onInstrumentPressed(instrument)}
+                  className="cursor-pointer"
+                >
+                  <TableCell className="hidden sm:table-cell">
+                    {instrument.name}
+                  </TableCell>
+                  <TableCell>{instrument.symbol}</TableCell>
+                  <TableCell className="text-right">
+                    {instrument.currentPrice.toFixed(2)} {t('common.currency')}
+                  </TableCell>
+                  <TableCell
+                    className={cn(
+                      'text-right',
+                      instrument.dayChange < 0
+                        ? 'text-red-500'
+                        : 'text-green-500'
+                    )}
+                  >
+                    {instrument.dayChange < 0 ? '-' : '+'}
+                    {Math.abs(instrument.dayChange).toFixed(2)}%
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {instrument.volume}
+                  </TableCell>
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
     </div>

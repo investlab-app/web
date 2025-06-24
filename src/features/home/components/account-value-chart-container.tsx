@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@clerk/clerk-react';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { StockChart } from '../../charts/components/stock-chart';
+import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
 import {
   Card,
@@ -9,34 +12,36 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
-  const data: Array<InstrumentPriceProps> = useMemo(() => {
-    const today = new Date();
-    const prices: Array<InstrumentPriceProps> = [];
+  const { getToken } = useAuth();
 
-    for (let i = 0; i < 120; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i * 7);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['accountValueOverTime'],
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) throw new Error('No auth token');
+      return fetchAccountValueOverTime(token);
+    },
+    staleTime: 60 * 1000,
+  });
 
-      const base = 100 + Math.random() * 5;
-      const price = base + Math.random() * 3;
+  const chartData: Array<InstrumentPriceProps> = useMemo(() => {
+    if (!data) return [];
+    // Map backend data to InstrumentPriceProps for StockChart
+    return data.data.map((point) => ({
+      date: point.date,
+      open: point.value,
+      close: point.value,
+      high: point.value,
+      low: point.value,
+    }));
+  }, [data]);
 
-      prices.unshift({
-        date: date.toISOString().split('T')[0],
-        open: parseFloat(price.toFixed(2)),
-        close: parseFloat(price.toFixed(2)),
-        high: parseFloat(price.toFixed(2)),
-        low: parseFloat(price.toFixed(2)),
-      });
-    }
-
-    return prices;
-  }, []);
-
-  const currentValue = data[data.length - 1]?.close ?? 0;
-  const hasError = data.length === 0;
+  const currentValue = chartData[chartData.length - 1]?.close ?? 0;
+  const hasError = !!error || !data;
 
   return (
     <Card>
@@ -45,19 +50,23 @@ export const AccountValueChartContainer = () => {
           {t('investor.account_value_over_time')}
         </CardTitle>
 
-        {!hasError && typeof currentValue === 'number' && (
+        {isLoading ? (
+          <Skeleton className="h-10 w-48 mt-2" />
+        ) : !hasError && typeof currentValue === 'number' ? (
           <div className="text-4xl font-bold tabular-nums">
             {currentValue.toFixed(2)} {t('common.currency')}
           </div>
-        )}
+        ) : null}
       </CardHeader>
       <CardContent>
-        {hasError ? (
+        {isLoading ? (
+          <Skeleton className="h-[400px] w-full" />
+        ) : hasError ? (
           <ChartErrorMessage />
         ) : (
           <StockChart
-            stockName="Test"
-            chartData={data}
+            stockName="Account Value"
+            chartData={chartData}
             selectedInterval="1wk"
             isCandlestick={false}
           />
