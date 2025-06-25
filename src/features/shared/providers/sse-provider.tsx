@@ -6,6 +6,7 @@ import {
   EventStreamContentType,
   fetchEventSource,
 } from '@microsoft/fetch-event-source';
+import { generateUUID } from '../utils/uuid';
 import type { ReactNode } from 'react';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -23,8 +24,7 @@ export class Handler {
 }
 
 const store = new Store({
-  connectionId:
-    Math.random().toString(36).substring(2) + Date.now().toString(36),
+  connectionId: generateUUID(),
   handlers: new Map<HandlerId, Handler>(),
   events: new Map<SSEEvent, Array<HandlerId>>(),
 });
