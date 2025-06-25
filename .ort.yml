@@ -1,8 +1,8 @@
-vcs:
-  type: Git
-  url: https://github.com/wall-street-stocks/stocks-web.git
-
 excludes:
+  paths:
+    - pattern: '**/init.gradle.kts'
+      reason: 'BUILD_TOOL_OF'
+      comment: 'This is an ORT helper script and not part of the project.'
   scopes:
     - pattern: 'devDependencies'
       reason: 'DEV_DEPENDENCY_OF'
