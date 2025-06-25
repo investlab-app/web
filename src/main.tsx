@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
+import { PostHogProvider } from 'posthog-js/react';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import reportWebVitals from './reportWebVitals.ts';
@@ -30,15 +31,15 @@ if (!CLERK_PUBLIC_KEY) {
   throw new Error('Missing Clerk Publishable Key');
 }
 
-// const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
-// if (!POSTHOG_KEY) {
-//   throw new Error('VITE_PUBLIC_POSTHOG_KEY is not defined');
-// }
+const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
+if (!POSTHOG_KEY) {
+  throw new Error('VITE_PUBLIC_POSTHOG_KEY is not defined');
+}
 
-// const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
-// if (!POSTHOG_HOST) {
-//   throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
-// }
+const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
+if (!POSTHOG_HOST) {
+  throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
+}
 
 const queryClient = new QueryClient();
 
@@ -49,16 +50,16 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <ThemeProvider>
         <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
-          {/* <PostHogProvider
+          <PostHogProvider
             apiKey={POSTHOG_KEY}
             options={{ api_host: POSTHOG_HOST }}
-          > */}
-          <QueryClientProvider client={queryClient}>
-            <SSEProvider>
-              <RouterProvider router={router} />
-            </SSEProvider>
-          </QueryClientProvider>
-          {/* </PostHogProvider> */}
+          >
+            <QueryClientProvider client={queryClient}>
+              <SSEProvider>
+                <RouterProvider router={router} />
+              </SSEProvider>
+            </QueryClientProvider>
+          </PostHogProvider>
         </ClerkThemedProvider>
       </ThemeProvider>
     </StrictMode>
