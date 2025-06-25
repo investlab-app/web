@@ -1,3 +1,5 @@
+enableRepositoryPackageCurations: true
+
 excludes:
   paths:
     - pattern: '**/init.gradle.kts'
