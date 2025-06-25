@@ -1,3 +1,7 @@
+vcs:
+  type: Git
+  url: https://github.com/wall-street-stocks/stocks-web.git
+
 excludes:
   scopes:
     - pattern: 'devDependencies'
