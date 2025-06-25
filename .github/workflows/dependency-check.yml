@@ -26,7 +26,7 @@ jobs:
         uses: oss-review-toolkit/ort-ci-github-action@v1.1.0
         with:
           ort-home-path: 'work/stocks-web/stocks-web/.ort'
-          log-level: 'debug'
+          log-level: 'info'
           allow-dynamic-versions: 'true'
           fail-on: 'violations'
           report-formats: 'CycloneDx,SpdxDocument,WebApp,PlainTextTemplate'
