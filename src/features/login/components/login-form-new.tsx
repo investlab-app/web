@@ -10,7 +10,6 @@ import { Divider } from '@/features/shared/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/features/shared/components/ui/button';
 import { PasswordInput } from '@/features/shared/components/ui/password-input';
-import { THIS_URL } from '@/features/shared/constants';
 
 export function LoginForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -79,8 +78,8 @@ export function LoginForm() {
     try {
       await signIn.authenticateWithRedirect({
         strategy: 'oauth_google',
-        redirectUrlComplete: `${THIS_URL}/sso-callback`,
-        redirectUrl: `${THIS_URL}/sso-fail-callback`,
+        redirectUrlComplete: '/sso-callback',
+        redirectUrl: '/sso-fail-callback',
       });
     } catch (err) {
       setGoogleLoading(false);
