@@ -11,7 +11,6 @@ import { AuthFormHeader } from '@/features/login/components/auth-form-header';
 import { FormInput } from '@/features/shared/components/ui/form-input';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/features/shared/components/ui/button';
-import { THIS_URL } from '@/features/shared/constants';
 
 export function SignUpForm() {
   const { isLoaded, signUp } = useSignUp();
@@ -60,11 +59,17 @@ export function SignUpForm() {
 
   const handleGoogleAuth = () => {
     setLoading(true);
-    signUp?.authenticateWithRedirect({
-      strategy: 'oauth_google',
-      redirectUrlComplete: `${THIS_URL}/sso-callback`,
-      redirectUrl: `${THIS_URL}/sso-fail-callback`,
-    });
+    try {
+      signUp?.authenticateWithRedirect({
+        strategy: 'oauth_google',
+        redirectUrlComplete: '/sso-callback',
+        redirectUrl: '/sso-fail-callback',
+      });
+    } catch (err) {
+      setLoading(false);
+      console.error('Google OAuth error:', err);
+      setError('Google sign-up failed. Please try again.');
+    }
   };
 
   return (
@@ -122,6 +127,8 @@ export function SignUpForm() {
             label={t('auth.confirm_password')}
             required
           />
+
+          <div id="clerk-captcha" className="flex justify-center" />
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
