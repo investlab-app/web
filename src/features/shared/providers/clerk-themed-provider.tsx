@@ -4,13 +4,13 @@ import { dark } from '@clerk/themes';
 import type { ReactNode } from '@tanstack/react-router';
 import { useTheme } from '@/features/shared/components/theme-provider.tsx';
 
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if (!clerkPubKey) {
-  throw new Error('Missing Clerk Publishable Key');
-}
-
-export function ClerkThemedProvider({ children }: { children: ReactNode }) {
+export function ClerkThemedProvider({
+  children,
+  publicKey: clerkPubKey,
+}: {
+  children: ReactNode;
+  publicKey: string;
+}) {
   const { theme } = useTheme();
   const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'

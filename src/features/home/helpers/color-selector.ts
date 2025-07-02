@@ -3,15 +3,22 @@ export function getDerivedPrimaryColor(level: number): string {
     .getPropertyValue('--primary')
     .trim();
 
-  const match = primary.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+  // Accepts both oklch(0.54 .281 293.009) and oklch(54.1% .281 293.009)
+  const match = primary.match(
+    /oklch\(\s*([\d.]+)(%)?\s+([\d.]+)\s+([\d.]+)\s*\)/
+  );
 
   if (!match) {
     console.warn('Invalid --primary format:', primary);
     return '';
   }
 
-  const [, lStr, cStr, hStr] = match;
-  const l = parseFloat(lStr);
+  const [, lStr, percent, cStr, hStr] = match;
+  let l = parseFloat(lStr);
+  if (percent) {
+    // Convert percentage to 0-1 scale
+    l = l / 100;
+  }
   const c = parseFloat(cStr);
   const h = parseFloat(hStr);
 
@@ -19,7 +26,6 @@ export function getDerivedPrimaryColor(level: number): string {
 
   const newL = (l * (1 - clamped * 0.2)).toFixed(3);
   const newC = (c * (1 - clamped * 0.1)).toFixed(3);
-  console.log(`oklch(${newL},${c},${h})`);
 
   return `oklch(${newL} ${newC} ${h})`;
 }
