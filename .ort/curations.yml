@@ -1,12 +1,12 @@
-id: 'NPM::posthog-js:1.255.1'
-curations:
-  declared_license_mapping:
-    'NOASSERTION': 'Apache-2.0'
-  comment: 'Based on GitHub repository, this package is Apache License 2.0'
-  homepage_url: 'https://posthog.com'
-  is_modified: false
-  vcs:
-    type: 'Git'
-    url: 'https://github.com/posthog/posthog-js'
-    revision: 'main'
-  concluded_license: 'Apache-2.0'
+- id: 'NPM::posthog-js:1.255.1'
+  curations:
+    declared_license_mapping:
+      'NOASSERTION': 'Apache-2.0'
+    comment: 'Based on GitHub repository, this package is Apache License 2.0'
+    homepage_url: 'https://posthog.com'
+    is_modified: false
+    vcs:
+      type: 'Git'
+      url: 'https://github.com/posthog/posthog-js'
+      revision: 'main'
+    concluded_license: 'Apache-2.0'
