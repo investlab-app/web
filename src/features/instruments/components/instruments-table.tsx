@@ -14,18 +14,20 @@ import { cn } from '@/features/shared/utils';
 type InstrumentTableProps = {
   data: Array<Instrument>;
   onInstrumentPressed: (instrument: Instrument) => void;
+  rowCount?: number;
   loading?: boolean;
 };
 
 const InstrumentTable = ({
   data,
   onInstrumentPressed,
+  rowCount = 10,
   loading = false,
 }: InstrumentTableProps) => {
   const { t } = useTranslation();
 
   const renderSkeletonRows = () => {
-    return Array.from({ length: 5 }).map((_, idx) => (
+    return Array.from({ length: rowCount }).map((_, idx) => (
       <TableRow key={`skeleton-${idx}`}>
         <TableCell className="hidden sm:table-cell h-10">
           <Skeleton className="h-4 w-32" />

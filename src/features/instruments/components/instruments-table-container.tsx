@@ -117,6 +117,7 @@ const InstrumentsTableContainer = ({
       <InstrumentTable
         data={Object.values(liveInstruments)}
         onInstrumentPressed={handleInstrumentPressed}
+        rowCount={PAGE_SIZE}
         loading={loading && instruments.length === 0}
       />
       <div className="flex justify-center mt-4">
