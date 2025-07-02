@@ -73,7 +73,6 @@ export function SSEProvider({ children }: SSEProviderParams) {
   const consume = useCallback(async () => {
     const token = await getToken();
     if (!token) {
-      console.error('No authentication token available');
       return;
     }
 
