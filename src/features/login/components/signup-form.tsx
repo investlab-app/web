@@ -59,11 +59,17 @@ export function SignUpForm() {
 
   const handleGoogleAuth = () => {
     setLoading(true);
-    signUp?.authenticateWithRedirect({
-      strategy: 'oauth_google',
-      redirectUrlComplete: '/sso-callback',
-      redirectUrl: '/sso-fail-callback',
-    });
+    try {
+      signUp?.authenticateWithRedirect({
+        strategy: 'oauth_google',
+        redirectUrlComplete: '/sso-callback',
+        redirectUrl: '/sso-fail-callback',
+      });
+    } catch (err) {
+      setLoading(false);
+      console.error('Google OAuth error:', err);
+      setError('Google sign-up failed. Please try again.');
+    }
   };
 
   return (
@@ -121,6 +127,8 @@ export function SignUpForm() {
             label={t('auth.confirm_password')}
             required
           />
+
+          <div id="clerk-captcha" className="flex justify-center" />
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
