@@ -10,7 +10,6 @@ import { SocialAuthButton } from '@/features/login/components/social-auth-button
 import { Divider } from '@/features/shared/components/ui/divider';
 import { AuthFormFooter } from '@/features/login/components/auth-form-footer';
 import { Button } from '@/features/shared/components/ui/button';
-import { THIS_URL } from '@/features/shared/constants';
 import { PasswordInput } from '@/features/shared/components/ui/password-input';
 
 export function LoginForm() {
@@ -55,8 +54,8 @@ export function LoginForm() {
   const handleGoogleAuth = () => {
     signIn?.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: `${THIS_URL}/sso-callback`,
-      redirectUrl: `${THIS_URL}/sso-fail-callback`,
+      redirectUrlComplete: '/sso-callback',
+      redirectUrl: '/sso-fail-callback',
     });
   };
 

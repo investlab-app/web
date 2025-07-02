@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { Handler, SSEContext } from '../providers/sse-provider';
+import { generateUUID } from '../utils/uuid';
 import type { HandlerId } from '../providers/sse-provider';
 
 export function useSSE({
@@ -15,7 +16,7 @@ export function useSSE({
     throw new Error('useSSEProvider must be used within a SSEProvider');
   }
 
-  const handlerId = useRef<HandlerId>(crypto.randomUUID());
+  const handlerId = useRef<HandlerId>(generateUUID());
   const callbackRef = useRef(callback);
   const eventsRef = useRef(events);
 
