@@ -5,8 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 import type { ClerkError } from '@/features/login/clerk-error';
 import { Button } from '@/features/shared/components/ui/button';
 import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
-import { AuthFormHeader } from '@/features/login/components/auth-form-header';
-import { AuthFormContainer } from '@/features/login/components/auth-form-container';
+import { AuthForm } from '@/features/login/components/auth-form';
 
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -32,33 +31,32 @@ export function EmailVerificationForm() {
   };
 
   return (
-    <AuthFormContainer
-      header={
-        <AuthFormHeader
-          title="Verify your email"
-          description="Enter the code sent to your email"
-        />
-      }
-    >
-      <form onSubmit={handleCodeSubmit} className="grid gap-6">
-        <div className="flex justify-center">
-          <SixDigitOTPInput value={code} onChange={setCode} />
-        </div>
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+    <AuthForm>
+      <AuthForm.Header
+        title="Verify your email"
+        description="Enter the code sent to your email"
+      />
+      <AuthForm.Content>
+        <form onSubmit={handleCodeSubmit} className="grid gap-6">
+          <div className="flex justify-center">
+            <SixDigitOTPInput value={code} onChange={setCode} />
+          </div>
+          {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <Button type="submit" disabled={code.length < 6} className="w-full">
-          Verify Email
-        </Button>
+          <Button type="submit" disabled={code.length < 6} className="w-full">
+            Verify Email
+          </Button>
 
-        <Button
-          variant="ghost"
-          className="w-full"
-          type="button"
-          onClick={() => navigate({ to: '/signup-page' })}
-        >
-          Go Back
-        </Button>
-      </form>
-    </AuthFormContainer>
+          <Button
+            variant="ghost"
+            className="w-full"
+            type="button"
+            onClick={() => navigate({ to: '/signup-page' })}
+          >
+            Go Back
+          </Button>
+        </form>
+      </AuthForm.Content>
+    </AuthForm>
   );
 }

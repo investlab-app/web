@@ -1,13 +1,46 @@
-import { Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { Link } from '@tanstack/react-router';
+import type { PropsWithChildren, ReactNode } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
+
+type AuthFormProps = PropsWithChildren;
+
+export const AuthForm = ({ children }: AuthFormProps) => (
+  <Card className="flex flex-col gap-6">{children}</Card>
+);
+
+AuthForm.Header = function Header({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <CardHeader>
+      <CardTitle>{title}</CardTitle>
+      <CardDescription>{description}</CardDescription>
+    </CardHeader>
+  );
+};
+
+AuthForm.Content = ({ children }: { children: ReactNode }) => {
+  return <CardContent>{children}</CardContent>;
+};
 
 interface AuthFormFooterProps {
   type: 'login' | 'signup';
   onBack?: () => void;
 }
 
-export function AuthFormFooter({ type, onBack }: AuthFormFooterProps) {
+AuthForm.Footer = function Footer({ type, onBack }: AuthFormFooterProps) {
   const oppositeType = type === 'login' ? 'signup' : 'login';
   const { t } = useTranslation();
   const text =
@@ -32,4 +65,4 @@ export function AuthFormFooter({ type, onBack }: AuthFormFooterProps) {
       </div>
     </div>
   );
-}
+};
