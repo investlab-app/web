@@ -1,11 +1,9 @@
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
-import { ArkErrors, type } from 'arktype';
+import { type } from 'arktype';
 import { ResultAsync } from 'neverthrow';
-import type { AnyFieldApi } from '@tanstack/react-form';
 import type { ClerkError } from '@/features/login/clerk-error';
-import { useAuthForm } from '@/features/login/hooks/useAuthForm';
-import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
+import { useAppForm } from '@/features/login/hooks/useAppForm';
 import { Button } from '@/features/shared/components/ui/button';
 import { AuthForm } from '@/features/login/components/auth-form';
 
@@ -16,7 +14,7 @@ export function EmailVerificationForm() {
   // const { t } = useTranslation();
   // todo: add error translation
 
-  const form = useAuthForm({
+  const form = useAppForm({
     defaultValues: {
       code: '',
     },
@@ -83,38 +81,23 @@ export function EmailVerificationForm() {
           }}
           className="grid gap-6"
         >
-          <form.Field
+          <form.AppField
             name="code"
-            children={({ state, handleChange }: AnyFieldApi) => (
+            children={(field) => (
               <div className="flex justify-center">
-                <SixDigitOTPInput
-                  value={state.value}
-                  onChange={(value) => handleChange(value.toString())}
-                />
+                <field.SixDigitOTPInput />
               </div>
             )}
           />
 
-          {form.state.isSubmitted && (
-            <AuthForm.Error
-              error={(() => {
-                const error = form.state.errors;
-                if (error instanceof ArkErrors) {
-                  return error.summary;
-                } else {
-                  return String(error);
-                }
-              })()}
-            />
-          )}
+          <form.Error />
 
           <form.Subscribe
             selector={(state) => {
-              console.log('state: ', state);
               return state.isDirty && state.canSubmit;
             }}
             children={(canSubmit) => (
-              <Button type="submit" disabled={!canSubmit} className="w-full">
+              <Button type="submit" disabled={!canSubmit}>
                 Verify Email
               </Button>
             )}

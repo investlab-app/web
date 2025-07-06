@@ -70,10 +70,7 @@ const Footer = ({ type, onBack }: FooterProps) => {
       </Button>
       <div className="text-center text-sm">
         {text}{' '}
-        <Link
-          to={`/${oppositeType}`}
-          className="underline underline-offset-4"
-        >
+        <Link to={`/${oppositeType}`} className="underline underline-offset-4">
           {actionText}
         </Link>
       </div>
@@ -136,6 +133,21 @@ export const SocialAuthButton = ({
   </Button>
 );
 
+interface GoogleButtonProps {
+  onClick: () => void;
+  type: 'login' | 'signup';
+}
+
+export const GoogleButton = ({ onClick, type }: GoogleButtonProps) => {
+  const { t } = useTranslation();
+  return (
+    <SocialAuthButton provider="google" onClick={onClick}>
+      {type === 'signup' && t('auth.signup_w_google')}
+      {type === 'login' && t('auth.login_w_google')}
+    </SocialAuthButton>
+  );
+};
+
 export const AuthForm = {
   Root,
   Header,
@@ -145,4 +157,5 @@ export const AuthForm = {
   Error,
   Spinner,
   SocialAuthButton,
+  GoogleButton,
 };

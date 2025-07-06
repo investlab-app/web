@@ -69,7 +69,7 @@ export function LandingPage() {
               <div className="mt-10 flex items-center justify-center gap-4">
                 <Button
                   size="lg"
-                  onClick={() => navigate({ to: '/signup-page' })}
+                  onClick={() => navigate({ to: '/signup' })}
                   className="h-12 px-8"
                 >
                   {t('hero.get_started_free')}
@@ -78,7 +78,7 @@ export function LandingPage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => navigate({ to: '/login-page' })}
+                  onClick={() => navigate({ to: '/login' })}
                   className="h-12 px-8"
                 >
                   {t('auth.login')}
@@ -175,7 +175,7 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={() => navigate({ to: '/signup-page' })}
+              onClick={() => navigate({ to: '/signup' })}
               className="h-12 px-8 bg-primary-foreground text-purple-900 hover:bg-primary-foreground/90"
             >
               {t('hero.create_free_account')}
@@ -184,7 +184,7 @@ export function LandingPage() {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate({ to: '/login-page' })}
+              onClick={() => navigate({ to: '/login' })}
               className="h-12 px-8 border-primary-foreground/20 text-foreground hover:bg-primary-foreground/10"
             >
               {t('hero.sign_in')}

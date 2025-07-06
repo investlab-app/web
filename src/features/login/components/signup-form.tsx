@@ -3,8 +3,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync } from 'neverthrow';
 import { ArkErrors, type } from 'arktype';
-import { useGoogleAuth } from '../hooks/useGoogleAuth';
-import { useAuthForm } from '../hooks/useAuthForm';
+import { useAppForm } from '../hooks/useAppForm';
+import { Google } from '../hooks/useGoogleAuth';
 import type { ClerkError } from '@/features/login/clerk-error';
 import { AuthForm } from '@/features/login/components/auth-form';
 import { FormInput } from '@/features/shared/components/ui/form-input';
@@ -18,7 +18,7 @@ export function SignUpForm() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const emailForm = useAuthForm({
+  const emailForm = useAppForm({
     defaultValues: {
       email: '',
       password: '',
@@ -101,21 +101,14 @@ export function SignUpForm() {
     },
   });
 
-  const { form: googleForm } = useGoogleAuth();
-
   return (
     <AuthForm.Root>
       <AuthForm.Header
-        title={t('auth.welcome_back')}
-        description={t('auth.login_form_desc')}
+        title={t('auth.create_your_account')}
+        description={t('auth.signup_form_desc')}
       />
       <AuthForm.Content>
-        <AuthForm.SocialAuthButton
-          provider="google"
-          onClick={googleForm.handleSubmit}
-        >
-          {t('auth.login_w_google')}
-        </AuthForm.SocialAuthButton>
+        <Google.SignUp />
 
         <div className="py-4">
           <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />

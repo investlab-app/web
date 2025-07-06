@@ -3,8 +3,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync } from 'neverthrow';
 import { ArkErrors, type } from 'arktype';
-import { useGoogleAuth } from '../hooks/useGoogleAuth';
-import { useAuthForm } from '../hooks/useAuthForm';
+import { useAppForm } from '../hooks/useAppForm';
+import { Google } from '../hooks/useGoogleAuth';
 import type { ClerkError } from '@/features/login/clerk-error';
 import { AuthForm } from '@/features/login/components/auth-form';
 import { FormInput } from '@/features/shared/components/ui/form-input';
@@ -18,7 +18,7 @@ export function LoginForm() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const emailForm = useAuthForm({
+  const emailForm = useAppForm({
     defaultValues: {
       email: '',
       password: '',
@@ -81,8 +81,6 @@ export function LoginForm() {
     },
   });
 
-  const { form: googleForm } = useGoogleAuth();
-
   return (
     <AuthForm.Root>
       <AuthForm.Header
@@ -90,12 +88,7 @@ export function LoginForm() {
         description={t('auth.login_form_desc')}
       />
       <AuthForm.Content>
-        <AuthForm.SocialAuthButton
-          provider="google"
-          onClick={googleForm.handleSubmit}
-        >
-          {t('auth.login_w_google')}
-        </AuthForm.SocialAuthButton>
+        <Google.LogIn />
 
         <div className="py-4">
           <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
@@ -146,7 +139,10 @@ export function LoginForm() {
         </form>
 
         <div className="text-sm text-muted-foreground text-center mt-2">
-          <AuthForm.Footer type="login" onBack={() => navigate({ to: '/login' })} />
+          <AuthForm.Footer
+            type="login"
+            onBack={() => navigate({ to: '/signup' })}
+          />
         </div>
       </AuthForm.Content>
     </AuthForm.Root>
