@@ -1,12 +1,13 @@
+import { useSignUp } from '@clerk/clerk-react';
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
-import { useSignUp } from '@clerk/clerk-react';
-import { ArkError, ArkErrors, type } from 'arktype';
-import type { ClerkError } from '@/features/login/clerk-error';
+import { ArkErrors, type } from 'arktype';
+import { ResultAsync } from 'neverthrow';
 import type { AnyFieldApi } from '@tanstack/react-form';
+import type { ClerkError } from '@/features/login/clerk-error';
 import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
-import { AuthForm } from '@/features/login/components/auth-form';
 import { Button } from '@/features/shared/components/ui/button';
+import { AuthForm } from '@/features/login/components/auth-form';
 
 const { fieldContext, formContext } = createFormHookContexts();
 
@@ -38,23 +39,39 @@ export function EmailVerificationForm() {
         });
       }
 
-      try {
-        const result = await signUp.attemptEmailAddressVerification({
+      const result = await ResultAsync.fromPromise(
+        signUp.attemptEmailAddressVerification({
           code: value.code,
-        });
-        if (result.status === 'complete') {
-          await setActive({ session: result.createdSessionId });
-          navigate({ to: '/' });
-        }
-      } catch (err: unknown) {
-        return formApi.setErrorMap({
-          onSubmit: {
-            form:
-              (err as ClerkError).errors[0]?.message || 'Something went wrong.',
-            fields: formApi.getAllErrors().fields,
-          },
-        });
-      }
+        }),
+        (err): ClerkError => ({
+          type: 'clerk',
+          error:
+            err instanceof Error ? err : new Error('Could not verify email.'),
+        })
+      );
+
+      result.match(
+        (resource) => {
+          if (resource.status === 'complete') {
+            setActive({ session: resource.createdSessionId });
+            navigate({ to: '/' });
+          } else {
+            return formApi.setErrorMap({
+              onSubmit: {
+                ...formApi.getAllErrors(),
+                form: 'Could not verify email.',
+              },
+            });
+          }
+        },
+        (err) =>
+          formApi.setErrorMap({
+            onSubmit: {
+              ...formApi.getAllErrors(),
+              form: err.error.message,
+            },
+          })
+      );
     },
   });
 

@@ -1,3 +1,4 @@
-export type ClerkError = {
-  errors: Array<{ message: string }>;
-};
+export interface ClerkError {
+  type: 'clerk';
+  error: Error;
+}
