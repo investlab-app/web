@@ -9,7 +9,7 @@ import AssetAllocationContainer from '@/features/home/components/asset-allocatio
 import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';
 import AssetTableContainer from '@/features/home/components/asset-table-container';
 
-export function HomePage() {
+export function Home() {
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />

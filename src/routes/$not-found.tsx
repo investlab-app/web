@@ -1,4 +1,3 @@
-// src/routes/$not-found.tsx
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';

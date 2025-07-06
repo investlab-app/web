@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { LandingPage } from '@/routes/-landing-page'; // You create this
-import { HomePage } from '@/routes/-home-page'; // You create this
+import { Home } from '@/routes/-home-page'; // You create this
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -14,7 +14,7 @@ function Index() {
         <LandingPage />
       </SignedOut>
       <SignedIn>
-        <HomePage />
+        <Home />
       </SignedIn>
     </>
   );

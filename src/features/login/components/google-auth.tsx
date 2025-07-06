@@ -14,8 +14,10 @@ const LogIn = () => {
 
     return signIn.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: '/sso-callback',
-      redirectUrl: '/login', // todo: add failure info in query params
+      redirectUrlComplete: '/',
+      redirectUrl: `/login?${new URLSearchParams({
+        error: 'Could not verify email. Make sure you have signed up first.',
+      })}`,
     });
   };
 
@@ -58,8 +60,11 @@ const SignUp = () => {
 
     return signUp.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrlComplete: '/sso-callback',
-      redirectUrl: '/signup', // todo: add failure info in query params
+      redirectUrlComplete: '/',
+      redirectUrl: `/signup?${new URLSearchParams({
+        error:
+          'Could not authenticate with Google. You might already have an account. Please try logging in instead.',
+      })}`,
     });
   };
 
