@@ -1,33 +1,62 @@
-import { useState } from 'react';
-import { useSignUp } from '@clerk/clerk-react';
+import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
+import { useSignUp } from '@clerk/clerk-react';
+import { ArkError, ArkErrors, type } from 'arktype';
 import type { ClerkError } from '@/features/login/clerk-error';
-import { Button } from '@/features/shared/components/ui/button';
+import type { AnyFieldApi } from '@tanstack/react-form';
 import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
 import { AuthForm } from '@/features/login/components/auth-form';
+import { Button } from '@/features/shared/components/ui/button';
+
+const { fieldContext, formContext } = createFormHookContexts();
+
+const { useAppForm: useAuthForm } = createFormHook({
+  fieldComponents: {},
+  formComponents: {},
+  fieldContext,
+  formContext,
+});
 
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const [code, setCode] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isLoaded) return;
-
-    try {
-      const result = await signUp.attemptEmailAddressVerification({ code });
-      if (result.status === 'complete') {
-        await setActive({ session: result.createdSessionId });
-        navigate({ to: '/' });
+  const form = useAuthForm({
+    defaultValues: {
+      code: '',
+    },
+    validators: {
+      onChange: type({ code: 'string == 6' }),
+    },
+    onSubmit: async ({ value, formApi }) => {
+      if (!isLoaded) {
+        return formApi.setErrorMap({
+          onSubmit: {
+            ...formApi.getAllErrors(),
+            form: 'Please try again later.',
+          },
+        });
       }
-    } catch (err: unknown) {
-      setError(
-        (err as ClerkError).errors[0]?.message || 'Something went wrong.'
-      );
-    }
-  };
+
+      try {
+        const result = await signUp.attemptEmailAddressVerification({
+          code: value.code,
+        });
+        if (result.status === 'complete') {
+          await setActive({ session: result.createdSessionId });
+          navigate({ to: '/' });
+        }
+      } catch (err: unknown) {
+        return formApi.setErrorMap({
+          onSubmit: {
+            form:
+              (err as ClerkError).errors[0]?.message || 'Something went wrong.',
+            fields: formApi.getAllErrors().fields,
+          },
+        });
+      }
+    },
+  });
 
   return (
     <AuthForm.Root>
@@ -36,15 +65,51 @@ export function EmailVerificationForm() {
         description="Enter the code sent to your email"
       />
       <AuthForm.Content>
-        <form onSubmit={handleCodeSubmit} className="grid gap-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+          className="grid gap-6"
+        >
           <div className="flex justify-center">
-            <SixDigitOTPInput value={code} onChange={setCode} />
+            <form.Field
+              name="code"
+              children={({ state, handleChange }: AnyFieldApi) => (
+                <>
+                  <SixDigitOTPInput
+                    value={state.value}
+                    onChange={(value) => handleChange(value.toString())}
+                  />
+                </>
+              )}
+            />
           </div>
-          {error && <p className="text-red-600 text-sm">{error}</p>}
 
-          <Button type="submit" disabled={code.length < 6} className="w-full">
-            Verify Email
-          </Button>
+          {form.state.isSubmitted && (
+            <p className="text-red-600 text-sm">
+              {(() => {
+                const error = form.state.errors;
+                if (error instanceof ArkErrors) {
+                  return error.summary;
+                } else {
+                  return String(error);
+                }
+              })()}
+            </p>
+          )}
+
+          <form.Subscribe
+            selector={(state) => {
+              console.log('state: ', state);
+              return state.isDirty && state.canSubmit;
+            }}
+            children={(canSubmit) => (
+              <Button type="submit" disabled={!canSubmit} className="w-full">
+                Verify Email
+              </Button>
+            )}
+          />
 
           <Button
             variant="ghost"
