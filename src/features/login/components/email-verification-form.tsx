@@ -1,26 +1,20 @@
 import { useSignUp } from '@clerk/clerk-react';
-import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import { ArkErrors, type } from 'arktype';
 import { ResultAsync } from 'neverthrow';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import type { ClerkError } from '@/features/login/clerk-error';
+import { useAuthForm } from '@/features/login/hooks/useAuthForm';
 import { SixDigitOTPInput } from '@/features/shared/components/ui/six-digit-otp-input';
 import { Button } from '@/features/shared/components/ui/button';
 import { AuthForm } from '@/features/login/components/auth-form';
 
-const { fieldContext, formContext } = createFormHookContexts();
-
-const { useAppForm: useAuthForm } = createFormHook({
-  fieldComponents: {},
-  formComponents: {},
-  fieldContext,
-  formContext,
-});
-
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const navigate = useNavigate();
+
+  // const { t } = useTranslation();
+  // todo: add error translation
 
   const form = useAuthForm({
     defaultValues: {
@@ -50,7 +44,7 @@ export function EmailVerificationForm() {
         })
       );
 
-      result.match(
+      return result.match(
         (resource) => {
           if (resource.status === 'complete') {
             setActive({ session: resource.createdSessionId });
@@ -89,23 +83,21 @@ export function EmailVerificationForm() {
           }}
           className="grid gap-6"
         >
-          <div className="flex justify-center">
-            <form.Field
-              name="code"
-              children={({ state, handleChange }: AnyFieldApi) => (
-                <>
-                  <SixDigitOTPInput
-                    value={state.value}
-                    onChange={(value) => handleChange(value.toString())}
-                  />
-                </>
-              )}
-            />
-          </div>
+          <form.Field
+            name="code"
+            children={({ state, handleChange }: AnyFieldApi) => (
+              <div className="flex justify-center">
+                <SixDigitOTPInput
+                  value={state.value}
+                  onChange={(value) => handleChange(value.toString())}
+                />
+              </div>
+            )}
+          />
 
           {form.state.isSubmitted && (
-            <p className="text-red-600 text-sm">
-              {(() => {
+            <AuthForm.Error
+              error={(() => {
                 const error = form.state.errors;
                 if (error instanceof ArkErrors) {
                   return error.summary;
@@ -113,7 +105,7 @@ export function EmailVerificationForm() {
                   return String(error);
                 }
               })()}
-            </p>
+            />
           )}
 
           <form.Subscribe
@@ -127,16 +119,8 @@ export function EmailVerificationForm() {
               </Button>
             )}
           />
-
-          <Button
-            variant="ghost"
-            className="w-full"
-            type="button"
-            onClick={() => navigate({ to: '/signup-page' })}
-          >
-            Go Back
-          </Button>
         </form>
+        <AuthForm.BackButton />
       </AuthForm.Content>
     </AuthForm.Root>
   );

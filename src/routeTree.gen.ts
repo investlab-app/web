@@ -12,8 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as SsoFailCallbackRouteImport } from './routes/sso-fail-callback'
 import { Route as SsoCallbackRouteImport } from './routes/sso-callback'
-import { Route as SignupPageRouteImport } from './routes/signup-page'
-import { Route as LoginPageRouteImport } from './routes/login-page'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InstrumentsIndexRouteImport } from './routes/instruments/index'
@@ -33,14 +33,14 @@ const SsoCallbackRoute = SsoCallbackRouteImport.update({
   path: '/sso-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignupPageRoute = SignupPageRouteImport.update({
-  id: '/signup-page',
-  path: '/signup-page',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginPageRoute = LoginPageRouteImport.update({
-  id: '/login-page',
-  path: '/login-page',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NotFoundRoute = NotFoundRouteImport.update({
@@ -62,8 +62,8 @@ const InstrumentsIndexRoute = InstrumentsIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -72,8 +72,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -83,8 +83,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/sso-fail-callback': typeof SsoFailCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -95,8 +95,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
+    | '/login'
+    | '/signup'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -105,8 +105,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
+    | '/login'
+    | '/signup'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -115,8 +115,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
+    | '/login'
+    | '/signup'
     | '/sso-callback'
     | '/sso-fail-callback'
     | '/verify-email'
@@ -126,8 +126,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   NotFoundRoute: typeof NotFoundRoute
-  LoginPageRoute: typeof LoginPageRoute
-  SignupPageRoute: typeof SignupPageRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
   SsoCallbackRoute: typeof SsoCallbackRoute
   SsoFailCallbackRoute: typeof SsoFailCallbackRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
@@ -157,18 +157,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SsoCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/signup-page': {
-      id: '/signup-page'
-      path: '/signup-page'
-      fullPath: '/signup-page'
-      preLoaderRoute: typeof SignupPageRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login-page': {
-      id: '/login-page'
-      path: '/login-page'
-      fullPath: '/login-page'
-      preLoaderRoute: typeof LoginPageRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$not-found': {
@@ -198,8 +198,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NotFoundRoute: NotFoundRoute,
-  LoginPageRoute: LoginPageRoute,
-  SignupPageRoute: SignupPageRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
   SsoCallbackRoute: SsoCallbackRoute,
   SsoFailCallbackRoute: SsoFailCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
