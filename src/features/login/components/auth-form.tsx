@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import {
   Card,
   CardContent,
@@ -10,13 +10,15 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
 
-type AuthFormProps = PropsWithChildren;
+interface AuthFormProps {
+  children: ReactNode;
+}
 
 export const AuthForm = ({ children }: AuthFormProps) => (
   <Card className="flex flex-col gap-6">{children}</Card>
 );
 
-AuthForm.Header = function Header({
+AuthForm.Header = function AuthFormHeader({
   title,
   description,
 }: {
@@ -31,7 +33,13 @@ AuthForm.Header = function Header({
   );
 };
 
-AuthForm.Content = ({ children }: { children: ReactNode }) => {
+interface AuthFormContentProps {
+  children: ReactNode;
+}
+
+AuthForm.Content = function AuthFormContent({
+  children,
+}: AuthFormContentProps) {
   return <CardContent>{children}</CardContent>;
 };
 
@@ -40,7 +48,10 @@ interface AuthFormFooterProps {
   onBack?: () => void;
 }
 
-AuthForm.Footer = function Footer({ type, onBack }: AuthFormFooterProps) {
+AuthForm.Footer = function AuthFormFooter({
+  type,
+  onBack,
+}: AuthFormFooterProps) {
   const oppositeType = type === 'login' ? 'signup' : 'login';
   const { t } = useTranslation();
   const text =
