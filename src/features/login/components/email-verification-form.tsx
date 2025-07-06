@@ -2,10 +2,10 @@ import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
 import { type } from 'arktype';
 import { ResultAsync } from 'neverthrow';
-import type { ClerkError } from '@/features/login/clerk-error';
-import { useAppForm } from '@/features/login/hooks/useAppForm';
-import { Button } from '@/features/shared/components/ui/button';
+import type { ClerkError } from '@/features/login/utils/clerk-error';
+import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { AuthForm } from '@/features/login/components/auth-form';
+import { Button } from '@/features/shared/components/ui/button';
 
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();

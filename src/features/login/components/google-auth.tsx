@@ -1,8 +1,8 @@
 import { useSignIn, useSignUp } from '@clerk/clerk-react';
 import { ResultAsync } from 'neverthrow';
-import { AuthForm } from '../components/auth-form';
-import { useAppForm } from './useAppForm';
-import type { ClerkError } from '../clerk-error';
+import type { ClerkError } from '@/features/login/utils/clerk-error';
+import { AuthForm } from '@/features/login/components/auth-form';
+import { useAppForm } from '@/features/shared/hooks/use-app-form';
 
 const LogIn = () => {
   const { isLoaded, signIn } = useSignIn();
@@ -92,7 +92,7 @@ const SignUp = () => {
   );
 };
 
-export const Google = {
+export const GoogleAuth = {
   LogIn,
   SignUp,
 };

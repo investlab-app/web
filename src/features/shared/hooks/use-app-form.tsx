@@ -1,6 +1,6 @@
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 import { ArkErrors } from 'arktype';
-import { AuthForm } from '../components/auth-form';
+import { AuthForm } from '../../login/components/auth-form';
 import { SixDigitOTPInput as SixDigitOTPInputComponent } from '@/features/shared/components/ui/six-digit-otp-input';
 import { Button } from '@/features/shared/components/ui/button';
 

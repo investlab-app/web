@@ -3,9 +3,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync } from 'neverthrow';
 import { ArkErrors, type } from 'arktype';
-import { useAppForm } from '../hooks/useAppForm';
-import { Google } from '../hooks/useGoogleAuth';
-import type { ClerkError } from '@/features/login/clerk-error';
+import { useAppForm } from '../../shared/hooks/use-app-form';
+import type { ClerkError } from '@/features/login/utils/clerk-error';
+import { GoogleAuth } from '@/features/login/components/google-auth';
 import { AuthForm } from '@/features/login/components/auth-form';
 import { FormInput } from '@/features/shared/components/ui/form-input';
 import { Divider } from '@/features/shared/components/ui/divider';
@@ -88,7 +88,7 @@ export function LoginForm() {
         description={t('auth.login_form_desc')}
       />
       <AuthForm.Content>
-        <Google.LogIn />
+        <GoogleAuth.LogIn />
 
         <div className="py-4">
           <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
