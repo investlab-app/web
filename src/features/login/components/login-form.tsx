@@ -58,7 +58,7 @@ export function LoginForm() {
   };
 
   return (
-    <AuthForm>
+    <AuthForm.Root>
       <AuthForm.Header
         title={t('auth.welcome_back')}
         description={t('auth.login_form_desc')}
@@ -102,6 +102,6 @@ export function LoginForm() {
           <AuthForm.Footer type="login" onBack={() => navigate({ to: '/' })} />
         </div>
       </AuthForm.Content>
-    </AuthForm>
+    </AuthForm.Root>
   );
 }

@@ -71,7 +71,7 @@ export function SignUpForm() {
   };
 
   return (
-    <AuthForm>
+    <AuthForm.Root>
       <AuthForm.Header
         title={t('auth.create_your_account')}
         description={t('auth.signup_form_desc')}
@@ -135,6 +135,6 @@ export function SignUpForm() {
         </form>
         <AuthForm.Footer type="signup" onBack={() => navigate({ to: '/' })} />
       </AuthForm.Content>
-    </AuthForm>
+    </AuthForm.Root>
   );
 }

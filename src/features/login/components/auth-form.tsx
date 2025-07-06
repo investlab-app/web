@@ -10,55 +10,58 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
 
-interface AuthFormProps {
+interface RootProps {
   children: ReactNode;
 }
 
-export const AuthForm = ({ children }: AuthFormProps) => (
+const Root = ({ children }: RootProps) => (
   <Card className="flex flex-col gap-6">{children}</Card>
 );
 
-AuthForm.Header = function AuthFormHeader({
-  title,
-  description,
-}: {
+interface HeaderProps {
   title: string;
   description: string;
-}) {
-  return (
-    <CardHeader>
-      <CardTitle>{title}</CardTitle>
-      <CardDescription>{description}</CardDescription>
-    </CardHeader>
-  );
-};
+}
 
-interface AuthFormContentProps {
+const Header = ({ title, description }: HeaderProps) => (
+  <CardHeader>
+    <CardTitle>{title}</CardTitle>
+    <CardDescription>{description}</CardDescription>
+  </CardHeader>
+);
+
+interface ContentProps {
   children: ReactNode;
 }
 
-AuthForm.Content = function AuthFormContent({
-  children,
-}: AuthFormContentProps) {
-  return <CardContent>{children}</CardContent>;
-};
+const Content = ({ children }: ContentProps) => (
+  <CardContent>{children}</CardContent>
+);
 
-interface AuthFormFooterProps {
+interface FooterProps {
   type: 'login' | 'signup';
   onBack?: () => void;
 }
 
-AuthForm.Footer = function AuthFormFooter({
-  type,
-  onBack,
-}: AuthFormFooterProps) {
-  const oppositeType = type === 'login' ? 'signup' : 'login';
+const Footer = ({ type, onBack }: FooterProps) => {
   const { t } = useTranslation();
-  const text =
-    type === 'login'
-      ? t('auth.dont_have_an_account')
-      : t('auth.already_have_an_account');
-  const actionText = type === 'login' ? t('auth.signup') : t('auth.login');
+
+  const { oppositeType, text, actionText } = (() => {
+    switch (type) {
+      case 'login':
+        return {
+          oppositeType: 'signup' as const,
+          text: t('auth.dont_have_an_account'),
+          actionText: t('auth.signup'),
+        };
+      case 'signup':
+        return {
+          oppositeType: 'login' as const,
+          text: t('auth.already_have_an_account'),
+          actionText: t('auth.login'),
+        };
+    }
+  })();
 
   return (
     <div className="grid gap-4">
@@ -76,4 +79,11 @@ AuthForm.Footer = function AuthFormFooter({
       </div>
     </div>
   );
+};
+
+export const AuthForm = {
+  Root,
+  Header,
+  Content,
+  Footer,
 };

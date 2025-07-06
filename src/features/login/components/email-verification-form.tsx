@@ -1,4 +1,3 @@
-// src/components/email-verification-form.tsx
 import { useState } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
@@ -31,7 +30,7 @@ export function EmailVerificationForm() {
   };
 
   return (
-    <AuthForm>
+    <AuthForm.Root>
       <AuthForm.Header
         title="Verify your email"
         description="Enter the code sent to your email"
@@ -57,6 +56,6 @@ export function EmailVerificationForm() {
           </Button>
         </form>
       </AuthForm.Content>
-    </AuthForm>
+    </AuthForm.Root>
   );
 }
