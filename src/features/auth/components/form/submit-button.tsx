@@ -13,9 +13,15 @@ export const SubmitButton = ({ children }: SubmitButtonProps) => {
   const form = useFormContext();
   return (
     <form.Subscribe
-      selector={(state) => state.canSubmit}
-      children={(canSubmit) => (
-        <Button type="submit" disabled={!canSubmit}>
+      selector={(state) => state.isSubmitting}
+      children={(isSubmitting) => (
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          onClick={() => {
+            form.handleSubmit();
+          }}
+        >
           {form.state.isSubmitting ? <Spinner /> : children}
         </Button>
       )}

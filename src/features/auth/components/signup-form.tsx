@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { ArkErrors, type } from 'arktype';
 import { useAuthForm } from '../hooks/use-auth-form';
+import { Footer } from './form/footer';
 import { GoogleAuth } from '@/features/auth/components/social/google-auth';
 
 export function SignUpForm() {
@@ -197,7 +198,7 @@ export function SignUpForm() {
               <form.ClerkCaptcha />
               <form.SubmitButton> {t('auth.signup')} </form.SubmitButton>
             </form.FormContent>
-            <form.Footer
+            <Footer
               text={t('auth.already_have_an_account')}
               oppositeType="login"
               actionText={t('auth.login')}

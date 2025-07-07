@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
-import type { ReactNode } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 import { useTheme } from '@/features/shared/components/theme-provider.tsx';
 
 export function ClerkThemedProvider({
@@ -33,6 +33,7 @@ export function ClerkThemedProvider({
     <ClerkProvider
       publishableKey={clerkPubKey}
       appearance={{ baseTheme: clerkTheme }}
+      localization={plPL}
     >
       {children}
     </ClerkProvider>

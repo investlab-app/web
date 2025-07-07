@@ -1,26 +1,19 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { type } from 'arktype';
-import { useUser } from '@clerk/clerk-react';
+import { SignIn, useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { type } from 'arktype';
 import { LoginForm } from '@/features/auth/components/login-form';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
-export default function Login() {
-  const { isSignedIn, isLoaded } = useUser();
+function Login() {
+  const { isLoaded, isSignedIn } = useUser();
   const { t } = useTranslation();
   const { error } = Route.useSearch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      // Small delay to ensure route is fully loaded
-      const timer = setTimeout(() => {
-        navigate({ to: '/', replace: true });
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoaded, isSignedIn, navigate]);
+  if (isLoaded && isSignedIn) {
+    navigate({ to: '/', replace: true });
+  }
 
   return (
     <div className="min-h-svh bg-background">
@@ -36,6 +29,7 @@ export default function Login() {
             </div>
             {/* todo: Make this nicer :( */}
             {error && <p className="text-red-500">{error}</p>}
+            <SignIn />
             <LoginForm />
           </div>
         </div>
