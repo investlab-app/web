@@ -1,24 +1,26 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useEffect } from 'react';
 import { type } from 'arktype';
 import { useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
-import { LoginForm } from '@/features/login/components/login-form';
+import { useEffect } from 'react';
+import { LoginForm } from '@/features/auth/components/login-form';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export default function Login() {
   const { isSignedIn, isLoaded } = useUser();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { error } = Route.useSearch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      navigate({ to: '/' });
+      // Small delay to ensure route is fully loaded
+      const timer = setTimeout(() => {
+        navigate({ to: '/', replace: true });
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [isLoaded, isSignedIn, navigate]);
-
-  if (!isLoaded || isSignedIn) return null;
 
   return (
     <div className="min-h-svh bg-background">

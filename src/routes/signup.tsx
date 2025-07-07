@@ -1,24 +1,26 @@
-import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { type } from 'arktype';
-import { SignUpForm } from '@/features/login/components/signup-form';
+import { useEffect } from 'react';
+import { SignUpForm } from '@/features/auth/components/signup-form';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export default function SignUp() {
   const { isSignedIn, isLoaded } = useUser();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { error } = Route.useSearch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      navigate({ to: '/' });
+      // Small delay to ensure route is fully loaded
+      const timer = setTimeout(() => {
+        navigate({ to: '/', replace: true });
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [isLoaded, isSignedIn, navigate]);
-
-  if (!isLoaded || isSignedIn) return null;
 
   return (
     <div className="min-h-screen bg-background">
