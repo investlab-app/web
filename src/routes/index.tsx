@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { LandingPage } from '@/routes/_index/-landing-page'; // You create this
-import { Home } from '@/routes/_index/-home-page'; // You create this
+import { LandingPage } from '@/routes/_index/-landing-page';
+import { Home } from '@/routes/_index/-home-page';
 
 export const Route = createFileRoute('/')({
   component: Index,

@@ -4,7 +4,7 @@ import { LoginForm } from '@/features/auth/components/login-form';
 
 function Login() {
   const { error } = Route.useSearch();
-  return <LoginForm error={error} />;
+  return <LoginForm pageError={error} />;
 }
 
 export const Route = createFileRoute('/_auth/login')({

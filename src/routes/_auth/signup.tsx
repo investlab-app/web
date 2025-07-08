@@ -4,7 +4,7 @@ import { SignUpForm } from '@/features/auth/components/signup-form';
 
 const SignUpPage = () => {
   const { error } = Route.useSearch();
-  return <SignUpForm error={error} />;
+  return <SignUpForm pageError={error} />;
 };
 
 export const Route = createFileRoute('/_auth/signup')({

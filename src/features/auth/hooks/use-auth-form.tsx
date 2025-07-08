@@ -1,33 +1,94 @@
-import { createFormHook } from '@tanstack/react-form';
-import { fieldContext, formContext } from '../components/form';
-import { FormInput } from '../components/form/form-input';
-import { SixDigitOTPInput } from '../components/form/six-digit-otp-input';
-import { SubmitButton } from '../components/form/submit-button';
-import { Error } from '../components/form/error';
-import { FormContent } from '../components/form/form-content';
-import { BackButton } from '../components/form/back-button';
-import { Content } from '../components/form/content';
-import { Footer } from '../components/form/footer';
-import { Header } from '../components/form/header';
-import { Root } from '../components/form/root';
-import { ClerkCaptcha } from '../components/form/clerk-captcha';
-import { Divider } from '../components/form/divider';
+import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 
-export const { useAppForm: useAuthForm } = createFormHook({
+import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
+import { Button } from '@/features/shared/components/ui/button';
+import { FormInput as FormInputComponent } from '@/features/shared/components/ui/form-input';
+import { SixDigitOTPInput as SixDigitOTPInputComponent } from '@/features/shared/components/ui/six-digit-otp-input';
+
+const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts();
+
+const SixDigitOTPInput = () => {
+  const field = useFieldContext<string>();
+  return (
+    <SixDigitOTPInputComponent
+      value={field.state.value}
+      onBlur={field.handleBlur}
+      onChange={(value) => field.handleChange(value.toString())}
+    />
+  );
+};
+
+interface SubmitButtonProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SubmitButton = ({ children, className }: SubmitButtonProps) => {
+  const form = useFormContext();
+  return (
+    <form.Subscribe
+      selector={(state) => state.isSubmitting}
+      children={(isSubmitting) => (
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          onClick={() => {
+            form.handleSubmit();
+          }}
+          className={className}
+        >
+          {form.state.isSubmitting ? <LoadingSpinner /> : children}
+        </Button>
+      )}
+    />
+  );
+};
+
+type FormInputProps = {
+  id: string;
+  label: string;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  required?: boolean;
+  className?: string;
+} & React.ComponentProps<'input'>;
+
+const FormInput = ({
+  id,
+  label,
+  type,
+  name,
+  placeholder,
+  required,
+  ...props
+}: FormInputProps) => {
+  const field = useFieldContext<string>();
+
+  return (
+    <FormInputComponent
+      id={id}
+      label={label}
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      required={required}
+      onChange={(e) => {
+        field.handleChange(e.target.value);
+      }}
+      onBlur={field.handleBlur}
+      {...props}
+    />
+  );
+};
+
+export const { useAppForm } = createFormHook({
   fieldComponents: {
     FormInput,
     SixDigitOTPInput,
   },
   formComponents: {
-    BackButton,
-    ClerkCaptcha,
-    Content,
-    Divider,
-    Error,
-    Footer,
-    FormContent,
-    Header,
-    Root,
     SubmitButton,
   },
   fieldContext,

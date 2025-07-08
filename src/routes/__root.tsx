@@ -3,13 +3,11 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import type { useUser } from '@clerk/clerk-react';
 
-export interface RouterContext {
-  clerk: {
-    isLoaded: boolean;
-    isSignedIn: boolean;
-  };
-}
+export type RouterContext = {
+  user: ReturnType<typeof useUser>;
+};
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (

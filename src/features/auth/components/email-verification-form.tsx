@@ -1,92 +1,93 @@
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
-import { type } from 'arktype';
+import { match, type } from 'arktype';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { useTranslation } from 'react-i18next';
-import { useAuthForm } from '@/features/auth/hooks/use-auth-form';
+import { BackButton } from './back-button';
+import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
+import { useAppForm } from '@/features/auth/hooks/use-auth-form';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 
 export function EmailVerificationForm() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const form = useAuthForm({
+  const form = useAppForm({
     defaultValues: {
       code: '',
     },
     validators: {
-      onChange: type({ code: 'string == 6' }),
-    },
-    onSubmit: async ({ value, formApi }) => {
-      if (!isLoaded) {
-        formApi.setErrorMap({
-          onSubmit: {
-            ...formApi.getAllErrors(),
-            form: 'Please try again later.',
-          },
-        });
-        return;
-      }
-
-      const sessionIdResult = await ResultAsync.fromPromise(
-        signUp.attemptEmailAddressVerification({
-          code: value.code,
-        }),
-        (e) => (e instanceof Error ? e.message : 'Could not verify email.')
-      ).andThen((signUpResource) => {
-        switch (signUpResource.status) {
-          case 'complete':
-            return signUpResource.createdSessionId
-              ? ok(signUpResource.createdSessionId)
-              : err('No session created');
-          case 'abandoned':
-            return err(t('auth.abandoned'));
-          case 'missing_requirements':
-            return err(t('auth.missing_requirements'));
-          case null:
-            return err(t('auth.could_not_verify_email'));
+      onSubmitAsync: async ({ value }) => {
+        if (!isLoaded) {
+          return 'Please try again later.';
         }
-      });
 
-      sessionIdResult.match(
-        (sessionId) => {
-          setActive({ session: sessionId });
-          navigate({ to: '/' });
-        },
-        (e) =>
-          formApi.setErrorMap({
-            onSubmit: {
-              ...formApi.getAllErrors(),
-              form: e,
+        return await ResultAsync.fromPromise(
+          signUp.attemptEmailAddressVerification({
+            code: value.code,
+          }),
+          (e) => (e instanceof Error ? e.message : 'Could not verify email.')
+        )
+          .andThen((signUpResource) =>
+            match({
+              "'complete'": () =>
+                signUpResource.createdSessionId
+                  ? ok(signUpResource.createdSessionId)
+                  : err('No session created'),
+              "'abandoned'": () => err(t('auth.abandoned')),
+              "'missing_requirements'": () =>
+                err(t('auth.missing_requirements')),
+              null: () => err(t('auth.could_not_verify_email')),
+              default: 'never',
+            })(signUpResource.status)
+          )
+          .match(
+            (sessionId) => {
+              setActive({ session: sessionId });
+              navigate({ to: '/' });
             },
-          })
-      );
+            (e) => e
+          );
+      },
     },
   });
 
   return (
     <form.AppForm>
-      <form.Root>
-        <form.Header
-          title="Verify your email"
-          description="Enter the code sent to your email"
-        />
-        <form.Content>
-          <form.FormContent>
-            <form.AppField
-              name="code"
-              children={(field) => (
+      <Card>
+        <CardHeader className="flex flex-col items-center">
+          <CardTitle>{t('auth.verify_email')}</CardTitle>
+          <CardDescription>{t('auth.verify_email_desc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          <form.AppField
+            name="code"
+            validators={{ onBlur: type('string == 6').pipe(() => undefined) }}
+            children={(field) => (
+              <>
                 <div className="flex justify-center">
                   <field.SixDigitOTPInput />
                 </div>
-              )}
-            />
-            <form.Error />
+                <ErrorAlert
+                  title="Code"
+                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
+                />
+              </>
+            )}
+          />
+          <div className="flex flex-col gap-2 w-full">
             <form.SubmitButton>{t('auth.verify_email')}</form.SubmitButton>
-            <form.BackButton />
-          </form.FormContent>
-        </form.Content>
-      </form.Root>
+            <BackButton variant="ghost" />
+          </div>
+        </CardContent>
+      </Card>
     </form.AppForm>
   );
 }

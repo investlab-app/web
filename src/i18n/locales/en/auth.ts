@@ -18,6 +18,7 @@ const enAuth = {
   first_name: 'First name',
   last_name: 'Last name',
   verify_email: 'Verify email',
+  verify_email_desc: 'Enter the code sent to your email',
   first_name_placeholder: 'John',
   last_name_placeholder: 'Doe',
   dont_have_an_account: "Don't have an account?",

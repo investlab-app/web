@@ -15,9 +15,10 @@ import './styles.css';
 const router = createRouter({
   routeTree,
   context: {
-    clerk: {
+    user: {
       isLoaded: false,
-      isSignedIn: false,
+      isSignedIn: undefined,
+      user: undefined,
     },
   },
 });
@@ -69,19 +70,8 @@ if (rootElement && !rootElement.innerHTML) {
 }
 
 function App() {
-  const { isSignedIn, isLoaded } = useUser();
-  console.log('isLoaded', isLoaded);
-  return (
-    <RouterProvider
-      router={router}
-      context={{
-        clerk: {
-          isLoaded,
-          isSignedIn: isSignedIn ?? false,
-        },
-      }}
-    />
-  );
+  const user = useUser();
+  return <RouterProvider router={router} context={{ user }} />;
 }
 
 // If you want to start measuring performance in your app, pass a function

@@ -18,6 +18,7 @@ const plAuth = {
   first_name: 'Imię',
   last_name: 'Nazwisko',
   verify_email: 'Weryfikuj email',
+  verify_email_desc: 'Wprowadź kod wysłany na twój email',
   first_name_placeholder: 'Jan',
   last_name_placeholder: 'Kowalski',
   dont_have_an_account: 'Nie masz konta?',
@@ -29,13 +30,14 @@ const plAuth = {
   needs_identifier:
     'Wymagana jest dodatkowa identyfikacja. Podaj żądane informacje.',
   needs_new_password: 'Wymagane jest nowe hasło. Zresetuj swoje hasło.',
-  could_not_sign_in: 'Nie udało się zalogować. Spróbuj ponownie lub skontaktuj się z obsługą.',
+  could_not_sign_in:
+    'Nie udało się zalogować. Spróbuj ponownie lub skontaktuj się z obsługą.',
   abandoned: 'Rejestracja została porzucona. Spróbuj ponownie.',
   missing_requirements: 'Rejestracja nie powiodła się. Spróbuj ponownie.',
   could_not_sign_up:
     'Nie udało się zarejestrować. Spróbuj ponownie lub skontaktuj się z obsługą.',
   could_not_prepare_email_address_verification:
-    'Nie udało się przygotować weryfikacji adresu e-mail. Spróbuj ponownie później.'
+    'Nie udało się przygotować weryfikacji adresu e-mail. Spróbuj ponownie później.',
 };
 
 export default plAuth;
