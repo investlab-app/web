@@ -4,9 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { ArkErrors, match, type } from 'arktype';
 import { useAuthForm } from '../hooks/use-auth-form';
-import { GoogleAuth } from '@/features/auth/components/social/google-auth';
+import { ContinueWithGoogle } from '@/features/auth/components/social/google-auth';
 
-export function LoginForm() {
+interface LoginFormProps {
+  error?: string;
+}
+
+export function LoginForm({ error }: LoginFormProps) {
   const { isLoaded, signIn, setActive } = useSignIn();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -68,16 +72,17 @@ export function LoginForm() {
   });
 
   return (
-    <form>
-      <form.AppForm>
-        <form.Root>
-          <form.Header
-            title={t('auth.welcome_back')}
-            description={t('auth.login_form_desc')}
-          />
-          <form.Content>
-            <GoogleAuth.LogIn />
-            <form.Divider />
+    <form.AppForm>
+      <form.Root>
+        <form.Header
+          title={t('auth.welcome_back')}
+          description={t('auth.login_form_desc')}
+        />
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        <form.Content>
+          <ContinueWithGoogle />
+          <form.Divider />
+          <form>
             <form.FormContent>
               <form.AppField
                 name="email"
@@ -136,14 +141,14 @@ export function LoginForm() {
               <form.Error />
               <form.SubmitButton>{t('auth.login')}</form.SubmitButton>
             </form.FormContent>
-            <form.Footer
-              text={t('auth.dont_have_an_account')}
-              oppositeType="signup"
-              actionText={t('auth.signup')}
-            />
-          </form.Content>
-        </form.Root>
-      </form.AppForm>
-    </form>
+          </form>
+          <form.Footer
+            text={t('auth.dont_have_an_account')}
+            oppositeType="signup"
+            actionText={t('auth.signup')}
+          />
+        </form.Content>
+      </form.Root>
+    </form.AppForm>
   );
 }

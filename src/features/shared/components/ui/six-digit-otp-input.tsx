@@ -1,4 +1,3 @@
-// src/components/six-digit-otp-input.tsx
 import {
   InputOTP,
   InputOTPGroup,

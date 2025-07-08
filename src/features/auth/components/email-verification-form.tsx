@@ -72,13 +72,19 @@ export function EmailVerificationForm() {
           description="Enter the code sent to your email"
         />
         <form.Content>
-          <form.AppField
-            name="code"
-            children={(field) => <field.SixDigitOTPInput />}
-          />
-          <form.Error />
-          <form.SubmitButton>Verify Email</form.SubmitButton>
-          <form.BackButton />
+          <form.FormContent>
+            <form.AppField
+              name="code"
+              children={(field) => (
+                <div className="flex justify-center">
+                  <field.SixDigitOTPInput />
+                </div>
+              )}
+            />
+            <form.Error />
+            <form.SubmitButton>{t('auth.verify_email')}</form.SubmitButton>
+            <form.BackButton />
+          </form.FormContent>
         </form.Content>
       </form.Root>
     </form.AppForm>

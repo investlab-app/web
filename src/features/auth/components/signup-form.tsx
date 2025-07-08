@@ -5,9 +5,13 @@ import { ResultAsync, err, ok } from 'neverthrow';
 import { ArkErrors, type } from 'arktype';
 import { useAuthForm } from '../hooks/use-auth-form';
 import { Footer } from './form/footer';
-import { GoogleAuth } from '@/features/auth/components/social/google-auth';
+import { ContinueWithGoogle } from '@/features/auth/components/social/google-auth';
 
-export function SignUpForm() {
+interface SignUpFormProps {
+  error?: string;
+}
+
+export function SignUpForm({ error }: SignUpFormProps) {
   const { isLoaded, signUp } = useSignUp();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -122,8 +126,9 @@ export function SignUpForm() {
             title={t('auth.create_your_account')}
             description={t('auth.signup_form_desc')}
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <form.Content>
-            <GoogleAuth.SignUp />
+            <ContinueWithGoogle />
             <form.Divider />
             <form.FormContent>
               <form.AppField

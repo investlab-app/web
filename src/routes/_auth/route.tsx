@@ -1,15 +1,12 @@
-import { SignUp, useUser } from '@clerk/clerk-react';
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
+import { useUser } from '@clerk/clerk-react';
+import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { type } from 'arktype';
-import { SignUpForm } from '@/features/auth/components/signup-form';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
-export default function SignUpPage() {
-  const { isSignedIn, isLoaded } = useUser();
-  const { t } = useTranslation();
-  const { error } = Route.useSearch();
+function RouteComponent() {
+  const { isLoaded, isSignedIn } = useUser();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (isLoaded && isSignedIn) {
     navigate({ to: '/', replace: true });
@@ -27,10 +24,7 @@ export default function SignUpPage() {
                 {t('common.app_name')}
               </span>
             </div>
-            {/* todo: Make this nicer :( */}
-            {error && <p className="text-red-500">{error}</p>}
-            <SignUp />
-            {/* <SignUpForm /> */}
+            <Outlet />
           </div>
         </div>
       </div>
@@ -38,18 +32,6 @@ export default function SignUpPage() {
   );
 }
 
-export const Route = createFileRoute('/signup')({
-  component: SignUpPage,
-  validateSearch: type({
-    error: 'string?',
-  }),
-  loader: async ({ context }) => {
-    while (!context.clerk.isLoaded) {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-    }
-
-    if (context.clerk.isSignedIn) {
-      return redirect({ to: '/' });
-    }
-  },
+export const Route = createFileRoute('/_auth')({
+  component: RouteComponent,
 });
