@@ -1,12 +1,14 @@
 import { clerk } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 
-// use authed state from global setup
-test.use({ storageState: 'playwright/.clerk/user.json' });
-
 test('example', async ({ page }) => {
-  // go to protected page
-  await expect(page.goto('/instruments')).resolves.toBeTruthy();
+  const clerkUserEmail = process.env.E2E_CLERK_USER_EMAIL!;
+
+  // go to protected route
+  await page.goto('/instruments');
+
+  // users email is shown in the sidebar
+  await expect(page.getByText(clerkUserEmail)).toBeVisible();
 
   // sign out
   await clerk.signOut({ page });

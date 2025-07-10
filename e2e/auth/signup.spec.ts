@@ -1,16 +1,20 @@
 import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright';
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { cleanCurrentClerkUser, getRandomClerkTestEmail } from './utils';
+
+test.use({ storageState: { cookies: [], origins: [] } });
 
 test('signup', async ({ page }) => {
   await setupClerkTestingToken({ page });
 
   await page.goto('/signup');
 
+  const email = getRandomClerkTestEmail();
+
   const user = {
     firstName: 'John',
     lastName: 'Doe',
-    email: getRandomClerkTestEmail(),
+    email: email,
     password: 'password123',
   };
 
@@ -46,6 +50,9 @@ test('signup', async ({ page }) => {
   await page.waitForURL('**/');
 
   await clerk.loaded({ page });
+
+  // users email is shown in the sidebar
+  await expect(page.getByText(email)).toBeVisible();
 
   await cleanCurrentClerkUser(page);
 });

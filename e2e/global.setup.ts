@@ -7,7 +7,7 @@ import { expect, test as setup } from '@playwright/test';
 setup.describe.configure({ mode: 'serial' });
 
 setup('global setup', async () => {
-  await clerkSetup({ debug: true });
+  await clerkSetup();
 });
 
 // This is a global setup that authenticates the user and saves the state to
@@ -16,6 +16,9 @@ setup('global setup', async () => {
 const authFile = path.join(process.cwd(), 'playwright/.clerk/user.json');
 
 setup('authenticate and save state to storage', async ({ page }) => {
+  const clerkUserEmail = process.env.E2E_CLERK_USER_EMAIL!;
+  const clerkUserPassword = process.env.E2E_CLERK_USER_PASSWORD!;
+
   // Perform authentication steps.
   // This example uses a Clerk helper to authenticate
   await page.goto('/');
@@ -24,16 +27,13 @@ setup('authenticate and save state to storage', async ({ page }) => {
     page,
     signInParams: {
       strategy: 'password',
-      identifier: process.env.E2E_CLERK_USER_EMAIL!,
-      password: process.env.E2E_CLERK_USER_PASSWORD!,
+      identifier: clerkUserEmail,
+      password: clerkUserPassword,
     },
   });
 
-  // go to protected page
-  await page.goto('/instruments');
-
-  // only auth user can see the table header
-  await expect(page.getByRole('cell', { name: 'Current price' })).toBeVisible();
+  // users email is shown in the sidebar
+  await expect(page.getByText(clerkUserEmail)).toBeVisible();
 
   await page.context().storageState({ path: authFile });
 });

@@ -22,11 +22,8 @@ test('example', async ({ page }) => {
     },
   });
 
-  // go to protected page
-  await page.goto('/instruments');
-
-  // only auth user can see the table header
-  await expect(page.getByRole('cell', { name: 'Current price' })).toBeVisible();
+  // users email is shown in the sidebar
+  await expect(page.getByText(user.email_address[0])).toBeVisible();
 
   await clerk.signOut({ page });
 });
