@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 import { clerk } from '@clerk/testing/playwright';
 import { cleanCurrentClerkUser, createClerkUser } from './utils';
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test('login', async ({ page }) => {
   const user = await createClerkUser();
 
