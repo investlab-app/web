@@ -16,7 +16,7 @@ import plSettings from './locales/pl/settings';
 
 i18n.use(initReactI18next).init({
   lng: 'pl',
-  fallbackLng: 'pl',
+  fallbackLng: 'en',
   debug: true,
 
   interpolation: {
