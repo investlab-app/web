@@ -1,9 +1,20 @@
 import { useEffect, useState } from 'react';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
-import { plPL } from '@clerk/localizations';
+import { enUS, plPL } from '@clerk/localizations';
+import { useTranslation } from 'react-i18next';
+import { match } from 'arktype';
 import type { ReactNode } from 'react';
 import { useTheme } from '@/features/shared/components/theme-provider.tsx';
+
+const languageMatcher = match.in<string>().match({
+  "'pl'": () => plPL,
+  "'en'": () => enUS,
+  default: (lang) => {
+    console.error(`Unsupported language: ${lang}. Defaulting to 'en'`);
+    return enUS;
+  },
+});
 
 export function ClerkThemedProvider({
   children,
@@ -12,6 +23,9 @@ export function ClerkThemedProvider({
   children: ReactNode;
   publicKey: string;
 }) {
+  const { i18n } = useTranslation();
+  const localization = languageMatcher(i18n.language);
+
   const { theme } = useTheme();
   const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -39,7 +53,7 @@ export function ClerkThemedProvider({
           colorBackground: '#18181b',
         },
       }}
-      localization={plPL}
+      localization={localization}
     >
       {children}
     </ClerkProvider>
