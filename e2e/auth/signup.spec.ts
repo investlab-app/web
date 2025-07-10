@@ -45,5 +45,7 @@ test('signup', async ({ page }) => {
 
   await page.waitForURL('**/');
 
+  await clerk.loaded({ page });
+
   await cleanCurrentClerkUser(page);
 });

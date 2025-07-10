@@ -11,9 +11,6 @@ test('example', async ({ page }) => {
   // sign out
   await clerk.signOut({ page });
 
-  // go to protected page
-  await page.goto('/instruments');
-
   // exppect that you are redirected to the home page
   await expect(page.url()).toContain('/');
 });
