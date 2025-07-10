@@ -1,14 +1,17 @@
 import { ArkError } from 'arktype';
+import { AlertCircleIcon } from 'lucide-react';
 import type { ArkErrors } from 'arktype';
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from '@/features/shared/components/ui/alert';
+import { cn } from '@/features/shared/utils';
 
 interface ErrorAlertProps {
   title?: string;
   errors: Set<string>;
+  className?: string;
 }
 
 export const arkErrorsArrayToStringSet = (
@@ -22,10 +25,11 @@ export const arkErrorsArrayToStringSet = (
       )
   );
 
-export const ErrorAlert = ({ title, errors }: ErrorAlertProps) => {
+export const ErrorAlert = ({ title, errors, className }: ErrorAlertProps) => {
   return (
     errors.size > 0 && (
-      <Alert variant="destructive" className="w-full">
+      <Alert variant="destructive" className={cn('w-full', className)}>
+        <AlertCircleIcon className="h-4 w-4" />
         {title && <AlertTitle>{title}:</AlertTitle>}
         <AlertDescription>
           {Array.from(errors).map((error) => (

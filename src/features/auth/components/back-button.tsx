@@ -7,10 +7,7 @@ export const BackButton = (props: React.ComponentProps<typeof Button>) => {
   const router = useRouter();
 
   return (
-    <Button
-      onClick={() => router.history.back()}
-      {...props}
-    >
+    <Button onClick={() => router.history.back()} {...props}>
       {t('common.go_back')}
     </Button>
   );

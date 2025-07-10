@@ -5,7 +5,7 @@ import { ResultAsync, err, ok } from 'neverthrow';
 import { useTranslation } from 'react-i18next';
 import { BackButton } from './back-button';
 import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
-import { useAppForm } from '@/features/auth/hooks/use-auth-form';
+import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import {
   Card,
   CardContent,

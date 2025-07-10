@@ -3,9 +3,9 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { match, type } from 'arktype';
-import { useAppForm } from '../hooks/use-auth-form';
 import { BackButton } from './back-button';
 import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
+import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
 import {
   Card,
@@ -78,25 +78,21 @@ export function LoginForm({ pageError }: LoginFormProps) {
         <CardTitle>{t('auth.welcome_back')}</CardTitle>
         <CardDescription>{t('auth.login_form_desc')}</CardDescription>
       </CardHeader>
-      <form.Subscribe
-        selector={(state) => state.errors}
-        children={(errors) => (
-          <ErrorAlert
-            errors={
-              new Set(
-                [pageError, ...errors].filter((e): e is string => e != null)
-              )
-            }
-          />
-        )}
-      />
       <CardContent className="flex flex-col gap-2">
-        <ContinueWithGoogle />
-        <Divider
-          text={t('auth.or_continue')}
-          backgroundClass="bg-card"
-          className="mt-1"
+        <form.Subscribe
+          selector={(state) => state.errors}
+          children={(errors) => (
+            <ErrorAlert
+              errors={
+                new Set(
+                  [pageError, ...errors].filter((e): e is string => e != null)
+                )
+              }
+            />
+          )}
         />
+        <ContinueWithGoogle />
+        <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
         <form className="flex flex-col gap-4">
           <form.AppField
             name="email"

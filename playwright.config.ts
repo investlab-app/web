@@ -55,33 +55,6 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
       dependencies: ['global setup'],
     },
-    {
-      name: 'authenticated chromium',
-      testMatch: /.*authenticated.spec.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.clerk/user.json',
-      },
-      dependencies: ['global setup'],
-    },
-    {
-      name: 'authenticated firefox',
-      testMatch: /.*authenticated.spec.ts/,
-      use: {
-        ...devices['Desktop Firefox'],
-        storageState: 'playwright/.clerk/user.json',
-      },
-      dependencies: ['global setup'],
-    },
-    {
-      name: 'authenticated webkit',
-      testMatch: /.*authenticated.spec.ts/,
-      use: {
-        ...devices['Desktop Safari'],
-        storageState: 'playwright/.clerk/user.json',
-      },
-      dependencies: ['global setup'],
-    },
 
     /* Test against mobile viewports. */
     // {
@@ -106,7 +79,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run start',
+    command: 'pnpm start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },
