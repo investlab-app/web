@@ -36,11 +36,11 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
     validators: {
       onBlur: ({ value }) =>
         value.password !== value.confirmPassword
-          ? 'Passwords do not match'
+          ? t('auth.passwords_do_not_match')
           : undefined,
       onSubmitAsync: async ({ value }) => {
         if (!isLoaded) {
-          return 'Please try again later.';
+          return t('auth.please_try_again_later');
         }
 
         const signUpResult = await ResultAsync.fromPromise(
@@ -52,8 +52,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           }),
           (e) =>
             e instanceof Error
-              ? e.message
-              : 'Could not sign up. Please try again later.'
+              ? t('auth.unknown_error', { cause: e.message })
+              : t('auth.could_not_sign_up')
         ).andThen(
           match.at('status').match({
             "'complete'": () => ok(),
@@ -73,8 +73,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
             signUp.prepareEmailAddressVerification({ strategy: 'email_code' }),
             (e) =>
               e instanceof Error
-                ? e.message
-                : 'Could not prepare email address verification.'
+                ? t('auth.unknown_error', { cause: e.message })
+                : t('auth.could_not_prepare_email_address_verification')
           ).andThen(
             match.at('status').match({
               "'complete'": () => ok(),
@@ -227,8 +227,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
               </>
             )}
           />
+          <div id="clerk-captcha" />
           <div>
-            <div id="clerk-captcha" />
             <form.AppForm>
               <form.SubmitButton className="w-full">
                 {' '}

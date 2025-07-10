@@ -32,9 +32,8 @@ export function LoginForm({ pageError }: LoginFormProps) {
     },
     validators: {
       onSubmitAsync: async ({ value }) => {
-        console.log('running onSubmit with values:', value);
         if (!isLoaded) {
-          return 'Please try again later.';
+          return t('auth.please_try_again_later');
         }
 
         return await ResultAsync.fromPromise(
@@ -43,7 +42,10 @@ export function LoginForm({ pageError }: LoginFormProps) {
             identifier: value.email,
             password: value.password,
           }),
-          (e) => (e instanceof Error ? e.message : 'Could not verify email.')
+          (e) =>
+            e instanceof Error
+              ? t('auth.unknown_error', { cause: e.message })
+              : t('auth.could_not_verify_email')
         )
           .andThen((signInResource) =>
             match({

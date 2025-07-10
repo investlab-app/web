@@ -33,7 +33,10 @@ export function EmailVerificationForm() {
           signUp.attemptEmailAddressVerification({
             code: value.code,
           }),
-          (e) => (e instanceof Error ? e.message : 'Could not verify email.')
+          (e) =>
+            e instanceof Error
+              ? t('auth.unknown_error', { cause: e.message })
+              : t('auth.could_not_verify_email')
         )
           .andThen((signUpResource) =>
             match({

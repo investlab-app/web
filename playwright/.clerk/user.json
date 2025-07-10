@@ -1,0 +1,119 @@
+{
+  "cookies": [
+    {
+      "name": "__cf_bm",
+      "value": "kVtyBp1OX.TzMFQPk6UqgqYyS1ZIBT7BxPyFtTuhM6I-1752105728-1.0.1.1-bEYIzYLOx_o48AwN2PagzNnhQdTfWOnwmlWf.gR.eZ3lsVg3P09CrKGMowc4_4YnSU9Z1HUlq5WrWcaZUJz8w5RBXIKFE5PSoZ7Hz9zVZAs",
+      "domain": ".premium-gar-38.clerk.accounts.dev",
+      "path": "/",
+      "expires": 1752107528,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_cfuvid",
+      "value": "4mM45m2.IwybANcliG54QgmDg1Hj_J9H13BeHzeZFzw-1752105728306-0.0.1.1-604800000",
+      "domain": ".premium-gar-38.clerk.accounts.dev",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__clerk_db_jwt_gqvl1Sa3",
+      "value": "dvb_2zeyFR5DgtIiHeuECzsdflF4Kdi",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641732,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__clerk_db_jwt",
+      "value": "dvb_2zeyFR5DgtIiHeuECzsdflF4Kdi",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641732,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "clerk_active_context",
+      "value": "sess_2zeyFNWUrPaYBUuoggDDNZhNBtr:",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__session",
+      "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yelBuak56empEZ3FuRkpNZm5EbDczdDBNd3oiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3NTIxMDU3OTAsImZ2YSI6WzAsLTFdLCJpYXQiOjE3NTIxMDU3MzAsImlzcyI6Imh0dHBzOi8vcHJlbWl1bS1nYXItMzguY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzUyMTA1NzIwLCJzaWQiOiJzZXNzXzJ6ZXlGTldVclBhWUJVdW9nZ0RETlpoTkJ0ciIsInN1YiI6InVzZXJfMnpld0E3ZkxubGJjc3l6MnhjTFRPS3RvcXR4IiwidiI6Mn0.aMjXQ6AihOYNoF6pprSaWcz0DWSGk_JFKp6ud6soaxGZpeUOPRNvjSq2ZQ1FqqckErfA5VOQtGSCTJiGIPqS-KNP5H5kjT_O-gt75jOoyySN4qn-DCU8ZVna_7SKOUo2zT26kqYso6mi_226lZ2nOhu6q6DD2Cc3bEe1RoJXHhbs4s8JItS_Mj61D013myBlFyXyRbHoZgyhvuJuHkABJRFBhoo1ZpYJcqW9JBcSbWN7t2ckllfGCdT0pdjm3_JQhDi9tQkLYV_7bx7wGA2_ZHYE07ZRkXazQXz_RYdgOgTw6lR2CCIUlxj6i_jzLAlvAmFqsyAR39qJYiTzgYFATA",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641733,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__session_gqvl1Sa3",
+      "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yelBuak56empEZ3FuRkpNZm5EbDczdDBNd3oiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3NTIxMDU3OTAsImZ2YSI6WzAsLTFdLCJpYXQiOjE3NTIxMDU3MzAsImlzcyI6Imh0dHBzOi8vcHJlbWl1bS1nYXItMzguY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzUyMTA1NzIwLCJzaWQiOiJzZXNzXzJ6ZXlGTldVclBhWUJVdW9nZ0RETlpoTkJ0ciIsInN1YiI6InVzZXJfMnpld0E3ZkxubGJjc3l6MnhjTFRPS3RvcXR4IiwidiI6Mn0.aMjXQ6AihOYNoF6pprSaWcz0DWSGk_JFKp6ud6soaxGZpeUOPRNvjSq2ZQ1FqqckErfA5VOQtGSCTJiGIPqS-KNP5H5kjT_O-gt75jOoyySN4qn-DCU8ZVna_7SKOUo2zT26kqYso6mi_226lZ2nOhu6q6DD2Cc3bEe1RoJXHhbs4s8JItS_Mj61D013myBlFyXyRbHoZgyhvuJuHkABJRFBhoo1ZpYJcqW9JBcSbWN7t2ckllfGCdT0pdjm3_JQhDi9tQkLYV_7bx7wGA2_ZHYE07ZRkXazQXz_RYdgOgTw6lR2CCIUlxj6i_jzLAlvAmFqsyAR39qJYiTzgYFATA",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641733,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__client_uat_gqvl1Sa3",
+      "value": "1752105729",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641733,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "__client_uat",
+      "value": "1752105729",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641733,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "ph_phc_Xnqz0DIBd7uJahl2djOSMNjmNInPOR7mvE265enlCsh_posthog",
+      "value": "%7B%22distinct_id%22%3A%220197f1a3-c066-7b3f-a628-09997dc5e0cc%22%2C%22%24sesid%22%3A%5B1752105733054%2C%220197f1a3-c064-7364-9eae-dbcacfcaf18f%22%2C1752105730148%5D%7D",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1783641733,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "__clerk_environment",
+          "value": "{\"value\":{\"object\":\"environment\",\"auth_config\":{\"claimed_at\":null,\"id\":\"\",\"object\":\"auth_config\",\"reverification\":true,\"single_session_mode\":true},\"display_config\":{\"object\":\"display_config\",\"after_create_organization_url\":\"http://localhost:3000\",\"after_join_waitlist_url\":\"http://localhost:3000\",\"after_leave_organization_url\":\"http://localhost:3000\",\"after_sign_in_url\":\"http://localhost:3000\",\"after_sign_out_all_url\":\"http://localhost:3000/\",\"after_sign_out_one_url\":\"https://premium-gar-38.accounts.dev/sign-in/choose\",\"after_sign_up_url\":\"http://localhost:3000\",\"after_switch_session_url\":\"http://localhost:3000\",\"application_name\":\"InvestLab\",\"branded\":true,\"captcha_heartbeat\":false,\"captcha_oauth_bypass\":[],\"captcha_provider\":\"turnstile\",\"captcha_public_key_invisible\":\"0x4AAAAAAAFV93qQdS0ycilX\",\"captcha_public_key\":\"0x4AAAAAAAWXJGBD7bONzLBd\",\"captcha_widget_type\":\"smart\",\"clerk_js_version\":\"5\",\"create_organization_url\":\"https://premium-gar-38.accounts.dev/create-organization\",\"favicon_image_url\":\"\",\"home_url\":\"http://localhost:3000\",\"id\":\"display_config_2zPnjJaBAl3nv2uNfrCCndHIzUX\",\"instance_environment_type\":\"development\",\"logo_image_url\":\"\",\"organization_profile_url\":\"https://premium-gar-38.accounts.dev/organization\",\"preferred_sign_in_strategy\":\"password\",\"privacy_policy_url\":\"\",\"show_devmode_warning\":true,\"sign_in_url\":\"http://localhost:3000/login\",\"sign_up_url\":\"http://localhost:3000/signup\",\"support_email\":\"\",\"terms_url\":\"\",\"theme\":{\"buttons\":{\"font_color\":\"#ffffff\",\"font_family\":\"\\\"Source Sans Pro\\\", sans-serif\",\"font_weight\":\"600\"},\"general\":{\"color\":\"#6c47ff\",\"padding\":\"1em\",\"box_shadow\":\"0 2px 8px rgba(0, 0, 0, 0.2)\",\"font_color\":\"#151515\",\"font_family\":\"\\\"Source Sans Pro\\\", sans-serif\",\"border_radius\":\"0.5em\",\"background_color\":\"#ffffff\",\"label_font_weight\":\"600\"},\"accounts\":{\"background_color\":\"#ffffff\"}},\"user_profile_url\":\"https://premium-gar-38.accounts.dev/user\",\"waitlist_url\":\"https://premium-gar-38.accounts.dev/waitlist\"},\"id\":\"\",\"maintenance_mode\":false,\"organization_settings\":{\"actions\":{\"admin_delete\":true},\"domains\":{\"enabled\":false,\"enrollment_modes\":[],\"default_role\":\"\"},\"enabled\":false,\"max_allowed_memberships\":5},\"user_settings\":{\"actions\":{\"delete_self\":true,\"create_organization\":true,\"create_organizations_limit\":null},\"attributes\":{\"email_address\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":true,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[\"email_code\"],\"verify_at_sign_up\":true,\"name\":\"email_address\"},\"phone_number\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"phone_number\"},\"username\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"username\"},\"web3_wallet\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"web3_wallet\"},\"first_name\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"first_name\"},\"last_name\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"last_name\"},\"password\":{\"enabled\":true,\"required\":true,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"password\"},\"authenticator_app\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"authenticator_app\"},\"ticket\":{\"enabled\":true,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"ticket\"},\"backup_code\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"backup_code\"},\"passkey\":{\"enabled\":false,\"required\":false,\"used_for_first_factor\":false,\"first_factors\":[],\"used_for_second_factor\":false,\"second_factors\":[],\"verifications\":[],\"verify_at_sign_up\":false,\"name\":\"passkey\"}},\"passkey_settings\":{\"allow_autofill\":true,\"show_sign_in_button\":true},\"password_settings\":{\"disable_hibp\":true,\"min_length\":8,\"max_length\":72,\"require_special_char\":false,\"require_numbers\":false,\"require_uppercase\":false,\"require_lowercase\":false,\"show_zxcvbn\":false,\"min_zxcvbn_strength\":0,\"enforce_hibp_on_sign_in\":true,\"allowed_special_characters\":\"!\\\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\"},\"saml\":{\"enabled\":false},\"sign_in\":{\"second_factor\":{\"required\":false}},\"sign_up\":{\"captcha_enabled\":true,\"captcha_widget_type\":\"smart\",\"custom_action_required\":false,\"progressive\":true,\"mode\":\"public\",\"legal_consent_enabled\":false},\"social\":{\"oauth_google\":{\"enabled\":true,\"required\":false,\"authenticatable\":true,\"block_email_subaddresses\":false,\"strategy\":\"oauth_google\",\"not_selectable\":false,\"deprecated\":false,\"name\":\"Google\",\"logo_url\":\"https://img.clerk.com/static/google.png\"}}},\"commerce_settings\":{\"billing\":{\"stripe_publishable_key\":\"\",\"enabled\":false,\"has_paid_user_plans\":false,\"has_paid_org_plans\":false}},\"api_keys_settings\":{\"enabled\":false}},\"exp\":1752192132973}"
+        },
+        {
+          "name": "ph_phc_Xnqz0DIBd7uJahl2djOSMNjmNInPOR7mvE265enlCsh_posthog",
+          "value": "{\"distinct_id\":\"0197f1a3-c066-7b3f-a628-09997dc5e0cc\",\"$sesid\":[1752105733054,\"0197f1a3-c064-7364-9eae-dbcacfcaf18f\",1752105730148],\"$initialization_time\":\"2025-07-10T00:02:12.542Z\",\"$configured_session_timeout_ms\":1800000,\"$client_session_props\":{\"sessionId\":\"0197f1a3-c064-7364-9eae-dbcacfcaf18f\",\"props\":{\"r\":\"$direct\",\"u\":\"http://localhost:3000/\"}},\"$device_id\":\"0197f1a3-c066-7b3f-a628-09997dc5e0cc\",\"$user_state\":\"anonymous\",\"$session_recording_enabled_server_side\":true,\"$console_log_recording_enabled_server_side\":true,\"$session_recording_network_payload_capture\":{\"capturePerformance\":{\"network_timing\":true,\"web_vitals\":true,\"web_vitals_allowed_metrics\":null}},\"$session_recording_masking\":null,\"$session_recording_canvas_recording\":{},\"$replay_sample_rate\":null,\"$replay_minimum_duration\":null,\"$replay_script_config\":null,\"$autocapture_disabled_server_side\":false,\"$heatmaps_enabled_server_side\":true,\"$web_vitals_enabled_server_side\":true,\"$web_vitals_allowed_metrics\":null,\"$exception_capture_enabled_server_side\":false,\"$error_tracking_suppression_rules\":[],\"$dead_clicks_enabled_server_side\":false,\"$active_feature_flags\":[],\"$enabled_feature_flags\":{},\"$feature_flag_payloads\":{},\"$feature_flag_details\":{},\"$feature_flag_request_id\":\"83e44bc2-b133-4229-abe0-ac03e7ce97ae\"}"
+        }
+      ]
+    }
+  ]
+}

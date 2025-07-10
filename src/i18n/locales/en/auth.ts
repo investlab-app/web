@@ -35,7 +35,10 @@ const enAuth = {
   missing_requirements: 'Sign up missing requirements. Please try again.',
   could_not_sign_up: 'Could not sign up. Please try again or contact support.',
   could_not_prepare_email_address_verification:
-    'Could not prepare email address verification. Please try again later.',
+    'Could not prepare email address verification.',
+  please_try_again_later: 'Please try again later.',
+  passwords_do_not_match: 'Passwords do not match',
+  unknown_error: 'Unknown error {{cause}}',
 };
 
 export default enAuth;

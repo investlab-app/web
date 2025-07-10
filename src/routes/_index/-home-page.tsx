@@ -10,6 +10,8 @@ import { AccountValueChartContainer } from '@/features/home/components/account-v
 import AssetTableContainer from '@/features/home/components/asset-table-container';
 
 export function Home() {
+  console.log(`Home`);
+
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />

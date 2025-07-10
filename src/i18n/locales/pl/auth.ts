@@ -38,6 +38,8 @@ const plAuth = {
     'Nie udało się zarejestrować. Spróbuj ponownie lub skontaktuj się z obsługą.',
   could_not_prepare_email_address_verification:
     'Nie udało się przygotować weryfikacji adresu e-mail. Spróbuj ponownie później.',
+  please_try_again_later: 'Spróbuj ponownie później.',
+  passwords_do_not_match: 'Hasła nie pasują do siebie',
 };
 
 export default plAuth;
