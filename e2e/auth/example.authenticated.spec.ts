@@ -12,5 +12,5 @@ test('example', async ({ page }) => {
   await clerk.signOut({ page });
 
   // exppect that you are redirected to the home page
-  await expect(page.url()).toContain('/');
+  expect(page.url()).toContain('/');
 });

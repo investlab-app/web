@@ -37,7 +37,7 @@ test('signup', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign up' }).click();
   await page.waitForURL('**/verify-email');
 
-  const otpInput = await page.locator('input[data-input-otp="true"]');
+  const otpInput = page.locator('input[data-input-otp="true"]');
   await otpInput.click();
   await otpInput.fill('424242');
 

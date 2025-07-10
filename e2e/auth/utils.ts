@@ -10,6 +10,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { Cookie, Page } from '@playwright/test';
 
+const CLERK_FRONTEND_API_URL = process.env.CLERK_FRONTEND_API_URL;
+const CLERK_BACKEND_API_URL = 'https://api.clerk.com';
+
 export const getRandomClerkTestEmail = () => {
   const randomStr = uuidv4();
   return `${randomStr}+clerk_test@example.com`;
@@ -22,7 +25,7 @@ export const cleanClerkUser = async (userId: string) => {
     throw new Error('CLERK_SECRET_KEY env var required');
   }
 
-  const response = await fetch(`https://api.clerk.com/v1/users/${userId}`, {
+  const response = await fetch(`${CLERK_BACKEND_API_URL}/v1/users/${userId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${clerkSecretKey}`,
@@ -31,17 +34,17 @@ export const cleanClerkUser = async (userId: string) => {
   });
 
   if (!response.ok) {
+    console.error('Failed to delete user', response);
     throw new Error('Failed to delete user', { cause: response });
   }
 };
 
 export const cleanCurrentClerkUser = async (page: Page) => {
-  const frontendApiUrl = process.env.CLERK_FRONTEND_API_URL;
-
-  if (!frontendApiUrl) {
+  if (!CLERK_FRONTEND_API_URL) {
     throw new Error('CLERK_FRONTEND_API_URL env var required');
   }
 
+  // wait for cookies and clerk (for some reason api sometimes refuses)
   await page.waitForTimeout(100);
 
   const cookies = await page.context().cookies();
@@ -59,10 +62,11 @@ export const cleanCurrentClerkUser = async (page: Page) => {
   });
 
   const getMeResponse = await fetch(
-    `${frontendApiUrl}/v1/me?${searchParams.toString()}`
+    `${CLERK_FRONTEND_API_URL}/v1/me?${searchParams.toString()}`
   );
 
   if (!getMeResponse.ok) {
+    console.error('Failed to get current user', getMeResponse);
     throw new Error('Failed to get current user', { cause: getMeResponse });
   }
 
