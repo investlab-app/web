@@ -39,6 +39,12 @@ const enAuth = {
   please_try_again_later: 'Please try again later.',
   passwords_do_not_match: 'Passwords do not match',
   unknown_error: 'Unknown error. {{cause}}',
+  code_must_be_digits: 'Code must be {{digits}} digits',
+  invalid_email: 'Invalid email',
+  first_name_required: 'First name is required',
+  last_name_required: 'Last name is required',
+  password_required: 'Password is required',
+  code: 'Code',
 };
 
 export default enAuth;

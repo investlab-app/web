@@ -93,7 +93,11 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onChange: type('string.email').pipe(() => undefined),
+              onChange: type('string.email')
+                .configure({
+                  message: t('auth.invalid_email'),
+                })
+                .pipe(() => undefined),
             }}
             children={(field) => (
               <>
@@ -112,16 +116,26 @@ export function LoginForm({ pageError }: LoginFormProps) {
           />
           <form.AppField
             name="password"
+            validators={{
+              onBlur: ({ value }) => {
+                if (!value) {
+                  return t('auth.password_required');
+                }
+              },
+            }}
             children={(field) => (
-              <field.FormInput
-                id="password"
-                label={t('auth.password')}
-                type="password"
-                name="password"
-                placeholder="********"
-                autoComplete="current-password"
-                required
-              />
+              <>
+                <field.FormInput
+                  id="password"
+                  label={t('auth.password')}
+                  type="password"
+                  name="password"
+                  placeholder="********"
+                  autoComplete="current-password"
+                  required
+                />
+                <ErrorAlert errors={field.state.meta.errors} />
+              </>
             )}
           />
           <form.AppForm>

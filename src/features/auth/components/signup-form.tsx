@@ -119,7 +119,11 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="firstName"
             validators={{
-              onChange: type('string').pipe(() => undefined),
+              onBlur: type('string > 0')
+                .configure({
+                  message: t('auth.first_name_required'),
+                })
+                .pipe(() => undefined),
             }}
             children={(field) => (
               <>
@@ -132,7 +136,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   required
                 />
                 <ErrorAlert
-                  title="First Name"
+                  title={t('auth.first_name')}
                   errors={field.state.meta.errors}
                 />
               </>
@@ -141,7 +145,11 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="lastName"
             validators={{
-              onBlur: type('string > 0').pipe(() => undefined),
+              onBlur: type('string > 0')
+                .configure({
+                  message: t('auth.last_name_required'),
+                })
+                .pipe(() => undefined),
             }}
             children={(field) => (
               <>
@@ -154,7 +162,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   required
                 />
                 <ErrorAlert
-                  title="Last Name"
+                  title={t('auth.last_name')}
                   errors={field.state.meta.errors}
                 />
               </>
@@ -163,7 +171,11 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlur: type('string.email').pipe(() => undefined),
+              onBlur: type('string.email')
+                .configure({
+                  message: t('auth.invalid_email'),
+                })
+                .pipe(() => undefined),
             }}
             children={(field) => (
               <>
@@ -183,7 +195,11 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlur: type('string').pipe(() => undefined), // TODO: Add password validation
+              onBlur: ({ value }) => {
+                if (!value) {
+                  return t('auth.password_required');
+                }
+              },
             }}
             children={(field) => (
               <>
@@ -196,17 +212,24 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="new-password"
                   required
                 />
-                <ErrorAlert title="Password" errors={field.state.meta.errors} />
+                <ErrorAlert
+                  title={t('auth.password')}
+                  errors={field.state.meta.errors}
+                />
               </>
             )}
           />
           <form.AppField
             name="confirmPassword"
             validators={{
-              onBlur: ({ value, fieldApi }) =>
-                value !== fieldApi.form.state.values.password
-                  ? t('auth.passwords_do_not_match')
-                  : undefined,
+              onBlur: ({ value, fieldApi }) => {
+                if (!value) {
+                  return t('auth.password_required');
+                }
+                if (value !== fieldApi.form.state.values.password) {
+                  return t('auth.passwords_do_not_match');
+                }
+              },
             }}
             children={(field) => (
               <>

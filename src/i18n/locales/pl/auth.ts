@@ -41,6 +41,12 @@ const plAuth = {
   please_try_again_later: 'Spróbuj ponownie później.',
   passwords_do_not_match: 'Hasła nie pasują do siebie',
   unknown_error: 'Nieznany błąd. {{cause}}',
+  code_must_be_digits: 'Kod musi mieć {{digits}} cyfr',
+  invalid_email: 'Nieprawidłowy adres e-mail',
+  first_name_required: 'Imię jest wymagane',
+  last_name_required: 'Nazwisko jest wymagane',
+  password_required: 'Hasło jest wymagane',
+  code: 'Kod',
 };
 
 export default plAuth;

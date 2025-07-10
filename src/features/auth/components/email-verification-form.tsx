@@ -86,13 +86,24 @@ export function EmailVerificationForm({
           <ErrorAlert title="Error" errors={[pageError]} />
           <form.AppField
             name="code"
-            validators={{ onBlur: type('string == 6').pipe(() => undefined) }}
+            validators={{
+              onBlur: type('string == 6')
+                .configure({
+                  message: t('auth.code_must_be_digits', {
+                    digits: 6,
+                  }),
+                })
+                .pipe(() => undefined),
+            }}
             children={(field) => (
               <>
                 <div className="flex justify-center">
                   <field.SixDigitOTPInput />
                 </div>
-                <ErrorAlert title="Code" errors={field.state.meta.errors} />
+                <ErrorAlert
+                  title={t('auth.code')}
+                  errors={field.state.meta.errors}
+                />
               </>
             )}
           />

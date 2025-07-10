@@ -1,4 +1,4 @@
-import { ArkErrors, match, type } from 'arktype';
+import { ArkError, ArkErrors, match, type } from 'arktype';
 import { AlertCircleIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
@@ -10,7 +10,7 @@ import { cn } from '@/features/shared/utils';
 
 interface ErrorAlertProps {
   title?: string;
-  errors: Iterable<ArkErrors | string | undefined>;
+  errors: Iterable<ArkErrors | ArkError | string | undefined>;
   className?: string;
 }
 
@@ -18,6 +18,7 @@ const errorMatcher = match
   .case('string', (e) => [e])
   .case('undefined', () => [])
   .case(type.instanceOf(ArkErrors), (es) => es.flat().map((e) => e.message))
+  .case(type.instanceOf(ArkError), (e) => [e.message])
   .default('never');
 
 export const ErrorAlert = ({ title, errors, className }: ErrorAlertProps) => {
@@ -35,7 +36,7 @@ export const ErrorAlert = ({ title, errors, className }: ErrorAlertProps) => {
           <AlertCircleIcon className="h-4 w-4" />
           {title && <AlertTitle>{title}:</AlertTitle>}
           <AlertDescription>
-            {uniqueStringErrors.values().map((error) => (
+            {Array.from(uniqueStringErrors).map((error) => (
               <div key={error}>{error}</div>
             ))}
           </AlertDescription>
