@@ -18,4 +18,4 @@ dist-ssr
 
 # idea
 .idea/
-$\nplaywright/.clerk
+playwright/.clerk
