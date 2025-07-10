@@ -4,7 +4,7 @@ import { match, type } from 'arktype';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { useTranslation } from 'react-i18next';
 import { BackButton } from './back-button';
-import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
+import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import {
   Card,
@@ -14,7 +14,13 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 
-export function EmailVerificationForm() {
+interface EmailVerificationFormProps {
+  pageError?: string;
+}
+
+export function EmailVerificationForm({
+  pageError,
+}: EmailVerificationFormProps) {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -23,42 +29,49 @@ export function EmailVerificationForm() {
     defaultValues: {
       code: '',
     },
-    validators: {
-      onSubmitAsync: async ({ value }) => {
-        if (!isLoaded) {
-          return 'Please try again later.';
-        }
+    onSubmit: async ({ value }) => {
+      if (!isLoaded) {
+        navigate({
+          to: '.',
+          search: { error: t('auth.please_try_again_later') },
+        });
 
-        return await ResultAsync.fromPromise(
-          signUp.attemptEmailAddressVerification({
-            code: value.code,
-          }),
-          (e) =>
-            e instanceof Error
-              ? t('auth.unknown_error', { cause: e.message })
-              : t('auth.could_not_verify_email')
+        return;
+      }
+
+      await ResultAsync.fromPromise(
+        signUp.attemptEmailAddressVerification({
+          code: value.code,
+        }),
+        (e) =>
+          e instanceof Error
+            ? t('auth.unknown_error', { cause: e.message })
+            : t('auth.could_not_verify_email')
+      )
+        .andThen((signUpResource) =>
+          match({
+            "'complete'": () =>
+              signUpResource.createdSessionId
+                ? ok(signUpResource.createdSessionId)
+                : err('No session created'),
+            "'abandoned'": () => err(t('auth.abandoned')),
+            "'missing_requirements'": () => err(t('auth.missing_requirements')),
+            null: () => err(t('auth.could_not_verify_email')),
+            default: 'never',
+          })(signUpResource.status)
         )
-          .andThen((signUpResource) =>
-            match({
-              "'complete'": () =>
-                signUpResource.createdSessionId
-                  ? ok(signUpResource.createdSessionId)
-                  : err('No session created'),
-              "'abandoned'": () => err(t('auth.abandoned')),
-              "'missing_requirements'": () =>
-                err(t('auth.missing_requirements')),
-              null: () => err(t('auth.could_not_verify_email')),
-              default: 'never',
-            })(signUpResource.status)
-          )
-          .match(
-            (sessionId) => {
-              setActive({ session: sessionId });
-              navigate({ to: '/' });
-            },
-            (e) => e
-          );
-      },
+        .match(
+          (sessionId) => {
+            setActive({ session: sessionId });
+            navigate({ to: '/' });
+          },
+          (e) => {
+            navigate({
+              to: '.',
+              search: { error: e },
+            });
+          }
+        );
     },
   });
 
@@ -70,6 +83,7 @@ export function EmailVerificationForm() {
           <CardDescription>{t('auth.verify_email_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
+          <ErrorAlert title="Error" errors={[pageError]} />
           <form.AppField
             name="code"
             validators={{ onBlur: type('string == 6').pipe(() => undefined) }}
@@ -78,10 +92,7 @@ export function EmailVerificationForm() {
                 <div className="flex justify-center">
                   <field.SixDigitOTPInput />
                 </div>
-                <ErrorAlert
-                  title="Code"
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
-                />
+                <ErrorAlert title="Code" errors={field.state.meta.errors} />
               </>
             )}
           />

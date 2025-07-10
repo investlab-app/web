@@ -38,7 +38,7 @@ const enAuth = {
     'Could not prepare email address verification.',
   please_try_again_later: 'Please try again later.',
   passwords_do_not_match: 'Passwords do not match',
-  unknown_error: 'Unknown error {{cause}}',
+  unknown_error: 'Unknown error. {{cause}}',
 };
 
 export default enAuth;

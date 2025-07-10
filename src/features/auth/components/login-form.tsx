@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { match, type } from 'arktype';
 import { BackButton } from './back-button';
-import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
+import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
 import {
@@ -30,45 +30,52 @@ export function LoginForm({ pageError }: LoginFormProps) {
       email: '',
       password: '',
     },
-    validators: {
-      onSubmitAsync: async ({ value }) => {
-        if (!isLoaded) {
-          return t('auth.please_try_again_later');
-        }
+    onSubmit: async ({ value }) => {
+      if (!isLoaded) {
+        navigate({
+          to: '.',
+          search: { error: t('auth.please_try_again_later') },
+        });
+        return;
+      }
 
-        return await ResultAsync.fromPromise(
-          signIn.create({
-            strategy: 'password',
-            identifier: value.email,
-            password: value.password,
-          }),
-          (e) =>
-            e instanceof Error
-              ? t('auth.unknown_error', { cause: e.message })
-              : t('auth.could_not_verify_email')
+      await ResultAsync.fromPromise(
+        signIn.create({
+          strategy: 'password',
+          identifier: value.email,
+          password: value.password,
+        }),
+        (e) =>
+          e instanceof Error
+            ? t('auth.unknown_error', { cause: e.message })
+            : t('auth.could_not_verify_email')
+      )
+        .andThen((signInResource) =>
+          match({
+            "'complete'": () =>
+              signInResource.createdSessionId
+                ? ok(signInResource.createdSessionId)
+                : err('No session created'),
+            "'needs_first_factor'": () => err(t('auth.needs_first_factor')),
+            "'needs_second_factor'": () => err(t('auth.needs_second_factor')),
+            "'needs_identifier'": () => err(t('auth.needs_identifier')),
+            "'needs_new_password'": () => err(t('auth.needs_new_password')),
+            null: () => err(t('auth.could_not_sign_in')),
+            default: 'never',
+          })(signInResource.status)
         )
-          .andThen((signInResource) =>
-            match({
-              "'complete'": () =>
-                signInResource.createdSessionId
-                  ? ok(signInResource.createdSessionId)
-                  : err('No session created'),
-              "'needs_first_factor'": () => err(t('auth.needs_first_factor')),
-              "'needs_second_factor'": () => err(t('auth.needs_second_factor')),
-              "'needs_identifier'": () => err(t('auth.needs_identifier')),
-              "'needs_new_password'": () => err(t('auth.needs_new_password')),
-              null: () => err(t('auth.could_not_sign_in')),
-              default: 'never',
-            })(signInResource.status)
-          )
-          .match(
-            (sessionId) => {
-              setActive({ session: sessionId });
-              navigate({ to: '/' });
-            },
-            (e) => e
-          );
-      },
+        .match(
+          (sessionId) => {
+            setActive({ session: sessionId });
+            navigate({ to: '/' });
+          },
+          (e) => {
+            navigate({
+              to: '.',
+              search: { error: e },
+            });
+          }
+        );
     },
   });
 
@@ -79,18 +86,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
         <CardDescription>{t('auth.login_form_desc')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <form.Subscribe
-          selector={(state) => state.errors}
-          children={(errors) => (
-            <ErrorAlert
-              errors={
-                new Set(
-                  [pageError, ...errors].filter((e): e is string => e != null)
-                )
-              }
-            />
-          )}
-        />
+        <ErrorAlert errors={[pageError]} />
         <ContinueWithGoogle />
         <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
         <form className="flex flex-col gap-4">
@@ -110,9 +106,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
                   autoComplete="email"
                   required
                 />
-                <ErrorAlert
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
-                />
+                <ErrorAlert errors={field.state.meta.errors} />
               </>
             )}
           />

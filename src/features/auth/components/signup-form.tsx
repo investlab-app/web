@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { match, type } from 'arktype';
 import { BackButton } from './back-button';
-import { ErrorAlert, arkErrorsArrayToStringSet } from './error-alert';
+import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
 import {
@@ -33,65 +33,71 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
       firstName: '',
       lastName: '',
     },
-    validators: {
-      onBlur: ({ value }) =>
-        value.password !== value.confirmPassword
-          ? t('auth.passwords_do_not_match')
-          : undefined,
-      onSubmitAsync: async ({ value }) => {
-        if (!isLoaded) {
-          return t('auth.please_try_again_later');
-        }
+    onSubmit: async ({ value }) => {
+      if (!isLoaded) {
+        navigate({
+          to: '.',
+          search: { error: t('auth.please_try_again_later') },
+        });
+        return;
+      }
 
-        const signUpResult = await ResultAsync.fromPromise(
-          signUp.create({
-            emailAddress: value.email,
-            password: value.password,
-            firstName: value.firstName,
-            lastName: value.lastName,
-          }),
+      const signUpResult = await ResultAsync.fromPromise(
+        signUp.create({
+          emailAddress: value.email,
+          password: value.password,
+          firstName: value.firstName,
+          lastName: value.lastName,
+        }),
+        (e) =>
+          e instanceof Error
+            ? t('auth.unknown_error', { cause: e.message })
+            : t('auth.could_not_sign_up')
+      ).andThen(
+        match.at('status').match({
+          "'complete'": () => ok(),
+          "'abandoned'": () => err(t('auth.abandoned')),
+          "'missing_requirements'": () => ok(), // email verification is required
+          null: () => err(t('auth.could_not_sign_up')),
+          default: 'never',
+        })
+      );
+
+      if (signUpResult.isErr()) {
+        navigate({
+          to: '.',
+          search: { error: signUpResult.error },
+        });
+        return;
+      }
+
+      const prepareEmailAddressVerificationResult =
+        await ResultAsync.fromPromise(
+          signUp.prepareEmailAddressVerification({ strategy: 'email_code' }),
           (e) =>
             e instanceof Error
               ? t('auth.unknown_error', { cause: e.message })
-              : t('auth.could_not_sign_up')
+              : t('auth.could_not_prepare_email_address_verification')
         ).andThen(
           match.at('status').match({
             "'complete'": () => ok(),
             "'abandoned'": () => err(t('auth.abandoned')),
             "'missing_requirements'": () => ok(), // email verification is required
-            null: () => err(t('auth.could_not_sign_up')),
+            null: () =>
+              err(t('auth.could_not_prepare_email_address_verification')),
             default: 'never',
           })
         );
 
-        if (signUpResult.isErr()) {
-          return signUpResult.error;
-        }
+      if (prepareEmailAddressVerificationResult.isErr()) {
+        navigate({
+          to: '.',
+          search: { error: prepareEmailAddressVerificationResult.error },
+        });
+        return;
+      }
 
-        const prepareEmailAddressVerificationResult =
-          await ResultAsync.fromPromise(
-            signUp.prepareEmailAddressVerification({ strategy: 'email_code' }),
-            (e) =>
-              e instanceof Error
-                ? t('auth.unknown_error', { cause: e.message })
-                : t('auth.could_not_prepare_email_address_verification')
-          ).andThen(
-            match.at('status').match({
-              "'complete'": () => ok(),
-              "'abandoned'": () => err(t('auth.abandoned')),
-              "'missing_requirements'": () => ok(), // email verification is required
-              null: () =>
-                err(t('auth.could_not_prepare_email_address_verification')),
-              default: 'never',
-            })
-          );
-
-        if (prepareEmailAddressVerificationResult.isErr()) {
-          return prepareEmailAddressVerificationResult.error;
-        }
-
-        navigate({ to: '/verify-email' });
-      },
+      navigate({ to: '/verify-email' });
     },
   });
 
@@ -102,18 +108,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
         <CardDescription>{t('auth.signup_form_desc')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <form.Subscribe
-          selector={(state) => state.errors}
-          children={(errors) => (
-            <ErrorAlert
-              errors={
-                new Set(
-                  [pageError, ...errors].filter((e): e is string => e != null)
-                )
-              }
-            />
-          )}
-        />
+        <ErrorAlert errors={[pageError]} />
         <ContinueWithGoogle />
         <Divider
           text={t('auth.or_continue')}
@@ -138,7 +133,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                 />
                 <ErrorAlert
                   title="First Name"
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
+                  errors={field.state.meta.errors}
                 />
               </>
             )}
@@ -160,7 +155,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                 />
                 <ErrorAlert
                   title="Last Name"
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
+                  errors={field.state.meta.errors}
                 />
               </>
             )}
@@ -181,10 +176,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="email"
                   required
                 />
-                <ErrorAlert
-                  title="Email"
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
-                />
+                <ErrorAlert title="Email" errors={field.state.meta.errors} />
               </>
             )}
           />
@@ -204,15 +196,18 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="new-password"
                   required
                 />
-                <ErrorAlert
-                  title="Password"
-                  errors={arkErrorsArrayToStringSet(field.state.meta.errors)}
-                />
+                <ErrorAlert title="Password" errors={field.state.meta.errors} />
               </>
             )}
           />
           <form.AppField
             name="confirmPassword"
+            validators={{
+              onBlur: ({ value, fieldApi }) =>
+                value !== fieldApi.form.state.values.password
+                  ? t('auth.passwords_do_not_match')
+                  : undefined,
+            }}
             children={(field) => (
               <>
                 <field.FormInput
@@ -224,11 +219,12 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="new-password"
                   required
                 />
+                <ErrorAlert errors={field.state.meta.errors} />
               </>
             )}
           />
-          <div id="clerk-captcha" />
           <div>
+            <div id="clerk-captcha" />
             <form.AppForm>
               <form.SubmitButton className="w-full">
                 {' '}

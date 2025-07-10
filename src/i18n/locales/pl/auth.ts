@@ -40,6 +40,7 @@ const plAuth = {
     'Nie udało się przygotować weryfikacji adresu e-mail. Spróbuj ponownie później.',
   please_try_again_later: 'Spróbuj ponownie później.',
   passwords_do_not_match: 'Hasła nie pasują do siebie',
+  unknown_error: 'Nieznany błąd. {{cause}}',
 };
 
 export default plAuth;
