@@ -9,23 +9,19 @@ import AssetAllocationContainer from '@/features/home/components/asset-allocatio
 import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';
 import AssetTableContainer from '@/features/home/components/asset-table-container';
 
-export function Home() {
-  console.log(`Home`);
-
-  return (
-    <SidebarProvider>
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-col gap-4 p-4">
-          <AccountOverviewRibbon />
-          <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
-            <AssetAllocationContainer />
-            <AccountValueChartContainer />
-          </div>
-          <AssetTableContainer />
+export const Home = () => (
+  <SidebarProvider>
+    <AppSidebar variant="inset" />
+    <SidebarInset>
+      <SiteHeader />
+      <div className="flex flex-col gap-4 p-4">
+        <AccountOverviewRibbon />
+        <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <AssetAllocationContainer />
+          <AccountValueChartContainer />
         </div>
-      </SidebarInset>
-    </SidebarProvider>
-  );
-}
+        <AssetTableContainer />
+      </div>
+    </SidebarInset>
+  </SidebarProvider>
+);
