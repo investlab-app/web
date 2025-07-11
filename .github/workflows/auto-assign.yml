@@ -19,4 +19,4 @@ jobs:
         uses: actions/add-to-project@v1.0.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          project-url: https://github.com/orgs/wall-street-stocks/projects/1
+          project-url: https://github.com/orgs/investlab-app/projects/1
