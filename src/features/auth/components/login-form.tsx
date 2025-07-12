@@ -3,7 +3,6 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { match, type } from 'arktype';
-import { BackButton } from './back-button';
 import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
@@ -142,7 +141,6 @@ export function LoginForm({ pageError }: LoginFormProps) {
             <form.SubmitButton>{t('auth.login')}</form.SubmitButton>
           </form.AppForm>
         </form>
-        <BackButton variant="ghost" />
         <div className="flex justify-center gap-2 text-sm text-muted-foreground">
           {t('auth.dont_have_an_account')}
           <Link
