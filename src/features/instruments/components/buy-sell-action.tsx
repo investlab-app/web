@@ -1,6 +1,7 @@
 // BuySellSection.tsx
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePostHog } from 'posthog-js/react';
 import { TabsContent } from '@radix-ui/react-tabs';
 import { IconChevronDown } from '@tabler/icons-react';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
@@ -28,6 +29,20 @@ export const BuySellSection = ({
   onModeToggle,
 }: BuySellSectionProps) => {
   const { t } = useTranslation();
+  const posthog = usePostHog();
+
+  const handleTradeAction = (actionType: 'buy' | 'sell') => {
+    posthog.capture('trade_action', {
+      action_type: actionType,
+      mode,
+      value,
+      derivedValue,
+      price: mode === 'price' ? value : derivedValue,
+      volume: mode === 'volume' ? value : derivedValue,
+    });
+    // NOTE: This is where the actual buy/sell logic would be triggered.
+  };
+
   const handleInputChange = (val: number | null | undefined) => {
     if (typeof val === 'number' && !isNaN(val)) {
       onValueChange(val);
@@ -83,10 +98,16 @@ export const BuySellSection = ({
             </div>
 
             <div className="flex gap-3 mt-4">
-              <Button className="bg-green-600 hover:bg-green-700 flex-1">
+              <Button
+                className="bg-green-600 hover:bg-green-700 flex-1"
+                onClick={() => handleTradeAction('buy')}
+              >
                 {t('instruments.buy')}
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700  flex-1">
+              <Button
+                className="bg-red-600 hover:bg-red-700  flex-1"
+                onClick={() => handleTradeAction('sell')}
+              >
                 {t('instruments.sell')}
               </Button>
             </div>
