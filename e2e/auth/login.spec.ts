@@ -24,5 +24,8 @@ test('login', async ({ page }) => {
 
   await expect(page).toHaveURL('/');
 
+  // users email is shown in the sidebar
+  await expect(page.getByText(user.email_address[0])).toBeVisible();
+
   await cleanCurrentClerkUser(page);
 });
