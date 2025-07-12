@@ -31,5 +31,5 @@ test('example', async ({ page }) => {
 test.afterAll(async () => {
   if (!user) throw new Error('User not created');
 
-  await cleanClerkUser(user!.id);
+  await cleanClerkUser(user.id);
 });
