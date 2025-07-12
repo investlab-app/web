@@ -33,6 +33,7 @@ export function EmailVerificationForm({
       if (!isLoaded) {
         navigate({
           to: '.',
+          replace: true,
           search: { error: t('auth.please_try_again_later') },
         });
 
@@ -68,6 +69,7 @@ export function EmailVerificationForm({
           (e) => {
             navigate({
               to: '.',
+              replace: true,
               search: { error: e },
             });
           }

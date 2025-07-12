@@ -33,6 +33,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
       if (!isLoaded) {
         navigate({
           to: '.',
+          replace: true,
           search: { error: t('auth.please_try_again_later') },
         });
         return;
@@ -71,6 +72,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
           (e) => {
             navigate({
               to: '.',
+              replace: true,
               search: { error: e },
             });
           }

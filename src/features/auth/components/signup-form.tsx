@@ -36,6 +36,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
       if (!isLoaded) {
         navigate({
           to: '.',
+          replace: true,
           search: { error: t('auth.please_try_again_later') },
         });
         return;
@@ -65,6 +66,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
       if (signUpResult.isErr()) {
         navigate({
           to: '.',
+          replace: true,
           search: { error: signUpResult.error },
         });
         return;
@@ -91,6 +93,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
       if (prepareEmailAddressVerificationResult.isErr()) {
         navigate({
           to: '.',
+          replace: true,
           search: { error: prepareEmailAddressVerificationResult.error },
         });
         return;
