@@ -45,6 +45,11 @@ const enAuth = {
   last_name_required: 'Last name is required',
   password_required: 'Password is required',
   code: 'Code',
+  ssoCallback: {
+    title: 'Verifying...',
+    description:
+      'Please wait while we sign you in securely with your provider.',
+  },
 };
 
 export default enAuth;

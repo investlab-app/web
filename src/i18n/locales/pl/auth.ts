@@ -47,6 +47,11 @@ const plAuth = {
   last_name_required: 'Nazwisko jest wymagane',
   password_required: 'Hasło jest wymagane',
   code: 'Kod',
+  ssoCallback: {
+    title: 'Weryfikujemy...',
+    description:
+      'Proszę czekać, podczas gdy bezpiecznie logujemy Cię za pomocą dostawcy.',
+  },
 };
 
 export default plAuth;

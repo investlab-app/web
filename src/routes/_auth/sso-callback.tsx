@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
+import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardDescription,
@@ -9,6 +10,8 @@ import {
 import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
 
 const SSOCallback = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <AuthenticateWithRedirectCallback />
@@ -16,10 +19,10 @@ const SSOCallback = () => {
         <CardHeader className="flex flex-col items-center gap-2 border-b-0">
           <LoadingSpinner className="w-8 h-8 text-neutral-100 mb-2" />
           <CardTitle className="text-lg text-neutral-100 mb-1">
-            Processing SSO Callback
+            {t('auth.ssoCallback.title')}
           </CardTitle>
           <CardDescription className="text-neutral-400 text-center max-w-xs">
-            Please wait while we sign you in securely with your provider.
+            {t('auth.ssoCallback.description')}
           </CardDescription>
         </CardHeader>
       </Card>
