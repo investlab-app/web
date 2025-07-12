@@ -13,7 +13,6 @@ export default [
   ...pluginQuery.configs['flat/recommended'],
   {
     files: ['**/*.{jsx,ts,tsx}'],
-    ignores: ['playwright-report/**/*', 'test-results/**/*'],
     plugins: {
       'react-hooks': reactHooks,
       'react-you-might-not-need-an-effect': youMightNotNeedAnEffect,
@@ -22,8 +21,5 @@ export default [
       ...reactHooks.configs['recommended-latest'].rules,
       'react-you-might-not-need-an-effect/you-might-not-need-an-effect': 'warn',
     },
-  },
-  {
-    ignores: ['playwright-report/**/*', 'test-results/**/*', 'e2e/**/*'],
   },
 ];
