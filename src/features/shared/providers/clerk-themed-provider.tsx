@@ -49,9 +49,6 @@ export function ClerkThemedProvider({
       publishableKey={clerkPubKey}
       appearance={{
         baseTheme: clerkTheme,
-        variables: {
-          colorBackground: '#18181b',
-        },
       }}
       localization={localization}
     >
