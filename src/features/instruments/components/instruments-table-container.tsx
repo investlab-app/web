@@ -61,7 +61,7 @@ const InstrumentsTableContainer = ({
 
   const tickersSet = useMemo(
     () => {
-      return new Set(tickers);
+      return new Set(tickers.map((ticker) => `PRICE_UPDATE_${ticker}`));
     },
     [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
   );

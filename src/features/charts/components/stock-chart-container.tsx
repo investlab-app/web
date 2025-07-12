@@ -58,7 +58,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const loadStockData = useLoadStockChartData();
 
   const { cleanup } = useSSE({
-    events: new Set([ticker]),
+    events: new Set([`PRICE_UPDATE_${ticker}`]),
     callback: (eventData) => {
       let jsonData;
       try {
