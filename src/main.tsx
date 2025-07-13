@@ -3,6 +3,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
+import { tryLoadAndStartRecorder } from '@alwaysmeticulous/recorder-loader';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import reportWebVitals from './reportWebVitals.ts';
@@ -43,30 +44,45 @@ if (!POSTHOG_HOST) {
 
 const queryClient = new QueryClient();
 
-const rootElement = document.getElementById('app');
-if (rootElement && !rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <StrictMode>
-      <ThemeProvider>
-        <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
-          <PostHogProvider
-            apiKey={POSTHOG_KEY}
-            options={{ api_host: POSTHOG_HOST }}
-          >
-            <QueryClientProvider client={queryClient}>
-              <SSEProvider>
-                <RouterProvider router={router} />
-              </SSEProvider>
-            </QueryClientProvider>
-          </PostHogProvider>
-        </ClerkThemedProvider>
-      </ThemeProvider>
-    </StrictMode>
-  );
+async function startApp() {
+  // Record all sessions on localhost, staging stacks and preview URLs
+  if (!import.meta.env.PROD) {
+    // Start the Meticulous recorder before you initialise your app.
+    // Note: all errors are caught and logged, so no need to surround with try/catch
+    await tryLoadAndStartRecorder({
+      recordingToken: 'sMZ4lrHXVO7hq0IH85aPiFyZRNIvgDMu7YSDqnVM',
+      isProduction: false,
+    });
+  }
+
+  // Initalise app after the Meticulous recorder is ready, e.g.
+  const rootElement = document.getElementById('app');
+  if (rootElement && !rootElement.innerHTML) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+      <StrictMode>
+        <ThemeProvider>
+          <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
+            <PostHogProvider
+              apiKey={POSTHOG_KEY}
+              options={{ api_host: POSTHOG_HOST }}
+            >
+              <QueryClientProvider client={queryClient}>
+                <SSEProvider>
+                  <RouterProvider router={router} />
+                </SSEProvider>
+              </QueryClientProvider>
+            </PostHogProvider>
+          </ClerkThemedProvider>
+        </ThemeProvider>
+      </StrictMode>
+    );
+  }
+
+  // If you want to start measuring performance in your app, pass a function
+  // to log results (for example: reportWebVitals(console.log))
+  // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+  reportWebVitals();
 }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+startApp();

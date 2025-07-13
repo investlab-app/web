@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@alwaysmeticulous/recorder-loader':
+        specifier: ^2.224.0
+        version: 2.224.0
       '@clerk/clerk-react':
         specifier: ^5.32.0
         version: 5.32.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -218,6 +221,17 @@ importers:
         version: 5.0.3
 
 packages:
+
+  '@alwaysmeticulous/api@2.224.0':
+    resolution: {integrity: sha512-jX40lYMkaMO+hEgqazQN3C7gGmq2Vwkef4FdVqe0Nvq88LI9UMX8punX14i64NOTehcknjZ54e9LKHeJOK90pw==}
+    engines: {node: '>= 12'}
+
+  '@alwaysmeticulous/recorder-loader@2.224.0':
+    resolution: {integrity: sha512-LbuCkDvK7O9ldP4S8B18YOO1WYu0rVx3Ggqv0TxVnGirrbpfZ5wwnLbCkXlupBzC06eHJrk7/jIBNYum1wIeJA==}
+
+  '@alwaysmeticulous/sdk-bundles-api@2.224.0':
+    resolution: {integrity: sha512-yiu3oqGfiCattRK5c9SNSLz/WxQy2QJnro8/UkU1VwHqKh+RonI8RPkAncVAwLQVWAoNhAP6RuGtxv3r+KSw/g==}
+    engines: {node: '>= 12'}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -3264,6 +3278,16 @@ packages:
     resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
 
 snapshots:
+
+  '@alwaysmeticulous/api@2.224.0': {}
+
+  '@alwaysmeticulous/recorder-loader@2.224.0':
+    dependencies:
+      '@alwaysmeticulous/sdk-bundles-api': 2.224.0
+
+  '@alwaysmeticulous/sdk-bundles-api@2.224.0':
+    dependencies:
+      '@alwaysmeticulous/api': 2.224.0
 
   '@ampproject/remapping@2.3.0':
     dependencies:

@@ -1,0 +1,60 @@
+name: Meticulous
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+  workflow_dispatch: {}
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: read
+
+jobs:
+  test:
+    name: Meticulous
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}
+
+      - name: Setup and Build
+        uses: ./.github/actions/setup-and-build
+        with:
+          node-version: '20'
+          fetch-depth: '0'
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          VITE_PUBLIC_POSTHOG_KEY: ${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}
+          VITE_PUBLIC_POSTHOG_HOST: ${{ secrets.VITE_PUBLIC_POSTHOG_HOST }}
+
+      - name: Run Meticulous tests
+        uses: alwaysmeticulous/report-diffs-action/upload-assets@v1
+        with:
+          api-token: ${{ secrets.METICULOUS_API_TOKEN }}
+          app-directory: 'dist'
