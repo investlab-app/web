@@ -3,6 +3,7 @@ import { LanguageToggle } from './language-toggle';
 import { Separator } from '@/features/shared/components/ui/separator';
 import { SidebarTrigger } from '@/features/shared/components/ui/sidebar';
 import { ThemeToggle } from '@/features/shared/components/mode-toggle';
+import { NetworkStatusIndicator } from '../../../shared/components/network-status-indicator';
 
 export function SiteHeader() {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ export function SiteHeader() {
         />
         <h1 className="text-base font-medium">{t('common.app_name')}</h1>
         <div className="ml-auto flex items-center gap-2">
+          <NetworkStatusIndicator />
           <LanguageToggle />
           <ThemeToggle />
         </div>

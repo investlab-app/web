@@ -8,6 +8,8 @@ import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import reportWebVitals from './reportWebVitals.ts';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
+import { PWAUpdater } from './shared/components/pwa-updater';
+import { PWAInstallPrompt } from './shared/components/pwa-install-prompt';
 import './i18n/config.ts';
 import './styles.css';
 
@@ -57,6 +59,8 @@ if (rootElement && !rootElement.innerHTML) {
             <QueryClientProvider client={queryClient}>
               <SSEProvider>
                 <RouterProvider router={router} />
+                <PWAUpdater />
+                <PWAInstallPrompt />
               </SSEProvider>
             </QueryClientProvider>
           </PostHogProvider>
