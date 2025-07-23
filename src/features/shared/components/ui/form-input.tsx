@@ -1,8 +1,9 @@
+import React from 'react';
 import { Input } from '@/features/shared/components/ui/input';
 import { Label } from '@/features/shared/components/ui/label';
 import { cn } from '@/features/shared/utils';
 
-interface FormInputProps {
+type FormInputProps = {
   id: string;
   label: string;
   type?: string;
@@ -10,7 +11,7 @@ interface FormInputProps {
   placeholder?: string;
   required?: boolean;
   className?: string;
-}
+} & React.ComponentProps<'input'>;
 
 export function FormInput({
   id,
@@ -20,6 +21,7 @@ export function FormInput({
   placeholder,
   required = false,
   className,
+  ...props
 }: FormInputProps) {
   return (
     <div className={cn('grid gap-2', className)}>
@@ -30,6 +32,7 @@ export function FormInput({
         name={name}
         placeholder={placeholder}
         required={required}
+        {...props}
       />
     </div>
   );

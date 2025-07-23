@@ -3,6 +3,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
+import { useUser } from '@clerk/clerk-react';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import reportWebVitals from './reportWebVitals.ts';
@@ -13,11 +14,13 @@ import './styles.css';
 
 const router = createRouter({
   routeTree,
-  context: {},
-  defaultPreload: 'intent',
-  scrollRestoration: true,
-  defaultStructuralSharing: true,
-  defaultPreloadStaleTime: 0,
+  context: {
+    user: {
+      isLoaded: false,
+      isSignedIn: undefined,
+      user: undefined,
+    },
+  },
 });
 
 declare module '@tanstack/react-router' {
@@ -56,7 +59,7 @@ if (rootElement && !rootElement.innerHTML) {
           >
             <QueryClientProvider client={queryClient}>
               <SSEProvider>
-                <RouterProvider router={router} />
+                <App />
               </SSEProvider>
             </QueryClientProvider>
           </PostHogProvider>
@@ -64,6 +67,11 @@ if (rootElement && !rootElement.innerHTML) {
       </ThemeProvider>
     </StrictMode>
   );
+}
+
+function App() {
+  const user = useUser();
+  return <RouterProvider router={router} context={{ user }} />;
 }
 
 // If you want to start measuring performance in your app, pass a function

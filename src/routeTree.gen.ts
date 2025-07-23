@@ -9,43 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VerifyEmailRouteImport } from './routes/verify-email'
-import { Route as SsoFailCallbackRouteImport } from './routes/sso-fail-callback'
-import { Route as SsoCallbackRouteImport } from './routes/sso-callback'
-import { Route as SignupPageRouteImport } from './routes/signup-page'
-import { Route as LoginPageRouteImport } from './routes/login-page'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InstrumentsIndexRouteImport } from './routes/instruments/index'
+import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
+import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
-const VerifyEmailRoute = VerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SsoFailCallbackRoute = SsoFailCallbackRouteImport.update({
-  id: '/sso-fail-callback',
-  path: '/sso-fail-callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SsoCallbackRoute = SsoCallbackRouteImport.update({
-  id: '/sso-callback',
-  path: '/sso-callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupPageRoute = SignupPageRouteImport.update({
-  id: '/signup-page',
-  path: '/signup-page',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginPageRoute = LoginPageRouteImport.update({
-  id: '/login-page',
-  path: '/login-page',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/$not-found',
   path: '/$not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -58,36 +37,54 @@ const InstrumentsIndexRoute = InstrumentsIndexRouteImport.update({
   path: '/instruments/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthSsoCallbackRoute = AuthSsoCallbackRouteImport.update({
+  id: '/sso-callback',
+  path: '/sso-callback',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
-  '/sso-fail-callback': typeof SsoFailCallbackRoute
-  '/verify-email': typeof VerifyEmailRoute
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/sso-callback': typeof AuthSsoCallbackRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
   '/instruments': typeof InstrumentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
-  '/sso-fail-callback': typeof SsoFailCallbackRoute
-  '/verify-email': typeof VerifyEmailRoute
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/sso-callback': typeof AuthSsoCallbackRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
   '/instruments': typeof InstrumentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
-  '/login-page': typeof LoginPageRoute
-  '/signup-page': typeof SignupPageRoute
-  '/sso-callback': typeof SsoCallbackRoute
-  '/sso-fail-callback': typeof SsoFailCallbackRoute
-  '/verify-email': typeof VerifyEmailRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/signup': typeof AuthSignupRoute
+  '/_auth/sso-callback': typeof AuthSsoCallbackRoute
+  '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/instruments/': typeof InstrumentsIndexRoute
 }
 export interface FileRouteTypes {
@@ -95,87 +92,53 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
+    | '/login'
+    | '/signup'
     | '/sso-callback'
-    | '/sso-fail-callback'
     | '/verify-email'
     | '/instruments'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
+    | '/login'
+    | '/signup'
     | '/sso-callback'
-    | '/sso-fail-callback'
     | '/verify-email'
     | '/instruments'
   id:
     | '__root__'
     | '/'
+    | '/_auth'
     | '/$not-found'
-    | '/login-page'
-    | '/signup-page'
-    | '/sso-callback'
-    | '/sso-fail-callback'
-    | '/verify-email'
+    | '/_auth/login'
+    | '/_auth/signup'
+    | '/_auth/sso-callback'
+    | '/_auth/verify-email'
     | '/instruments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   NotFoundRoute: typeof NotFoundRoute
-  LoginPageRoute: typeof LoginPageRoute
-  SignupPageRoute: typeof SignupPageRoute
-  SsoCallbackRoute: typeof SsoCallbackRoute
-  SsoFailCallbackRoute: typeof SsoFailCallbackRoute
-  VerifyEmailRoute: typeof VerifyEmailRoute
   InstrumentsIndexRoute: typeof InstrumentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/verify-email': {
-      id: '/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof VerifyEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sso-fail-callback': {
-      id: '/sso-fail-callback'
-      path: '/sso-fail-callback'
-      fullPath: '/sso-fail-callback'
-      preLoaderRoute: typeof SsoFailCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sso-callback': {
-      id: '/sso-callback'
-      path: '/sso-callback'
-      fullPath: '/sso-callback'
-      preLoaderRoute: typeof SsoCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup-page': {
-      id: '/signup-page'
-      path: '/signup-page'
-      fullPath: '/signup-page'
-      preLoaderRoute: typeof SignupPageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login-page': {
-      id: '/login-page'
-      path: '/login-page'
-      fullPath: '/login-page'
-      preLoaderRoute: typeof LoginPageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/$not-found': {
       id: '/$not-found'
       path: '/$not-found'
       fullPath: '/$not-found'
       preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -192,17 +155,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstrumentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/verify-email': {
+      id: '/_auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/sso-callback': {
+      id: '/_auth/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof AuthSsoCallbackRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/signup': {
+      id: '/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
+interface AuthRouteRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+  AuthSsoCallbackRoute: typeof AuthSsoCallbackRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
+  AuthSsoCallbackRoute: AuthSsoCallbackRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   NotFoundRoute: NotFoundRoute,
-  LoginPageRoute: LoginPageRoute,
-  SignupPageRoute: SignupPageRoute,
-  SsoCallbackRoute: SsoCallbackRoute,
-  SsoFailCallbackRoute: SsoFailCallbackRoute,
-  VerifyEmailRoute: VerifyEmailRoute,
   InstrumentsIndexRoute: InstrumentsIndexRoute,
 }
 export const routeTree = rootRouteImport

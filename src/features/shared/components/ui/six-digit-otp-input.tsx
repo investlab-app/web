@@ -1,4 +1,3 @@
-// src/components/six-digit-otp-input.tsx
 import {
   InputOTP,
   InputOTPGroup,
@@ -9,11 +8,12 @@ import {
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  onBlur: () => void;
 };
 
-export function SixDigitOTPInput({ value, onChange }: Props) {
+export function SixDigitOTPInput({ value, onChange, onBlur }: Props) {
   return (
-    <InputOTP maxLength={6} value={value} onChange={onChange}>
+    <InputOTP maxLength={6} value={value} onChange={onChange} onBlur={onBlur}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />

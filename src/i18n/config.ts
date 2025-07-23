@@ -14,10 +14,13 @@ import plInvestor from './locales/pl/investor';
 import enSettings from './locales/en/settings';
 import plSettings from './locales/pl/settings';
 
+const browserLanguage = navigator.language;
+const defaultLanguage = browserLanguage.split('-')[0];
+
 i18n.use(initReactI18next).init({
-  lng: 'pl',
+  lng: defaultLanguage,
   fallbackLng: 'en',
-  debug: true,
+  debug: import.meta.env.DEV,
 
   interpolation: {
     escapeValue: false,

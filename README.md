@@ -1,7 +1,7 @@
-# stocks-web
+# InvestLab Web
 
-[![Test](https://github.com/wall-street-stocks/stocks-web/actions/workflows/test.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/test.yml)
-[![Dependency Analysis](https://github.com/wall-street-stocks/stocks-web/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/wall-street-stocks/stocks-web/actions/workflows/dependency-check.yml)
+[![Test](https://github.com/investlab-app/web/actions/workflows/test.yml/badge.svg)](https://github.com/investlab-app/web/actions/workflows/test.yml)
+[![Dependency Analysis](https://github.com/investlab-app/web/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/investlab-app/web/actions/workflows/dependency-check.yml)
 
 Welcome to your new TanStack app!
 
