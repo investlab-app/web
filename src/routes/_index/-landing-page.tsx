@@ -11,6 +11,8 @@ import {
 import { Button } from '@/features/shared/components/ui/button';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import { ThemeToggle } from '@/features/shared/components/mode-toggle';
+import { LanguageToggle } from '@/features/shared/components/language-toggle';
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -41,13 +43,18 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25" />
+      <div className="bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25">
+        {/* Language and theme toggles */}
+        <nav className="flex justify-end h-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
+        </nav>
 
+        {/* Hero Section */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="pt-20 pb-16 text-center lg:pt-32">
+          <div className="pt-10 pb-16 text-center lg:pt-16">
             <div className="mx-auto max-w-4xl">
               {/* Logo */}
               <div className="flex justify-center mb-8">
