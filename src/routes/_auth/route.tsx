@@ -1,5 +1,10 @@
 import { useUser } from '@clerk/clerk-react';
-import { Link, Outlet, createFileRoute, useNavigate } from '@tanstack/react-router';
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  useNavigate,
+} from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
