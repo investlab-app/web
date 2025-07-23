@@ -73,7 +73,7 @@
     "@playwright/test": "^1.53.2",
     "@tanstack/eslint-config": "^0.1.0",
     "@tanstack/eslint-plugin-query": "^5.81.2",
-    "@tanstack/eslint-plugin-router": "^1.125.0",
+    "@tanstack/eslint-plugin-router": "^1.129.7",
     "@tanstack/react-router-devtools": "^1.125.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
