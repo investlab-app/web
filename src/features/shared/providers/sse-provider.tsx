@@ -59,7 +59,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ symbols: events, connectionId }),
+        body: JSON.stringify({ events, connectionId }),
       });
       if (!response.ok) {
         throw new Error(
@@ -74,12 +74,12 @@ export function SSEProvider({ children }: SSEProviderParams) {
   const consume = useCallback(async () => {
     const token = await getToken();
     if (!token) {
-      console.error('No authentication token available');
+      console.warn('No authentication token available');
       return;
     }
 
     const params = new URLSearchParams();
-    params.append('symbols', '');
+    params.append('events', '');
     params.append('connectionId', store.state.connectionId);
     const url = `${baseUrl}/api/sse?${params.toString()}`;
 
@@ -93,7 +93,6 @@ export function SSEProvider({ children }: SSEProviderParams) {
           response.ok &&
           response.headers.get('content-type') === EventStreamContentType
         ) {
-          // syncBackend();
           return Promise.resolve();
         } else if (
           response.status >= 400 &&
@@ -107,11 +106,8 @@ export function SSEProvider({ children }: SSEProviderParams) {
       },
       onmessage: (msg) => {
         store.state.handlers.forEach((handler) => {
-          // if (Array.from(handler.events).some((event) => msg.event === event)) {
-          try {
+          if (Array.from(handler.events).some((event) => msg.event === event)) {
             handler.handler(msg.data);
-          } catch (error) {
-            console.error('Error handling SSE message:', error);
           }
         });
       },
