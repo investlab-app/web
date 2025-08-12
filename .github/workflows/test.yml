@@ -2,6 +2,9 @@ name: Test
 
 on:
   workflow_dispatch:
+    inputs:
+      backend_tag:
+        description: 'Backend image tag'
   push:
     branches:
       - main
@@ -10,9 +13,8 @@ on:
       - main
 
 jobs:
-  test:
-    name: Test
-    timeout-minutes: 60
+  frontend:
+    name: Frontend Tests
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -31,6 +33,72 @@ jobs:
         run: pnpm tsc --noEmit
       - name: Run unit tests with coverage
         run: pnpm test --coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  e2e:
+    name: E2E Tests
+    timeout-minutes: 60
+    runs-on: ubuntu-22.04
+    env:
+      POSTGRES_DB: template_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
+    needs: frontend
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      backend:
+        image: ghcr.io/investlab-app/backend:${{ github.event.inputs.backend_tag || 'latest' }}
+        env:
+          DEBUG: false
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ALLOWED_HOSTS: '*'
+          POSTGRES_HOST: db
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+          CORS_ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+          CLERK_JWKS_URL: ${{ secrets.CLERK_JWKS_URL }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_ISSUER: ${{ secrets.CLERK_ISSUER }}
+          POLYGON_SECRET_KEY: ${{ secrets.POLYGON_SECRET_KEY }}
+          ALPACA_PUBLIC_KEY: ${{ secrets.ALPACA_PUBLIC_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        ports:
+          - 8000:8000
+        options: >-
+          --health-cmd "curl -fsS http://localhost:8000/api/status/ || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup and build frontend
+        uses: ./.github/actions/setup-and-build
+        with:
+          node-version: '22'
+          pnpm-version: '10'
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
@@ -53,20 +121,13 @@ jobs:
         run: pnpm test:e2e
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
-          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          VITE_BACKEND_URL: http://localhost:8000
           VITE_PUBLIC_POSTHOG_KEY: ${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}
           VITE_PUBLIC_POSTHOG_HOST: ${{ secrets.VITE_PUBLIC_POSTHOG_HOST }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           CLERK_FRONTEND_API_URL: ${{ secrets.CLERK_FRONTEND_API_URL }}
           E2E_CLERK_USER_PASSWORD: ${{ secrets.E2E_CLERK_USER_PASSWORD }}
           E2E_CLERK_USER_EMAIL: ${{ secrets.E2E_CLERK_USER_EMAIL }}
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 30
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
