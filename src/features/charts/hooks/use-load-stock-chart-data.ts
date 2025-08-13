@@ -8,7 +8,7 @@ import {
   instrumentHistory,
 } from '../types/types';
 import type { InstrumentPriceProps } from '../types/types';
-import { formatDate } from '@/features/shared/utils';
+import { formatDate } from '@/features/shared/utils/date';
 import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
 type LoadResult = {

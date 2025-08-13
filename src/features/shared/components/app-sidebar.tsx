@@ -1,6 +1,7 @@
 import {
   IconDashboard,
   IconHelp,
+  IconHistory,
   IconListDetails,
   IconSettings,
 } from '@tabler/icons-react';
@@ -38,6 +39,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.stocks'),
         to: '/instruments',
         icon: IconListDetails,
+      },
+      {
+        title: t('common.transactions'),
+        to: '/transactions',
+        icon: IconHistory,
       },
     ],
     navSecondary: [

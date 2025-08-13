@@ -18,6 +18,8 @@ const plCommon = {
   error_loading_data: 'Błąd ładowania danych',
   save: 'Zapisz',
   cancel: 'Anuluj',
+  expand: 'Rozwiń',
+  collapse: 'Zwiń',
   intervals: {
     one_minute: '1 minuta',
     five_minutes: '5 minut',
@@ -26,6 +28,7 @@ const plCommon = {
     one_day: '1 dzień',
     one_week: '1 tydzień',
   },
+  transactions: 'Transakcje',
 };
 
 export default plCommon;
