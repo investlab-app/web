@@ -15,7 +15,9 @@ const InstrumentDetails = ({
 }: InstrumentDetailsProps) => {
   const { t } = useTranslation();
   if (isLoading) {
-    <div className="p-4 space-y-4 overflow-y-auto">{t('common.loading')}</div>;
+    return (
+      <div className="p-4 space-y-4 overflow-y-auto">{t('common.loading')}</div>
+    );
   }
 
   if (!instrument) {
