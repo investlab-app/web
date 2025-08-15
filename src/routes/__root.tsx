@@ -92,9 +92,8 @@ if (!POSTHOG_HOST) {
   throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
 }
 
-const queryClient = new QueryClient();
-
 function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
   return (
     <ThemeProvider>
       <ClerkThemedProvider>

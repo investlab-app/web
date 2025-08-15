@@ -1,25 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/tanstack-react-start';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
+import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
-export const investorStatsQueryOptions = (
-  getToken: () => Promise<string | null>
-) =>
-  queryOptions({
-    queryKey: ['investorStats'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token');
-      return fetchInvestorStats(token);
-    },
-  });
+export const investorStatsQueryOptions = authedQueryOptions({
+  queryKey: ['investorStats'],
+  queryFn: async (token) => {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    return fetchInvestorStats(token);
+  },
+});
 
 const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
   const { getToken } = useAuth();
-
   const { data: stats } = useSuspenseQuery(investorStatsQueryOptions(getToken));
 
   const tiles = [

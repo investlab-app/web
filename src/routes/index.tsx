@@ -1,15 +1,16 @@
 import { SignedIn, SignedOut } from '@clerk/tanstack-react-start';
 import { createFileRoute } from '@tanstack/react-router';
+import { isServer } from '@tanstack/react-query';
 import { LandingPage } from '@/routes/_index/-landing-page';
 import { Home } from '@/routes/_index/-home-page';
 import { investorStatsQueryOptions } from '@/features/home/components/account-overview-ribbon';
 
 export const Route = createFileRoute('/')({
   loader: async ({ context: { token, queryClient } }) => {
-    if (!token) {
-      throw new Error('No auth token');
+    if (isServer) {
+      return await queryClient.ensureQueryData(investorStatsQueryOptions(token));
     }
-    await queryClient.ensureQueryData(investorStatsQueryOptions(() => Promise.resolve(token)));
+    return;
   },
   component: Index,
 });

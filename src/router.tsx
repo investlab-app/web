@@ -5,7 +5,9 @@ import { DefaultCatchBoundary } from './components/DefaultCatchBoundary';
 import { NotFound } from './components/NotFound';
 
 export function createRouter() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+  });
   const router = createTanStackRouter({
     routeTree,
     defaultPreload: 'intent',

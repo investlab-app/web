@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { AppSidebar } from '@/features/shared/components/app-sidebar';
 import { SiteHeader } from '@/features/shared/components/site-header';
 import {
@@ -15,7 +16,9 @@ export const Home = () => (
     <SidebarInset>
       <SiteHeader />
       <div className="flex flex-col gap-4 p-4">
+        {/* <Suspense fallback={<div>Loading...</div>}> */}
         <AccountOverviewRibbon />
+        {/* </Suspense> */}
         <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
           <AssetAllocationContainer />
           <AccountValueChartContainer />
