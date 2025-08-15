@@ -1,109 +1,135 @@
-import { createContext, use, useEffect, useMemo, useState } from 'react';
-import { FunctionOnce } from '@/lib/function-once';
+import { type } from 'arktype';
+import { Result } from 'neverthrow';
+import { createContext, use, useEffect, useState } from 'react';
+import { clientOnly, createIsomorphicFn } from '@tanstack/react-start';
+import { ScriptOnce } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 
-export type ResolvedTheme = 'dark' | 'light';
-export type Theme = ResolvedTheme | 'system';
-
-interface ThemeProviderProps {
-  children: React.ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
-}
-
-interface ThemeProviderState {
-  theme: Theme;
-  resolvedTheme: ResolvedTheme;
-  setTheme: (theme: Theme) => void;
-}
-
-const initialState: ThemeProviderState = {
-  theme: 'system',
-  resolvedTheme: 'light',
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
-
-const isBrowser = typeof window !== 'undefined';
-
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'conar.theme',
-}: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () =>
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      (isBrowser
-        ? (localStorage.getItem(storageKey) as Theme)
-        : defaultTheme) || defaultTheme
+export const userThemeType = type("'light' | 'dark' | 'system'");
+export type UserTheme = typeof userThemeType.infer;
+export const userThemeOrDefault = (input: unknown): UserTheme =>
+  Result.fromThrowable((x: unknown) => userThemeType.assert(x))(input).unwrapOr(
+    'system'
   );
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
+
+export const appThemeType = type("'light' | 'dark'");
+export type AppTheme = typeof appThemeType.infer;
+export const appThemeOrDefault = (input: unknown): AppTheme =>
+  Result.fromThrowable((x: unknown) => appThemeType.assert(x))(input).unwrapOr(
+    'light'
+  );
+
+const themeStorageKey = 'ui-theme';
+
+const getStoredUserTheme = createIsomorphicFn()
+  .server((): UserTheme => 'system')
+  .client((): UserTheme => {
+    const stored = localStorage.getItem(themeStorageKey);
+    return userThemeOrDefault(stored);
+  });
+
+const setStoredTheme = clientOnly((theme: UserTheme) => {
+  const validatedTheme = userThemeOrDefault(theme);
+  localStorage.setItem(themeStorageKey, validatedTheme);
+});
+
+const getSystemTheme = createIsomorphicFn()
+  .server((): AppTheme => 'light')
+  .client((): AppTheme => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  });
+
+const handleThemeChange = clientOnly((userTheme: UserTheme) => {
+  const validatedTheme = userThemeOrDefault(userTheme);
+
+  const root = document.documentElement;
+  root.classList.remove('light', 'dark', 'system');
+
+  if (validatedTheme === 'system') {
+    const systemTheme = getSystemTheme();
+    root.classList.add(systemTheme, 'system');
+  } else {
+    root.classList.add(validatedTheme);
+  }
+});
+
+const setupPreferredListener = clientOnly(() => {
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handler = () => handleThemeChange('system');
+  mediaQuery.addEventListener('change', handler);
+  return () => mediaQuery.removeEventListener('change', handler);
+});
+
+const themeScript = (function () {
+  function themeFn() {
+    try {
+      const storedTheme = localStorage.getItem('ui-theme') || 'system';
+      const validTheme = ['light', 'dark', 'system'].includes(storedTheme)
+        ? storedTheme
+        : 'system';
+
+      if (validTheme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+          .matches
+          ? 'dark'
+          : 'light';
+        document.documentElement.classList.add(systemTheme, 'system');
+      } else {
+        document.documentElement.classList.add(validTheme);
+      }
+    } catch {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
+        ? 'dark'
+        : 'light';
+      document.documentElement.classList.add(systemTheme, 'system');
+    }
+  }
+  return `(${themeFn.toString()})();`;
+})();
+
+type ThemeContextProps = {
+  userTheme: UserTheme;
+  appTheme: AppTheme;
+  setTheme: (theme: UserTheme) => void;
+};
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
+
+type ThemeProviderProps = {
+  children: ReactNode;
+};
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const [userTheme, setUserTheme] = useState<UserTheme>(getStoredUserTheme);
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    if (userTheme !== 'system') return;
+    return setupPreferredListener();
+  }, [userTheme]);
 
-    function updateTheme() {
-      root.classList.remove('light', 'dark');
+  const appTheme = userTheme === 'system' ? getSystemTheme() : userTheme;
 
-      if (theme === 'system') {
-        const systemTheme = mediaQuery.matches ? 'dark' : 'light';
-        setResolvedTheme(systemTheme);
-        root.classList.add(systemTheme);
-        return;
-      }
-
-      // eslint-disable-next-line react-you-might-not-need-an-effect/you-might-not-need-an-effect
-      setResolvedTheme(theme);
-      root.classList.add(theme);
-    }
-
-    mediaQuery.addEventListener('change', updateTheme);
-    updateTheme();
-
-    return () => mediaQuery.removeEventListener('change', updateTheme);
-  }, [theme]);
-
-  const value = useMemo(
-    () => ({
-      theme,
-      resolvedTheme,
-      setTheme: (newTheme: Theme) => {
-        localStorage.setItem(storageKey, newTheme);
-        setTheme(newTheme);
-      },
-    }),
-    [theme, resolvedTheme, storageKey]
-  );
+  const setTheme = (newUserTheme: UserTheme) => {
+    const validatedTheme = userThemeOrDefault(newUserTheme);
+    setUserTheme(validatedTheme);
+    setStoredTheme(validatedTheme);
+    handleThemeChange(validatedTheme);
+  };
 
   return (
-    <ThemeProviderContext value={value}>
-      <FunctionOnce param={storageKey}>
-        {(themeStorageKey) => {
-          const currentTheme: string | null =
-            localStorage.getItem(themeStorageKey);
+    <ThemeContext value={{ userTheme, appTheme, setTheme }}>
+      <ScriptOnce children={themeScript} />
 
-          if (
-            currentTheme === 'dark' ||
-            ((currentTheme === null || currentTheme === 'system') &&
-              window.matchMedia('(prefers-color-scheme: dark)').matches)
-          ) {
-            document.documentElement.classList.add('dark');
-          }
-        }}
-      </FunctionOnce>
       {children}
-    </ThemeProviderContext>
+    </ThemeContext>
   );
 }
 
-export function useTheme() {
-  const context = use(ThemeProviderContext);
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (context === undefined)
+export const useTheme = () => {
+  const context = use(ThemeContext);
+  if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
-
+  }
   return context;
-}
+};

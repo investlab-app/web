@@ -104,31 +104,32 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <ThemeProvider>
-      <ClerkThemedProvider>
-        <ConditionalProvider
-          condition={isDev}
-          provider={PostHogProvider}
-          providerProps={{
-            apiKey: POSTHOG_KEY!,
-            options: {
-              api_host: POSTHOG_HOST!,
-              loaded: (posthog) => {
-                if (isDev) posthog.opt_out_capturing();
+    <QueryClientProvider client={queryClient}>
+      {' '}
+      <ThemeProvider>
+        <ClerkThemedProvider>
+          <ConditionalProvider
+            condition={isDev}
+            provider={PostHogProvider}
+            providerProps={{
+              apiKey: POSTHOG_KEY!,
+              options: {
+                api_host: POSTHOG_HOST!,
+                loaded: (posthog) => {
+                  if (isDev) posthog.opt_out_capturing();
+                },
               },
-            },
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
+            }}
+          >
             <SSEProvider>
               <RootDocument>
                 <Outlet />
               </RootDocument>
             </SSEProvider>
-          </QueryClientProvider>
-        </ConditionalProvider>
-      </ClerkThemedProvider>
-    </ThemeProvider>
+          </ConditionalProvider>
+        </ClerkThemedProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -18,12 +18,12 @@ const languageMatcher = match.in<string>().match({
 export function ClerkThemedProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
   const localization = languageMatcher(i18n.language);
-  const { resolvedTheme } = useTheme();
+  const { appTheme } = useTheme();
 
   return (
     <ClerkProvider
       appearance={{
-        baseTheme: resolvedTheme === 'dark' ? dark : undefined,
+        baseTheme: appTheme === 'dark' ? dark : undefined,
       }}
       localization={localization}
     >
