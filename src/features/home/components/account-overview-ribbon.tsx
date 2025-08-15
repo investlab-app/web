@@ -5,7 +5,7 @@ import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
 
 export const investorStatsQueryOptions = (
-  getToken: () => Promise<string | null | undefined>
+  getToken: () => Promise<string | null>
 ) =>
   queryOptions({
     queryKey: ['investorStats'],

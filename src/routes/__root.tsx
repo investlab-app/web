@@ -6,11 +6,14 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router';
 import { TanStackDevtools } from '@tanstack/react-devtools';
+import { createServerFn } from '@tanstack/react-start';
 import { PostHogProvider } from 'posthog-js/react';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { getWebRequest } from '@tanstack/react-start/server';
+import { getAuth } from '@clerk/tanstack-react-start/server';
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary.js';
 import { NotFound } from '@/components/NotFound.js';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
@@ -19,9 +22,22 @@ import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-pr
 import { SSEProvider } from '@/features/shared/providers/sse-provider';
 import '@/i18n/config';
 
+const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
+  const { userId, getToken } = await getAuth(getWebRequest());
+  const token = await getToken();
+
+  return {
+    userId,
+    token,
+  };
+});
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
+  beforeLoad: async () => {
+    return fetchClerkAuth();
+  },
   head: () => ({
     meta: [
       {
