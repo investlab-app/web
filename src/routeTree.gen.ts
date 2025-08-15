@@ -9,15 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as InstrumentsIndexRouteImport } from './routes/instruments/index'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/$not-found',
   path: '/$not-found',
@@ -30,11 +35,6 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InstrumentsIndexRoute = InstrumentsIndexRouteImport.update({
-  id: '/instruments/',
-  path: '/instruments/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
@@ -57,76 +57,90 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthedInstrumentsRouteRoute = AuthedInstrumentsRouteRouteImport.update({
+  id: '/instruments',
+  path: '/instruments',
+  getParentRoute: () => AuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
+  '/instruments': typeof AuthedInstrumentsRouteRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments': typeof InstrumentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
+  '/instruments': typeof AuthedInstrumentsRouteRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments': typeof InstrumentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/instruments': typeof AuthedInstrumentsRouteRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments/': typeof InstrumentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$not-found'
+    | '/instruments'
     | '/login'
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
-    | '/instruments'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$not-found'
+    | '/instruments'
     | '/login'
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
-    | '/instruments'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/$not-found'
+    | '/_authed'
+    | '/_authed/instruments'
     | '/_auth/login'
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
-    | '/instruments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   NotFoundRoute: typeof NotFoundRoute
-  InstrumentsIndexRoute: typeof InstrumentsIndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$not-found': {
       id: '/$not-found'
       path: '/$not-found'
@@ -146,13 +160,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/instruments/': {
-      id: '/instruments/'
-      path: '/instruments'
-      fullPath: '/instruments'
-      preLoaderRoute: typeof InstrumentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/verify-email': {
@@ -183,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_authed/instruments': {
+      id: '/_authed/instruments'
+      path: '/instruments'
+      fullPath: '/instruments'
+      preLoaderRoute: typeof AuthedInstrumentsRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
@@ -204,11 +218,22 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface AuthedRouteChildren {
+  AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   NotFoundRoute: NotFoundRoute,
-  InstrumentsIndexRoute: InstrumentsIndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

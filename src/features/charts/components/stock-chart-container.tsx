@@ -6,8 +6,8 @@ import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
 import { timeIntervals } from '../utils/time-ranges';
-import { StockChart } from './stock-chart';
 import { ChartErrorMessage } from './chart-error-message';
+import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
 import {
   Card,
@@ -16,17 +16,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/features/shared/components/ui/card';
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/features/shared/components/ui/select';
-import { useSSE } from '@/features/shared/hooks/use-sse';
+} from '@/components/ui/select';
+import { useSSE } from '@/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
-import { cn } from '@/features/shared/utils';
+import { cn } from '@/utils/styles';
 
 type StockChartProps = {
   ticker: string;

@@ -6,9 +6,9 @@ import { useDebounce } from '../hooks/use-debounce';
 import { livePriceDataDTO } from '../types/types';
 import InstrumentTable from './instruments-table';
 import type { Instrument } from '../types/types';
-import { Button } from '@/features/shared/components/ui/button';
-import SearchInput from '@/features/shared/components/ui/search-input';
-import { useSSE } from '@/features/shared/hooks/use-sse';
+import { Button } from '@/components/ui/button';
+import SearchInput from '@/components/ui/search-input';
+import { useSSE } from '@/hooks/use-sse';
 
 const PAGE_SIZE = 10;
 

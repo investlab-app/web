@@ -3,48 +3,69 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { useUser } from '@clerk/clerk-react';
+import { ClerkLoaded, useAuth, useUser } from '@clerk/clerk-react';
 import { routeTree } from './routeTree.gen';
-import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
-import reportWebVitals from './reportWebVitals.ts';
-import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
-import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
+import { SSEProvider } from './providers/sse-provider.tsx';
+import { ConditionalProvider } from './providers/conditional-provider.tsx';
+import {
+  CLERK_PUBLIC_KEY,
+  IS_PROD,
+  POSTHOG_HOST,
+  POSTHOG_KEY,
+} from './utils/constants.ts';
+import { ErrorComponent } from './components/error-component.tsx';
+import { ThemeProvider } from '@/components/theme-provider.tsx';
+import { ClerkThemedProvider } from '@/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
 import './styles.css';
 
-const router = createRouter({
-  routeTree,
-  context: {
-    user: {
-      isLoaded: false,
-      isSignedIn: undefined,
-      user: undefined,
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
     },
   },
 });
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
+export type RouterContext = {
+  auth: ReturnType<typeof useAuth>;
+  user: ReturnType<typeof useUser>;
+  queryClient: QueryClient;
+};
+
+const router = createRouter({
+  routeTree,
+  context: {
+    auth: undefined!,
+    user: undefined!,
+    queryClient,
+  },
+  defaultErrorComponent: ({ error }) => {
+    return <ErrorComponent error={error} />;
+  },
+});
+
+export function waitFor(conditionFn: () => boolean, interval = 100) {
+  return new Promise<void>((resolve) => {
+    const check = () => {
+      if (conditionFn()) {
+        resolve();
+      } else {
+        setTimeout(check, interval);
+      }
+    };
+    check();
+  });
 }
 
-const CLERK_PUBLIC_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-if (!CLERK_PUBLIC_KEY) {
-  throw new Error('Missing Clerk Publishable Key');
-}
+function App() {
+  const auth = useAuth();
+  const user = useUser();
 
-const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
-if (!POSTHOG_KEY) {
-  throw new Error('VITE_PUBLIC_POSTHOG_KEY is not defined');
+  return (
+    <RouterProvider context={{ auth, user, queryClient }} router={router} />
+  );
 }
-
-const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
-if (!POSTHOG_HOST) {
-  throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
-}
-
-const queryClient = new QueryClient();
 
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
@@ -53,28 +74,24 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <ThemeProvider>
         <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
-          <PostHogProvider
-            apiKey={POSTHOG_KEY}
-            options={{ api_host: POSTHOG_HOST }}
+          <ConditionalProvider
+            condition={!IS_PROD}
+            provider={PostHogProvider}
+            providerProps={{
+              apiKey: POSTHOG_KEY,
+              options: { api_host: POSTHOG_HOST },
+            }}
           >
             <QueryClientProvider client={queryClient}>
               <SSEProvider>
-                <App />
+                <ClerkLoaded>
+                  <App />
+                </ClerkLoaded>
               </SSEProvider>
             </QueryClientProvider>
-          </PostHogProvider>
+          </ConditionalProvider>
         </ClerkThemedProvider>
       </ThemeProvider>
     </StrictMode>
   );
 }
-
-function App() {
-  const user = useUser();
-  return <RouterProvider router={router} context={{ user }} />;
-}
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

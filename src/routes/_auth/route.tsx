@@ -6,7 +6,11 @@ import {
   useNavigate,
 } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import { InvestLabLogo } from '@/components/investlab-logo';
+
+export const Route = createFileRoute('/_auth')({
+  component: RouteComponent,
+});
 
 function RouteComponent() {
   const { isLoaded, isSignedIn } = useUser();
@@ -33,7 +37,3 @@ function RouteComponent() {
     </div>
   );
 }
-
-export const Route = createFileRoute('/_auth')({
-  component: RouteComponent,
-});

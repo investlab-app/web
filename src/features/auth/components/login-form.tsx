@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { match, type } from 'arktype';
 import { ErrorAlert } from './error-alert';
-import { useAppForm } from '@/features/shared/hooks/use-app-form';
+import { useAppForm } from '@/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
 import {
   Card,
@@ -12,8 +12,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/features/shared/components/ui/card';
-import { Divider } from '@/features/shared/components/ui/divider';
+} from '@/components/ui/card';
+import { Divider } from '@/components/ui/divider';
 
 interface LoginFormProps {
   pageError?: string;

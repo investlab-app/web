@@ -5,14 +5,14 @@ import { ResultAsync, err, ok } from 'neverthrow';
 import { useTranslation } from 'react-i18next';
 import { BackButton } from './back-button';
 import { ErrorAlert } from './error-alert';
-import { useAppForm } from '@/features/shared/hooks/use-app-form';
+import { useAppForm } from '@/hooks/use-app-form';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/features/shared/components/ui/card';
+} from '@/components/ui/card';
 
 interface EmailVerificationFormProps {
   pageError?: string;

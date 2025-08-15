@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useRouter } from '@tanstack/react-router';
-import { Button } from '@/features/shared/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 export const BackButton = (props: React.ComponentProps<typeof Button>) => {
   const { t } = useTranslation();

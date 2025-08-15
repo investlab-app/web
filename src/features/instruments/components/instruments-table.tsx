@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/features/shared/components/ui/table';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { cn } from '@/features/shared/utils';
+} from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/utils/styles';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;

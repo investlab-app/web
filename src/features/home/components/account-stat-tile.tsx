@@ -6,9 +6,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/features/shared/components/ui/card';
-import { cn } from '@/features/shared/utils';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
+} from '@/components/ui/card';
+import { cn } from '@/utils/styles';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface StatTileProps {
   title: string;

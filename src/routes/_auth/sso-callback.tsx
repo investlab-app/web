@@ -6,10 +6,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/features/shared/components/ui/card';
-import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
+} from '@/components/ui/card';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
-const SSOCallback = () => {
+export const Route = createFileRoute('/_auth/sso-callback')({
+  component: SSOCallback,
+});
+
+function SSOCallback() {
   const { t } = useTranslation();
 
   return (
@@ -28,8 +32,4 @@ const SSOCallback = () => {
       </Card>
     </>
   );
-};
-
-export const Route = createFileRoute('/_auth/sso-callback')({
-  component: SSOCallback,
-});
+}

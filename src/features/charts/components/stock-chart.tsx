@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { createChartOptions } from '../utils/chart-options';
 import type { InstrumentPriceProps } from '../types/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type SeriesData = {
   value: number;
@@ -36,6 +37,10 @@ export const StockChart = ({
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
   const chartRef = useRef<ReactECharts | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // eslint-disable-next-line react-you-might-not-need-an-effect/you-might-not-need-an-effect
+  useEffect(() => setMounted(true), []);
 
   const chartOptions = useMemo(
     () =>
@@ -95,6 +100,10 @@ export const StockChart = ({
       }
     );
   }, [liveUpdateValue]);
+
+  if (!mounted) {
+    return <Skeleton className="h-[400px] w-full" />;
+  }
 
   return (
     <ReactECharts

@@ -1,0 +1,26 @@
+import { AppSidebar } from '@/components/app-sidebar';
+import { SiteHeader } from '@/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
+import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
+import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';
+import AssetTableContainer from '@/features/home/components/asset-table-container';
+
+export function Dashboard() {
+  return (
+    <SidebarProvider>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-col gap-4 p-4">
+          <AccountOverviewRibbon />
+          <div className=" grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <AssetAllocationContainer />
+            <AccountValueChartContainer />
+          </div>
+          <AssetTableContainer />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
