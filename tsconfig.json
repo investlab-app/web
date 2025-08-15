@@ -5,7 +5,7 @@
     "playwright.config.ts",
     "vite.config.ts",
     "vitest.config.ts"
-  ],
+, "srd-old-routes/index-new.tsx"  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

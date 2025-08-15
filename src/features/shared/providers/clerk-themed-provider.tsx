@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { ClerkProvider } from '@clerk/tanstack-react-start';
 import { dark } from '@clerk/themes';
 import { enUS, plPL } from '@clerk/localizations';
 import { useTranslation } from 'react-i18next';
@@ -16,39 +15,15 @@ const languageMatcher = match.in<string>().match({
   },
 });
 
-export function ClerkThemedProvider({
-  children,
-  publicKey: clerkPubKey,
-}: {
-  children: ReactNode;
-  publicKey: string;
-}) {
+export function ClerkThemedProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
   const localization = languageMatcher(i18n.language);
-
-  const { theme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  );
-  const effectiveTheme = theme === 'system' ? systemTheme : theme;
-  const clerkTheme = effectiveTheme === 'dark' ? dark : undefined;
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      setSystemTheme(e.matches ? 'dark' : 'light');
-    };
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
-    return () => {
-      mediaQuery.removeEventListener('change', handleSystemThemeChange);
-    };
-  }, []);
+  const { resolvedTheme } = useTheme();
 
   return (
     <ClerkProvider
-      publishableKey={clerkPubKey}
       appearance={{
-        baseTheme: clerkTheme,
+        baseTheme: resolvedTheme === 'dark' ? dark : undefined,
       }}
       localization={localization}
     >

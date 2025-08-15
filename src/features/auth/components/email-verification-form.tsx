@@ -1,4 +1,4 @@
-import { useSignUp } from '@clerk/clerk-react';
+import { useSignUp } from '@clerk/tanstack-react-start';
 import { useNavigate } from '@tanstack/react-router';
 import { match, type } from 'arktype';
 import { ResultAsync, err, ok } from 'neverthrow';

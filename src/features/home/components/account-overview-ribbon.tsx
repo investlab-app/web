@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
 

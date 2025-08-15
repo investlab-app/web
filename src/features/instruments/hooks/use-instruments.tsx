@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
 import type { Instrument } from '../types/types';
 import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';

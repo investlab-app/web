@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { SignedIn, SignedOut } from '@clerk/tanstack-react-start';
 import { createFileRoute } from '@tanstack/react-router';
 import { LandingPage } from '@/routes/_index/-landing-page';
 import { Home } from '@/routes/_index/-home-page';

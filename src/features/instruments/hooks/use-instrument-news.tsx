@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { fetchInstrumentNews } from '../queries/fetch-instrument-news';
 import type { NewsResponse } from '../queries/fetch-instrument-news';
 

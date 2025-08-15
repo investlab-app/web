@@ -1,4 +1,4 @@
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { type } from 'arktype';

@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NotFoundRouteImport } from './routes/$not-found'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InstrumentsIndexRouteImport } from './routes/instruments/index'
@@ -18,11 +17,6 @@ import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
-const NotFoundRoute = NotFoundRouteImport.update({
-  id: '/$not-found',
-  path: '/$not-found',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -60,7 +54,6 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$not-found': typeof NotFoundRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
@@ -69,7 +62,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$not-found': typeof NotFoundRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
@@ -80,7 +72,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
-  '/$not-found': typeof NotFoundRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
@@ -91,7 +82,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$not-found'
     | '/login'
     | '/signup'
     | '/sso-callback'
@@ -100,7 +90,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$not-found'
     | '/login'
     | '/signup'
     | '/sso-callback'
@@ -110,7 +99,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
-    | '/$not-found'
     | '/_auth/login'
     | '/_auth/signup'
     | '/_auth/sso-callback'
@@ -121,19 +109,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  NotFoundRoute: typeof NotFoundRoute
   InstrumentsIndexRoute: typeof InstrumentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/$not-found': {
-      id: '/$not-found'
-      path: '/$not-found'
-      fullPath: '/$not-found'
-      preLoaderRoute: typeof NotFoundRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -207,7 +187,6 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  NotFoundRoute: NotFoundRoute,
   InstrumentsIndexRoute: InstrumentsIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,4 +1,4 @@
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { UserButton, useUser } from '@clerk/tanstack-react-start';
 import React from 'react';
 import {
   SidebarMenu,

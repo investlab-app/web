@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
+import { AuthenticateWithRedirectCallback } from '@clerk/tanstack-react-start';
 import { useTranslation } from 'react-i18next';
 import {
   Card,

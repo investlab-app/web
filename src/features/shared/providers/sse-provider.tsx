@@ -1,5 +1,5 @@
 import { Store } from '@tanstack/react-store';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { createContext, useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import {

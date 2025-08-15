@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import AssetTable from './asset-table';

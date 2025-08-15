@@ -1,6 +1,6 @@
 import { IconPlus, IconWallet } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';

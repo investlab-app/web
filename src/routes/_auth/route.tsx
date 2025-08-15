@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/tanstack-react-start';
 import {
   Link,
   Outlet,

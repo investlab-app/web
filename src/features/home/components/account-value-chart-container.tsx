@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/tanstack-react-start';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { StockChart } from '../../charts/components/stock-chart';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';

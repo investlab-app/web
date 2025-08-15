@@ -2,7 +2,7 @@
  * Utilities to manage authentication provided by Clerk.
  *
  * A lot of utilities directly use the Clerk frontend and backend API since:
- * - The `@clerk/clerk-react` package cannot be used in this `Playwright`
+ * - The `@clerk/tanstack-react-start` package cannot be used in this `Playwright`
  *   (non-React) environment, so its hooks and utilities are unavailable.
  * - The `@clerk/clerk-js` is also hard to use in this environment.
  */

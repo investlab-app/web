@@ -1,4 +1,4 @@
-import { useSignIn } from '@clerk/clerk-react';
+import { useSignIn } from '@clerk/tanstack-react-start';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
