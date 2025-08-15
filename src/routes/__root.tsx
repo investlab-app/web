@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
+
+import * as React from 'react';
 import {
   HeadContent,
   Outlet,
@@ -6,122 +8,189 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router';
 import { TanStackDevtools } from '@tanstack/react-devtools';
-import { createServerFn } from '@tanstack/react-start';
-import { PostHogProvider } from 'posthog-js/react';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
-import * as React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  HydrationBoundary,
+  QueryClientProvider,
+  dehydrate,
+  isServer,
+} from '@tanstack/react-query';
 import { getWebRequest } from '@tanstack/react-start/server';
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
+import { PostHogProvider } from 'posthog-js/react';
+import { createServerFn } from '@tanstack/react-start';
 import { getAuth } from '@clerk/tanstack-react-start/server';
+import type { DehydratedState, QueryClient } from '@tanstack/react-query';
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary.js';
 import { NotFound } from '@/components/NotFound.js';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
-import appCss from '@/styles/app.css?url';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider';
 import { SSEProvider } from '@/features/shared/providers/sse-provider';
+import appCss from '@/styles/app.css?url';
 import '@/i18n/config';
+
+const isDev = import.meta.env.DEV;
+
+const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY!;
+const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST!;
 
 const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
   const { userId, getToken } = await getAuth(getWebRequest());
   const token = await getToken();
 
-  return {
-    userId,
-    token,
-  };
+  return { userId, token };
 });
 
-export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-}>()({
-  beforeLoad: async () => {
-    return fetchClerkAuth();
-  },
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-    ],
-    links: [
-      { rel: 'stylesheet', href: appCss },
-      {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/apple-touch-icon.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon-32x32.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        href: '/favicon-16x16.png',
-      },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
-    ],
-  }),
-  errorComponent: (props) => {
-    return (
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    beforeLoad: async () => {
+      return fetchClerkAuth();
+    },
+    head: () => ({
+      meta: [
+        { charSet: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'color-scheme', content: 'light dark' },
+      ],
+      links: [
+        { rel: 'stylesheet', href: appCss },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png',
+        },
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'icon', href: '/favicon.ico' },
+      ],
+    }),
+    errorComponent: (props) => (
       <RootDocument>
         <DefaultCatchBoundary {...props} />
       </RootDocument>
-    );
-  },
-  notFoundComponent: () => <NotFound />,
-  component: RootComponent,
-});
+    ),
+    notFoundComponent: () => <NotFound />,
+    component: RootComponent,
+    wrapInSuspense: true,
+  }
+);
 
-const POSTHOG_KEY = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
-if (!POSTHOG_KEY) {
-  throw new Error('VITE_PUBLIC_POSTHOG_KEY is not defined');
-}
+type ConditionalProviderProps<T> = {
+  condition: boolean;
+  provider: React.ComponentType<T>;
+  providerProps?: T;
+  children: React.ReactNode;
+};
 
-const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
-if (!POSTHOG_HOST) {
-  throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
+function ConditionalProvider<T>({
+  condition,
+  provider: Provider,
+  providerProps,
+  children,
+}: ConditionalProviderProps<T>) {
+  return condition ? (
+    <Provider {...(providerProps as T)}>{children}</Provider>
+  ) : (
+    <>{children}</>
+  );
 }
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  const dehydratedState = dehydrate(queryClient);
+
+  // const dehydratedState = React.useMemo<DehydratedState | undefined>(() => {
+  //   if (isServer) {
+  //     return dehydrate(queryClient);
+  //   }
+  //   return typeof window !== 'undefined'
+  //     ? window.__REACT_QUERY_STATE
+  //     : undefined;
+  // }, [queryClient]);
+
   return (
     <ThemeProvider>
       <ClerkThemedProvider>
-        <PostHogProvider
-          apiKey={POSTHOG_KEY}
-          options={{ api_host: POSTHOG_HOST }}
+        <ConditionalProvider
+          condition={isDev}
+          provider={PostHogProvider}
+          providerProps={{
+            apiKey: POSTHOG_KEY!,
+            options: {
+              api_host: POSTHOG_HOST!,
+              loaded: (posthog) => {
+                if (isDev) posthog.opt_out_capturing();
+              },
+            },
+          }}
         >
           <QueryClientProvider client={queryClient}>
-            <SSEProvider>
-              <RootDocument>
-                <Outlet />
-              </RootDocument>
-            </SSEProvider>
+            <HydrationBoundary state={dehydratedState}>
+              <SSEProvider>
+                <RootDocument dehydratedState={dehydratedState}>
+                  <Outlet />
+                </RootDocument>
+              </SSEProvider>
+            </HydrationBoundary>
           </QueryClientProvider>
-        </PostHogProvider>
+        </ConditionalProvider>
       </ClerkThemedProvider>
     </ThemeProvider>
   );
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+declare global {
+  interface Window {
+    __REACT_QUERY_STATE?: DehydratedState;
+  }
+}
+
+function RootDocument({
+  children,
+  dehydratedState,
+  nonce,
+}: {
+  children: React.ReactNode;
+  dehydratedState?: DehydratedState;
+  nonce?: string;
+}) {
+  const serializedState =
+    isServer && dehydratedState !== undefined
+      ? JSON.stringify(dehydratedState)
+          .replace(/</g, '\\u003c')
+          .replace(/\u2028/g, '\\u2028')
+          .replace(/\u2029/g, '\\u2029')
+      : undefined;
+
   return (
-    <html suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
         {children}
+
+        {isServer && (
+          <script
+            nonce={nonce}
+            dangerouslySetInnerHTML={{
+              __html: `window.__REACT_QUERY_STATE=${serializedState ?? 'null'}`,
+            }}
+          />
+        )}
+
         <TanStackDevtools
           plugins={[
             {
@@ -134,8 +203,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             },
           ]}
         />
-        <Scripts />
       </body>
+
+      <Scripts />
     </html>
   );
 }

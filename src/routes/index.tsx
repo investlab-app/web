@@ -7,7 +7,7 @@ import { investorStatsQueryOptions } from '@/features/home/components/account-ov
 
 export const Route = createFileRoute('/')({
   loader: async ({ context: { token, queryClient } }) => {
-    if (isServer) {
+    if (token && isServer) {
       return await queryClient.ensureQueryData(investorStatsQueryOptions(token));
     }
     return;

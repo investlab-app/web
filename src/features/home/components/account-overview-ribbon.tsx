@@ -7,10 +7,7 @@ import { authedQueryOptions } from '@/features/shared/utils/authed-query-options
 
 export const investorStatsQueryOptions = authedQueryOptions({
   queryKey: ['investorStats'],
-  queryFn: async (token) => {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
-    return fetchInvestorStats(token);
-  },
+  queryFn: fetchInvestorStats,
 });
 
 const AccountOverviewRibbon = () => {
