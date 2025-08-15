@@ -13,7 +13,13 @@ export const investorStatsQueryOptions = authedQueryOptions({
 const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
   const { getToken } = useAuth();
-  const { data: stats } = useSuspenseQuery(investorStatsQueryOptions(getToken));
+
+  const { data: stats } = useSuspenseQuery({
+    ...investorStatsQueryOptions(getToken),
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
 
   const tiles = [
     {

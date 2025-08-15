@@ -9,18 +9,13 @@ import {
 } from '@tanstack/react-router';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import {
-  HydrationBoundary,
-  QueryClientProvider,
-  dehydrate,
-  isServer,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { getWebRequest } from '@tanstack/react-start/server';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { PostHogProvider } from 'posthog-js/react';
 import { createServerFn } from '@tanstack/react-start';
 import { getAuth } from '@clerk/tanstack-react-start/server';
-import type { DehydratedState, QueryClient } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary.js';
 import { NotFound } from '@/components/NotFound.js';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
@@ -82,7 +77,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ),
     notFoundComponent: () => <NotFound />,
     component: RootComponent,
-    wrapInSuspense: true,
   }
 );
 
@@ -109,17 +103,6 @@ function ConditionalProvider<T>({
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  const dehydratedState = dehydrate(queryClient);
-
-  // const dehydratedState = React.useMemo<DehydratedState | undefined>(() => {
-  //   if (isServer) {
-  //     return dehydrate(queryClient);
-  //   }
-  //   return typeof window !== 'undefined'
-  //     ? window.__REACT_QUERY_STATE
-  //     : undefined;
-  // }, [queryClient]);
-
   return (
     <ThemeProvider>
       <ClerkThemedProvider>
@@ -137,13 +120,11 @@ function RootComponent() {
           }}
         >
           <QueryClientProvider client={queryClient}>
-            <HydrationBoundary state={dehydratedState}>
-              <SSEProvider>
-                <RootDocument dehydratedState={dehydratedState}>
-                  <Outlet />
-                </RootDocument>
-              </SSEProvider>
-            </HydrationBoundary>
+            <SSEProvider>
+              <RootDocument>
+                <Outlet />
+              </RootDocument>
+            </SSEProvider>
           </QueryClientProvider>
         </ConditionalProvider>
       </ClerkThemedProvider>
@@ -151,29 +132,7 @@ function RootComponent() {
   );
 }
 
-declare global {
-  interface Window {
-    __REACT_QUERY_STATE?: DehydratedState;
-  }
-}
-
-function RootDocument({
-  children,
-  dehydratedState,
-  nonce,
-}: {
-  children: React.ReactNode;
-  dehydratedState?: DehydratedState;
-  nonce?: string;
-}) {
-  const serializedState =
-    isServer && dehydratedState !== undefined
-      ? JSON.stringify(dehydratedState)
-          .replace(/</g, '\\u003c')
-          .replace(/\u2028/g, '\\u2028')
-          .replace(/\u2029/g, '\\u2029')
-      : undefined;
-
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -181,15 +140,6 @@ function RootDocument({
       </head>
       <body>
         {children}
-
-        {isServer && (
-          <script
-            nonce={nonce}
-            dangerouslySetInnerHTML={{
-              __html: `window.__REACT_QUERY_STATE=${serializedState ?? 'null'}`,
-            }}
-          />
-        )}
 
         <TanStackDevtools
           plugins={[
@@ -203,9 +153,8 @@ function RootDocument({
             },
           ]}
         />
+        <Scripts />
       </body>
-
-      <Scripts />
     </html>
   );
 }
