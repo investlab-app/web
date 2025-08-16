@@ -6,6 +6,7 @@ import { investorStatsQueryOptions } from '@/features/home/components/account-ov
 import { assetAllocationQueryOptions } from '@/features/home/components/asset-allocation-container';
 import { currentAccountValueQueryOptions } from '@/features/shared/components/wallet-section';
 import { accountValueOverTimeQueryOptions } from '@/features/home/components/account-value-chart-container';
+import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
 
 export const Route = createFileRoute('/')({
   loader: async ({ context: { token, queryClient } }) => {
@@ -14,6 +15,7 @@ export const Route = createFileRoute('/')({
       queryClient.ensureQueryData(assetAllocationQueryOptions(token)),
       queryClient.ensureQueryData(currentAccountValueQueryOptions(token)),
       queryClient.ensureQueryData(accountValueOverTimeQueryOptions(token)),
+      queryClient.ensureQueryData(ownedSharesQueryOptions(token)),
     ]);
   },
   component: Index,

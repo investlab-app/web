@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/tanstack-react-start';
+import { useQueryClient } from '@tanstack/react-query';
 import type { Instrument } from '@/features/instruments/types/types';
 import {
   SidebarInset,

@@ -12,6 +12,14 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
+import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
+
+export const ownedSharesQueryOptions = authedQueryOptions({
+  queryKey: ['owned-shares'],
+  queryFn: async (token) => {
+    return fetchOwnedShares(token);
+  },
+});
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
@@ -24,16 +32,7 @@ const AssetTableContainer = () => {
     data: ownedSharesData,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['owned-shares'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('Unauthenticated');
-      }
-      return fetchOwnedShares(token);
-    },
-  });
+  } = useQuery(ownedSharesQueryOptions(getToken));
 
   if (isError) {
     return (

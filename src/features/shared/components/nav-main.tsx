@@ -1,6 +1,7 @@
+import { Link } from '@tanstack/react-router';
 import { WalletSection } from './wallet-section';
-import type { Icon } from '@tabler/icons-react';
 import type { LinkProps } from '@tanstack/react-router';
+import type { Icon } from '@tabler/icons-react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -25,9 +26,11 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} navigateTo={item.to}>
-                <item.icon />
-                <span>{item.title}</span>
+              <SidebarMenuButton tooltip={item.title} asChild>
+                <Link to={item.to}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
