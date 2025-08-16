@@ -2,6 +2,7 @@ import { IconPlus, IconWallet } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/tanstack-react-start';
 import { useTranslation } from 'react-i18next';
+import { authedQueryOptions } from '../utils/authed-query-options';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
@@ -10,19 +11,21 @@ import {
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 
+export const currentAccountValueQueryOptions = authedQueryOptions({
+  queryKey: ['currentAccountValue'],
+  queryFn: async (token) => {
+    return fetchCurrentAccountValue(token);
+  },
+  staleTime: 60 * 1000,
+});
+
 export function WalletSection() {
   const { getToken } = useAuth();
   const { t } = useTranslation();
 
-  const { data: accountValue, isLoading } = useQuery({
-    queryKey: ['currentAccountValue'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token');
-      return fetchCurrentAccountValue(token);
-    },
-    staleTime: 60 * 1000,
-  });
+  const { data: accountValue, isLoading } = useQuery(
+    currentAccountValueQueryOptions(getToken)
+  );
 
   return (
     <SidebarMenuItem className="flex items-center gap-0">

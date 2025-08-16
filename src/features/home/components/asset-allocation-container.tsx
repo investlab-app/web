@@ -11,6 +11,12 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
+import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
+
+export const assetAllocationQueryOptions = authedQueryOptions({
+  queryKey: ['asset-allocation'],
+  queryFn: fetchAssetAllocation,
+});
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
@@ -20,16 +26,7 @@ const AssetAllocationContainer = () => {
     data: assetAllocation,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['asset-allocation'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('Unauthenticated');
-      }
-      return fetchAssetAllocation(token);
-    },
-  });
+  } = useQuery(assetAllocationQueryOptions(getToken));
 
   if (isLoading) {
     return (

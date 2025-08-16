@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { getDerivedPrimaryColor } from '../helpers/color-selector';
 import {
   Card,
   CardContent,
@@ -64,7 +63,7 @@ export const AssetAllocationTile = ({
                   className="rounded-md h-4 mx-1"
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor: getDerivedPrimaryColor(index),
+                    backgroundColor: `color-mix(in srgb, black ${index / assets.length * 100}%, var(--primary))`
                   }}
                 />
               );
@@ -77,7 +76,7 @@ export const AssetAllocationTile = ({
                 <div key={name} className="flex items-center gap-3">
                   <div
                     className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: getDerivedPrimaryColor(index) }}
+                    style={{ backgroundColor: `color-mix(in srgb, black ${index / assets.length * 100}%, var(--primary))` }}
                   />
                   <div className="space-y-1">
                     <div className="font-medium">{name}</div>

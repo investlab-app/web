@@ -3,6 +3,7 @@ import type {
   QueryFunctionContext,
   QueryKey,
   QueryOptions,
+  UseQueryOptions,
 } from '@tanstack/react-query';
 
 export type TokenSource =
@@ -40,7 +41,7 @@ export function authedQueryOptions<
     queryKey: TQueryKey;
     queryFn: UserQueryFn<TData, TQueryKey>;
   } & Omit<
-    QueryOptions<TData, TError, TData, TQueryKey>,
+    UseQueryOptions<TData, TError, TData, TQueryKey>,
     'queryKey' | 'queryFn'
   >
 ) {
