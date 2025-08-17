@@ -16,7 +16,7 @@ export type AccountValueOverTime = typeof accountValueOverTime.infer;
 export async function fetchAccountValueOverTime(
   token: string
 ): Promise<AccountValueOverTime> {
-  const response = await fetchWithAuth<AccountValueOverTime>(
+  const response = await fetchWithAuth(
     '/api/investors/me/account-value/',
     token
   );
