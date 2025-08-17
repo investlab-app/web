@@ -9,7 +9,11 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '@/features/shared/components/ui/alert';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/features/shared/components/ui/alert';
 import { ScrollArea } from '@/features/shared/components/ui/scroll-area';
 import { IS_PROD } from '@/features/shared/utils/constants';
 

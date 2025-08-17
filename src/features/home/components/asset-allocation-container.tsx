@@ -3,7 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
 import { AssetAllocationTile } from './asset-allocation-tile';
-import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
 import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';

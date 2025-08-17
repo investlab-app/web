@@ -8,7 +8,10 @@ import { timeIntervals } from '../utils/time-ranges';
 import { ChartErrorMessage } from './chart-error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
-import { ToggleGroup, ToggleGroupItem } from '@/features/shared/components/ui/toggle-group';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@/features/shared/components/ui/toggle-group';
 import {
   Card,
   CardAction,

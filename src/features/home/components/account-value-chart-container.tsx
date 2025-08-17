@@ -6,7 +6,12 @@ import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
 import { StockChart } from '@/features/charts/components/stock-chart';
-import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 

@@ -1,7 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import type { Instrument } from '@/features/instruments/types/types';
-import { SidebarInset, SidebarProvider } from '@/features/shared/components/ui/sidebar';
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@/features/shared/components/ui/sidebar';
 import { AppSidebar } from '@/features/shared/components/app-sidebar';
 import { SiteHeader } from '@/features/shared/components/site-header';
 import InstrumentsTableContainer from '@/features/instruments/components/instruments-table-container';

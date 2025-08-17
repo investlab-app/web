@@ -19,7 +19,10 @@ import {
 } from './ui/sidebar';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
-import { NavUser, NavUserSkeleton } from '@/features/shared/components/nav-user';
+import {
+  NavUser,
+  NavUserSkeleton,
+} from '@/features/shared/components/nav-user';
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 

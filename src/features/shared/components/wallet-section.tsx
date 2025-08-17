@@ -6,7 +6,10 @@ import { authedQueryOptions } from '../utils/authed-query-options';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
-import { SidebarMenuButton, SidebarMenuItem } from '@/features/shared/components/ui/sidebar';
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/features/shared/components/ui/sidebar';
 
 export const currentAccountValueQueryOptions = authedQueryOptions({
   queryKey: ['currentAccountValue'],

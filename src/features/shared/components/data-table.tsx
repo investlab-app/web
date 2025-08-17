@@ -91,7 +91,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/features/shared/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/features/shared/components/ui/tabs';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/features/shared/components/ui/tabs';
 
 export const schema = type({
   id: 'number',

@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useInstrumentNews } from '../hooks/use-instrument-news';
-import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 
 type NewsSectionProps = {
   ticker: string;
