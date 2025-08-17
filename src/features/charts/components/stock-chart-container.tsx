@@ -98,7 +98,6 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   });
 
   const chartTypeToggle = (value: string) => {
-    console.log('love you', value);
     store.setState((state) => {
       return {
         ...state,

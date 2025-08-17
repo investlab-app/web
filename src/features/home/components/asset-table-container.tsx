@@ -20,7 +20,8 @@ const AssetTableContainer = () => {
   const { t } = useTranslation();
   const { getToken } = useAuth();
   const handleAssetPressed = (asset: Asset) => {
-    console.log('Asset clicked:', asset);
+    void asset;
+    // noop
   };
 
   const {

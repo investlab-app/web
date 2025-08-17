@@ -28,7 +28,6 @@ export const AssetAllocationTile = ({
     return Math.round((val / totalAssetValue) * 100);
   };
 
-  console.log(assets);
   return (
     <Card>
       <CardHeader>

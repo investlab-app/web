@@ -26,8 +26,6 @@ export function ClerkThemedProvider({
   const localization = languageMatcher(i18n.language);
   const { appTheme: theme } = useTheme();
 
-  console.log(`Theme: ${theme}`);
-
   return (
     <ClerkProvider
       publishableKey={publicKey}

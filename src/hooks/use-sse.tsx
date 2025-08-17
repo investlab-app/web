@@ -34,7 +34,6 @@ export function useSSE({
   }, [sse, events, callback]);
 
   const cleanup = useCallback(() => {
-    console.log('Cleaning up SSE handler:', handlerId.current);
     sse.cleanup(handlerId.current);
   }, [sse]);
 
