@@ -45,19 +45,6 @@ const router = createRouter({
   },
 });
 
-export function waitFor(conditionFn: () => boolean, interval = 100) {
-  return new Promise<void>((resolve) => {
-    const check = () => {
-      if (conditionFn()) {
-        resolve();
-      } else {
-        setTimeout(check, interval);
-      }
-    };
-    check();
-  });
-}
-
 function App() {
   const auth = useAuth();
   const user = useUser();
@@ -75,7 +62,7 @@ if (rootElement && !rootElement.innerHTML) {
       <ThemeProvider>
         <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
           <ConditionalProvider
-            condition={!IS_PROD}
+            condition={IS_PROD}
             provider={PostHogProvider}
             providerProps={{
               apiKey: POSTHOG_KEY,

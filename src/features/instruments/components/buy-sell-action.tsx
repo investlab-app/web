@@ -1,11 +1,10 @@
 // BuySellSection.tsx
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabsContent } from '@radix-ui/react-tabs';
 import { IconChevronDown } from '@tabler/icons-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NumberInput } from '@/components/ui/number-input';
 
 interface BuySellSectionProps {

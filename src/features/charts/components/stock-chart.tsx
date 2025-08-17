@@ -39,7 +39,7 @@ export const StockChart = ({
   const chartRef = useRef<ReactECharts | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // eslint-disable-next-line react-you-might-not-need-an-effect/you-might-not-need-an-effect
+  // eslint-disable-next-line react-you-might-not-need-an-effect/no-initialize-state
   useEffect(() => setMounted(true), []);
 
   const chartOptions = useMemo(

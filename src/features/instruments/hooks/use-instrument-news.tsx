@@ -32,8 +32,6 @@ export const useInstrumentNews = ({
     refetchOnWindowFocus: false,
   });
 
-  console.log('error?');
-
   if (error) {
     console.error('ERROR=', error);
   }

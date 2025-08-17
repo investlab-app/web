@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
-import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
 import { timeIntervals } from '../utils/time-ranges';
 import { ChartErrorMessage } from './chart-error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import {
   Card,
   CardAction,

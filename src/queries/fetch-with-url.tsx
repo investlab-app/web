@@ -1,9 +1,9 @@
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-export async function fetchWithAuth<T>(
+export async function fetchWithAuth(
   path: string,
   token: string
-): Promise<T> {
+): Promise<unknown> {
   const response = await fetch(`${baseUrl}${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,

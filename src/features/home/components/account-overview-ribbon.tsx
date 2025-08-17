@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
@@ -8,7 +8,7 @@ import { authedQueryOptions } from '@/utils/authed-query-options';
 export const investorStatsQueryOptions = authedQueryOptions({
   queryKey: ['investorStats'],
   queryFn: async (token) => {
-    return fetchInvestorStats(token);
+    return await fetchInvestorStats(token);
   },
 });
 
@@ -16,12 +16,24 @@ const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
   const { getToken } = useAuth();
 
-  const { data: stats } = useSuspenseQuery({
+  const {
+    data: stats,
+    isLoading,
+    isError,
+  } = useQuery({
     ...investorStatsQueryOptions(getToken),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!stats || isError) {
+    return <div>Error loading stats</div>;
+  }
 
   const tiles = [
     {

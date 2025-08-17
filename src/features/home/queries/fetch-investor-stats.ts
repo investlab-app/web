@@ -6,10 +6,7 @@ import { fetchWithAuth } from '@/queries/fetch-with-url';
 export async function fetchInvestorStats(
   token: string
 ): Promise<InvestorStats> {
-  const response = await fetchWithAuth<InvestorStats>(
-    '/api/investors/me/stats/',
-    token
-  );
+  const response = await fetchWithAuth('/api/investors/me/stats/', token);
 
   const result = investorStats(response);
   if (result instanceof type.errors) {

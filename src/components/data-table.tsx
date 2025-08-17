@@ -380,11 +380,10 @@ export function DataTable({
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (over) {
-      // eslint-disable-next-line no-shadow
-      setData((data) => {
+      setData((tableData) => {
         const oldIndex = dataIds.indexOf(active.id);
         const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
+        return arrayMove(tableData, oldIndex, newIndex);
       });
     }
   }
