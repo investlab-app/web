@@ -1,4 +1,4 @@
-- id: 'NPM::posthog-js:1.256.2'
+- id: 'NPM::posthog-js:1.260.1'
   curations:
     declared_license_mapping:
       'NOASSERTION': 'Apache-2.0'
