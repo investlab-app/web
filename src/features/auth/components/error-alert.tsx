@@ -1,8 +1,8 @@
 import { ArkError, ArkErrors, match, type } from 'arktype';
 import { AlertCircleIcon } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { cn } from '@/utils/styles';
+import { Alert, AlertDescription, AlertTitle } from '@/features/shared/components/ui/alert';
+import { cn } from '@/features/shared/utils/styles';
 
 interface ErrorAlertProps {
   title?: string;

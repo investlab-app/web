@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/queries/fetch-with-url';
+import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
 const currentAccountValue = type({
   value: 'number',

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/clerk-react';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
-import { authedQueryOptions } from '@/utils/authed-query-options';
+import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
 export const investorStatsQueryOptions = authedQueryOptions({
   queryKey: ['investorStats'],

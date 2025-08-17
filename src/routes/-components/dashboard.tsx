@@ -1,6 +1,6 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import { SiteHeader } from '@/components/site-header';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/features/shared/components/app-sidebar';
+import { SiteHeader } from '@/features/shared/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/features/shared/components/ui/sidebar';
 import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
 import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
 import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';

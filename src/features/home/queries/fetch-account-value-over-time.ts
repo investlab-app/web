@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/queries/fetch-with-url';
+import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
 const accountValueData = type({
   date: 'string',

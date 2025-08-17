@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { InvestLabLogo } from '@/components/investlab-logo';
+import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export const Route = createFileRoute('/_auth')({
   component: RouteComponent,

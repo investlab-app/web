@@ -8,11 +8,11 @@ import {
   Smartphone,
   TrendingUp,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { InvestLabLogo } from '@/components/investlab-logo';
-import { ThemeToggle } from '@/components/mode-toggle';
-import { LanguageToggle } from '@/components/language-toggle';
+import { Button } from '@/features/shared/components/ui/button';
+import { Card, CardContent } from '@/features/shared/components/ui/card';
+import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import { ThemeToggle } from '@/features/shared/components/mode-toggle';
+import { LanguageToggle } from '@/features/shared/components/language-toggle';
 
 export function LandingPage() {
   const navigate = useNavigate();

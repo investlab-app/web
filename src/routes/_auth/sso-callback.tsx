@@ -6,8 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+} from '@/features/shared/components/ui/card';
+import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
 
 export const Route = createFileRoute('/_auth/sso-callback')({
   component: SSOCallback,

@@ -2,7 +2,7 @@ import { useSignIn } from '@clerk/clerk-react';
 import { ResultAsync } from 'neverthrow';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/features/shared/components/ui/button';
 
 const GOOGLE_ICON = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

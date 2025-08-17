@@ -1,7 +1,7 @@
 import { type } from 'arktype';
 import { investorStats } from '../types/types';
 import type { InvestorStats } from '../types/types';
-import { fetchWithAuth } from '@/queries/fetch-with-url';
+import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
 export async function fetchInvestorStats(
   token: string

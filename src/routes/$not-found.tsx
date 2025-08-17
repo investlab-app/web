@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/features/shared/components/ui/button';
 
 export const Route = createFileRoute('/$not-found')({
   component: NotFound,

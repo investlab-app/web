@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import AssetTable from './asset-table';
 import type { OwnedShareItem as Asset } from '../types/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/features/shared/components/ui/card';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
-import { authedQueryOptions } from '@/utils/authed-query-options';
+import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
 export const ownedSharesQueryOptions = authedQueryOptions({
   queryKey: ['owned-shares'],

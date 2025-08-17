@@ -7,8 +7,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { cn } from '@/utils/styles';
+} from '@/features/shared/components/ui/table';
+import { cn } from '@/features/shared/utils/styles';
 
 type AssetTableProps = {
   data: Array<OwnedShareItem>;

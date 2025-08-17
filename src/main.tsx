@@ -5,17 +5,17 @@ import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { ClerkLoaded, useAuth, useUser } from '@clerk/clerk-react';
 import { routeTree } from './routeTree.gen';
-import { SSEProvider } from './providers/sse-provider.tsx';
-import { ConditionalProvider } from './providers/conditional-provider.tsx';
+import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
+import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
 import {
   CLERK_PUBLIC_KEY,
   IS_PROD,
   POSTHOG_HOST,
   POSTHOG_KEY,
-} from './utils/constants.ts';
-import { ErrorComponent } from './components/error-component.tsx';
-import { ThemeProvider } from '@/components/theme-provider.tsx';
-import { ClerkThemedProvider } from '@/providers/clerk-themed-provider.tsx';
+} from './features/shared/utils/constants.ts';
+import { ErrorComponent } from './features/shared/components/error-component.tsx';
+import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
+import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
 import './styles.css';
 

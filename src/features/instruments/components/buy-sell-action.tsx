@@ -2,10 +2,10 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconChevronDown } from '@tabler/icons-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { NumberInput } from '@/components/ui/number-input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/features/shared/components/ui/tabs';
+import { Card, CardContent } from '@/features/shared/components/ui/card';
+import { Button } from '@/features/shared/components/ui/button';
+import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface BuySellSectionProps {
   mode: 'price' | 'volume';

@@ -4,7 +4,7 @@ import {
   instrumentOverviewItemToInstrument,
 } from '../types/types';
 import type { FetchInstrumentsOverviewOptions } from '../types/types';
-import { fetchWithAuth } from '@/queries/fetch-with-url';
+import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
 
 export async function fetchInstrumentsOverview({
   tickers = [],

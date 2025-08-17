@@ -8,7 +8,7 @@ import { timeIntervals } from '../utils/time-ranges';
 import { ChartErrorMessage } from './chart-error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { ToggleGroup, ToggleGroupItem } from '@/features/shared/components/ui/toggle-group';
 import {
   Card,
   CardAction,
@@ -16,17 +16,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/features/shared/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useSSE } from '@/hooks/use-sse';
+} from '@/features/shared/components/ui/select';
+import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
-import { cn } from '@/utils/styles';
+import { cn } from '@/features/shared/utils/styles';
 
 type StockChartProps = {
   ticker: string;

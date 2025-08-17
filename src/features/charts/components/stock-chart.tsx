@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { createChartOptions } from '../utils/chart-options';
 import type { InstrumentPriceProps } from '../types/types';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 type SeriesData = {
   value: number;
