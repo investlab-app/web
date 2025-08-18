@@ -5,7 +5,7 @@ import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
 import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
-import { ChartErrorMessage } from './chart-error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
 import {
@@ -158,7 +158,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
       </CardHeader>
       <CardContent>
         {!instrumentHistory?.data ? (
-          <ChartErrorMessage
+          <ErrorMessage
             message={t('instruments.history_empty', {
               ticker,
               interval: t(

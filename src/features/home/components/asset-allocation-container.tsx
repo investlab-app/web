@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 
 export const assetAllocationQueryOptions = queryOptions({
   queryKey: ['asset-allocation'],
@@ -66,7 +66,7 @@ const AssetAllocationContainer = () => {
           <CardTitle>{t('investor.asset_allocation')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartErrorMessage message={t('common.error_loading_data')} />
+          <ErrorMessage message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );
