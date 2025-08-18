@@ -46,10 +46,6 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     [InstrumentPriceProps, boolean] | null
   >(null);
 
-  // useEffect(() => {
-  //   console.log('CHANGE');
-  // }, [endDate]);
-
   const {
     data: instrumentHistory,
     isLoading,

@@ -22,7 +22,7 @@ function Instruments() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent className=" w-full sm:max-w-2/3">
+      <SheetContent className="w-full sm:max-w-2/3">
         {instrument ? (
           <>
             <SheetHeader>

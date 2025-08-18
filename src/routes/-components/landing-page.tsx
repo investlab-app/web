@@ -1,4 +1,3 @@
-// src/components/landing-page.tsx
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import {

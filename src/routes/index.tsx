@@ -9,7 +9,10 @@ import { accountValueOverTimeQueryOptions } from '@/features/home/components/acc
 import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
 
 export const Route = createFileRoute('/')({
-  loader: async ({ context: { queryClient } }) => {
+  loader: async ({ context: { queryClient, auth } }) => {
+    if (!auth.isSignedIn) {
+      return;
+    }
     await Promise.all([
       queryClient.prefetchQuery(investorStatsQueryOptions),
       queryClient.prefetchQuery(assetAllocationQueryOptions),
