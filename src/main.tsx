@@ -52,7 +52,6 @@ function App() {
 }
 
 const persister = createAsyncStoragePersister({
-  
   storage: window.localStorage,
 });
 
