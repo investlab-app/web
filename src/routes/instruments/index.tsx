@@ -32,7 +32,9 @@ export default function InstrumentsPage() {
       <SidebarInset>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetContent className=" w-full sm:max-w-2/3">
-            {instrument ? <InstrumentDetails instrument={instrument} /> : null}
+            {instrument && (
+              <InstrumentDetails instrument={instrument} isLoading={false} />
+            )}
           </SheetContent>
 
           <SiteHeader />
