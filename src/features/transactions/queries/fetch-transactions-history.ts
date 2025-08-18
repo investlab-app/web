@@ -1,4 +1,6 @@
+import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
+import type { useAuth } from '@clerk/clerk-react';
 
 const historyEntry = type({
   date: 'Date',
@@ -22,17 +24,14 @@ const position = type({
 });
 export type Position = typeof position.infer;
 
-const transactionHistoryResponse = type({
-  open: position.array(),
-  closed: position.array(),
-});
+const transactionHistoryResponse = position.array();
 export type TransactionsHistoryResponse =
   typeof transactionHistoryResponse.infer;
 
 const generateRandomTickerTransactionHistory = () => {
   const names = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'NFLX', 'FB'];
   const generateRandomHistory = () => {
-    const transactionCount = Math.floor(Math.random() * 5) + 1;
+    const transactionCount = Math.floor(Math.random() * 3) + 1;
     return Array.from({ length: transactionCount }, () =>
       (() => {
         const transactionType = Math.random() > 0.5 ? 'BUY' : 'SELL';
@@ -62,28 +61,23 @@ const generateRandomTickerTransactionHistory = () => {
     gainLossPct: Math.random() * 100 - 50,
     history: generateRandomHistory(),
   }));
-  return {
-    open: transactions.slice(0, 3),
-    closed: transactions.slice(3),
-  };
+  return transactions;
 };
 
-// interface FetchTransactionsHistory {
-//   token: string;
-// }
+interface FetchTransactionsHistoryOptions {
+  type: 'open' | 'closed';
+}
 
-export const fetchTransactionsHistory = async () => {
+async function fetchTransactionsHistory({
+  type: transactionType,
+}: FetchTransactionsHistoryOptions) {
   const response = await new Promise((resolve) => {
     setTimeout(() => {
+      void transactionType;
       const history = generateRandomTickerTransactionHistory();
       resolve(history);
     }, 3000);
   });
-
-  // const transactions = await fetchWithAuth<TransactionsHistoryResponse>(
-  //   '/api/investors/me/transactions',
-  //   token
-  // );
 
   const result = transactionHistoryResponse(response);
   if (result instanceof type.errors) {
@@ -92,4 +86,23 @@ export const fetchTransactionsHistory = async () => {
   }
 
   return result;
-};
+}
+
+interface TransactionsHistoryQueryOptions {
+  type: 'open' | 'closed';
+  getToken: ReturnType<typeof useAuth>['getToken'];
+}
+
+export function transactionsHistoryQueryOptions({
+  type: transactionsType,
+  getToken,
+}: TransactionsHistoryQueryOptions) {
+  return queryOptions({
+    queryKey: ['positions', transactionsType],
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) throw new Error('No auth token available');
+      return fetchTransactionsHistory({ type: transactionsType });
+    },
+  });
+}
