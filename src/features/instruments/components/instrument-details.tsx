@@ -4,8 +4,7 @@ import type { Instrument } from '../types/types';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 
 type InstrumentDetailsProps = {
-  instrument: Instrument | undefined;
-  isLoading?: boolean;
+  instrument: Instrument;
 };
 
 const InstrumentDetails = ({ instrument }: InstrumentDetailsProps) => {
