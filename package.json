@@ -82,5 +82,14 @@
     "vite": "^7.1.2",
     "vitest": "^3.2.4",
     "web-vitals": "^5.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@clerk/shared",
+      "@tailwindcss/oxide",
+      "core-js",
+      "esbuild",
+      "unrs-resolver"
+    ]
   }
 }
