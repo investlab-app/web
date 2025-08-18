@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 import { instrumentHistory } from '../types/types';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 import { formatDate } from '@/features/shared/utils/date';
@@ -30,13 +30,7 @@ export function instrumentHistoryQueryOptions({
   interval,
 }: FetchInstrumentHistoryParams) {
   return queryOptions({
-    queryKey: [
-      'instrument-history',
-      ticker,
-      formatDate(startDate),
-      formatDate(endDate),
-      interval,
-    ],
+    queryKey: ['instrument-history', ticker, interval, startDate, endDate],
     queryFn: async () => {
       const instrumentHistoryData = await fetchInstrumentHistory({
         ticker,
@@ -56,10 +50,10 @@ export function instrumentHistoryQueryOptions({
         max_price: instrumentHistoryData.max_price,
         data,
       };
-      console.log(`Instrument History Result:`, result);
       return result;
     },
-
     staleTime: 1000 * 60,
+    gcTime: 0, // highly unlikely to get the same startDate and endDate
+    placeholderData: keepPreviousData,
   });
 }

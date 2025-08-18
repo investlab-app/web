@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type } from 'arktype';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
 import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
-import { ErrorMessage } from '../../shared/components/error-message';
+import { Message } from '../../shared/components/error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
 import {
@@ -30,6 +30,7 @@ import {
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
 import { cn } from '@/features/shared/utils/styles';
+import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 
 type StockChartProps = {
   ticker: string;
@@ -39,7 +40,10 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const { t } = useTranslation();
 
   const [interval, setInterval] = useState('1h');
-  const startDate = intervalToStartDate(interval);
+  const [startDate, endDate] = useMemo(
+    () => [intervalToStartDate(interval), new Date()],
+    [interval]
+  );
 
   const [isCandlestick, setIsCandlestick] = useState(true);
   const [livePrice, setLivePrice] = useState<
@@ -47,22 +51,18 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   >(null);
 
   const {
-    data: instrumentHistory,
+    data: priceHistory,
     isLoading,
+    isFetching,
+    isSuccess,
     isError,
   } = useQuery(
     instrumentHistoryQueryOptions({
       ticker,
       startDate,
-      endDate: new Date(),
+      endDate,
       interval,
     })
-  );
-
-  console.log(
-    'Instrument History:',
-    instrumentHistory,
-    `isLoading: ${isLoading}, isError: ${isError}`
   );
 
   const { cleanup } = useSSE({
@@ -81,6 +81,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         return;
       }
       if (out.id !== ticker) {
+        // ignore
         return;
       }
       const newDataPoint = {
@@ -96,9 +97,12 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
 
   useEffect(() => cleanup, [cleanup]);
 
+  const appliedInterval = useFrozenValue(interval, isFetching);
+  const isIntervalChanging = appliedInterval !== interval;
+
   const currentPrice =
     livePrice?.[0]?.close ||
-    instrumentHistory?.data[instrumentHistory.data.length - 1]?.close;
+    priceHistory?.data[priceHistory.data.length - 1]?.close;
 
   return (
     <Card>
@@ -138,7 +142,10 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
               </ToggleGroupItem>
             </ToggleGroup>
             <Select value={interval} onValueChange={setInterval}>
-              <SelectTrigger className="w-40" aria-label="Select time range">
+              <SelectTrigger
+                className={`w-40 ${isIntervalChanging ? 'animate-pulse' : ''}`}
+                aria-label="Select time range"
+              >
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
@@ -153,26 +160,31 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        {!instrumentHistory?.data ? (
-          <ErrorMessage
-            message={t('instruments.history_empty', {
-              ticker,
-              interval: t(
-                timeIntervals.find(({ value }) => value === interval)
-                  ?.labelKey || 'intervals.one_hour'
-              ),
-            })}
-          />
-        ) : (
-          <StockChart
-            stockName={ticker}
-            chartData={instrumentHistory.data}
-            selectedInterval={interval}
-            liveUpdateValue={livePrice}
-            zoom={0.1}
-            isCandlestick={isCandlestick}
-          />
+        {isLoading && (
+          <Message className="animate-pulse" message={t('common.loading')} />
         )}
+        {isError && <Message message={t('instruments.error_loading_data')} />}
+        {isSuccess &&
+          (priceHistory.data.length ? (
+            <StockChart
+              stockName={ticker}
+              chartData={priceHistory.data}
+              selectedInterval={appliedInterval}
+              liveUpdateValue={livePrice}
+              zoom={0.1}
+              isCandlestick={isCandlestick}
+            />
+          ) : (
+            <Message
+              message={t('instruments.history_empty', {
+                ticker,
+                interval: t(
+                  timeIntervals.find(({ value }) => value === interval)
+                    ?.labelKey || 'intervals.one_hour'
+                ),
+              })}
+            />
+          ))}
       </CardContent>
     </Card>
   );

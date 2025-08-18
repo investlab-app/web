@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { ErrorMessage } from '../../shared/components/error-message';
+import { Message } from '../../shared/components/error-message';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
 import { StockChart } from '@/features/charts/components/stock-chart';
@@ -58,7 +58,7 @@ export const AccountValueChartContainer = () => {
         {isLoading ? (
           <Skeleton className="h-[400px] w-full" />
         ) : hasError ? (
-          <ErrorMessage />
+          <Message />
         ) : (
           <StockChart
             stockName="Account Value"

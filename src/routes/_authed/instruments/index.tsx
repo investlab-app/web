@@ -7,6 +7,7 @@ import InstrumentDetails from '@/features/instruments/components/instrument-deta
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from '@/features/shared/components/ui/sheet';
@@ -29,6 +30,7 @@ function Instruments() {
               <SheetTitle>
                 {instrument.name} - {t('instruments.overview')}
               </SheetTitle>
+              <SheetDescription>{t('instruments.overview')}</SheetDescription>
             </SheetHeader>
 
             <div className="p-4 space-y-4 overflow-y-auto">

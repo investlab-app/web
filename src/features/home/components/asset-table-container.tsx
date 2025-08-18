@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { ErrorMessage } from '@/features/shared/components/error-message';
+import { Message } from '@/features/shared/components/error-message';
 
 export const ownedSharesQueryOptions = queryOptions({
   queryKey: ['owned-shares'],
@@ -37,7 +37,7 @@ const AssetTableContainer = () => {
           <CardTitle>{t('investor.owned_shares')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ErrorMessage message={t('common.error_loading_data')} />
+          <Message message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );
