@@ -24,6 +24,8 @@ const enCommon = {
   unknown_error: 'Unknown error',
   save: 'Save',
   cancel: 'Cancel',
+  expand: 'Expand',
+  collapse: 'Collapse',
   intervals: {
     one_minute: '1 minute',
     five_minutes: '5 minutes',
@@ -32,6 +34,7 @@ const enCommon = {
     one_day: '1 day',
     one_week: '1 week',
   },
+  transactions: 'Transactions',
 };
 
 export default enCommon;

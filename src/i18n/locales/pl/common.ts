@@ -24,6 +24,8 @@ const plCommon = {
   unknown_error: 'Nieznany błąd',
   save: 'Zapisz',
   cancel: 'Anuluj',
+  expand: 'Rozwiń',
+  collapse: 'Zwiń',
   intervals: {
     one_minute: '1 minuta',
     five_minutes: '5 minut',
@@ -32,6 +34,7 @@ const plCommon = {
     one_day: '1 dzień',
     one_week: '1 tydzień',
   },
+  transactions: 'Transakcje',
 };
 
 export default plCommon;
