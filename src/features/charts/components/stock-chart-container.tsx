@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
-import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
-import { timeIntervals } from '../utils/time-ranges';
+import { useQuery } from '@tanstack/react-query';
+import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
+import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
 import { ChartErrorMessage } from './chart-error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
@@ -38,27 +38,36 @@ type StockChartProps = {
 export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const { t } = useTranslation();
 
-  const store = useMemo(() => {
-    return new Store({
-      interval: '1h',
-      data: new Array<InstrumentPriceProps>(),
-      currentPrice: 0,
-      hasError: false,
-      liveUpdateValue: null as [InstrumentPriceProps, boolean] | null,
-      isCandlestick: true,
-    });
-  }, []);
+  const [interval, setInterval] = useState('1h');
+  const startDate = intervalToStartDate(interval);
+
+  const [isCandlestick, setIsCandlestick] = useState(true);
+  const [livePrice, setLivePrice] = useState<
+    [InstrumentPriceProps, boolean] | null
+  >(null);
+
+  // useEffect(() => {
+  //   console.log('CHANGE');
+  // }, [endDate]);
 
   const {
-    interval,
-    data,
-    currentPrice,
-    hasError,
-    liveUpdateValue,
-    isCandlestick,
-  } = useStore(store);
+    data: instrumentHistory,
+    isLoading,
+    isError,
+  } = useQuery(
+    instrumentHistoryQueryOptions({
+      ticker,
+      startDate,
+      endDate: new Date(),
+      interval,
+    })
+  );
 
-  const loadStockData = useLoadStockChartData();
+  console.log(
+    'Instrument History:',
+    instrumentHistory,
+    `isLoading: ${isLoading}, isError: ${isError}`
+  );
 
   const { cleanup } = useSSE({
     events: new Set([`PRICE_UPDATE_${ticker}`]),
@@ -73,80 +82,33 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
       const out = livePriceDataDTO(jsonData);
       if (out instanceof type.errors) {
         console.error('Invalid data point received:', out.summary);
-        store.setState((state) => ({
-          ...state,
-          hasError: true,
-        }));
         return;
       }
       if (out.id !== ticker) {
         return;
       }
-      store.setState((state) => {
-        const newDataPoint = {
-          date: new Date(parseInt(out.time)).toLocaleTimeString(),
-          open: out.price,
-          high: out.price,
-          low: out.price,
-          close: out.price,
-        } as InstrumentPriceProps;
-        return {
-          ...state,
-          currentPrice: out.price,
-          liveUpdateValue: [newDataPoint, true],
-          hasError: false,
-        };
-      });
+      const newDataPoint = {
+        date: new Date(parseInt(out.time)).toLocaleTimeString(),
+        open: out.price,
+        high: out.price,
+        low: out.price,
+        close: out.price,
+      };
+      setLivePrice([newDataPoint, true]);
     },
   });
 
-  const chartTypeToggle = (value: string) => {
-    store.setState((state) => {
-      return {
-        ...state,
-        isCandlestick: value === 'candle',
-      };
-    });
-  };
+  useEffect(() => cleanup, [cleanup]);
 
-  const changeInterval = useCallback(
-    async (newInterval: string) => {
-      const result = await loadStockData(ticker, newInterval);
-      if ('error' in result) {
-        store.setState((state) => ({
-          ...state,
-          hasError: true,
-          data: [],
-          interval: newInterval,
-        }));
-        return;
-      }
-      store.setState((state) => {
-        return {
-          ...state,
-          interval: newInterval,
-          data: result.parsed,
-          minPrice: result.minPrice,
-          maxPrice: result.maxPrice,
-          currentPrice: result.parsed[result.parsed.length - 1]?.close || 0,
-        };
-      });
-    },
-    [loadStockData, store, ticker]
-  );
-
-  useEffect(() => {
-    changeInterval('1h');
-    return () => {
-      cleanup();
-    };
-  }, [changeInterval, cleanup]);
+  const currentPrice =
+    livePrice?.[0]?.close ||
+    instrumentHistory?.data[instrumentHistory.data.length - 1]?.close;
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>{ticker}</CardTitle>
-        {!hasError && typeof currentPrice === 'number' && (
+        {currentPrice && (
           <CardDescription>
             {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
           </CardDescription>
@@ -155,7 +117,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           <div className="flex items-center gap-1">
             <ToggleGroup
               type="single"
-              onValueChange={chartTypeToggle}
+              onValueChange={(value) => setIsCandlestick(value === 'candle')}
               aria-label="Toggle chart type"
             >
               <ToggleGroupItem
@@ -179,7 +141,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                 <CandlestickChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
             </ToggleGroup>
-            <Select value={interval} onValueChange={changeInterval}>
+            <Select value={interval} onValueChange={setInterval}>
               <SelectTrigger className="w-40" aria-label="Select time range">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
@@ -195,7 +157,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        {hasError ? (
+        {!instrumentHistory?.data ? (
           <ChartErrorMessage
             message={t('instruments.history_empty', {
               ticker,
@@ -208,9 +170,9 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         ) : (
           <StockChart
             stockName={ticker}
-            chartData={data}
+            chartData={instrumentHistory.data}
             selectedInterval={interval}
-            liveUpdateValue={liveUpdateValue}
+            liveUpdateValue={livePrice}
             zoom={0.1}
             isCandlestick={isCandlestick}
           />

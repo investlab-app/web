@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Instrument } from '@/features/instruments/types/types';
 import {
   SidebarInset,
@@ -9,13 +10,19 @@ import { AppSidebar } from '@/features/shared/components/app-sidebar';
 import { SiteHeader } from '@/features/shared/components/site-header';
 import InstrumentsTableContainer from '@/features/instruments/components/instruments-table-container';
 import InstrumentDetails from '@/features/instruments/components/instrument-details';
-import { Sheet, SheetContent } from '@/features/shared/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/features/shared/components/ui/sheet';
 
 export const Route = createFileRoute('/_authed/instruments')({
   component: Instruments,
 });
 
 function Instruments() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [instrument, setInstrument] = useState<Instrument>();
 
@@ -25,7 +32,19 @@ function Instruments() {
       <SidebarInset>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetContent className=" w-full sm:max-w-2/3">
-            {instrument ? <InstrumentDetails instrument={instrument} /> : null}
+            {instrument ? (
+              <>
+                <SheetHeader>
+                  <SheetTitle>
+                    {instrument.name} - {t('instruments.overview')}
+                  </SheetTitle>
+                </SheetHeader>
+
+                <div className="p-4 space-y-4 overflow-y-auto">
+                  <InstrumentDetails instrument={instrument} />
+                </div>
+              </>
+            ) : null}
           </SheetContent>
 
           <SiteHeader />

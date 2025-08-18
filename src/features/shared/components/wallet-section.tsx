@@ -1,8 +1,6 @@
 import { IconPlus, IconWallet } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { authedQueryOptions } from '../utils/authed-query-options';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
@@ -11,20 +9,17 @@ import {
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 
-export const currentAccountValueQueryOptions = authedQueryOptions({
+export const currentAccountValueQueryOptions = queryOptions({
   queryKey: ['currentAccountValue'],
-  queryFn: async (token) => {
-    return fetchCurrentAccountValue(token);
-  },
+  queryFn: fetchCurrentAccountValue,
   staleTime: 60 * 1000,
 });
 
 export function WalletSection() {
-  const { getToken } = useAuth();
   const { t } = useTranslation();
 
   const { data: accountValue, isLoading } = useQuery(
-    currentAccountValueQueryOptions(getToken)
+    currentAccountValueQueryOptions
   );
 
   return (
@@ -39,7 +34,7 @@ export function WalletSection() {
               new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: t('common.currency'),
-              }).format(accountValue)
+              }).format(accountValue.value)
             ) : (
               <Skeleton className="h-6 w-24" />
             )}

@@ -9,15 +9,13 @@ import { accountValueOverTimeQueryOptions } from '@/features/home/components/acc
 import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
 
 export const Route = createFileRoute('/')({
-  loader: async ({ context: { auth, queryClient } }) => {
-    const token = await auth.getToken();
-    if (!token) return;
+  loader: async ({ context: { queryClient } }) => {
     await Promise.all([
-      queryClient.prefetchQuery(investorStatsQueryOptions(token)),
-      queryClient.prefetchQuery(assetAllocationQueryOptions(token)),
-      queryClient.prefetchQuery(currentAccountValueQueryOptions(token)),
-      queryClient.prefetchQuery(accountValueOverTimeQueryOptions(token)),
-      queryClient.prefetchQuery(ownedSharesQueryOptions(token)),
+      queryClient.prefetchQuery(investorStatsQueryOptions),
+      queryClient.prefetchQuery(assetAllocationQueryOptions),
+      queryClient.prefetchQuery(currentAccountValueQueryOptions),
+      queryClient.prefetchQuery(accountValueOverTimeQueryOptions),
+      queryClient.prefetchQuery(ownedSharesQueryOptions),
     ]);
   },
   component: Index,

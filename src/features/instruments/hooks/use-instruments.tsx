@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
 import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
 import type { Instrument } from '../types/types';
 import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';
@@ -22,26 +21,20 @@ export const useInstruments = ({
   sortBy,
   sortDirection,
 }: UseInstrumentsOptions) => {
-  const { getToken } = useAuth();
-
   const {
-    data: availableInstruments = [],
+    data: availableInstruments = { instruments: [] },
     isLoading: availableInstrumentsLoading,
     error: availableInstrumentsError,
   } = useQuery({
     queryKey: ['availableInstruments'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token available');
-      return fetchAvailableInstruments({ token });
-    },
+    queryFn: fetchAvailableInstruments,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const filteredTickers = useMemo(() => {
-    if (!filter.trim()) return availableInstruments;
-    return availableInstruments.filter((ticker) =>
+    if (!filter.trim()) return availableInstruments.instruments;
+    return availableInstruments.instruments.filter((ticker) =>
       ticker.toLowerCase().includes(filter.toLowerCase().trim())
     );
   }, [availableInstruments, filter]);
@@ -62,8 +55,6 @@ export const useInstruments = ({
         },
       ],
       queryFn: async () => {
-        const token = await getToken();
-        if (!token) throw new Error('No auth token available');
         return await fetchInstrumentsOverview({
           tickers: filteredTickers.length > 0 ? filteredTickers : undefined,
           page: pageNum,
@@ -71,7 +62,6 @@ export const useInstruments = ({
           sector,
           sortBy,
           sortDirection,
-          token,
         });
       },
       refetchOnWindowFocus: false,

@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 const assetAllocationItem = type({
   asset_class_display_name: 'string',
@@ -15,19 +15,6 @@ const assetAllocation = type({
 
 export type AssetAllocation = typeof assetAllocation.infer;
 
-export const fetchAssetAllocation = async (
-  token: string
-): Promise<AssetAllocation> => {
-  const response = await fetchWithAuth(
-    `/api/investors/me/asset-allocation`,
-    token
-  );
-
-  const result = assetAllocation(response);
-  if (result instanceof type.errors) {
-    console.error('Invalid asset allocation response:', result.summary);
-    throw new Error(`Invalid asset allocation response: ${result.summary}`);
-  }
-
-  return result;
-};
+export function fetchAssetAllocation() {
+  return validatedFetch(`/api/investors/me/asset-allocation`, assetAllocation);
+}

@@ -1,9 +1,8 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 type FetchInstrumentNewsOptions = {
   ticker: string;
-  token: string;
 };
 
 const resolution = type({
@@ -56,19 +55,6 @@ export type NewsResponse = typeof newsResponse.infer;
 
 export async function fetchInstrumentNews({
   ticker,
-  token,
-}: FetchInstrumentNewsOptions): Promise<NewsResponse> {
-  const response = await fetchWithAuth(
-    `/api/instruments/${ticker}/news/`,
-    token
-  );
-
-  const out = newsResponse(response);
-
-  if (out instanceof type.errors) {
-    console.error(out.summary);
-    throw new Error(out.summary);
-  }
-
-  return out;
+}: FetchInstrumentNewsOptions) {
+  return validatedFetch(`/api/instruments/${ticker}/news/`, newsResponse);
 }

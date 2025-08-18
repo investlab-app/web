@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { ChartErrorMessage } from '../../charts/components/chart-error-message';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
@@ -13,23 +12,17 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
-export const accountValueOverTimeQueryOptions = authedQueryOptions({
+export const accountValueOverTimeQueryOptions = queryOptions({
   queryKey: ['accountValueOverTime'],
-  queryFn: async (token) => {
-    return fetchAccountValueOverTime(token);
-  },
+  queryFn: fetchAccountValueOverTime,
   staleTime: 60 * 1000,
 });
 
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
-  const { data, isLoading, error } = useQuery(
-    accountValueOverTimeQueryOptions(getToken)
-  );
+  const { data, isLoading, error } = useQuery(accountValueOverTimeQueryOptions);
 
   const chartData: Array<InstrumentPriceProps> = useMemo(() => {
     if (!data) return [];

@@ -1,7 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
 import { fetchInstrumentNews } from '../queries/fetch-instrument-news';
-import type { NewsResponse } from '../queries/fetch-instrument-news';
 
 type UseInstrumentNewsOptions = {
   ticker: string;
@@ -12,8 +10,6 @@ export const useInstrumentNews = ({
   ticker,
   enabled = true,
 }: UseInstrumentNewsOptions) => {
-  const { getToken } = useAuth();
-
   const {
     data: news = [],
     isLoading,
@@ -21,11 +17,7 @@ export const useInstrumentNews = ({
     refetch,
   } = useQuery({
     queryKey: ['instrumentNews', ticker],
-    queryFn: async (): Promise<NewsResponse> => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token available');
-      return fetchInstrumentNews({ ticker, token });
-    },
+    queryFn: () => fetchInstrumentNews({ ticker }),
     enabled: enabled && !!ticker,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes

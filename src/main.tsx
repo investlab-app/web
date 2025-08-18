@@ -1,9 +1,11 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { QueryClient } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { ClerkLoaded, useAuth, useUser } from '@clerk/clerk-react';
+import { ClerkLoaded, useAuth } from '@clerk/clerk-react';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
@@ -23,13 +25,13 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
     },
   },
 });
 
 export type RouterContext = {
   auth: ReturnType<typeof useAuth>;
-  user: ReturnType<typeof useUser>;
   queryClient: QueryClient;
 };
 
@@ -37,7 +39,6 @@ const router = createRouter({
   routeTree,
   context: {
     auth: undefined!,
-    user: undefined!,
     queryClient,
   },
   defaultErrorComponent: ({ error }) => {
@@ -47,12 +48,13 @@ const router = createRouter({
 
 function App() {
   const auth = useAuth();
-  const user = useUser();
-
-  return (
-    <RouterProvider context={{ auth, user, queryClient }} router={router} />
-  );
+  return <RouterProvider context={{ auth, queryClient }} router={router} />;
 }
+
+const persister = createAsyncStoragePersister({
+  
+  storage: window.localStorage,
+});
 
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
@@ -69,13 +71,16 @@ if (rootElement && !rootElement.innerHTML) {
               options: { api_host: POSTHOG_HOST },
             }}
           >
-            <QueryClientProvider client={queryClient}>
+            <PersistQueryClientProvider
+              client={queryClient}
+              persistOptions={{ persister }}
+            >
               <SSEProvider>
                 <ClerkLoaded>
                   <App />
                 </ClerkLoaded>
               </SSEProvider>
-            </QueryClientProvider>
+            </PersistQueryClientProvider>
           </ConditionalProvider>
         </ClerkThemedProvider>
       </ThemeProvider>

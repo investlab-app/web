@@ -1,27 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
-import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
-export const investorStatsQueryOptions = authedQueryOptions({
+export const investorStatsQueryOptions = queryOptions({
   queryKey: ['investorStats'],
-  queryFn: async (token) => {
-    return await fetchInvestorStats(token);
-  },
+  queryFn: fetchInvestorStats,
 });
 
 const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
   const {
     data: stats,
     isLoading,
     isError,
   } = useQuery({
-    ...investorStatsQueryOptions(getToken),
+    ...investorStatsQueryOptions,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,

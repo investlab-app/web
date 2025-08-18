@@ -1,5 +1,4 @@
-import { useAuth } from '@clerk/clerk-react';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
 import { AssetAllocationTile } from './asset-allocation-tile';
@@ -11,22 +10,20 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
-import { authedQueryOptions } from '@/features/shared/utils/authed-query-options';
 
-export const assetAllocationQueryOptions = authedQueryOptions({
+export const assetAllocationQueryOptions = queryOptions({
   queryKey: ['asset-allocation'],
   queryFn: fetchAssetAllocation,
 });
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
   const {
     data: assetAllocation,
     isLoading,
     isError,
-  } = useQuery(assetAllocationQueryOptions(getToken));
+  } = useQuery(assetAllocationQueryOptions);
 
   if (isLoading) {
     return (

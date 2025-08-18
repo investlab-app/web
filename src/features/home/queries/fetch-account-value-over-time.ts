@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 const accountValueData = type({
   date: 'string',
@@ -13,21 +13,9 @@ const accountValueOverTime = type({
 export type AccountValueData = typeof accountValueData.infer;
 export type AccountValueOverTime = typeof accountValueOverTime.infer;
 
-export async function fetchAccountValueOverTime(
-  token: string
-): Promise<AccountValueOverTime> {
-  const response = await fetchWithAuth(
+export async function fetchAccountValueOverTime() {
+  return validatedFetch(
     '/api/investors/me/account-value/',
-    token
+    accountValueOverTime
   );
-
-  const result = accountValueOverTime(response);
-  if (result instanceof type.errors) {
-    console.error('Invalid account value over time response:', result.summary);
-    throw new Error(
-      `Invalid account value over time response: ${result.summary}`
-    );
-  }
-
-  return result;
 }
