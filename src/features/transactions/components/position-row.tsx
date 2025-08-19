@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { getProfabilityColor } from '../utils/colors';
 import { TransactionRow } from './transaction-row';
-import type { Position } from '../queries/fetch-transactions-history';
+import type { Position } from '../types/types';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
