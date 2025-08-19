@@ -18,7 +18,9 @@ function RouteComponent() {
 
   return (
     <>
-      <AuthenticateWithRedirectCallback />
+      <AuthenticateWithRedirectCallback
+        signUpForceRedirectUrl={'/?initial_session=true'}
+      />
       <Card className="w-full max-w-sm">
         <CardHeader className="flex flex-col items-center gap-2 border-b-0">
           <LoadingSpinner className="w-8 h-8 text-neutral-100 mb-2" />

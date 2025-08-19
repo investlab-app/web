@@ -1,25 +1,16 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
+import { type } from 'arktype';
+import { useEffect } from 'react';
 import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
-import { assetAllocationQueryOptions } from '@/features/home/components/asset-allocation-container';
-import { accountValueOverTimeQueryOptions } from '@/features/home/components/account-value-chart-container';
-import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
-import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
-import { investorStatsQueryOptions } from '@/features/home/queries/fetch-investor-stats';
+import { syncLanguage } from '@/features/shared/queries/update-language';
 
 export const Route = createFileRoute('/')({
-  loader: async ({ context: { queryClient, auth, i18n } }) => {
-    if (!auth.isSignedIn) {
-      return;
-    }
-    await Promise.all([
-      queryClient.prefetchQuery(investorStatsQueryOptions),
-      queryClient.prefetchQuery(assetAllocationQueryOptions),
-      queryClient.prefetchQuery(currentAccountValueQueryOptions),
-      queryClient.prefetchQuery(accountValueOverTimeQueryOptions),
-      queryClient.prefetchQuery(ownedSharesQueryOptions),
-    ]);
+  validateSearch: type({
+    initial_session: 'boolean?',
+  }),
+  loader: ({ context: { i18n } }) => {
     return {
       crumb: i18n.t('common.dashboard'),
     };
@@ -28,6 +19,19 @@ export const Route = createFileRoute('/')({
 });
 
 function Index() {
+  const { auth, isLoggedInBefore } = Route.useRouteContext();
+
+  const { initial_session } = Route.useSearch();
+
+  useEffect(() => {
+    if (!initial_session) return;
+    void syncLanguage();
+  }, [initial_session]);
+
+  if (!auth.isLoaded && isLoggedInBefore) {
+    return <Dashboard />;
+  }
+
   return (
     <>
       <SignedOut>

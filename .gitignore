@@ -1,6 +1,7 @@
 node_modules
 .DS_Store
 dist
+dev-dist
 dist-ssr
 *.local
 .vscode
@@ -15,7 +16,9 @@ dist-ssr
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/playwright/.clerk
 
 # idea
 .idea/
-playwright/.clerk
+
+

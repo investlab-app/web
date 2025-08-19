@@ -62,9 +62,9 @@ export function EmailVerificationForm({
           })(signUpResource.status)
         )
         .match(
-          (sessionId) => {
-            setActive({ session: sessionId });
-            navigate({ to: '/' });
+          async (sessionId) => {
+            await setActive({ session: sessionId });
+            navigate({ to: '/', search: { initial_session: true } });
           },
           (e) => {
             navigate({

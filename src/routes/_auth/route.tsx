@@ -1,4 +1,3 @@
-import { useUser } from '@clerk/clerk-react';
 import {
   Link,
   Outlet,
@@ -13,11 +12,11 @@ export const Route = createFileRoute('/_auth')({
 });
 
 function RouteComponent() {
-  const { isLoaded, isSignedIn } = useUser();
+  const { auth } = Route.useRouteContext();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  if (isLoaded && isSignedIn) {
+  if (auth.isLoaded && auth.isSignedIn) {
     navigate({ to: '/', replace: true });
   }
 
