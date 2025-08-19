@@ -1,10 +1,11 @@
 import {
+  IconChartPie,
   IconDashboard,
   IconHelp,
   IconHistory,
   IconListDetails,
   IconSettings,
-  IconChartPie} from '@tabler/icons-react';
+} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';

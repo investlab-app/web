@@ -36,7 +36,7 @@ export const StatTile = ({
   trendNote,
   coloring = false,
 }: StatTileProps) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   
   const formatValue = (val: number) => {
     return Math.abs(val).toLocaleString(t('common.locale'), {
@@ -44,15 +44,25 @@ export const StatTile = ({
       maximumFractionDigits: 2,
     });
   };
-   const startNumericValue = typeof value === 'number' ? value : 0;
-    const formattedValue = unformatted ? value : formatValue(startNumericValue);
-    const percentageValue = isPercentage ? `${formattedValue}%` : formattedValue;
-    const finalNumericValue = (!unformatted && !isPercentage) ? `${percentageValue} ${currency}` : percentageValue;
-    
+  const startNumericValue = typeof value === 'number' ? value : 0;
+  const formattedValue = unformatted ? value : formatValue(startNumericValue);
+  const percentageValue = isPercentage ? `${formattedValue}%` : formattedValue;
+  const finalNumericValue =
+    !unformatted && !isPercentage
+      ? `${percentageValue} ${currency}`
+      : percentageValue;
+
   const isPositive = typeof value === 'number' ? value >= 0 : false;
   const finalValue = typeof value === 'number' ? finalNumericValue : value;
 
-  console.log("StatTile rendered with value:", value, "formattedValue:", formattedValue, "finalValue:", finalValue);
+  console.log(
+    'StatTile rendered with value:',
+    value,
+    'formattedValue:',
+    formattedValue,
+    'finalValue:',
+    finalValue
+  );
   return (
     <Card
       className={cn(
@@ -74,7 +84,6 @@ export const StatTile = ({
             'text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'
           )}
         >
-          
           {isProgress && isPositive ? '+' : ''}
           {isProgress && !isPositive ? '-' : ''}
           {toFixedLocalized(122, i18n.language, 2)} {currency}

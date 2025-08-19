@@ -1,6 +1,7 @@
-import { statisticsOverview, type StatisticsOverview } from '../types/types';
 import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
+import {  statisticsOverview } from '../types/types';
+import type {StatisticsOverview} from '../types/types';
 
 export async function fetchStatisticsOverview() {
   const response = await new Promise((resolve) => {
@@ -24,7 +25,6 @@ export const statisticsOverviewQueryOptions = queryOptions({
   queryFn: fetchStatisticsOverview,
   staleTime: 1 * 1000,
 });
-
 
 const _generateFakeStatisticsOverview = (): StatisticsOverview => {
   return {

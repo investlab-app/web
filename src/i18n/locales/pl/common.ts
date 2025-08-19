@@ -8,7 +8,7 @@ const plCommon = {
   currency: 'USD',
   search: 'Wyszukaj...',
   dashboard: 'Strona Główna',
-  statistics: 'Statistics',
+  statistics: 'Statystyki',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   add: 'Dodaj',

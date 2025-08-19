@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
+import { statisticsOverviewQueryOptions } from '../queries/fetch-statistics-overview';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { LoadingCard } from '@/features/shared/components/loading-card';
 import { ErrorCard } from '@/features/shared/components/error-card';
-import { statisticsOverviewQueryOptions } from '../queries/fetch-statistics-overview';
-
 
 const StatsOverviewRibbon = () => {
   const { t } = useTranslation();
@@ -24,12 +23,12 @@ const StatsOverviewRibbon = () => {
     {
       title: t('statistics.total_trades'),
       value: stats?.total_trades,
-      unformatted: true
+      unformatted: true,
     },
     {
       title: t('statistics.buys_sells'),
       value: stats?.buys_sells,
-      unformatted: true
+      unformatted: true,
     },
     {
       title: t('statistics.avg_gain'),
@@ -41,7 +40,7 @@ const StatsOverviewRibbon = () => {
       title: t('statistics.avg_loss'),
       value: stats?.avg_loss,
       isPercentage: true,
-        coloring: true,
+      coloring: true,
     },
     {
       title: t('statistics.total_return'),
