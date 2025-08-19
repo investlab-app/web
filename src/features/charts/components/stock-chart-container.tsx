@@ -1,14 +1,17 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Store, useStore } from '@tanstack/react-store';
 import { type } from 'arktype';
-import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
-import { useLoadStockChartData } from '../hooks/use-load-stock-chart-data';
-import { timeIntervals } from '../utils/time-ranges';
+import { useQuery } from '@tanstack/react-query';
+import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
+import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
+import { Message } from '../../shared/components/error-message';
 import { StockChart } from './stock-chart';
-import { ChartErrorMessage } from './chart-error-message';
 import type { InstrumentPriceProps } from '../types/types';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@/features/shared/components/ui/toggle-group';
 import {
   Card,
   CardAction,
@@ -26,7 +29,8 @@ import {
 } from '@/features/shared/components/ui/select';
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
-import { cn } from '@/features/shared/utils';
+import { cn } from '@/features/shared/utils/styles';
+import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 
 type StockChartProps = {
   ticker: string;
@@ -35,27 +39,31 @@ type StockChartProps = {
 export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const { t } = useTranslation();
 
-  const store = useMemo(() => {
-    return new Store({
-      interval: '1h',
-      data: new Array<InstrumentPriceProps>(),
-      currentPrice: 0,
-      hasError: false,
-      liveUpdateValue: null as [InstrumentPriceProps, boolean] | null,
-      isCandlestick: true,
-    });
-  }, []);
+  const [interval, setInterval] = useState('1h');
+  const [startDate, endDate] = useMemo(
+    () => [intervalToStartDate(interval), new Date()],
+    [interval]
+  );
+
+  const [isCandlestick, setIsCandlestick] = useState(true);
+  const [livePrice, setLivePrice] = useState<
+    [InstrumentPriceProps, boolean] | null
+  >(null);
 
   const {
-    interval,
-    data,
-    currentPrice,
-    hasError,
-    liveUpdateValue,
-    isCandlestick,
-  } = useStore(store);
-
-  const loadStockData = useLoadStockChartData();
+    data: priceHistory,
+    isLoading,
+    isFetching,
+    isSuccess,
+    isError,
+  } = useQuery(
+    instrumentHistoryQueryOptions({
+      ticker,
+      startDate,
+      endDate,
+      interval,
+    })
+  );
 
   const { cleanup } = useSSE({
     events: new Set([`PRICE_UPDATE_${ticker}`]),
@@ -70,81 +78,37 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
       const out = livePriceDataDTO(jsonData);
       if (out instanceof type.errors) {
         console.error('Invalid data point received:', out.summary);
-        store.setState((state) => ({
-          ...state,
-          hasError: true,
-        }));
         return;
       }
       if (out.id !== ticker) {
+        // ignore
         return;
       }
-      store.setState((state) => {
-        const newDataPoint = {
-          date: new Date(parseInt(out.time)).toLocaleTimeString(),
-          open: out.price,
-          high: out.price,
-          low: out.price,
-          close: out.price,
-        } as InstrumentPriceProps;
-        return {
-          ...state,
-          currentPrice: out.price,
-          liveUpdateValue: [newDataPoint, true],
-          hasError: false,
-        };
-      });
+      const newDataPoint = {
+        date: new Date(parseInt(out.time)).toLocaleTimeString(),
+        open: out.price,
+        high: out.price,
+        low: out.price,
+        close: out.price,
+      };
+      setLivePrice([newDataPoint, true]);
     },
   });
 
-  const chartTypeToggle = (value: string) => {
-    console.log('love you', value);
-    store.setState((state) => {
-      return {
-        ...state,
-        isCandlestick: value === 'candle',
-      };
-    });
-  };
+  useEffect(() => cleanup, [cleanup]);
 
-  const changeInterval = useCallback(
-    async (newInterval: string) => {
-      const result = await loadStockData(ticker, newInterval);
-      if ('error' in result) {
-        store.setState((state) => ({
-          ...state,
-          hasError: true,
-          data: [],
-          interval: newInterval,
-        }));
-        return;
-      }
-      store.setState((state) => {
-        return {
-          ...state,
-          interval: newInterval,
-          data: result.parsed,
-          minPrice: result.minPrice,
-          maxPrice: result.maxPrice,
-          currentPrice: result.parsed[result.parsed.length - 1]?.close || 0,
-        };
-      });
-    },
-    [loadStockData, store, ticker]
-  );
+  const appliedInterval = useFrozenValue(interval, isFetching);
+  const isIntervalChanging = appliedInterval !== interval;
 
-  useEffect(() => {
-    changeInterval('1h');
-    return () => {
-      cleanup();
-    };
-  }, [changeInterval, cleanup]);
+  const currentPrice =
+    livePrice?.[0]?.close ||
+    priceHistory?.data[priceHistory.data.length - 1]?.close;
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>{ticker}</CardTitle>
-        {!hasError && typeof currentPrice === 'number' && (
+        {currentPrice && (
           <CardDescription>
             {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
           </CardDescription>
@@ -153,7 +117,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           <div className="flex items-center gap-1">
             <ToggleGroup
               type="single"
-              onValueChange={chartTypeToggle}
+              onValueChange={(value) => setIsCandlestick(value === 'candle')}
               aria-label="Toggle chart type"
             >
               <ToggleGroupItem
@@ -177,8 +141,11 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                 <CandlestickChartIcon strokeWidth={1.5} />
               </ToggleGroupItem>
             </ToggleGroup>
-            <Select value={interval} onValueChange={changeInterval}>
-              <SelectTrigger className="w-40" aria-label="Select time range">
+            <Select value={interval} onValueChange={setInterval}>
+              <SelectTrigger
+                className={`w-40 ${isIntervalChanging ? 'animate-pulse' : ''}`}
+                aria-label="Select time range"
+              >
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
@@ -193,26 +160,31 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         </CardAction>
       </CardHeader>
       <CardContent>
-        {hasError ? (
-          <ChartErrorMessage
-            message={t('instruments.history_empty', {
-              ticker,
-              interval: t(
-                timeIntervals.find(({ value }) => value === interval)
-                  ?.labelKey || 'intervals.one_hour'
-              ),
-            })}
-          />
-        ) : (
-          <StockChart
-            stockName={ticker}
-            chartData={data}
-            selectedInterval={interval}
-            liveUpdateValue={liveUpdateValue}
-            zoom={0.1}
-            isCandlestick={isCandlestick}
-          />
+        {isLoading && (
+          <Message className="animate-pulse" message={t('common.loading')} />
         )}
+        {isError && <Message message={t('instruments.error_loading_data')} />}
+        {isSuccess &&
+          (priceHistory.data.length ? (
+            <StockChart
+              stockName={ticker}
+              chartData={priceHistory.data}
+              selectedInterval={appliedInterval}
+              liveUpdateValue={livePrice}
+              zoom={0.1}
+              isCandlestick={isCandlestick}
+            />
+          ) : (
+            <Message
+              message={t('instruments.history_empty', {
+                ticker,
+                interval: t(
+                  timeIntervals.find(({ value }) => value === interval)
+                    ?.labelKey || 'intervals.one_hour'
+                ),
+              })}
+            />
+          ))}
       </CardContent>
     </Card>
   );

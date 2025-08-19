@@ -8,6 +8,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
+import { useUser } from '@clerk/clerk-react';
 import {
   Sidebar,
   SidebarContent,
@@ -19,12 +20,16 @@ import {
 } from './ui/sidebar';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
-import { NavUser } from '@/features/shared/components/nav-user';
+import {
+  NavUser,
+  NavUserSkeleton,
+} from '@/features/shared/components/nav-user';
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
+  const { user } = useUser();
   const data: {
     navMain: Array<NavItem>;
     navSecondary: Array<NavItem>;
@@ -84,7 +89,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        {user ? <NavUser user={user} /> : <NavUserSkeleton />}
       </SidebarFooter>
     </Sidebar>
   );

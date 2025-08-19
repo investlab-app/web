@@ -10,19 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
+import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TransactionsIndexRouteImport } from './routes/transactions/index'
-import { Route as InstrumentsIndexRouteImport } from './routes/instruments/index'
-import { Route as InstrumentsInstrumentIdRouteImport } from './routes/instruments/$instrumentId'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
+import { Route as AuthedInstrumentsIndexRouteImport } from './routes/_authed/instruments/index'
+import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_authed/instruments/$instrumentId'
 
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/$not-found',
   path: '/$not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRouteRoute = AuthedRouteRouteImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
@@ -32,21 +37,6 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TransactionsIndexRoute = TransactionsIndexRouteImport.update({
-  id: '/transactions/',
-  path: '/transactions/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InstrumentsIndexRoute = InstrumentsIndexRouteImport.update({
-  id: '/instruments/',
-  path: '/instruments/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InstrumentsInstrumentIdRoute = InstrumentsInstrumentIdRouteImport.update({
-  id: '/instruments/$instrumentId',
-  path: '/instruments/$instrumentId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
@@ -69,6 +59,22 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
+  id: '/transactions/',
+  path: '/transactions/',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedInstrumentsIndexRoute = AuthedInstrumentsIndexRouteImport.update({
+  id: '/instruments/',
+  path: '/instruments/',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedInstrumentsInstrumentIdRoute =
+  AuthedInstrumentsInstrumentIdRouteImport.update({
+    id: '/instruments/$instrumentId',
+    path: '/instruments/$instrumentId',
+    getParentRoute: () => AuthedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,9 +83,9 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments/$instrumentId': typeof InstrumentsInstrumentIdRoute
-  '/instruments': typeof InstrumentsIndexRoute
-  '/transactions': typeof TransactionsIndexRoute
+  '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/instruments': typeof AuthedInstrumentsIndexRoute
+  '/transactions': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -88,22 +94,23 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments/$instrumentId': typeof InstrumentsInstrumentIdRoute
-  '/instruments': typeof InstrumentsIndexRoute
-  '/transactions': typeof TransactionsIndexRoute
+  '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/instruments': typeof AuthedInstrumentsIndexRoute
+  '/transactions': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/_authed': typeof AuthedRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
-  '/instruments/$instrumentId': typeof InstrumentsInstrumentIdRoute
-  '/instruments/': typeof InstrumentsIndexRoute
-  '/transactions/': typeof TransactionsIndexRoute
+  '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
+  '/_authed/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -132,23 +139,22 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/_authed'
     | '/$not-found'
     | '/_auth/login'
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
-    | '/instruments/$instrumentId'
-    | '/instruments/'
-    | '/transactions/'
+    | '/_authed/instruments/$instrumentId'
+    | '/_authed/instruments/'
+    | '/_authed/transactions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
   NotFoundRoute: typeof NotFoundRoute
-  InstrumentsInstrumentIdRoute: typeof InstrumentsInstrumentIdRoute
-  InstrumentsIndexRoute: typeof InstrumentsIndexRoute
-  TransactionsIndexRoute: typeof TransactionsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -158,6 +164,13 @@ declare module '@tanstack/react-router' {
       path: '/$not-found'
       fullPath: '/$not-found'
       preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -172,27 +185,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/transactions/': {
-      id: '/transactions/'
-      path: '/transactions'
-      fullPath: '/transactions'
-      preLoaderRoute: typeof TransactionsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/instruments/': {
-      id: '/instruments/'
-      path: '/instruments'
-      fullPath: '/instruments'
-      preLoaderRoute: typeof InstrumentsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/instruments/$instrumentId': {
-      id: '/instruments/$instrumentId'
-      path: '/instruments/$instrumentId'
-      fullPath: '/instruments/$instrumentId'
-      preLoaderRoute: typeof InstrumentsInstrumentIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/verify-email': {
@@ -223,6 +215,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_authed/transactions/': {
+      id: '/_authed/transactions/'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthedTransactionsIndexRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/instruments/': {
+      id: '/_authed/instruments/'
+      path: '/instruments'
+      fullPath: '/instruments'
+      preLoaderRoute: typeof AuthedInstrumentsIndexRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/instruments/$instrumentId': {
+      id: '/_authed/instruments/$instrumentId'
+      path: '/instruments/$instrumentId'
+      fullPath: '/instruments/$instrumentId'
+      preLoaderRoute: typeof AuthedInstrumentsInstrumentIdRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
   }
 }
 
@@ -244,13 +257,27 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface AuthedRouteRouteChildren {
+  AuthedInstrumentsInstrumentIdRoute: typeof AuthedInstrumentsInstrumentIdRoute
+  AuthedInstrumentsIndexRoute: typeof AuthedInstrumentsIndexRoute
+  AuthedTransactionsIndexRoute: typeof AuthedTransactionsIndexRoute
+}
+
+const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
+  AuthedInstrumentsInstrumentIdRoute: AuthedInstrumentsInstrumentIdRoute,
+  AuthedInstrumentsIndexRoute: AuthedInstrumentsIndexRoute,
+  AuthedTransactionsIndexRoute: AuthedTransactionsIndexRoute,
+}
+
+const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
+  AuthedRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  AuthedRouteRoute: AuthedRouteRouteWithChildren,
   NotFoundRoute: NotFoundRoute,
-  InstrumentsInstrumentIdRoute: InstrumentsInstrumentIdRoute,
-  InstrumentsIndexRoute: InstrumentsIndexRoute,
-  TransactionsIndexRoute: TransactionsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

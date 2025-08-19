@@ -1,5 +1,4 @@
-import { useAuth } from '@clerk/clerk-react';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
 import { AssetAllocationTile } from './asset-allocation-tile';
@@ -10,26 +9,21 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
+import { Message } from '@/features/shared/components/error-message';
+
+export const assetAllocationQueryOptions = queryOptions({
+  queryKey: ['asset-allocation'],
+  queryFn: fetchAssetAllocation,
+});
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
   const {
     data: assetAllocation,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['asset-allocation'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('Unauthenticated');
-      }
-      return fetchAssetAllocation(token);
-    },
-  });
+  } = useQuery(assetAllocationQueryOptions);
 
   if (isLoading) {
     return (
@@ -72,7 +66,7 @@ const AssetAllocationContainer = () => {
           <CardTitle>{t('investor.asset_allocation')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartErrorMessage message={t('common.error_loading_data')} />
+          <Message message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );

@@ -6,7 +6,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from '@/features/shared/components/ui/alert';
-import { cn } from '@/features/shared/utils';
+import { cn } from '@/features/shared/utils/styles';
 
 interface ErrorAlertProps {
   title?: string;

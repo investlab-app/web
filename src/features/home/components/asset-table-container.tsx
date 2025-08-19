@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@clerk/clerk-react';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchOwnedShares } from '../queries/fetch-owned-shares';
 import AssetTable from './asset-table';
 import type { OwnedShareItem as Asset } from '../types/types';
@@ -11,29 +10,25 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { ChartErrorMessage } from '@/features/charts/components/chart-error-message';
+import { Message } from '@/features/shared/components/error-message';
+
+export const ownedSharesQueryOptions = queryOptions({
+  queryKey: ['owned-shares'],
+  queryFn: fetchOwnedShares,
+});
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
   const handleAssetPressed = (asset: Asset) => {
-    console.log('Asset clicked:', asset);
+    void asset;
+    // noop
   };
 
   const {
     data: ownedSharesData,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['owned-shares'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) {
-        throw new Error('Unauthenticated');
-      }
-      return fetchOwnedShares(token);
-    },
-  });
+  } = useQuery(ownedSharesQueryOptions);
 
   if (isError) {
     return (
@@ -42,7 +37,7 @@ const AssetTableContainer = () => {
           <CardTitle>{t('investor.owned_shares')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartErrorMessage message={t('common.error_loading_data')} />
+          <Message message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );

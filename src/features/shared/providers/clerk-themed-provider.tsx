@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
 import { enUS, plPL } from '@clerk/localizations';
 import { useTranslation } from 'react-i18next';
 import { match } from 'arktype';
 import type { ReactNode } from 'react';
-import { useTheme } from '@/features/shared/components/theme-provider.tsx';
+import { useTheme } from '@/features/shared/components/theme-provider';
 
 const languageMatcher = match.in<string>().match({
   "'pl'": () => plPL,
@@ -18,37 +17,20 @@ const languageMatcher = match.in<string>().match({
 
 export function ClerkThemedProvider({
   children,
-  publicKey: clerkPubKey,
+  publicKey,
 }: {
   children: ReactNode;
   publicKey: string;
 }) {
   const { i18n } = useTranslation();
   const localization = languageMatcher(i18n.language);
-
-  const { theme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  );
-  const effectiveTheme = theme === 'system' ? systemTheme : theme;
-  const clerkTheme = effectiveTheme === 'dark' ? dark : undefined;
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      setSystemTheme(e.matches ? 'dark' : 'light');
-    };
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
-    return () => {
-      mediaQuery.removeEventListener('change', handleSystemThemeChange);
-    };
-  }, []);
+  const { appTheme: theme } = useTheme();
 
   return (
     <ClerkProvider
-      publishableKey={clerkPubKey}
+      publishableKey={publicKey}
       appearance={{
-        baseTheme: clerkTheme,
+        baseTheme: theme === 'dark' ? dark : undefined,
       }}
       localization={localization}
     >

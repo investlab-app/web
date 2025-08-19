@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 const ownedShareItem = type({
   name: 'string',
@@ -16,17 +16,6 @@ const ownedShares = type({
 
 export type OwnedShares = typeof ownedShares.infer;
 
-export const fetchOwnedShares = async (token: string): Promise<OwnedShares> => {
-  const response = await fetchWithAuth<OwnedShares>(
-    `/api/investors/me/owned-shares`,
-    token
-  );
-
-  const result = ownedShares(response);
-  if (result instanceof type.errors) {
-    console.error('Invalid owned shares response:', result.summary);
-    throw new Error(`Invalid owned shares response: ${result.summary}`);
-  }
-
-  return result;
-};
+export function fetchOwnedShares() {
+  return validatedFetch(`/api/investors/me/owned-shares`, ownedShares);
+}

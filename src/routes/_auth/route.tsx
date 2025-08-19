@@ -8,6 +8,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
+export const Route = createFileRoute('/_auth')({
+  component: RouteComponent,
+});
+
 function RouteComponent() {
   const { isLoaded, isSignedIn } = useUser();
   const navigate = useNavigate();
@@ -33,7 +37,3 @@ function RouteComponent() {
     </div>
   );
 }
-
-export const Route = createFileRoute('/_auth')({
-  component: RouteComponent,
-});

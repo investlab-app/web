@@ -1,24 +1,39 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export type Theme = 'dark' | 'light' | 'system';
+type UserTheme = 'dark' | 'light' | 'system';
+type AppTheme = 'dark' | 'light';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
-  defaultTheme?: Theme;
+  defaultTheme?: UserTheme;
   storageKey?: string;
 };
 
 type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  userTheme: UserTheme;
+  appTheme: AppTheme;
+  setTheme: (theme: UserTheme) => void;
 };
 
 const initialState: ThemeProviderState = {
-  theme: 'system',
+  userTheme: 'system',
+  appTheme: undefined!,
   setTheme: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+function getAppTheme(userTheme: UserTheme) {
+  if (userTheme === 'system') {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
+      ? 'dark'
+      : 'light';
+    return systemTheme;
+  }
+
+  return userTheme;
+}
 
 export function ThemeProvider({
   children,
@@ -26,34 +41,24 @@ export function ThemeProvider({
   storageKey = 'vite-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
+  const [userTheme, setUserTheme] = useState<UserTheme>(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => (localStorage.getItem(storageKey) as UserTheme) || defaultTheme
   );
+  const appTheme = getAppTheme(userTheme);
 
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove('light', 'dark');
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light';
-
-      root.classList.add(systemTheme);
-      return;
-    }
-
-    root.classList.add(theme);
-  }, [theme]);
+    root.classList.add(appTheme);
+  }, [appTheme]);
 
   const value = {
-    theme,
-    setTheme: (newTheme: Theme) => {
+    userTheme,
+    appTheme,
+    setTheme: (newTheme: UserTheme) => {
       localStorage.setItem(storageKey, newTheme);
-      setTheme(newTheme);
+      setUserTheme(newTheme);
     },
   };
 

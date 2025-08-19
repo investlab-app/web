@@ -2,7 +2,11 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 
-function NotFoundPage() {
+export const Route = createFileRoute('/$not-found')({
+  component: NotFound,
+});
+
+function NotFound() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -18,7 +22,3 @@ function NotFoundPage() {
     </div>
   );
 }
-
-export const Route = createFileRoute('/$not-found')({
-  component: NotFoundPage,
-});

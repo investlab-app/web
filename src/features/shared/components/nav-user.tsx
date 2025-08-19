@@ -1,16 +1,19 @@
-import { UserButton, useUser } from '@clerk/clerk-react';
+import { UserButton } from '@clerk/clerk-react';
 import React from 'react';
+import { Skeleton } from './ui/skeleton';
+import type { useUser } from '@clerk/clerk-react';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 
-export function NavUser() {
-  const { user, isLoaded } = useUser();
-  const userButtonRef = React.useRef<HTMLDivElement>(null);
+interface NavUserProps {
+  user: NonNullable<ReturnType<typeof useUser>['user']>;
+}
 
-  if (!isLoaded || !user) return null;
+export function NavUser({ user }: NavUserProps) {
+  const userButtonRef = React.useRef<HTMLDivElement>(null);
 
   const name = user.firstName || user.fullName || 'User';
   const email = user.primaryEmailAddress?.emailAddress || '';
@@ -49,6 +52,26 @@ export function NavUser() {
             <span className="text-muted-foreground truncate text-xs">
               {email}
             </span>
+          </div>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+}
+
+export function NavUserSkeleton() {
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton size="lg" className="cursor-pointer">
+          <div className="flex items-center">
+            <div className="animate-pulse">
+              <Skeleton className="w-8 h-8 rounded-full" />
+            </div>
+          </div>
+          <div className="grid flex-1 text-left text-sm leading-tight ml-2 gap-1">
+            <Skeleton className="w-24 h-4" />
+            <Skeleton className="w-32 h-3" />
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

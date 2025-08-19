@@ -1,10 +1,17 @@
-import { type } from 'arktype';
 import {
   instrumentOverview,
   instrumentOverviewItemToInstrument,
 } from '../types/types';
-import type { FetchInstrumentsOverviewOptions } from '../types/types';
-import { fetchWithAuth } from '@/features/shared/queries/fetch-with-url';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+
+type FetchInstrumentsOverviewOptions = {
+  tickers?: Array<string>;
+  page: number;
+  pageSize: number;
+  sector?: string;
+  sortBy?: string;
+  sortDirection?: string;
+};
 
 export async function fetchInstrumentsOverview({
   tickers = [],
@@ -13,7 +20,6 @@ export async function fetchInstrumentsOverview({
   sector = '',
   sortBy = '',
   sortDirection = 'asc',
-  token,
 }: FetchInstrumentsOverviewOptions) {
   const params = new URLSearchParams({
     tickers: tickers.map(String).join(','),
@@ -24,21 +30,15 @@ export async function fetchInstrumentsOverview({
     ...(sortDirection && { sort_direction: sortDirection }),
   });
 
-  const response = await fetchWithAuth(
+  const response = await validatedFetch(
     `/api/instruments?${params.toString()}`,
-    token
+    instrumentOverview
   );
 
-  const out = instrumentOverview(response);
-  if (out instanceof type.errors) {
-    console.error(out.summary);
-    throw new Error(out.summary);
-  }
-
-  const instruments = out.items.map(instrumentOverviewItemToInstrument);
+  const instruments = response.items.map(instrumentOverviewItemToInstrument);
 
   return {
-    ...out,
+    ...response,
     items: instruments,
   };
 }

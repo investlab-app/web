@@ -11,15 +11,12 @@ export default [
   ...tanstackConfig,
   ...pluginRouter.configs['flat/recommended'],
   ...pluginQuery.configs['flat/recommended'],
+  youMightNotNeedAnEffect.configs.recommended,
+  reactHooks.configs['recommended-latest'],
   {
-    files: ['**/*.{jsx,ts,tsx}'],
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-you-might-not-need-an-effect': youMightNotNeedAnEffect,
-    },
     rules: {
-      ...reactHooks.configs['recommended-latest'].rules,
-      'react-you-might-not-need-an-effect/you-might-not-need-an-effect': 'warn',
+      'pnpm/json-enforce-catalog': 'off',
+      'pnpm/json-prefer-workspace-settings': 'off',
     },
   },
 ];

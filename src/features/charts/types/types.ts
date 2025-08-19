@@ -25,18 +25,6 @@ export interface InstrumentPriceProps {
   low: number;
 }
 
-export function dataPointToInstrumentPriceProps(
-  item: DataPoint
-): InstrumentPriceProps {
-  return {
-    date: item.timestamp,
-    open: parseFloat(item.open),
-    close: parseFloat(item.close),
-    high: parseFloat(item.high),
-    low: parseFloat(item.low),
-  };
-}
-
 export const instrumentOverviewItem = type({
   ticker: 'string',
   name: 'string',
@@ -74,15 +62,6 @@ export const instrumentOverview = type({
 });
 export type InstrumentOverview = typeof instrumentOverview.infer;
 
-export type FetchInstrumentsOverviewOptions = {
-  tickers?: Array<string>;
-  page: number;
-  pageSize: number;
-  sector?: string;
-  sortBy?: string;
-  sortDirection?: string;
-  token: string;
-};
 export const AvailableInstrumentsResponse = type({
   instruments: 'string[]',
 });

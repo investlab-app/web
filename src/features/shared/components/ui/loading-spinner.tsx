@@ -1,4 +1,4 @@
-import { cn } from '@/features/shared/utils';
+import { cn } from '@/features/shared/utils/styles';
 
 interface LoadingSpinnerProps {
   className?: string;

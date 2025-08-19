@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
-import { ChartErrorMessage } from '../../charts/components/chart-error-message';
-import { StockChart } from '../../charts/components/stock-chart';
+import { queryOptions, useQuery } from '@tanstack/react-query';
+import { Message } from '../../shared/components/error-message';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPriceProps } from '../../charts/types/types';
+import { StockChart } from '@/features/charts/components/stock-chart';
 import {
   Card,
   CardContent,
@@ -14,19 +13,16 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
+export const accountValueOverTimeQueryOptions = queryOptions({
+  queryKey: ['accountValueOverTime'],
+  queryFn: fetchAccountValueOverTime,
+  staleTime: 60 * 1000,
+});
+
 export const AccountValueChartContainer = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['accountValueOverTime'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token');
-      return fetchAccountValueOverTime(token);
-    },
-    staleTime: 60 * 1000,
-  });
+  const { data, isLoading, error } = useQuery(accountValueOverTimeQueryOptions);
 
   const chartData: Array<InstrumentPriceProps> = useMemo(() => {
     if (!data) return [];
@@ -62,7 +58,7 @@ export const AccountValueChartContainer = () => {
         {isLoading ? (
           <Skeleton className="h-[400px] w-full" />
         ) : hasError ? (
-          <ChartErrorMessage />
+          <Message />
         ) : (
           <StockChart
             stockName="Account Value"

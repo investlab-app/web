@@ -1,78 +1,75 @@
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@clerk/clerk-react';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
+import { LoadingCard } from '@/features/shared/components/loading-card';
+import { ErrorCard } from '@/features/shared/components/error-card';
+
+export const investorStatsQueryOptions = queryOptions({
+  queryKey: ['investorStats'],
+  queryFn: fetchInvestorStats,
+});
 
 const AccountOverviewRibbon = () => {
   const { t } = useTranslation();
-  const { getToken } = useAuth();
 
   const {
     data: stats,
     isLoading,
-    error,
+    isError,
   } = useQuery({
-    queryKey: ['investorStats'],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token');
-      return fetchInvestorStats(token);
-    },
-    staleTime: 60 * 1000,
+    ...investorStatsQueryOptions,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
-
-  if (isLoading) {
-    return (
-      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <StatTile.Skeleton key={index} isProgress={index < 2} />
-        ))}
-      </div>
-    );
-  }
-  if (error || !stats) {
-    return (
-      <div className="h-24 flex items-center justify-center text-gray-500">
-        {t('common.error')}
-      </div>
-    );
-  }
 
   const tiles = [
     {
       title: t('investor.todays_return'),
-      value: stats.todays_return,
+      value: stats?.todays_return,
       isProgress: true,
     },
     {
       title: t('investor.total_return'),
-      value: stats.total_return,
+      value: stats?.total_return,
       isProgress: true,
     },
     {
       title: t('investor.invested'),
-      value: stats.invested,
+      value: stats?.invested,
       isProgress: false,
     },
     {
       title: t('investor.total_value'),
-      value: stats.total_value,
+      value: stats?.total_value,
       isProgress: false,
     },
   ];
 
+  function renderStatTile(index: number, tile: (typeof tiles)[number]) {
+    if (isLoading) {
+      return <LoadingCard />;
+    }
+
+    if (!stats || isError || !tile.value) {
+      return <ErrorCard />;
+    }
+
+    return (
+      <StatTile
+        key={index}
+        title={tile.title}
+        value={tile.value}
+        isProgress={tile.isProgress}
+        currency={t('common.currency')}
+      />
+    );
+  }
+
   return (
     <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-      {tiles.map((tile, index) => (
-        <StatTile
-          key={index}
-          title={tile.title}
-          value={tile.value}
-          isProgress={tile.isProgress}
-          currency={t('common.currency')}
-        />
-      ))}
+      {tiles.map((tile, index) => renderStatTile(index, tile))}
     </div>
   );
 };

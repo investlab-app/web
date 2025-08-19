@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '@/features/shared/components/ui/input';
 import { Label } from '@/features/shared/components/ui/label';
-import { cn } from '@/features/shared/utils';
+import { cn } from '@/features/shared/utils/styles';
 
 type FormInputProps = {
   id: string;
