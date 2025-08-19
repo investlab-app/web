@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
-import {  profileSummary } from '../types/types';
-import type {ProfileSummary} from '../types/types';
+import { profileSummary } from '../types/types';
+import type { ProfileSummary } from '../types/types';
 
 export async function fetchProfileOverview() {
   const response = await new Promise((resolve) => {

@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
-import {  instrumentSummary } from '../types/types';
-import type {InstrumentSummary} from '../types/types';
+import { instrumentSummary } from '../types/types';
+import type { InstrumentSummary } from '../types/types';
 
 export async function fetchMostTradedOverview() {
   const response = await new Promise((resolve) => {

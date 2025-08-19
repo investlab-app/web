@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
-import {  statisticsOverview } from '../types/types';
-import type {StatisticsOverview} from '../types/types';
+import { statisticsOverview } from '../types/types';
+import type { StatisticsOverview } from '../types/types';
 
 export async function fetchStatisticsOverview() {
   const response = await new Promise((resolve) => {
