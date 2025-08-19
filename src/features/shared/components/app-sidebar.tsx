@@ -4,7 +4,7 @@ import {
   IconHistory,
   IconListDetails,
   IconSettings,
-} from '@tabler/icons-react';
+  IconChartPie} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
@@ -49,6 +49,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.transactions'),
         to: '/transactions',
         icon: IconHistory,
+      },
+      {
+        title: t('common.statistics'),
+        to: '/statistics',
+        icon: IconChartPie,
       },
     ],
     navSecondary: [

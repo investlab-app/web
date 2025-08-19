@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
-import { StatTile } from './account-stat-tile';
+import { StatTile } from '../../shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
 
 export const investorStatsQueryOptions = queryOptions({

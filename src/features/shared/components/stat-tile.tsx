@@ -13,30 +13,51 @@ import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface StatTileProps {
   title: string;
-  value: number;
+  value: number | string;
+  percentage?: number;
   currency?: string;
   isProgress?: boolean;
+  isPercentage?: boolean;
+  unformatted?: boolean;
   footerNote?: string | null;
   trendNote?: string | null;
+  coloring?: boolean;
 }
 
 export const StatTile = ({
   title,
   value,
+  percentage = 0,
   currency = 'USD',
   isProgress = false,
+  isPercentage = false,
+  unformatted = false,
   footerNote,
   trendNote,
+  coloring = false,
 }: StatTileProps) => {
   const { i18n } = useTranslation();
-  const isPositive = value >= 0;
-  const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;
+  
+  const formatValue = (val: number) => {
+    return Math.abs(val).toLocaleString(t('common.locale'), {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+   const startNumericValue = typeof value === 'number' ? value : 0;
+    const formattedValue = unformatted ? value : formatValue(startNumericValue);
+    const percentageValue = isPercentage ? `${formattedValue}%` : formattedValue;
+    const finalNumericValue = (!unformatted && !isPercentage) ? `${percentageValue} ${currency}` : percentageValue;
+    
+  const isPositive = typeof value === 'number' ? value >= 0 : false;
+  const finalValue = typeof value === 'number' ? finalNumericValue : value;
 
+  console.log("StatTile rendered with value:", value, "formattedValue:", formattedValue, "finalValue:", finalValue);
   return (
     <Card
       className={cn(
-        'min-w-[280px] min-h-[196px] @container/card border shadow-lg transition-all duration-200 hover:shadow-xl',
-        isProgress
+        'min-w-[200px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+        isProgress || coloring
           ? isPositive
             ? 'bg-[color:var(--card-positive)] text-[color:var(--card-positive-foreground)] border-[color:var(--card-positive-border)]'
             : 'bg-[color:var(--card-negative)] text-[color:var(--card-negative-foreground)] border-[color:var(--card-negative-border)]'
@@ -53,9 +74,10 @@ export const StatTile = ({
             'text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'
           )}
         >
+          
           {isProgress && isPositive ? '+' : ''}
           {isProgress && !isPositive ? '-' : ''}
-          {toFixedLocalized(value, i18n.language, 2)} {currency}
+          {toFixedLocalized(122, i18n.language, 2)} {currency}
         </CardTitle>
 
         {isProgress && (
