@@ -24,6 +24,6 @@ export function dateToLocale(
   });
 }
 
-export function formatDate(date: Date): string {
-  return date.toISOString().split('.')[0];
+export function roundDateToInterval(date: Date, interval: number): Date {
+  return new Date(Math.floor(date.getTime() / interval) * interval);
 }

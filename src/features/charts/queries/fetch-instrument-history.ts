@@ -1,13 +1,17 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 import { instrumentHistory } from '../types/types';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
-import { formatDate } from '@/features/shared/utils/date';
+import { roundDateToInterval } from '@/features/shared/utils/date';
 
 interface FetchInstrumentHistoryParams {
   ticker: string;
   startDate: Date;
   endDate: Date;
   interval: string;
+}
+
+function formatDate(date: Date): string {
+  return date.toISOString().split('.')[0];
 }
 
 async function fetchInstrumentHistory(params: FetchInstrumentHistoryParams) {
@@ -29,8 +33,19 @@ export function instrumentHistoryQueryOptions({
   endDate,
   interval,
 }: FetchInstrumentHistoryParams) {
+  const gcTime = 60_000; // 1 minute
+
+  const roundDateToGCTime = (date: Date) =>
+    roundDateToInterval(date, gcTime).toISOString();
+
   return queryOptions({
-    queryKey: ['instrument-history', ticker, interval, startDate, endDate],
+    queryKey: [
+      'instrument-history',
+      ticker,
+      interval,
+      roundDateToGCTime(startDate),
+      roundDateToGCTime(endDate),
+    ],
     queryFn: async () => {
       const instrumentHistoryData = await fetchInstrumentHistory({
         ticker,
@@ -52,8 +67,8 @@ export function instrumentHistoryQueryOptions({
       };
       return result;
     },
-    staleTime: 1000 * 60,
-    gcTime: 0, // highly unlikely to get the same startDate and endDate
+    staleTime: 1000 * 60, // 1 minute
+    gcTime,
     placeholderData: keepPreviousData,
   });
 }
