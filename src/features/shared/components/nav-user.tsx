@@ -39,9 +39,11 @@ export function NavUser({ user }: NavUserProps) {
               appearance={{
                 elements: {
                   userButtonPopoverCard: {
-                    marginTop: '-8px',
-                    marginLeft: '-8px',
-                    borderRadius: '6px',
+                    pointerEvents: 'initial', // Allow interaction on smaller screens
+                    marginTop: '-8px', // Adjust vertical positioning
+                    marginLeft: '-8px', // Align with the left edge of SidebarMenuItem
+                    maxWidth: 'calc(100vw - 16px)', // Ensure popover fits within viewport
+                    borderRadius: 'var(--radius)', // Apply consistent border radius
                   },
                 },
               }}
