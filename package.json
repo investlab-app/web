@@ -21,6 +21,7 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@fontsource-variable/spline-sans": "^5.2.6",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/vite": "^4.1.12",

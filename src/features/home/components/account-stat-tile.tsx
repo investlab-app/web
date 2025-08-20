@@ -41,12 +41,12 @@ export const StatTile = ({
   return (
     <Card
       className={cn(
-        'min-w-[280px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+        'min-w-[280px] min-h-[196px] @container/card border shadow-lg transition-all duration-200 hover:shadow-xl',
         isProgress
           ? isPositive
-            ? 'bg-[color:var(--card-positive)] text-[color:var(--positive-foreground)]'
-            : 'bg-[color:var(--card-negative)] text-[color:var(--negative-foreground)]'
-          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)]'
+            ? 'bg-[color:var(--card-positive)] text-[color:var(--card-positive-foreground)] border-[color:var(--card-positive-border)]'
+            : 'bg-[color:var(--card-negative)] text-[color:var(--card-negative-foreground)] border-[color:var(--card-negative-border)]'
+          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
       )}
     >
       <CardHeader>
@@ -114,6 +114,7 @@ const StatTileSkeleton = ({ isProgress }: { isProgress?: boolean }) => {
             <Skeleton className="h-5 w-16" />
           </div>
         )}
+        <Skeleton className="h-4 w-32 mt-2" />
       </CardHeader>
     </Card>
   );

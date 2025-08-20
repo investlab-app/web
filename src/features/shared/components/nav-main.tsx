@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouterState } from '@tanstack/react-router';
 import { WalletSection } from './wallet-section';
 import type { LinkProps } from '@tanstack/react-router';
 import type { Icon } from '@tabler/icons-react';
@@ -17,6 +17,7 @@ export interface NavItem {
 }
 
 export function NavMain({ items }: { items: Array<NavItem> }) {
+  const { location } = useRouterState();
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -24,16 +25,23 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
           <WalletSection />
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} asChild>
-                <Link to={item.to}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive = location.pathname === item.to;
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  asChild
+                  isActive={isActive}
+                >
+                  <Link to={item.to}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

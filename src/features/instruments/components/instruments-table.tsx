@@ -88,8 +88,8 @@ const InstrumentTable = ({
                     className={cn(
                       'text-right',
                       instrument.dayChange < 0
-                        ? 'text-red-500'
-                        : 'text-green-500'
+                        ? 'text-[var(--red)]'
+                        : 'text-[var(--green)]'
                     )}
                   >
                     {instrument.dayChange < 0 ? '-' : '+'}

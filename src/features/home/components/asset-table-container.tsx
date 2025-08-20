@@ -44,7 +44,7 @@ const AssetTableContainer = () => {
   }
 
   return (
-    <Card className="text-xl font-semibold">
+    <Card className="text-xl">
       <CardHeader>
         <CardTitle>{t('investor.owned_shares')}</CardTitle>
       </CardHeader>

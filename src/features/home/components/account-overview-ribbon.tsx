@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from './account-stat-tile';
-import { LoadingCard } from '@/features/shared/components/loading-card';
 import { ErrorCard } from '@/features/shared/components/error-card';
 
 export const investorStatsQueryOptions = queryOptions({
@@ -49,7 +48,7 @@ const AccountOverviewRibbon = () => {
 
   function renderStatTile(index: number, tile: (typeof tiles)[number]) {
     if (isLoading) {
-      return <LoadingCard />;
+      return <StatTile.Skeleton />;
     }
 
     if (!stats || isError || !tile.value) {

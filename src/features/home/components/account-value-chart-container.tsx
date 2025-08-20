@@ -54,9 +54,9 @@ export const AccountValueChartContainer = () => {
           </div>
         ) : null}
       </CardHeader>
-      <CardContent>
+      <CardContent className="h-96">
         {isLoading ? (
-          <Skeleton className="h-[400px] w-full" />
+          <Skeleton className="w-full" />
         ) : hasError ? (
           <Message />
         ) : (

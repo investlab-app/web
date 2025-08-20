@@ -1,2 +1,2 @@
 export const getProfabilityColor = (value: number) =>
-  value >= 0 ? 'text-green-500' : 'text-red-500';
+  value >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]';

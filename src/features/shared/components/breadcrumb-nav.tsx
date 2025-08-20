@@ -12,18 +12,21 @@ export function BreadcrumbNav() {
     isMatch(match, 'loaderData.crumb')
   );
 
-  const items = matchesWithCrumbs.map(({ pathname, loaderData }) => {
-    return {
-      href: pathname,
-      label: loaderData?.crumb,
-    };
-  });
+  const items =
+    matchesWithCrumbs.length < 2
+      ? []
+      : matchesWithCrumbs.map(({ pathname, loaderData }) => {
+          return {
+            href: pathname,
+            label: loaderData?.crumb,
+          };
+        });
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
         {items.map((item, index) => (
-          <BreadcrumbItem key={index}>
+          <BreadcrumbItem key={index} className="fg-">
             <Link to={item.href} className="breadcrumb-link">
               {item.label}
             </Link>

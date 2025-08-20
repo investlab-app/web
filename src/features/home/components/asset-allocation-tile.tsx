@@ -53,13 +53,13 @@ export const AssetAllocationTile = ({
             {t('investor.distribution')}
           </h3>
 
-          <div className="flex w-full h-8 rounded-lg">
+          <div className="flex w-full gap-2 h-8 rounded-lg">
             {assets.map(([name, value], index) => {
               const percentage = (value / totalAssetValue) * 100;
               return (
                 <div
                   key={name}
-                  className="rounded-md h-4 mx-1"
+                  className="rounded-md h-4"
                   style={{
                     width: `${percentage}%`,
                     backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
@@ -74,7 +74,7 @@ export const AssetAllocationTile = ({
               <div key={name} className="flex items-center justify-between">
                 <div key={name} className="flex items-center gap-3">
                   <div
-                    className="w-4 h-4 rounded-full"
+                    className="size-4 rounded-full"
                     style={{
                       backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
                     }}

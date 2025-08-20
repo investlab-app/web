@@ -83,10 +83,10 @@ export const BuySellSection = ({
             </div>
 
             <div className="flex gap-3 mt-4">
-              <Button className="bg-green-600 hover:bg-green-700 flex-1">
+              <Button className="bg-[var(--green)] hover:bg-[var(--green-darker)] flex-1">
                 {t('instruments.buy')}
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700  flex-1">
+              <Button className="bg-[var(--red)] hover:bg-[var(--red-darker)]  flex-1">
                 {t('instruments.sell')}
               </Button>
             </div>

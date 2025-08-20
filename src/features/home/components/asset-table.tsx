@@ -56,7 +56,7 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
               <TableCell
                 className={cn(
                   'text-right',
-                  asset.profit < 0 ? 'text-red-500' : 'text-green-500'
+                  asset.profit < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
                 )}
               >
                 {asset.profit.toFixed(2)} {t('common.currency')}
@@ -65,8 +65,8 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
                 className={cn(
                   'text-right hidden sm:table-cell',
                   asset.profit_percentage < 0
-                    ? 'text-red-500'
-                    : 'text-green-500'
+                    ? 'text-[var(--red)]'
+                    : 'text-[var(--green)]'
                 )}
               >
                 {asset.profit_percentage.toFixed(2)}%

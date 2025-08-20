@@ -107,7 +107,7 @@ const InstrumentsTableContainer = ({
     [setInstrument, setOpenSheet]
   );
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <SearchInput
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -131,7 +131,7 @@ const InstrumentsTableContainer = ({
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

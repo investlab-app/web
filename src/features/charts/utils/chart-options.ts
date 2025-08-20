@@ -8,6 +8,7 @@ import type {
   EChartsOption,
   TooltipComponentFormatterCallbackParams,
 } from 'echarts';
+import { cssVar } from '@/features/shared/utils/styles';
 
 export function createChartOptions(
   stockName: string,
@@ -17,31 +18,34 @@ export function createChartOptions(
   isCandlestick: boolean = false
 ): EChartsOption {
   const dates = chartData.map((item) => item.date);
-  const seriesData = !isCandlestick
-    ? chartData.map((item) => ({
+  const seriesData = isCandlestick
+    ? chartData.map((item) => [item.open, item.close, item.low, item.high])
+    : chartData.map((item) => ({
         value: item.close,
         high: item.high,
         low: item.low,
         open: item.open,
-      }))
-    : chartData.map((item) => [item.open, item.close, item.low, item.high]);
+      }));
 
   zoom = isCandlestick ? zoom / 3 : zoom;
+
   const startPercent = (1 - zoom) * 100;
 
+  const trendColor =
+    chartData[chartData.length - 1].close - chartData[0].close > 0
+      ? cssVar('--color-green-hex') // gain
+      : cssVar('--color-red-hex'); // loss
+
   return {
-    animation: false,
+    animation: 0,
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        animation: false,
         type: isCandlestick ? 'shadow' : 'line',
       },
-      backgroundColor: isCandlestick
-        ? 'var(--color-card)'
-        : 'var(--blended-primary)',
+      backgroundColor: cssVar('--color-card'),
       textStyle: {
-        color: isCandlestick ? 'var(--foreground)' : 'var(--foreground)',
+        color: isCandlestick ? cssVar('--foreground') : cssVar('--foreground'),
       },
       formatter: (params: TooltipComponentFormatterCallbackParams) => {
         const paramArray = Array.isArray(params) ? params : [params];
@@ -77,9 +81,11 @@ export function createChartOptions(
         }
       },
     },
+    grid: { left: 0, right: 0, top: 0, bottom: 0, containLabel: false },
     xAxis: {
       type: 'category',
       data: dates,
+      boundaryGap: isCandlestick ? true : false,
       axisTick: { show: false },
       axisLine: { show: true },
       axisLabel: {
@@ -108,19 +114,23 @@ export function createChartOptions(
     series: [
       isCandlestick
         ? {
+            animation: true,
+            animationDuration: 0,
             name: stockName,
             type: 'candlestick',
             data: seriesData as Array<Array<number>>,
             itemStyle: {
-              color: '#00b894',
-              color0: '#d63031',
-              borderColor: '#00b894',
-              borderColor0: '#d63031',
+              color: cssVar('--green-hex'),
+              color0: cssVar('--red-hex'),
+              borderColor: cssVar('--green-lighter-hex'),
+              borderColor0: cssVar('--red-lighter-hex'),
             },
           }
         : {
             name: stockName,
             type: 'line',
+            animation: true,
+            animationDuration: 0,
             smooth: false,
             data: seriesData as Array<{
               value: number;
@@ -137,13 +147,15 @@ export function createChartOptions(
                 x2: 0,
                 y2: 1,
                 colorStops: [
-                  { offset: 0, color: 'rgba(117, 33, 232, 0.5)' },
-                  { offset: 1, color: 'rgba(117, 33, 232, 0)' },
+                  { offset: 0, color: trendColor! },
+                  { offset: 1, color: cssVar('--color-card-hex')! },
                 ],
               },
             },
-            lineStyle: { color: 'rgba(117, 33, 232, 1)' },
-            itemStyle: { color: 'rgba(117, 33, 232, 1)' },
+            lineStyle: {
+              color: trendColor,
+              width: 1,
+            },
           },
     ],
   };

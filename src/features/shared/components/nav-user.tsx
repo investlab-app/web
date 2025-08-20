@@ -34,7 +34,7 @@ export function NavUser({ user }: NavUserProps) {
           onClick={handleClick}
           className="cursor-pointer"
         >
-          <div ref={userButtonRef} className="flex items-center">
+          <div ref={userButtonRef} className="flex items-center size-7">
             <UserButton
               appearance={{
                 elements: {

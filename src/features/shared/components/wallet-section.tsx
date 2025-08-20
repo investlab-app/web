@@ -1,6 +1,7 @@
 import { IconPlus, IconWallet } from '@tabler/icons-react';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
@@ -43,6 +44,15 @@ export function WalletSection() {
         size="icon"
         className="size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"
         aria-label={t('common.add')}
+        onClick={() =>
+          toast('Wallet clicked!', {
+            duration: Infinity,
+            action: {
+              label: 'Close',
+              onClick: () => console.log('Close'),
+            },
+          })
+        }
       >
         <IconPlus />
       </Button>
