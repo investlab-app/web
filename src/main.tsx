@@ -6,6 +6,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { ClerkLoaded, useAuth } from '@clerk/clerk-react';
+import { useTranslation } from 'react-i18next';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
@@ -32,14 +33,16 @@ const queryClient = new QueryClient({
 
 export type RouterContext = {
   auth: ReturnType<typeof useAuth>;
+  i18n: ReturnType<typeof useTranslation>;
   queryClient: QueryClient;
 };
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   context: {
-    auth: undefined!,
     queryClient,
+    auth: undefined!,
+    i18n: undefined!,
   },
   defaultErrorComponent: ({ error }) => {
     return <ErrorComponent error={error} />;
@@ -48,7 +51,10 @@ const router = createRouter({
 
 function App() {
   const auth = useAuth();
-  return <RouterProvider context={{ auth, queryClient }} router={router} />;
+  const i18n = useTranslation();
+  return (
+    <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
+  );
 }
 
 const persister = createAsyncStoragePersister({

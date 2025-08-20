@@ -23,23 +23,21 @@ export function WalletSection() {
   );
 
   return (
-    <SidebarMenuItem className="flex items-center gap-0">
-      <SidebarMenuButton tooltip={t('common.wallet')}>
-        <IconWallet />
-        {isLoading ? (
-          <Skeleton className="h-6 w-24" />
-        ) : (
-          <span>
-            {accountValue ? (
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: t('common.currency'),
-              }).format(accountValue.value)
-            ) : (
-              <Skeleton className="h-6 w-24" />
-            )}
-          </span>
-        )}
+    <SidebarMenuItem className="flex items-center gap-1">
+      <SidebarMenuButton tooltip={t('common.wallet')} asChild>
+        <a>
+          <IconWallet />
+          {isLoading ? (
+            <Skeleton className="h-6 w-24" />
+          ) : accountValue ? (
+            new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: t('common.currency'),
+            }).format(accountValue.value)
+          ) : (
+            <Skeleton className="h-6 w-24" />
+          )}
+        </a>
       </SidebarMenuButton>
       <Button
         size="icon"
