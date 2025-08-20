@@ -1,8 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import InstrumentDetails from '@/features/instruments/components/instrument-details';
+import AppFrame from '@/features/shared/components/app-frame';
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: RouteComponent,
+  loader: ({ params: { instrumentId } }) => ({
+    crumb: instrumentId,
+  }),
 });
 
 function RouteComponent() {
@@ -18,5 +22,9 @@ function RouteComponent() {
     symbol: 'MOCK',
   };
 
-  return <InstrumentDetails instrument={mockInstrument} />;
+  return (
+    <AppFrame>
+      <InstrumentDetails instrument={mockInstrument} />
+    </AppFrame>
+  );
 }

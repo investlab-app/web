@@ -9,7 +9,7 @@ import { accountValueOverTimeQueryOptions } from '@/features/home/components/acc
 import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
 
 export const Route = createFileRoute('/')({
-  loader: async ({ context: { queryClient, auth } }) => {
+  loader: async ({ context: { queryClient, auth, i18n } }) => {
     if (!auth.isSignedIn) {
       return;
     }
@@ -20,6 +20,9 @@ export const Route = createFileRoute('/')({
       queryClient.prefetchQuery(accountValueOverTimeQueryOptions),
       queryClient.prefetchQuery(ownedSharesQueryOptions),
     ]);
+    return {
+      crumb: i18n.t('common.dashboard'),
+    };
   },
   component: Index,
 });
