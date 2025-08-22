@@ -69,9 +69,7 @@ function App() {
   const auth = useAuth();
   const i18n = useTranslation();
   return (
-    <>
-      <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
-    </>
+    <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
   );
 }
 
