@@ -65,45 +65,60 @@ export const useInstruments = ({
         });
       },
       refetchOnWindowFocus: false,
-      enabled: filteredTickers.length > 0 || !filteredTickers,
+      enabled: filteredTickers.length > 0,
       staleTime: 2 * 60 * 1000, // 2 minutes
       gcTime: 5 * 60 * 1000, // 5 minutes
     })),
   });
 
-  const combinedData = useMemo(() => {
-    let allInstruments: Array<Instrument> = [];
-    let totalItems = 0;
-    let numPages = 0;
-    let errorMessage: string | null = null;
-    let isPending = false;
+  const stableQueryStates = instrumentPages.map((query) => ({
+    data: query.data,
+    isPending: query.isPending,
+    error: query.error,
+  }));
 
-    for (const query of instrumentPages) {
-      if (query.isPending) isPending = true;
-      if (query.error) {
-        errorMessage =
-          query.error instanceof Error
-            ? query.error.message
-            : 'Failed to load instruments';
-        break;
+  const combinedData = useMemo(() => {
+    const result = stableQueryStates.reduce(
+      (acc, query) => {
+        if (query.isPending) {
+          acc.isPending = true;
+          return acc;
+        }
+
+        if (query.error) {
+          acc.error =
+            query.error instanceof Error
+              ? query.error.message
+              : 'Failed to load instruments';
+          return acc;
+        }
+
+        if (query.data) {
+          acc.instruments.push(...query.data.items);
+          acc.totalItems = query.data.total;
+          acc.numPages = query.data.num_pages;
+        }
+
+        return acc;
+      },
+      {
+        instruments: [] as Array<Instrument>,
+        totalItems: 0,
+        numPages: 0,
+        error: null as string | null,
+        isPending: false,
       }
-      if (query.data) {
-        allInstruments = [...allInstruments, ...query.data.items];
-        totalItems = query.data.total;
-        numPages = query.data.num_pages;
-      }
-    }
+    );
 
     return {
-      instruments: allInstruments,
-      pending: isPending,
-      error: errorMessage,
-      totalItems,
-      numPages,
-      hasMore: page < numPages,
+      instruments: result.instruments,
+      pending: result.isPending,
+      error: result.error,
+      totalItems: result.totalItems,
+      numPages: result.numPages,
+      hasMore: page < result.numPages,
     };
-    // eslint-disable-next-line @tanstack/query/no-unstable-deps
-  }, [instrumentPages, page]);
+  }, [stableQueryStates, page]);
 
   const error = availableInstrumentsError
     ? availableInstrumentsError instanceof Error
