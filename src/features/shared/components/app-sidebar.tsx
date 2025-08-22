@@ -54,12 +54,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     navSecondary: [
       {
         title: t('common.settings'),
-        to: '/',
+        to: '/settings',
         icon: IconSettings,
       },
       {
         title: t('common.help'),
-        to: '/',
+        to: '/help',
         icon: IconHelp,
       },
     ],
