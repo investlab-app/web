@@ -37,7 +37,7 @@ export function createChartOptions(
       : cssVar('--color-red-hex'); // loss
 
   return {
-    animation: 0,
+    animation: false,
     tooltip: {
       trigger: 'axis',
       axisPointer: {
