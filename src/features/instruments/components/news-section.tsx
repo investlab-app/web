@@ -13,7 +13,7 @@ type NewsSectionProps = {
 
 const NewsSection = ({ ticker }: NewsSectionProps) => {
   const { t } = useTranslation();
-  const { news, loading, error } = useInstrumentNews({ ticker });
+  const { news, isPending, error } = useInstrumentNews({ ticker });
   const MAX_NEWS_ITEMS = 2;
 
   const formatTimeAgo = (dateString: string) => {
@@ -31,7 +31,7 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   };
 
-  if (loading) {
+  if (isPending) {
     return (
       <Card>
         <CardHeader>

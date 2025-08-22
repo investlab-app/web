@@ -14,7 +14,7 @@ const AccountOverviewRibbon = () => {
 
   const {
     data: stats,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     ...investorStatsQueryOptions,
@@ -47,11 +47,11 @@ const AccountOverviewRibbon = () => {
   ];
 
   function renderStatTile(index: number, tile: (typeof tiles)[number]) {
-    if (isLoading) {
+    if (isPending) {
       return <StatTile.Skeleton />;
     }
 
-    if (!stats || isError || !tile.value) {
+    if (isError || !tile.value) {
       return <ErrorCard />;
     }
 

@@ -23,7 +23,7 @@ export const accountValueOverTimeQueryOptions = queryOptions({
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isPending, isError } = useQuery(
     accountValueOverTimeQueryOptions
   );
 
@@ -41,7 +41,7 @@ export const AccountValueChartContainer = () => {
 
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 
-  if (isLoading) {
+  if (isPending) {
     return <AccountValueChartContainer.Skeleton />;
   }
 

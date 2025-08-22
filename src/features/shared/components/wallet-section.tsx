@@ -19,25 +19,25 @@ export const currentAccountValueQueryOptions = queryOptions({
 export function WalletSection() {
   const { t } = useTranslation();
 
-  const { data: accountValue, isLoading } = useQuery(
-    currentAccountValueQueryOptions
-  );
+  const {
+    data: accountValue,
+    isPending,
+    isError,
+    isSuccess,
+  } = useQuery(currentAccountValueQueryOptions);
 
   return (
     <SidebarMenuItem className="flex items-center gap-1">
       <SidebarMenuButton tooltip={t('common.wallet')} asChild>
         <a>
           <IconWallet />
-          {isLoading ? (
-            <Skeleton className="h-6 w-24" />
-          ) : accountValue ? (
+          {isPending && <Skeleton className="h-6 w-24" />}
+          {isError && <Skeleton className="h-6 w-24" />}
+          {isSuccess &&
             new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: t('common.currency'),
-            }).format(accountValue.value)
-          ) : (
-            <Skeleton className="h-6 w-24" />
-          )}
+            }).format(accountValue.value)}
         </a>
       </SidebarMenuButton>
       <Button

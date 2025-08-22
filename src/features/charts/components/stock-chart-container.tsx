@@ -53,7 +53,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
 
   const {
     data: priceHistory,
-    isLoading,
+    isPending,
     isFetching,
     isSuccess,
     isError,
@@ -150,7 +150,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         </CardAction>
       </CardHeader>
       <CardContent className="h-96">
-        {isLoading && <StockChart.Skeleton />}
+        {isPending && <StockChart.Skeleton />}
         {isError && <Message message={t('common.error_loading_data')} />}
         {isSuccess &&
           (priceHistory.data.length ? (

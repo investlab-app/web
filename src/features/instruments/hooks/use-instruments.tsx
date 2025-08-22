@@ -23,7 +23,7 @@ export const useInstruments = ({
 }: UseInstrumentsOptions) => {
   const {
     data: availableInstruments = { instruments: [] },
-    isLoading: availableInstrumentsLoading,
+    isPending: availableInstrumentsPending,
     error: availableInstrumentsError,
   } = useQuery({
     queryKey: ['availableInstruments'],
@@ -76,10 +76,10 @@ export const useInstruments = ({
     let totalItems = 0;
     let numPages = 0;
     let errorMessage: string | null = null;
-    let isLoading = false;
+    let isPending = false;
 
     for (const query of instrumentPages) {
-      if (query.isLoading) isLoading = true;
+      if (query.isPending) isPending = true;
       if (query.error) {
         errorMessage =
           query.error instanceof Error
@@ -96,7 +96,7 @@ export const useInstruments = ({
 
     return {
       instruments: allInstruments,
-      loading: isLoading,
+      pending: isPending,
       error: errorMessage,
       totalItems,
       numPages,
@@ -113,10 +113,10 @@ export const useInstruments = ({
 
   return {
     instruments: combinedData.instruments,
-    loading: availableInstrumentsLoading || combinedData.loading,
+    loading: availableInstrumentsPending || combinedData.pending,
     hasMore: combinedData.hasMore,
     availableInstruments,
-    availableInstrumentsLoading,
+    availableInstrumentsLoading: availableInstrumentsPending,
     error,
     totalItems: combinedData.totalItems,
     numPages: combinedData.numPages,

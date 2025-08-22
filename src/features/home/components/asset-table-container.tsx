@@ -26,7 +26,7 @@ const AssetTableContainer = () => {
 
   const {
     data: ownedSharesData,
-    isLoading,
+    isPending,
     isError,
   } = useQuery(ownedSharesQueryOptions);
 
@@ -34,7 +34,7 @@ const AssetTableContainer = () => {
     return <AssetTableContainer.Error />;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <AssetTableContainer.Skeleton />;
   }
 
@@ -45,7 +45,7 @@ const AssetTableContainer = () => {
       </CardHeader>
       <CardContent>
         <AssetTable
-          data={ownedSharesData?.owned_shares || []}
+          data={ownedSharesData.owned_shares}
           onAssetPressed={handleAssetPressed}
         />
       </CardContent>
