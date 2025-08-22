@@ -10,6 +10,7 @@ import {
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
@@ -24,7 +25,7 @@ const InstrumentTable = ({
   rowCount = 10,
   loading = false,
 }: InstrumentTableProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const renderSkeletonRows = () => {
     return Array.from({ length: rowCount }).map((_, idx) => (
@@ -82,7 +83,12 @@ const InstrumentTable = ({
                   </TableCell>
                   <TableCell>{instrument.symbol}</TableCell>
                   <TableCell className="text-right">
-                    {instrument.currentPrice.toFixed(2)} {t('common.currency')}
+                    {toFixedLocalized(
+                      instrument.currentPrice,
+                      i18n.language,
+                      2
+                    )}{' '}
+                    {t('common.currency')}
                   </TableCell>
                   <TableCell
                     className={cn(
@@ -93,7 +99,12 @@ const InstrumentTable = ({
                     )}
                   >
                     {instrument.dayChange < 0 ? '-' : '+'}
-                    {Math.abs(instrument.dayChange).toFixed(2)}%
+                    {toFixedLocalized(
+                      Math.abs(instrument.dayChange),
+                      i18n.language,
+                      2
+                    )}
+                    %
                   </TableCell>
                   <TableCell className="text-right">
                     {instrument.volume}

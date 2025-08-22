@@ -9,6 +9,7 @@ import {
 } from '@/features/shared/components/ui/card';
 import { cn } from '@/features/shared/utils/styles';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface StatTileProps {
   title: string;
@@ -27,16 +28,9 @@ export const StatTile = ({
   footerNote,
   trendNote,
 }: StatTileProps) => {
-  const { t } = useTranslation();
+  const { i18n } = useTranslation();
   const isPositive = value >= 0;
   const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;
-
-  const formatValue = (val: number) => {
-    return Math.abs(val).toLocaleString(t('common.locale'), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
 
   return (
     <Card
@@ -61,7 +55,7 @@ export const StatTile = ({
         >
           {isProgress && isPositive ? '+' : ''}
           {isProgress && !isPositive ? '-' : ''}
-          {formatValue(value)} {currency}
+          {toFixedLocalized(value, i18n.language, 2)} {currency}
         </CardTitle>
 
         {isProgress && (
@@ -72,7 +66,7 @@ export const StatTile = ({
               <TrendingDown className="size-4 " />
             )}
             <span className={cn('text-sm font-medium')}>
-              {percentage.toFixed(2)}%
+              {toFixedLocalized(percentage, i18n.language, 2)}%
             </span>
           </div>
         )}

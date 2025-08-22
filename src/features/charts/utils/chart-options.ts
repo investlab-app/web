@@ -1,6 +1,6 @@
 import {
   createLabelIntervalFn,
-  formatChartDateByRange as formatChartDateByInterval,
+  formatChartDateByRange,
 } from './chart-formatting';
 import type { InstrumentPriceProps } from '../types/types';
 import type {
@@ -8,14 +8,17 @@ import type {
   EChartsOption,
   TooltipComponentFormatterCallbackParams,
 } from 'echarts';
+import type { useTranslation } from 'react-i18next';
 import { cssVar } from '@/features/shared/utils/styles';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 export function createChartOptions(
   stockName: string,
   chartData: Array<InstrumentPriceProps>,
   selectedInterval: string,
   zoom: number = 1,
-  isCandlestick: boolean = false
+  isCandlestick: boolean = false,
+  { t, i18n }: ReturnType<typeof useTranslation>
 ): EChartsOption {
   const dates = chartData.map((item) => item.date);
   const seriesData = isCandlestick
@@ -53,10 +56,11 @@ export function createChartOptions(
           paramArray[0] as DefaultLabelFormatterCallbackParams & {
             axisValue: string;
           };
-        const formattedDate = formatChartDateByInterval(
+        const formattedDate = formatChartDateByRange(
           axisValue,
           selectedInterval,
-          true
+          true,
+          i18n
         );
 
         if (isCandlestick) {
@@ -66,10 +70,10 @@ export function createChartOptions(
           if (!candlestickData.every((d) => typeof d === 'number')) return '';
           const [open, close, low, high] = candlestickData;
           return `<div><strong>${formattedDate}</strong><br />
-            Open: $${open.toFixed(2)}<br />
-            Close: $${close.toFixed(2)}<br />
-            High: $${high.toFixed(2)}<br />
-            Low: $${low.toFixed(2)}</div>`;
+            Open: $${toFixedLocalized(open, i18n.language, 2)}<br />
+            Close: $${toFixedLocalized(close, i18n.language, 2)}<br />
+            High: $${toFixedLocalized(high, i18n.language, 2)}<br />
+            Low: $${toFixedLocalized(low, i18n.language, 2)}</div>`;
         } else {
           const value =
             typeof data === 'object' && data !== null && 'value' in data
@@ -77,7 +81,7 @@ export function createChartOptions(
               : data;
           if (!(typeof value === 'number')) return '';
           return `<div><strong>${formattedDate}</strong><br />
-            Price: $${value.toFixed(2)}</div>`;
+            ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}</div>`;
         }
       },
     },
@@ -91,7 +95,7 @@ export function createChartOptions(
       axisLabel: {
         interval: createLabelIntervalFn(chartData.length, zoom),
         formatter: (value: string) =>
-          formatChartDateByInterval(value, selectedInterval),
+          formatChartDateByRange(value, selectedInterval, false, i18n),
       },
     },
     yAxis: {

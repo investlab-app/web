@@ -1,3 +1,5 @@
+import type { useTranslation } from 'react-i18next';
+
 export function createLabelIntervalFn(
   dataLength: number,
   zoom: number
@@ -14,7 +16,8 @@ export function createLabelIntervalFn(
 export function formatChartDateByRange(
   value: string,
   range: string,
-  tooltip = false
+  tooltip = false,
+  i18n: ReturnType<typeof useTranslation>['i18n']
 ): string {
   const date = new Date(value);
 
@@ -24,10 +27,10 @@ export function formatChartDateByRange(
     case '30m':
     case '1h':
       // Show day, month, hour, and minute
-      return `${date.toLocaleDateString('en-UK', {
+      return `${date.toLocaleDateString(i18n.language, {
         day: 'numeric',
         month: 'short',
-      })} ${date.toLocaleTimeString('pl-PL', {
+      })} ${date.toLocaleTimeString(i18n.language, {
         hour: '2-digit',
         minute: '2-digit',
       })}`;

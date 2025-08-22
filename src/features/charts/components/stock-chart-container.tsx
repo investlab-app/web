@@ -31,13 +31,14 @@ import {
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type StockChartProps = {
   ticker: string;
 };
 
 export const StockChartContainer = ({ ticker }: StockChartProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [interval, setInterval] = useState('1h');
   const [startDate, endDate] = useMemo(
@@ -110,7 +111,8 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         <CardTitle>{ticker}</CardTitle>
         {currentPrice && (
           <CardDescription>
-            {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+            {t('instruments.current_price')}: $
+            {toFixedLocalized(currentPrice, i18n.language, 2)}
           </CardDescription>
         )}
         <CardAction>

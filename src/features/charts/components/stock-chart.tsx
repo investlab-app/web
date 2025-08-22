@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
+import { useTranslation } from 'react-i18next';
 import { createChartOptions } from '../utils/chart-options';
 import type { InstrumentPriceProps } from '../types/types';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
@@ -37,6 +38,7 @@ export const StockChart = ({
   liveUpdateValue = null,
 }: ChartPresentationsProps) => {
   const chartRef = useRef<ReactECharts | null>(null);
+  const translation = useTranslation();
 
   const chartOptions = useMemo(
     () =>
@@ -45,9 +47,10 @@ export const StockChart = ({
         chartData,
         selectedInterval,
         zoom,
-        isCandlestick
+        isCandlestick,
+        translation
       ),
-    [stockName, chartData, selectedInterval, isCandlestick, zoom]
+    [stockName, chartData, selectedInterval, zoom, isCandlestick, translation]
   );
 
   useEffect(() => {

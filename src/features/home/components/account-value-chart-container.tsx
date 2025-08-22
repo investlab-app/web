@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 export const accountValueOverTimeQueryOptions = queryOptions({
   queryKey: ['accountValueOverTime'],
@@ -20,7 +21,7 @@ export const accountValueOverTimeQueryOptions = queryOptions({
 });
 
 export const AccountValueChartContainer = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { data, isLoading, error } = useQuery(accountValueOverTimeQueryOptions);
 
@@ -50,7 +51,8 @@ export const AccountValueChartContainer = () => {
           <Skeleton className="h-10 w-48 mt-2" />
         ) : !hasError && typeof currentValue === 'number' ? (
           <div className="text-4xl font-bold tabular-nums">
-            {currentValue.toFixed(2)} {t('common.currency')}
+            {toFixedLocalized(currentValue, i18n.language)}{' '}
+            {t('common.currency')}
           </div>
         ) : null}
       </CardHeader>

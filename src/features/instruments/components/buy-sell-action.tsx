@@ -11,6 +11,7 @@ import {
 import { Card, CardContent } from '@/features/shared/components/ui/card';
 import { Button } from '@/features/shared/components/ui/button';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface BuySellSectionProps {
   mode: 'price' | 'volume';
@@ -27,7 +28,7 @@ export const BuySellSection = ({
   onValueChange,
   onModeToggle,
 }: BuySellSectionProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const handleInputChange = (val: number | null | undefined) => {
     if (typeof val === 'number' && !isNaN(val)) {
       onValueChange(val);
@@ -77,8 +78,8 @@ export const BuySellSection = ({
 
               <p className="text-muted-foreground text-sm">
                 {mode === 'price'
-                  ? `${t('instruments.volume')}: ${derivedValue.toFixed(5)}`
-                  : `${t('instruments.price')}: $${derivedValue.toFixed(2)}`}
+                  ? `${t('instruments.volume')}: ${toFixedLocalized(derivedValue, i18n.language, 5)}`
+                  : `${t('instruments.price')}: $${toFixedLocalized(derivedValue, i18n.language, 2)}`}
               </p>
             </div>
 

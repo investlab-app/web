@@ -4,6 +4,7 @@ import type { HistoryEntry } from '../queries/fetch-transactions-history';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { dateToLocale } from '@/features/shared/utils/date';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface HistoryRowProps {
   entry: HistoryEntry;
@@ -30,32 +31,36 @@ export function TransactionRow({ entry }: HistoryRowProps) {
         </Badge>
       </TableCell>
       <TableCell className="text-muted-foreground">
-        {entry.quantity.toFixed(2)}
+        {toFixedLocalized(entry.quantity, i18n.language, 2)}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
-        {entry.sharePrice.toFixed(2)} {t('common.currency')}
+        {toFixedLocalized(entry.sharePrice, i18n.language, 2)}{' '}
+        {t('common.currency')}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
         {entry.acquisitionPrice ? (
           <>
-            {entry.acquisitionPrice.toFixed(2)} {t('common.currency')}
+            {toFixedLocalized(entry.acquisitionPrice, i18n.language, 2)}{' '}
+            {t('common.currency')}
           </>
         ) : (
           '-'
         )}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
-        {entry.marketValue.toFixed(2)} {t('common.currency')}
+        {toFixedLocalized(entry.marketValue, i18n.language, 2)}{' '}
+        {t('common.currency')}
       </TableCell>
       <TableCell
         className={`text-right font-medium ${getProfabilityColor(entry.gainLoss)}`}
       >
-        {entry.gainLoss.toFixed(2)} {t('common.currency')}
+        {toFixedLocalized(entry.gainLoss, i18n.language, 2)}{' '}
+        {t('common.currency')}
       </TableCell>
       <TableCell
         className={`text-right font-medium ${getProfabilityColor(entry.gainLoss)}`}
       >
-        {entry.gainLossPct.toFixed(2)}%
+        {toFixedLocalized(entry.gainLossPct, i18n.language, 2)}%
       </TableCell>
     </TableRow>
   );
