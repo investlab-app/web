@@ -54,12 +54,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     navSecondary: [
       {
         title: t('common.settings'),
-        to: '/',
+        to: '/settings',
         icon: IconSettings,
       },
       {
         title: t('common.help'),
-        to: '/',
+        to: '/help',
         icon: IconHelp,
       },
     ],
@@ -67,15 +67,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="border-b h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link to="/">
-                <InvestLabLogo className="!size-5" />
+              <Link to="/" className="gap-2">
+                <InvestLabLogo className="!size-5 -mt-1" />
                 <span className="text-base font-semibold">
                   {t('common.app_name')}
                 </span>

@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { cn } from '@/features/shared/utils/styles';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type AssetTableProps = {
   data: Array<OwnedShareItem>;
@@ -16,7 +17,7 @@ type AssetTableProps = {
 };
 
 const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -48,28 +49,30 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
               </TableCell>
               <TableCell>{asset.symbol}</TableCell>
               <TableCell className="text-right">
-                {asset.volume.toFixed(5)}
+                {toFixedLocalized(asset.volume, i18n.language, 5)}
               </TableCell>
               <TableCell className="text-right">
-                {asset.value.toFixed(2)} {t('common.currency')}
+                {toFixedLocalized(asset.value, i18n.language, 2)}{' '}
+                {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
                   'text-right',
-                  asset.profit < 0 ? 'text-red-500' : 'text-green-500'
+                  asset.profit < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
                 )}
               >
-                {asset.profit.toFixed(2)} {t('common.currency')}
+                {toFixedLocalized(asset.profit, i18n.language, 2)}{' '}
+                {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
                   'text-right hidden sm:table-cell',
                   asset.profit_percentage < 0
-                    ? 'text-red-500'
-                    : 'text-green-500'
+                    ? 'text-[var(--red)]'
+                    : 'text-[var(--green)]'
                 )}
               >
-                {asset.profit_percentage.toFixed(2)}%
+                {toFixedLocalized(asset.profit_percentage, i18n.language, 2)}%
               </TableCell>
             </TableRow>
           ))}

@@ -26,45 +26,66 @@ const AssetTableContainer = () => {
 
   const {
     data: ownedSharesData,
-    isLoading,
+    isPending,
     isError,
   } = useQuery(ownedSharesQueryOptions);
 
   if (isError) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('investor.owned_shares')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Message message={t('common.error_loading_data')} />
-        </CardContent>
-      </Card>
-    );
+    return <AssetTableContainer.Error />;
+  }
+
+  if (isPending) {
+    return <AssetTableContainer.Skeleton />;
   }
 
   return (
-    <Card className="text-xl font-semibold">
+    <Card className="text-xl">
       <CardHeader>
         <CardTitle>{t('investor.owned_shares')}</CardTitle>
       </CardHeader>
       <CardContent>
-        {isLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-          </div>
-        ) : (
-          <AssetTable
-            data={ownedSharesData?.owned_shares || []}
-            onAssetPressed={handleAssetPressed}
-          />
-        )}
+        <AssetTable
+          data={ownedSharesData.owned_shares}
+          onAssetPressed={handleAssetPressed}
+        />
       </CardContent>
     </Card>
   );
 };
+
+function AssetTableContainerSkeleton() {
+  return (
+    <Card className="text-xl">
+      <CardHeader>
+        <Skeleton className="h-6 w-1/2" />
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function AssetTableContainerError() {
+  const { t } = useTranslation();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('investor.owned_shares')}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Message message={t('common.error_loading_data')} />
+      </CardContent>
+    </Card>
+  );
+}
+
+AssetTableContainer.Skeleton = AssetTableContainerSkeleton;
+AssetTableContainer.Error = AssetTableContainerError;
 
 export default AssetTableContainer;

@@ -9,9 +9,10 @@ import { Message } from '../../shared/components/error-message';
 import { StockChart } from './stock-chart';
 import type { InstrumentPriceProps } from '../types/types';
 import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from '@/features/shared/components/ui/toggle-group';
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@/features/shared/components/ui/tabs';
 import {
   Card,
   CardAction,
@@ -29,15 +30,15 @@ import {
 } from '@/features/shared/components/ui/select';
 import { useSSE } from '@/features/shared/hooks/use-sse';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
-import { cn } from '@/features/shared/utils/styles';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type StockChartProps = {
   ticker: string;
 };
 
 export const StockChartContainer = ({ ticker }: StockChartProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [interval, setInterval] = useState('1h');
   const [startDate, endDate] = useMemo(
@@ -45,14 +46,14 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     [interval]
   );
 
-  const [isCandlestick, setIsCandlestick] = useState(true);
+  const [isCandlestick, setIsCandlestick] = useState(false);
   const [livePrice, setLivePrice] = useState<
     [InstrumentPriceProps, boolean] | null
   >(null);
 
   const {
     data: priceHistory,
-    isLoading,
+    isPending,
     isFetching,
     isSuccess,
     isError,
@@ -110,37 +111,26 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         <CardTitle>{ticker}</CardTitle>
         {currentPrice && (
           <CardDescription>
-            {t('instruments.current_price')}: ${currentPrice.toFixed(2)}
+            {t('instruments.current_price')}: $
+            {toFixedLocalized(currentPrice, i18n.language, 2)}
           </CardDescription>
         )}
         <CardAction>
           <div className="flex items-center gap-1">
-            <ToggleGroup
-              type="single"
+            <Tabs
+              value={isCandlestick ? 'candle' : 'line'}
               onValueChange={(value) => setIsCandlestick(value === 'candle')}
               aria-label="Toggle chart type"
             >
-              <ToggleGroupItem
-                value="line"
-                aria-label="Line chart"
-                className={cn(
-                  'p-2 rounded-md',
-                  !isCandlestick ? 'bg-muted text-foreground' : ''
-                )}
-              >
-                <LineChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="candle"
-                aria-label="Candlestick chart"
-                className={cn(
-                  'p-2 rounded-md',
-                  isCandlestick ? 'bg-muted text-foreground' : ''
-                )}
-              >
-                <CandlestickChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
-            </ToggleGroup>
+              <TabsList>
+                <TabsTrigger value="line" aria-label="Line chart">
+                  <LineChartIcon strokeWidth={1.5} />
+                </TabsTrigger>
+                <TabsTrigger value="candle" aria-label="Candlestick chart">
+                  <CandlestickChartIcon strokeWidth={1.5} />
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
             <Select value={interval} onValueChange={setInterval}>
               <SelectTrigger
                 className={`w-40 ${isIntervalChanging ? 'animate-pulse' : ''}`}
@@ -159,11 +149,9 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
           </div>
         </CardAction>
       </CardHeader>
-      <CardContent>
-        {isLoading && (
-          <Message className="animate-pulse" message={t('common.loading')} />
-        )}
-        {isError && <Message message={t('instruments.error_loading_data')} />}
+      <CardContent className="h-96">
+        {isPending && <StockChart.Skeleton />}
+        {isError && <Message message={t('common.error_loading_data')} />}
         {isSuccess &&
           (priceHistory.data.length ? (
             <StockChart

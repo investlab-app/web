@@ -7,6 +7,7 @@ import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { ClerkLoaded, useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
+import { Toaster } from 'sonner';
 import { routeTree } from './routeTree.gen';
 import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
 import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
@@ -17,10 +18,15 @@ import {
   POSTHOG_KEY,
 } from './features/shared/utils/constants.ts';
 import { ErrorComponent } from './features/shared/components/error-component.tsx';
-import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
+import type { ReactNode } from 'react';
+import {
+  ThemeProvider,
+  useTheme,
+} from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
 import './styles.css';
+import '@fontsource-variable/spline-sans';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +54,16 @@ export const router = createRouter({
     return <ErrorComponent error={error} />;
   },
 });
+
+function ToasterProvider({ children }: { children: ReactNode }) {
+  const { appTheme } = useTheme();
+  return (
+    <>
+      {children}
+      <Toaster theme={appTheme} />
+    </>
+  );
+}
 
 function App() {
   const auth = useAuth();
@@ -80,11 +96,13 @@ if (rootElement && !rootElement.innerHTML) {
               client={queryClient}
               persistOptions={{ persister }}
             >
-              <SSEProvider>
-                <ClerkLoaded>
-                  <App />
-                </ClerkLoaded>
-              </SSEProvider>
+              <ClerkLoaded>
+                <SSEProvider>
+                  <ToasterProvider>
+                    <App />
+                  </ToasterProvider>
+                </SSEProvider>
+              </ClerkLoaded>
             </PersistQueryClientProvider>
           </ConditionalProvider>
         </ClerkThemedProvider>

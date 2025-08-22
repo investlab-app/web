@@ -12,7 +12,7 @@ export const useInstrumentNews = ({
 }: UseInstrumentNewsOptions) => {
   const {
     data: news = [],
-    isLoading,
+    isPending,
     error,
     refetch,
   } = useQuery({
@@ -30,7 +30,7 @@ export const useInstrumentNews = ({
 
   return {
     news,
-    loading: isLoading,
+    isPending: isPending,
     error: error instanceof Error ? error.message : null,
     refetch,
   };

@@ -185,7 +185,7 @@ const columns: Array<ColumnDef<typeof schema.infer>> = [
     cell: ({ row }) => (
       <Badge variant="outline" className="text-muted-foreground px-1.5">
         {row.original.status === 'Done' ? (
-          <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+          <IconCircleCheckFilled className="fill-[var(--green)] dark:fill-[var(--green)]" />
         ) : (
           <IconLoader />
         )}

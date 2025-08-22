@@ -5,6 +5,7 @@ import { getProfabilityColor } from '../utils/colors';
 import { TransactionRow } from './transaction-row';
 import type { Position } from '../queries/fetch-transactions-history';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface PositionRowProps {
   position: Position;
@@ -12,7 +13,7 @@ interface PositionRowProps {
 }
 
 export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -46,21 +47,25 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
             </button>
           </div>
         </TableCell>
-        <TableCell>{position.quantity.toFixed(2)}</TableCell>
+        <TableCell>
+          {toFixedLocalized(position.quantity, i18n.language, 2)}
+        </TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell className="text-right">
-          {position.marketValue.toFixed(2)} {t('common.currency')}
+          {toFixedLocalized(position.marketValue, i18n.language, 2)}{' '}
+          {t('common.currency')}
         </TableCell>
         <TableCell
           className={`text-right ${getProfabilityColor(position.gainLoss)}`}
         >
-          {position.gainLoss.toFixed(2)} {t('common.currency')}
+          {toFixedLocalized(position.gainLoss, i18n.language, 2)}{' '}
+          {t('common.currency')}
         </TableCell>
         <TableCell
           className={`text-right ${getProfabilityColor(position.gainLoss)}`}
         >
-          {position.gainLossPct.toFixed(2)}%
+          {toFixedLocalized(position.gainLossPct, i18n.language, 2)}%
         </TableCell>
       </TableRow>
 

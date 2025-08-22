@@ -120,9 +120,9 @@ export function LandingPage() {
               </div>
               {/* Decorative elements */}
               <div className="absolute top-4 left-4 flex space-x-2">
-                <div className="h-3 w-3 rounded-full bg-red-500" />
+                <div className="h-3 w-3 rounded-full bg-[var(--red)]" />
                 <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                <div className="h-3 w-3 rounded-full bg-green-500" />
+                <div className="h-3 w-3 rounded-full bg-[var(--green)]" />
               </div>
             </div>
           </div>

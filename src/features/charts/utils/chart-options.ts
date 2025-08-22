@@ -1,6 +1,6 @@
 import {
   createLabelIntervalFn,
-  formatChartDateByRange as formatChartDateByInterval,
+  formatChartDateByRange,
 } from './chart-formatting';
 import type { InstrumentPriceProps } from '../types/types';
 import type {
@@ -8,25 +8,30 @@ import type {
   EChartsOption,
   TooltipComponentFormatterCallbackParams,
 } from 'echarts';
+import type { useTranslation } from 'react-i18next';
+import { cssVar } from '@/features/shared/utils/styles';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 export function createChartOptions(
   stockName: string,
   chartData: Array<InstrumentPriceProps>,
   selectedInterval: string,
   zoom: number = 1,
-  isCandlestick: boolean = false
+  isCandlestick: boolean = false,
+  { t, i18n }: ReturnType<typeof useTranslation>
 ): EChartsOption {
   const dates = chartData.map((item) => item.date);
-  const seriesData = !isCandlestick
-    ? chartData.map((item) => ({
+  const seriesData = isCandlestick
+    ? chartData.map((item) => [item.open, item.close, item.low, item.high])
+    : chartData.map((item) => ({
         value: item.close,
         high: item.high,
         low: item.low,
         open: item.open,
-      }))
-    : chartData.map((item) => [item.open, item.close, item.low, item.high]);
+      }));
 
   zoom = isCandlestick ? zoom / 3 : zoom;
+
   const startPercent = (1 - zoom) * 100;
 
   return {
@@ -34,14 +39,11 @@ export function createChartOptions(
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        animation: false,
         type: isCandlestick ? 'shadow' : 'line',
       },
-      backgroundColor: isCandlestick
-        ? 'var(--color-card)'
-        : 'var(--blended-primary)',
+      backgroundColor: cssVar('--color-card'),
       textStyle: {
-        color: isCandlestick ? 'var(--foreground)' : 'var(--foreground)',
+        color: isCandlestick ? cssVar('--foreground') : cssVar('--foreground'),
       },
       formatter: (params: TooltipComponentFormatterCallbackParams) => {
         const paramArray = Array.isArray(params) ? params : [params];
@@ -49,10 +51,11 @@ export function createChartOptions(
           paramArray[0] as DefaultLabelFormatterCallbackParams & {
             axisValue: string;
           };
-        const formattedDate = formatChartDateByInterval(
+        const formattedDate = formatChartDateByRange(
           axisValue,
           selectedInterval,
-          true
+          true,
+          i18n
         );
 
         if (isCandlestick) {
@@ -62,10 +65,10 @@ export function createChartOptions(
           if (!candlestickData.every((d) => typeof d === 'number')) return '';
           const [open, close, low, high] = candlestickData;
           return `<div><strong>${formattedDate}</strong><br />
-            Open: $${open.toFixed(2)}<br />
-            Close: $${close.toFixed(2)}<br />
-            High: $${high.toFixed(2)}<br />
-            Low: $${low.toFixed(2)}</div>`;
+            Open: $${toFixedLocalized(open, i18n.language, 2)}<br />
+            Close: $${toFixedLocalized(close, i18n.language, 2)}<br />
+            High: $${toFixedLocalized(high, i18n.language, 2)}<br />
+            Low: $${toFixedLocalized(low, i18n.language, 2)}</div>`;
         } else {
           const value =
             typeof data === 'object' && data !== null && 'value' in data
@@ -73,19 +76,21 @@ export function createChartOptions(
               : data;
           if (!(typeof value === 'number')) return '';
           return `<div><strong>${formattedDate}</strong><br />
-            Price: $${value.toFixed(2)}</div>`;
+            ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}</div>`;
         }
       },
     },
+    grid: { left: 0, right: 0, top: 0, bottom: 0, containLabel: false },
     xAxis: {
       type: 'category',
       data: dates,
+      boundaryGap: isCandlestick ? true : false,
       axisTick: { show: false },
       axisLine: { show: true },
       axisLabel: {
         interval: createLabelIntervalFn(chartData.length, zoom),
         formatter: (value: string) =>
-          formatChartDateByInterval(value, selectedInterval),
+          formatChartDateByRange(value, selectedInterval, false, i18n),
       },
     },
     yAxis: {
@@ -108,19 +113,23 @@ export function createChartOptions(
     series: [
       isCandlestick
         ? {
+            animation: true,
+            animationDuration: 0,
             name: stockName,
             type: 'candlestick',
             data: seriesData as Array<Array<number>>,
             itemStyle: {
-              color: '#00b894',
-              color0: '#d63031',
-              borderColor: '#00b894',
-              borderColor0: '#d63031',
+              color: cssVar('--green-hex'),
+              color0: cssVar('--red-hex'),
+              borderColor: cssVar('--green-lighter-hex'),
+              borderColor0: cssVar('--red-lighter-hex'),
             },
           }
         : {
             name: stockName,
             type: 'line',
+            animation: true,
+            animationDuration: 0,
             smooth: false,
             data: seriesData as Array<{
               value: number;
@@ -137,13 +146,15 @@ export function createChartOptions(
                 x2: 0,
                 y2: 1,
                 colorStops: [
-                  { offset: 0, color: 'rgba(117, 33, 232, 0.5)' },
-                  { offset: 1, color: 'rgba(117, 33, 232, 0)' },
+                  { offset: 0, color: cssVar('--color-card-foreground-hex')! },
+                  { offset: 1, color: cssVar('--color-card-hex')! },
                 ],
               },
             },
-            lineStyle: { color: 'rgba(117, 33, 232, 1)' },
-            itemStyle: { color: 'rgba(117, 33, 232, 1)' },
+            lineStyle: {
+              color: cssVar('--color-card-foreground-hex')!,
+              width: 1,
+            },
           },
     ],
   };

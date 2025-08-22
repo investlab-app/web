@@ -11,9 +11,9 @@ export default function AppFrame({ children }: AppFrameProps) {
   const defaultOpen = getCookie('sidebar_state') === 'true';
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="sidebar" />
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader className="sticky top-0 bg-[var(--background)]" />
         <div className="p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>

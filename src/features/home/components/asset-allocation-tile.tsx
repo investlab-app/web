@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface AssetAllocationProps {
   totalValue: number;
@@ -20,14 +21,7 @@ export const AssetAllocationTile = ({
   assets,
 }: AssetAllocationProps) => {
   const totalAssetValue = assets.reduce((sum, [, value]) => sum + value, 0);
-  const { t } = useTranslation();
-
-  const formatValue = (val: number) => {
-    return val.toLocaleString(t('common.locale'), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
+  const { t, i18n } = useTranslation();
 
   const formatPercentage = (val: number) => {
     return Math.round((val / totalAssetValue) * 100);
@@ -40,11 +34,12 @@ export const AssetAllocationTile = ({
           {t('investor.asset_allocation')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {formatValue(totalValue)} {currency}
+          {toFixedLocalized(totalValue, i18n.language)} {currency}
         </div>
 
         <span className="text-gray-400 text-sm">
-          {formatValue(yearlyGain)} {currency} {t('investor.this_year')}
+          {toFixedLocalized(yearlyGain, i18n.language)} {currency}{' '}
+          {t('investor.this_year')}
         </span>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
@@ -53,13 +48,13 @@ export const AssetAllocationTile = ({
             {t('investor.distribution')}
           </h3>
 
-          <div className="flex w-full h-8 rounded-lg">
+          <div className="flex w-full gap-2 h-8 rounded-lg">
             {assets.map(([name, value], index) => {
               const percentage = (value / totalAssetValue) * 100;
               return (
                 <div
                   key={name}
-                  className="rounded-md h-4 mx-1"
+                  className="rounded-md h-4"
                   style={{
                     width: `${percentage}%`,
                     backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
@@ -74,7 +69,7 @@ export const AssetAllocationTile = ({
               <div key={name} className="flex items-center justify-between">
                 <div key={name} className="flex items-center gap-3">
                   <div
-                    className="w-4 h-4 rounded-full"
+                    className="size-4 rounded-full"
                     style={{
                       backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
                     }}
@@ -87,7 +82,7 @@ export const AssetAllocationTile = ({
                   </div>
                 </div>
                 <div className="font-semibold tabular-nums">
-                  {formatValue(value)} {currency}
+                  {toFixedLocalized(value, i18n.language)} {currency}
                 </div>
               </div>
             ))}

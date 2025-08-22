@@ -9,6 +9,7 @@ import {
 } from '@/features/shared/components/ui/card';
 import { cn } from '@/features/shared/utils/styles';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface StatTileProps {
   title: string;
@@ -27,26 +28,19 @@ export const StatTile = ({
   footerNote,
   trendNote,
 }: StatTileProps) => {
-  const { t } = useTranslation();
+  const { i18n } = useTranslation();
   const isPositive = value >= 0;
   const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;
-
-  const formatValue = (val: number) => {
-    return Math.abs(val).toLocaleString(t('common.locale'), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
 
   return (
     <Card
       className={cn(
-        'min-w-[280px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+        'min-w-[280px] min-h-[196px] @container/card border shadow-lg transition-all duration-200 hover:shadow-xl',
         isProgress
           ? isPositive
-            ? 'bg-[color:var(--card-positive)] text-[color:var(--positive-foreground)]'
-            : 'bg-[color:var(--card-negative)] text-[color:var(--negative-foreground)]'
-          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)]'
+            ? 'bg-[color:var(--card-positive)] text-[color:var(--card-positive-foreground)] border-[color:var(--card-positive-border)]'
+            : 'bg-[color:var(--card-negative)] text-[color:var(--card-negative-foreground)] border-[color:var(--card-negative-border)]'
+          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
       )}
     >
       <CardHeader>
@@ -61,7 +55,7 @@ export const StatTile = ({
         >
           {isProgress && isPositive ? '+' : ''}
           {isProgress && !isPositive ? '-' : ''}
-          {formatValue(value)} {currency}
+          {toFixedLocalized(value, i18n.language, 2)} {currency}
         </CardTitle>
 
         {isProgress && (
@@ -72,7 +66,7 @@ export const StatTile = ({
               <TrendingDown className="size-4 " />
             )}
             <span className={cn('text-sm font-medium')}>
-              {percentage.toFixed(2)}%
+              {toFixedLocalized(percentage, i18n.language, 2)}%
             </span>
           </div>
         )}
@@ -114,6 +108,7 @@ const StatTileSkeleton = ({ isProgress }: { isProgress?: boolean }) => {
             <Skeleton className="h-5 w-16" />
           </div>
         )}
+        <Skeleton className="h-4 w-32 mt-2" />
       </CardHeader>
     </Card>
   );
