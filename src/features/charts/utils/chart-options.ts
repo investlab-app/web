@@ -34,11 +34,6 @@ export function createChartOptions(
 
   const startPercent = (1 - zoom) * 100;
 
-  const trendColor =
-    chartData[chartData.length - 1].close - chartData[0].close > 0
-      ? cssVar('--color-green-hex') // gain
-      : cssVar('--color-red-hex'); // loss
-
   return {
     animation: false,
     tooltip: {
@@ -151,13 +146,13 @@ export function createChartOptions(
                 x2: 0,
                 y2: 1,
                 colorStops: [
-                  { offset: 0, color: trendColor! },
+                  { offset: 0, color: cssVar('--color-card-foreground-hex')! },
                   { offset: 1, color: cssVar('--color-card-hex')! },
                 ],
               },
             },
             lineStyle: {
-              color: trendColor,
+              color: cssVar('--color-card-foreground-hex')!,
               width: 1,
             },
           },
