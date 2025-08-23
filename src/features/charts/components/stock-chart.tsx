@@ -104,7 +104,10 @@ export const StockChart = ({
     <ReactECharts
       ref={chartRef}
       option={chartOptions}
-      style={{ height: '400px' }}
+      style={{
+        height: '100%',
+        width: '100%',
+      }}
     />
   );
 };
