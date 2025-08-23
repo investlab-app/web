@@ -13,10 +13,13 @@ export const useStopLimitForm = (
     [currentPrice]
   );
 
-  const handleVolumeChange = useCallback((newVolume: number) => {
-    setVolume(newVolume);
-    setPrice(calcPriceFromVolume(newVolume));
-  }, []);
+  const handleVolumeChange = useCallback(
+    (newVolume: number) => {
+      setVolume(newVolume);
+      setPrice(calcPriceFromVolume(newVolume));
+    },
+    [calcPriceFromVolume]
+  );
 
   const handlePriceChange = useCallback((newPrice: number) => {
     setPrice(newPrice);

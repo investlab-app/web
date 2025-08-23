@@ -1,12 +1,12 @@
+import { useTranslation } from 'react-i18next';
+import { BuySellContainer } from './buy-sell-action';
+import type { Position } from '@/features/transactions/types/types';
+import type { InstrumentPrice } from '../types/types';
 import {
   PositionsTableHeader,
   PositionsTableSkeleton,
 } from '@/features/transactions/components/positions-table';
 import { PositionRow } from '@/features/transactions/components/position-row';
-import { BuySellContainer } from './buy-sell-action';
-import type { Position } from '@/features/transactions/types/types';
-import { useTranslation } from 'react-i18next';
-import type { InstrumentPrice } from '../types/types';
 
 interface TransactionsHistorySectionProps {
   positionData: Position | undefined;

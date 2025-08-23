@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 import { OrdersSection } from '@/features/instrument-details/components/orders-section';
 import { TransactionsHistorySection } from '@/features/instrument-details/components/transactions-history-section';
 import { instrumentOpenPositionsQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-open-positions';
 import { instrumentCurrentPriceQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-price';
-import { useTranslation } from 'react-i18next';
 
 import AppFrame from '@/features/shared/components/app-frame';
 

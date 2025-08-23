@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
-import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
+import { useIs2XL } from '@/features/shared/hooks/use-is-2xl';
 
 export interface StopLimitSectionProps {
   value: number;
@@ -24,7 +25,7 @@ export const StopLimitSection = ({
       prefix={'$'}
       fixedDecimalScale
       onValueChange={(val) => onPriceChange(val ?? 0)}
-      stepper={derivedValue > 100 ? 100 : 10}
+      stepper={derivedValue > 1000 ? 100 : 10}
       decimalScale={2}
     />
   );
@@ -41,7 +42,8 @@ export const StopLimitSection = ({
   const volumeLabel = <p className="text-sm">{t('instruments.volume')}</p>;
 
   const isMobile = useIsMobile();
-  if (isMobile) {
+  const is2XL = useIs2XL();
+  if (isMobile || is2XL) {
     return (
       <div className="flex flex-col mt-3">
         <div className="flex gap-2">
