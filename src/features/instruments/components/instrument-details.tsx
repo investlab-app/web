@@ -1,4 +1,4 @@
-import { BuySellContainer } from './buy-sell-action';
+import { BuySellContainer } from '../../instrument-details/components/buy-sell-action';
 import NewsSection from './news-section';
 import type { Instrument } from '../types/types';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';

@@ -51,7 +51,7 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
           {toFixedLocalized(position.quantity, i18n.language, 2)}
         </TableCell>
         <TableCell></TableCell>
-        <TableCell></TableCell>
+        <TableCell className="hidden xl:table-cell"></TableCell>
         <TableCell className="text-right">
           {toFixedLocalized(position.marketValue, i18n.language, 2)}{' '}
           {t('common.currency')}

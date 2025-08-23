@@ -60,7 +60,7 @@ export function PositionsTableHeader() {
         <TableHead className="text-right">
           {t('transactions.table.headers.share_price')}
         </TableHead>
-        <TableHead className="text-right">
+        <TableHead className="hidden xl:table-cell text-right">
           {t('transactions.table.headers.acquisition_price')}
         </TableHead>
         <TableHead className="text-right">

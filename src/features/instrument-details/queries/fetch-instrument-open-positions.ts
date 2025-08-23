@@ -4,7 +4,7 @@ import { position } from '@/features/transactions/types/types';
 
 const generateRandomTickerTransactionHistory = (ticker: string) => {
   const generateRandomHistory = () => {
-    const transactionCount = Math.floor(Math.random() * 3) + 1;
+    const transactionCount = Math.floor(Math.random() * 6) + 1;
     return Array.from({ length: transactionCount }, () =>
       (() => {
         const transactionType = Math.random() > 0.5 ? 'BUY' : 'SELL';
