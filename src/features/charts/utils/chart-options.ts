@@ -18,7 +18,7 @@ export function createChartOptions(
   selectedInterval: string,
   zoom: number = 1,
   isCandlestick: boolean = false,
-  { t, i18n }: ReturnType<typeof useTranslation>
+  { t, i18n }: Pick<ReturnType<typeof useTranslation>, 't' | 'i18n'>
 ): EChartsOption {
   const dates = chartData.map((item) => item.date);
   const seriesData = isCandlestick
