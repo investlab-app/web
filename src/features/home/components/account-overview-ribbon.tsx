@@ -3,6 +3,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import { fetchInvestorStats } from '../queries/fetch-investor-stats';
 import { StatTile } from '../../shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 export const investorStatsQueryOptions = queryOptions({
   queryKey: ['investorStats'],
@@ -10,7 +11,7 @@ export const investorStatsQueryOptions = queryOptions({
 });
 
 const AccountOverviewRibbon = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const {
     data: stats,
@@ -59,9 +60,15 @@ const AccountOverviewRibbon = () => {
       <StatTile
         key={index}
         title={tile.title}
-        value={tile.value}
+        value={`${toFixedLocalized(tile.value, i18n.language, 2)} ${t('common.currency')}`}
         isProgress={tile.isProgress}
-        currency={t('common.currency')}
+        coloring={
+          tile.isProgress
+            ? tile.value >= 0
+              ? StatTile.Coloring.POSITIVE
+              : StatTile.Coloring.NEGATIVE
+            : StatTile.Coloring.NEUTRAL
+        }
       />
     );
   }

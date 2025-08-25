@@ -31,7 +31,7 @@ const _generateFakeStatisticsOverview = (): StatisticsOverview => {
     total_trades: Math.floor(Math.random() * 500),
     buys_sells: `${Math.floor(Math.random() * 250).toString()} / ${Math.floor(Math.random() * 250).toString()}`,
     avg_gain: parseFloat((Math.random() * 10).toFixed(2)),
-    avg_loss: parseFloat((-Math.random() * 10).toFixed(2)),
+    avg_loss: parseFloat((Math.random() * 10).toFixed(2)),
     total_return: parseFloat((Math.random() * 10000).toFixed(2)),
   };
 };

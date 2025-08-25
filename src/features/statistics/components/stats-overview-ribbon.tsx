@@ -16,30 +16,33 @@ const StatsOverviewRibbon = () => {
   const tiles = [
     {
       title: t('statistics.total_trades'),
-      value: stats?.total_trades,
-      unformatted: true,
+      value: stats?.total_trades.toString(),
     },
     {
       title: t('statistics.buys_sells'),
       value: stats?.buys_sells,
-      unformatted: true,
     },
     {
       title: t('statistics.avg_gain'),
-      value: stats?.avg_gain,
-      isPercentage: true,
-      coloring: true,
+      value: `${stats?.avg_gain} ${t('common.currency')}`,
+      coloring: stats
+        ? stats.avg_gain > 0
+          ? StatTile.Coloring.POSITIVE
+          : StatTile.Coloring.NEUTRAL
+        : StatTile.Coloring.NEUTRAL,
     },
     {
       title: t('statistics.avg_loss'),
-      value: stats?.avg_loss,
-      isPercentage: true,
-      coloring: true,
+      value: `${stats?.avg_loss} ${t('common.currency')}`,
+      coloring: stats
+        ? stats.avg_loss > 0
+          ? StatTile.Coloring.NEGATIVE
+          : StatTile.Coloring.NEUTRAL
+        : StatTile.Coloring.NEUTRAL,
     },
     {
       title: t('statistics.total_return'),
-      value: stats?.total_return,
-      isProgress: true,
+      value: `${stats?.total_return} ${t('common.currency')}`,
     },
   ];
 
@@ -57,10 +60,6 @@ const StatsOverviewRibbon = () => {
         key={index}
         title={tile.title}
         value={tile.value}
-        unformatted={tile.unformatted}
-        isPercentage={tile.isPercentage}
-        isProgress={tile.isProgress}
-        currency={t('common.currency')}
         coloring={tile.coloring}
       />
     );
