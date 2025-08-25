@@ -13,34 +13,35 @@ import {
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
 
+const RenderSkeletonRow = () => {
+  return (
+    <TableRow key={`skeleton`}>
+      <TableCell className="h-10">
+        <Skeleton className="h-4 w-32" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-20 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+    </TableRow>
+  );
+};
+
 const ProfileOverview = () => {
   const { t } = useTranslation();
 
-  const { data } = useQuery({
-    ...profileOverviewQueryOptions,
-  });
-
-  const renderSkeletonRow = () => {
-    return (
-      <TableRow key={`skeleton`}>
-        <TableCell className="h-10">
-          <Skeleton className="h-4 w-32" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-      </TableRow>
-    );
-  };
+  const { data } = useQuery(profileOverviewQueryOptions);
 
   return (
     <div className="overflow-x-auto">
@@ -66,7 +67,7 @@ const ProfileOverview = () => {
         </TableHeader>
         <TableBody>
           {!data ? (
-            renderSkeletonRow()
+            RenderSkeletonRow()
           ) : (
             <TableRow>
               <TableCell>{data.level}</TableCell>
@@ -88,9 +89,7 @@ const ProfileOverview = () => {
                       : ''
                 )}
               >
-                {data.gain < 0 ? '-' : ''}
-                {Math.abs(data.gain).toFixed(2)}
-                {t('common.currency')}
+                {data.gain.toFixed(2)} {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
@@ -102,8 +101,7 @@ const ProfileOverview = () => {
                       : ''
                 )}
               >
-                {data.gain_percent < 0 ? '-' : ''}
-                {Math.abs(data.gain_percent).toFixed(2)}
+                {data.gain_percent.toFixed(2)}
                 {'%'}
               </TableCell>
             </TableRow>

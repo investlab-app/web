@@ -14,39 +14,35 @@ import {
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
 
-type MostTradedOverviewTableProps = {
-  rowCount?: number;
-  loading?: boolean;
+const RenderSkeletonRows = ({ skeletonRowCount = 5 }) => {
+  return Array.from({ length: skeletonRowCount }).map((_, idx) => (
+    <TableRow key={`skeleton-${idx}`}>
+      <TableCell className="hidden sm:table-cell h-10">
+        <Skeleton className="h-4 w-32" />
+      </TableCell>
+      <TableCell className="h-10">
+        <Skeleton className="h-4 w-16" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-20 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+    </TableRow>
+  ));
 };
 
-const MostTradedOverview = ({ rowCount = 5 }: MostTradedOverviewTableProps) => {
+const MostTradedOverview = () => {
   const { t } = useTranslation();
 
-  const { data } = useQuery({
-    ...mostTradedOverviewQueryOptions,
-  });
-
-  const renderSkeletonRows = () => {
-    return Array.from({ length: rowCount }).map((_, idx) => (
-      <TableRow key={`skeleton-${idx}`}>
-        <TableCell className="hidden sm:table-cell h-10">
-          <Skeleton className="h-4 w-32" />
-        </TableCell>
-        <TableCell className="h-10">
-          <Skeleton className="h-4 w-16" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-      </TableRow>
-    ));
-  };
+  const { data } = useQuery(mostTradedOverviewQueryOptions);
 
   return (
     <div className="overflow-x-auto">
@@ -73,7 +69,7 @@ const MostTradedOverview = ({ rowCount = 5 }: MostTradedOverviewTableProps) => {
         </TableHeader>
         <TableBody>
           {!data
-            ? renderSkeletonRows()
+            ? RenderSkeletonRows({})
             : data.map((instrumentOverview: InstrumentSummary) => (
                 <TableRow>
                   <TableCell>{instrumentOverview.symbol}</TableCell>
@@ -89,7 +85,7 @@ const MostTradedOverview = ({ rowCount = 5 }: MostTradedOverviewTableProps) => {
                       instrumentOverview.avg_gain == 0 ? '' : 'text-green-500'
                     )}
                   >
-                    {Math.abs(instrumentOverview.avg_gain).toFixed(2)}%
+                    {instrumentOverview.avg_gain.toFixed(2)}%
                   </TableCell>
                   <TableCell
                     className={cn(
@@ -97,7 +93,7 @@ const MostTradedOverview = ({ rowCount = 5 }: MostTradedOverviewTableProps) => {
                       instrumentOverview.avg_loss == 0 ? '' : 'text-red-500'
                     )}
                   >
-                    {Math.abs(instrumentOverview.avg_loss).toFixed(2)}%
+                    {instrumentOverview.avg_loss.toFixed(2)}%
                   </TableCell>
                   <TableCell
                     className={cn(
@@ -109,9 +105,8 @@ const MostTradedOverview = ({ rowCount = 5 }: MostTradedOverviewTableProps) => {
                           : ''
                     )}
                   >
-                    {instrumentOverview.total_return < 0 ? '-' : ''}
-                    {Math.abs(instrumentOverview.total_return).toFixed(2)}{' '}
-                    {t('common.currency')}{' '}
+                    {instrumentOverview.total_return.toFixed(2)}{' '}
+                    {t('common.currency')}
                   </TableCell>
                 </TableRow>
               ))}

@@ -23,7 +23,6 @@ export async function fetchMostTradedOverview() {
 export const mostTradedOverviewQueryOptions = queryOptions({
   queryKey: ['mostTradedInstrumentsOverview'],
   queryFn: fetchMostTradedOverview,
-  staleTime: 1 * 1000,
 });
 
 const _generateFakeStatisticsOverview = (): Array<InstrumentSummary> => {
@@ -32,7 +31,7 @@ const _generateFakeStatisticsOverview = (): Array<InstrumentSummary> => {
     no_trades: Math.floor(Math.random() * 100),
     buys_sells: `${Math.floor(Math.random() * 50).toString()} / ${Math.floor(Math.random() * 50).toString()}`,
     avg_gain: parseFloat((Math.random() * 10).toFixed(2)),
-    avg_loss: parseFloat((-Math.random() * 10).toFixed(2)),
+    avg_loss: parseFloat((Math.random() * 10).toFixed(2)),
     total_return: parseFloat((Math.random() * 100).toFixed(2)),
   }));
 };

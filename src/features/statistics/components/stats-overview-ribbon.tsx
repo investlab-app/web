@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { statisticsOverviewQueryOptions } from '../queries/fetch-statistics-overview';
 import { StatTile } from '@/features/shared/components/stat-tile';
-import { LoadingCard } from '@/features/shared/components/loading-card';
 import { ErrorCard } from '@/features/shared/components/error-card';
 
 const StatsOverviewRibbon = () => {
@@ -12,12 +11,7 @@ const StatsOverviewRibbon = () => {
     data: stats,
     isLoading,
     isError,
-  } = useQuery({
-    ...statisticsOverviewQueryOptions,
-    staleTime: 60_000,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
+  } = useQuery(statisticsOverviewQueryOptions);
 
   const tiles = [
     {
@@ -51,10 +45,10 @@ const StatsOverviewRibbon = () => {
 
   function renderStatTile(index: number, tile: (typeof tiles)[number]) {
     if (isLoading) {
-      return <LoadingCard />;
+      return StatTile.Skeleton({ isProgress: false });
     }
 
-    if (!stats || isError || !tile.value) {
+    if (isError || !tile.value) {
       return <ErrorCard />;
     }
 
