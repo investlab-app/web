@@ -15,6 +15,8 @@ import enSettings from './locales/en/settings';
 import plSettings from './locales/pl/settings';
 import enTransactions from './locales/en/transactions';
 import plTransactions from './locales/pl/transactions';
+import enStatistics from './locales/en/statistics';
+import plStatistics from './locales/pl/statistics';
 
 const browserLanguage = navigator.language;
 const defaultLanguage = browserLanguage.split('-')[0];
@@ -37,6 +39,7 @@ i18n.use(initReactI18next).init({
         instruments: enInstruments,
         investor: enInvestor,
         settings: enSettings,
+        statistics: enStatistics,
         transactions: enTransactions,
       },
     },
@@ -48,6 +51,7 @@ i18n.use(initReactI18next).init({
         instruments: plInstruments,
         investor: plInvestor,
         settings: plSettings,
+        statistics: plStatistics,
         transactions: plTransactions,
       },
     },

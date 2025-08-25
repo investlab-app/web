@@ -20,6 +20,7 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedTransactionsRouteRouteImport } from './routes/_authed/transactions/route'
 import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
+import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
 import { Route as AuthedInstrumentsIndexRouteImport } from './routes/_authed/instruments/index'
 import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_authed/instruments/$instrumentId'
 
@@ -76,6 +77,11 @@ const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedTransactionsRouteRoute,
 } as any)
+const AuthedStatisticsIndexRoute = AuthedStatisticsIndexRouteImport.update({
+  id: '/statistics/',
+  path: '/statistics/',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
 const AuthedInstrumentsIndexRoute = AuthedInstrumentsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/verify-email': typeof AuthVerifyEmailRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
+  '/statistics': typeof AuthedStatisticsIndexRoute
   '/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/verify-email': typeof AuthVerifyEmailRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
+  '/statistics': typeof AuthedStatisticsIndexRoute
   '/transactions': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesById {
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
+  '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
   '/_authed/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/instruments/$instrumentId'
     | '/instruments/'
+    | '/statistics'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/instruments/$instrumentId'
     | '/instruments'
+    | '/statistics'
     | '/transactions'
   id:
     | '__root__'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/_auth/verify-email'
     | '/_authed/instruments/$instrumentId'
     | '/_authed/instruments/'
+    | '/_authed/statistics/'
     | '/_authed/transactions/'
   fileRoutesById: FileRoutesById
 }
@@ -256,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTransactionsIndexRouteImport
       parentRoute: typeof AuthedTransactionsRouteRoute
     }
+    '/_authed/statistics/': {
+      id: '/_authed/statistics/'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AuthedStatisticsIndexRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
     '/_authed/instruments/': {
       id: '/_authed/instruments/'
       path: '/'
@@ -324,11 +343,13 @@ const AuthedTransactionsRouteRouteWithChildren =
 interface AuthedRouteRouteChildren {
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
+  AuthedStatisticsIndexRoute: typeof AuthedStatisticsIndexRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
+  AuthedStatisticsIndexRoute: AuthedStatisticsIndexRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(

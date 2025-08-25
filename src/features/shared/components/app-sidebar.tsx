@@ -1,4 +1,5 @@
 import {
+  IconChartPie,
   IconDashboard,
   IconHelp,
   IconHistory,
@@ -49,6 +50,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.transactions'),
         to: '/transactions',
         icon: IconHistory,
+      },
+      {
+        title: t('common.statistics'),
+        to: '/statistics',
+        icon: IconChartPie,
       },
     ],
     navSecondary: [

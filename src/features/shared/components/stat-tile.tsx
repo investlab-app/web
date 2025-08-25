@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
@@ -11,36 +10,37 @@ import { cn } from '@/features/shared/utils/styles';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
+enum TileColoring {
+  POSITIVE = 'positive',
+  NEGATIVE = 'negative',
+  NEUTRAL = 'neutral',
+}
 interface StatTileProps {
   title: string;
-  value: number;
-  currency?: string;
+  value: string;
+  percentage?: number | undefined;
   isProgress?: boolean;
-  footerNote?: string | null;
-  trendNote?: string | null;
+  coloring?: TileColoring;
 }
 
 export const StatTile = ({
   title,
   value,
-  currency = 'USD',
+  percentage = undefined,
   isProgress = false,
-  footerNote,
-  trendNote,
+  coloring = TileColoring.NEUTRAL,
 }: StatTileProps) => {
   const { i18n } = useTranslation();
-  const isPositive = value >= 0;
-  const percentage = isProgress ? Math.abs((value / 1000) * 100) : 0;
 
   return (
     <Card
       className={cn(
-        'min-w-[280px] min-h-[196px] @container/card border shadow-lg transition-all duration-200 hover:shadow-xl',
-        isProgress
-          ? isPositive
+        'min-w-[200px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+        coloring === TileColoring.NEUTRAL
+          ? 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
+          : coloring === TileColoring.POSITIVE
             ? 'bg-[color:var(--card-positive)] text-[color:var(--card-positive-foreground)] border-[color:var(--card-positive-border)]'
             : 'bg-[color:var(--card-negative)] text-[color:var(--card-negative-foreground)] border-[color:var(--card-negative-border)]'
-          : 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
       )}
     >
       <CardHeader>
@@ -53,14 +53,12 @@ export const StatTile = ({
             'text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'
           )}
         >
-          {isProgress && isPositive ? '+' : ''}
-          {isProgress && !isPositive ? '-' : ''}
-          {toFixedLocalized(value, i18n.language, 2)} {currency}
+          {value}
         </CardTitle>
 
-        {isProgress && (
+        {percentage !== undefined && (
           <div className="mt-2 flex items-center gap-2">
-            {isPositive ? (
+            {isProgress && percentage >= 0 ? (
               <TrendingUp className="size-4 " />
             ) : (
               <TrendingDown className="size-4 " />
@@ -71,27 +69,6 @@ export const StatTile = ({
           </div>
         )}
       </CardHeader>
-
-      {(trendNote || footerNote) && (
-        <CardFooter className="flex-col items-start gap-1.5 text-sm mt-2">
-          {trendNote && isProgress && (
-            <div className={cn('line-clamp-1 flex gap-2 font-medium')}>
-              {trendNote}
-              {isPositive ? (
-                <TrendingUp className="size-4" />
-              ) : (
-                <TrendingDown className="size-4" />
-              )}
-            </div>
-          )}
-
-          {footerNote && (
-            <div className="text-[color:var(--color-muted-foreground)]">
-              {footerNote}
-            </div>
-          )}
-        </CardFooter>
-      )}
     </Card>
   );
 };
@@ -115,3 +92,4 @@ const StatTileSkeleton = ({ isProgress }: { isProgress?: boolean }) => {
 };
 
 StatTile.Skeleton = StatTileSkeleton;
+StatTile.Coloring = TileColoring;
