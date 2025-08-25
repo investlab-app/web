@@ -131,8 +131,7 @@ function StockChartSkeleton() {
               >
                 <path
                   d="M0,90 L3,85 L6,83 L9,80 L12,75 L15,79 L18,67 L21,60 L24,58 L27,51 L30,48 L33,40 L36,39 L39,43 L42,48 L45,45 L48,40 L51,37 L54,38 L57,30 L60,25 L63,23 L66,18 L69,13 L72,18 L75,15 L78,18 L81,34 L84,45 L87,52 L90,55 L93,58 L96,68 L100,75 L100,100 L0,100 Z"
-                  fill="rgba(255, 255, 255, 0.1)"
-                  className="animate-pulse"
+                  className="animate-pulse fill-foreground/50"
                 />
               </svg>
             </div>
