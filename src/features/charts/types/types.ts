@@ -1,5 +1,4 @@
 import { type } from 'arktype';
-import type { Instrument } from '@/features/instruments/types/types';
 
 export const dataPoint = type({
   timestamp: 'string',
@@ -40,18 +39,6 @@ export const instrumentOverviewItem = type({
   volume: 'number',
 });
 export type InstrumentOverviewItem = typeof instrumentOverviewItem.infer;
-
-export const instrumentOverviewItemToInstrument = (
-  item: InstrumentOverviewItem
-): Instrument => {
-  return {
-    name: item.name,
-    volume: item.volume,
-    currentPrice: parseFloat(item.current_price),
-    dayChange: parseFloat(item.day_change),
-    symbol: item.ticker,
-  };
-};
 
 export const instrumentOverview = type({
   items: instrumentOverviewItem.array(),

@@ -14,7 +14,7 @@ export default function AppFrame({ children }: AppFrameProps) {
       <AppSidebar variant="sidebar" />
       <SidebarInset>
         <SiteHeader className="sticky top-0 bg-[var(--background)]" />
-        <div className="p-4">{children}</div>
+        <div className="pt-4 pb-16 px-(--page-padding) [--page-padding:--spacing(4)]">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

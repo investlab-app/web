@@ -1,11 +1,8 @@
-import {
-  instrumentOverview,
-  instrumentOverviewItemToInstrument,
-} from '../types/types';
+import { instrumentOverview } from '../types/types';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 type FetchInstrumentsOverviewOptions = {
-  tickers?: Array<string>;
+  tickers: Array<string>;
   page: number;
   pageSize: number;
   sector?: string;
@@ -14,11 +11,11 @@ type FetchInstrumentsOverviewOptions = {
 };
 
 export async function fetchInstrumentsOverview({
-  tickers = [],
+  tickers,
   page,
   pageSize,
-  sector = '',
-  sortBy = '',
+  sector,
+  sortBy,
   sortDirection = 'asc',
 }: FetchInstrumentsOverviewOptions) {
   const params = new URLSearchParams({
@@ -27,7 +24,7 @@ export async function fetchInstrumentsOverview({
     page_size: pageSize.toString(),
     ...(sector && { sector }),
     ...(sortBy && { sort_by: sortBy }),
-    ...(sortDirection && { sort_direction: sortDirection }),
+    sortDirection,
   });
 
   const response = await validatedFetch(
@@ -35,7 +32,13 @@ export async function fetchInstrumentsOverview({
     instrumentOverview
   );
 
-  const instruments = response.items.map(instrumentOverviewItemToInstrument);
+  const instruments = response.items.map((item) => ({
+    name: item.name,
+    volume: item.volume,
+    currentPrice: parseFloat(item.current_price),
+    dayChange: parseFloat(item.day_change),
+    symbol: item.ticker,
+  }));
 
   return {
     ...response,

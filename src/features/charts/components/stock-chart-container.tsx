@@ -66,6 +66,8 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     })
   );
 
+  console.log(`isFetching: ${isFetching}, isPending: ${isPending}`);
+
   const { cleanup } = useSSE({
     events: new Set([`PRICE_UPDATE_${ticker}`]),
     callback: (eventData) => {

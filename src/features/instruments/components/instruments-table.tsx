@@ -1,5 +1,10 @@
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
-import type { Instrument } from '../types/types';
+import type { Instrument } from '@/features/instruments/types/types';
 import {
   Table,
   TableBody,
@@ -9,112 +14,133 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { cn } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type InstrumentTableProps = {
   data: Array<Instrument>;
   onInstrumentPressed: (instrument: Instrument) => void;
-  rowCount?: number;
-  loading?: boolean;
 };
 
 const InstrumentTable = ({
   data,
   onInstrumentPressed,
-  rowCount = 10,
-  loading = false,
 }: InstrumentTableProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const renderSkeletonRows = () => {
-    return Array.from({ length: rowCount }).map((_, idx) => (
-      <TableRow key={`skeleton-${idx}`}>
-        <TableCell className="hidden sm:table-cell h-10">
-          <Skeleton className="h-4 w-32" />
-        </TableCell>
-        <TableCell className="h-10">
-          <Skeleton className="h-4 w-16" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-      </TableRow>
-    ));
-  };
+  const table = useReactTable({
+    data,
+    columns: [
+      {
+        accessorKey: 'name',
+        header: () => t('instruments.name'),
+      },
+      {
+        accessorKey: 'symbol',
+        header: () => t('instruments.symbol'),
+      },
+      {
+        accessorKey: 'currentPrice',
+        header: () => t('instruments.current_price'),
+      },
+      {
+        accessorKey: 'dayChange',
+        header: () => t('instruments.day_change'),
+      },
+      {
+        accessorKey: 'volume',
+        header: () => t('instruments.volume'),
+      },
+    ],
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="hidden sm:table-cell">
-              {t('instruments.name')}
-            </TableHead>
-            <TableHead>{t('instruments.symbol')}</TableHead>
-            <TableHead className="text-right">
-              {t('instruments.current_price')}
-            </TableHead>
-            <TableHead className="text-right">
-              {t('instruments.day_change')}
-            </TableHead>
-            <TableHead className="text-right">
-              {t('instruments.volume')}
-            </TableHead>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </TableHead>
+            ))}
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading
-            ? renderSkeletonRows()
-            : data.map((instrument, idx) => (
-                <TableRow
-                  key={idx}
-                  onClick={() => onInstrumentPressed(instrument)}
-                  className="cursor-pointer"
-                >
-                  <TableCell className="hidden sm:table-cell">
-                    {instrument.name}
-                  </TableCell>
-                  <TableCell>{instrument.symbol}</TableCell>
-                  <TableCell className="text-right">
-                    {toFixedLocalized(
-                      instrument.currentPrice,
-                      i18n.language,
-                      2
-                    )}{' '}
-                    {t('common.currency')}
-                  </TableCell>
-                  <TableCell
-                    className={cn(
-                      'text-right',
-                      instrument.dayChange < 0
-                        ? 'text-[var(--red)]'
-                        : 'text-[var(--green)]'
-                    )}
-                  >
-                    {instrument.dayChange < 0 ? '-' : '+'}
-                    {toFixedLocalized(
-                      Math.abs(instrument.dayChange),
-                      i18n.language,
-                      2
-                    )}
-                    %
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {instrument.volume}
-                  </TableCell>
-                </TableRow>
-              ))}
-        </TableBody>
-      </Table>
-    </div>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow
+            key={row.id}
+            onClick={() => onInstrumentPressed(row.original)}
+            className="cursor-pointer"
+          >
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
+
+type InstrumentTableSkeletonProps = {
+  rowCount: number;
+};
+
+function InstrumentTableSkeleton({ rowCount }: InstrumentTableSkeletonProps) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="hidden sm:table-cell">
+            <Skeleton className="h-4 w-32" />
+          </TableHead>
+          <TableHead>
+            <Skeleton className="h-4 w-16" />
+          </TableHead>
+          <TableHead className="text-right">
+            <Skeleton className="h-4 w-20 ml-auto" />
+          </TableHead>
+          <TableHead className="text-right">
+            <Skeleton className="h-4 w-16 ml-auto" />
+          </TableHead>
+          <TableHead className="text-right">
+            <Skeleton className="h-4 w-16 ml-auto" />
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Array.from({ length: rowCount }).map((_, idx) => (
+          <TableRow key={`skeleton-${idx}`}>
+            <TableCell className="hidden sm:table-cell">
+              <Skeleton className="h-4 w-32" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-16" />
+            </TableCell>
+            <TableCell className="text-right">
+              <Skeleton className="h-4 w-20 ml-auto" />
+            </TableCell>
+            <TableCell className="text-right">
+              <Skeleton className="h-4 w-16 ml-auto" />
+            </TableCell>
+            <TableCell className="text-right">
+              <Skeleton className="h-4 w-16 ml-auto" />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+InstrumentTable.Skeleton = InstrumentTableSkeleton;
 
 export default InstrumentTable;
