@@ -36,9 +36,9 @@ function Instruments() {
                     onClick={() =>
                       navigate({ to: `/instruments/${instrument.symbol}` })
                     }
-                    className="ml-4 p-1 hover:bg-muted/20 rounded cursor-pointer border"
+                    className="ml-4 py-1 px-3 hover:bg-muted/20 rounded cursor-pointer border"
                   >
-                    See details
+                    {t('instruments.see_details')}
                   </button>
                 </SheetTitle>
                 <SheetDescription>{t('instruments.overview')}</SheetDescription>

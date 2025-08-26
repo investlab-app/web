@@ -30,7 +30,7 @@ export function PositionsTable({ type }: PositionsTableProps) {
 
   return (
     <Table>
-      {PositionsTableHeader()}
+      <PositionsTableHeader />
       <TableBody>
         {!data ? (
           <PositionsTableSkeleton />
