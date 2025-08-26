@@ -5,6 +5,8 @@ const plOrders = {
     stop_limit_order: 'Zlecenie Stop / Limit',
     stop_loss_take_profit: 'Stop Loss / Take Profit',
   },
+  switch_to_price: 'Przełącz na cenę',
+  switch_to_volume: 'Przełącz na wolumen',
 };
 
 export default plOrders;

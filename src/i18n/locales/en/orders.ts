@@ -5,6 +5,8 @@ const enOrders = {
     stop_limit_order: 'Stop / Limit order',
     stop_loss_take_profit: 'Stop Loss / Take Profit',
   },
+  switch_to_price: 'Switch to price',
+  switch_to_volume: 'Switch to volume',
 };
 
 export default enOrders;

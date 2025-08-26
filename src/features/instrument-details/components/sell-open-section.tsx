@@ -38,9 +38,13 @@ export const SellOpenSection = ({
         <Button
           variant="outline"
           size="icon"
-          className="h-9 w-9" // Match the input height
+          className="h-9 w-9"
           onClick={onModeToggle}
-          title={mode === 'price' ? 'Switch to Volume' : 'Switch to Price'}
+          title={
+            mode === 'price'
+              ? t('orders.switch_to_volume')
+              : t('orders.switch_to_price')
+          }
         >
           <IconSwitchVertical />
         </Button>

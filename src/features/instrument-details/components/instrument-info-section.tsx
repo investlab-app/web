@@ -29,16 +29,22 @@ export function InstrumentInfoSection({
           <CardHeader>
             <CardTitle className="flex flex-row items-center gap-8">
               <div className="text-lg">{instrumentData.ticker}</div>
-              <div>
-                {t('instruments.exchange')}: {instrumentData.market}
+
+              <div className="text-sm text-gray-500">
+                <span>{t('instruments.exchange')}:</span>{' '}
+                <span className="text-black">{instrumentData.market}</span>
               </div>
-              <div>
-                {' '}
-                {t('instruments.sector')}: {instrumentData.sector}
+
+              <div className="text-sm text-gray-500">
+                <span>{t('instruments.sector')}:</span>{' '}
+                <span className="text-black">{instrumentData.sector}</span>
               </div>
             </CardTitle>
             <CardDescription>
-              {t('instruments.market_capital')}: {instrumentData.market_cap}{' '}
+              {t('instruments.market_capital')}:{' '}
+              <span className="text-black font-bold">
+                {instrumentData.market_cap}
+              </span>{' '}
               {instrumentData.currency_name}
             </CardDescription>
           </CardHeader>
