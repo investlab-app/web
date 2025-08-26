@@ -29,9 +29,9 @@ export const BuySellSection = ({
     />
   );
   const topLabel = (
-    <label className="text-sm font-medium">
+    <p className="text-sm font-medium">
       {mode === 'price' ? t('instruments.price') : t('instruments.volume')}
-    </label>
+    </p>
   );
   const bottomLabel = (
     <p className="text-muted-foreground text-sm">
@@ -46,7 +46,7 @@ export const BuySellSection = ({
     return (
       <div className="flex flex-col mt-3">
         {topLabel}
-        <div className="flex  gap-2 mt-1">
+        <div className="flex gap-2 mt-1">
           {numberInput}
           <Button
             variant="outline"
@@ -64,7 +64,7 @@ export const BuySellSection = ({
         </div>
         {bottomLabel}
 
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 mt-1">
           <Button className="bg-green-600 hover:bg-green-700 flex-2">
             {t('instruments.buy')}
           </Button>
@@ -77,11 +77,11 @@ export const BuySellSection = ({
   }
 
   return (
-    <div className="flex items-center gap-2 ">
-      <Button className="bg-green-600 hover:bg-green-700 w-1/4 mt-2">
+    <div className="flex items-center gap-2 mt-2">
+      <Button className="bg-green-600 hover:bg-green-700 w-1/4">
         {t('instruments.buy')}
       </Button>
-      <div className="mt-3 space-y-2 w-full">
+      <div className="mt-1 w-full">
         {topLabel}
         {numberInput}
         {bottomLabel}
@@ -89,7 +89,7 @@ export const BuySellSection = ({
       <Button
         variant="outline"
         size="icon"
-        className="h-9 w-9 mt-2"
+        className="h-9 w-9"
         onClick={onModeToggle}
         title={
           mode === 'price'
@@ -99,7 +99,7 @@ export const BuySellSection = ({
       >
         <IconSwitchVertical />
       </Button>
-      <Button className="bg-red-600 hover:bg-red-700 w-1/4 mt-2">
+      <Button className="bg-red-600 hover:bg-red-700 w-1/4">
         {t('instruments.sell')}
       </Button>
     </div>
