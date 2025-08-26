@@ -21,13 +21,13 @@ export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
 
 function InstrumentDetailsPage() {
   const { instrumentId } = Route.useParams();
-  const { data: openPositionsData } = useQuery(
+  const { data: openPositionsData, isError: isOpenPositionsError } = useQuery(
     instrumentOpenPositionsQueryOptions({ ticker: instrumentId })
   );
-  const { data: currentPriceData } = useQuery(
+  const { data: currentPriceData, isError: isCurrentPriceError } = useQuery(
     instrumentCurrentPriceQueryOptions({ ticker: instrumentId })
   );
-  const { data: instrumentInfoData } = useQuery(
+  const { data: instrumentInfoData, isError: isInstrumentInfoError } = useQuery(
     instrumentInfoQueryOptions({ ticker: instrumentId })
   );
   const { t } = useTranslation();
@@ -42,16 +42,23 @@ function InstrumentDetailsPage() {
       <StockChartContainer ticker={instrumentId} />
       <div className="2xl:flex 2xl:flex-row 2xl:gap-4">
         <div className="2xl:w-1/3">
-          <OrdersSection currentPriceData={currentPriceData} />
+          <OrdersSection
+            currentPriceData={currentPriceData}
+            isError={isCurrentPriceError}
+          />
         </div>
         <div className="2xl:w-2/3">
           <TransactionsHistorySection
             positionData={openPositionsData}
             currentPriceData={currentPriceData}
+            isError={isOpenPositionsError || isCurrentPriceError}
           />
         </div>
       </div>
-      <InstrumentInfoSection instrumentData={instrumentInfoData} />
+      <InstrumentInfoSection
+        instrumentData={instrumentInfoData}
+        isError={isInstrumentInfoError}
+      />
       <NewsSection ticker={instrumentId} />
     </AppFrame>
   );

@@ -48,7 +48,7 @@ const StatsOverviewRibbon = () => {
 
   function renderStatTile(index: number, tile: (typeof tiles)[number]) {
     if (isLoading) {
-      return StatTile.Skeleton({ isProgress: false });
+      return <StatTile.Skeleton />;
     }
 
     if (isError || !tile.value) {

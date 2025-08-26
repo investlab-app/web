@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useInstrumentNews } from '../hooks/use-instrument-news';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { Message } from '@/features/shared/components/error-message';
 
 type NewsSectionProps = {
   ticker: string;
@@ -35,7 +37,7 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
         {newsHeader}
         <Card>
           <CardContent>
-            <div className="text-muted-foreground">{t('common.loading')}</div>
+            <Skeleton className="h-40" />
           </CardContent>
         </Card>
       </div>
@@ -48,9 +50,10 @@ const NewsSection = ({ ticker }: NewsSectionProps) => {
         {newsHeader}
         <Card>
           <CardContent>
-            <div className="text-muted-foreground">
-              {error || 'No news available'}
-            </div>
+            <Message
+              className="text-muted-foreground"
+              message={t('instruments.errors.news_unavailable')}
+            />
           </CardContent>
         </Card>
       </div>

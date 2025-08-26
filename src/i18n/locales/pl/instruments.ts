@@ -19,6 +19,11 @@ const plInstruments = {
   no_description_available: 'Brak opisu',
   history_empty:
     'Nie znaleziono historii dla instrumentu {{ticker}} w interwale {{interval}}',
+  errors: {
+    info_loading:
+      'Przepraszamy, informacje o instrumencie nie mogły zostać załadowane.',
+    news_unavailable: 'Wiadomości są obecnie niedostępne dla tego instrumentu.',
+  },
 };
 
 export default plInstruments;

@@ -19,6 +19,10 @@ const enInstruments = {
   no_description_available: 'No description available',
   history_empty:
     "History couldn't be found for ticker {{ticker}} for interval {{interval}}",
+  errors: {
+    info_loading: 'Sorry, the instrument information could not be loaded.',
+    news_unavailable: 'News are currently unavailable for this instrument.',
+  },
 };
 
 export default enInstruments;

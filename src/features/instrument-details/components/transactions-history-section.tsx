@@ -7,17 +7,19 @@ import {
   PositionsTableSkeleton,
 } from '@/features/transactions/components/positions-table';
 import { PositionRow } from '@/features/transactions/components/position-row';
+import { Message } from '@/features/shared/components/error-message';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 interface TransactionsHistorySectionProps {
   positionData: Position | undefined;
   currentPriceData: InstrumentPrice | undefined;
-  onlySell?: boolean;
-  showDetails?: () => void;
+  isError: boolean;
 }
 
 export function TransactionsHistorySection({
   positionData,
   currentPriceData,
+  isError,
 }: TransactionsHistorySectionProps) {
   const { t } = useTranslation();
   return (
@@ -25,8 +27,10 @@ export function TransactionsHistorySection({
       <h2 className="text-xl font-semibold mt-6 mb-4">
         {t('transactions.tabs.open_positions')}
       </h2>
-      {!positionData || !currentPriceData ? (
-        <PositionsTableSkeleton />
+      {isError ? (
+        <Message message={t('transactions.error_loading')} />
+      ) : !positionData || !currentPriceData ? (
+        <TransactionsHistorySectionSkeleton />
       ) : (
         <div>
           <BuySellContainer
@@ -37,6 +41,15 @@ export function TransactionsHistorySection({
           <PositionRow position={positionData} showDetails={() => {}} />
         </div>
       )}
+    </div>
+  );
+}
+
+function TransactionsHistorySectionSkeleton() {
+  return (
+    <div>
+      <Skeleton className="h-20 mb-4" />
+      <PositionsTableSkeleton length={1} />
     </div>
   );
 }

@@ -8,13 +8,16 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { Message } from '@/features/shared/components/error-message';
 
 interface InstrumentInfoSectionProps {
   instrumentData: InstrumentInfo | undefined;
+  isError: boolean;
 }
 
 export function InstrumentInfoSection({
   instrumentData,
+  isError,
 }: InstrumentInfoSectionProps) {
   const { t } = useTranslation();
   return (
@@ -22,7 +25,9 @@ export function InstrumentInfoSection({
       <h2 className="text-xl font-semibold mt-6 mb-4">
         {t('instruments.general_info')}
       </h2>
-      {!instrumentData ? (
+      {isError ? (
+        <Message message={t('instruments.errors.info_loading')} />
+      ) : !instrumentData ? (
         <InstrumentInfoSkeleton />
       ) : (
         <Card className="mt-1">
