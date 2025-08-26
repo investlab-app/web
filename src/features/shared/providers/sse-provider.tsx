@@ -123,7 +123,7 @@ export function SSEProvider({ children }: SSEProviderParams) {
   useEffect(() => {
     const consumeWithReconnection = () => {
       consume().catch(() => {
-        setTimeout(consumeWithReconnection, 1000);
+        setTimeout(consumeWithReconnection, 100000);
       });
     };
 

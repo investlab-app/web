@@ -8,6 +8,9 @@ import { instrumentOpenPositionsQueryOptions } from '@/features/instrument-detai
 import { instrumentCurrentPriceQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-price';
 
 import AppFrame from '@/features/shared/components/app-frame';
+import NewsSection from '@/features/instruments/components/news-section';
+import { instrumentInfoQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-info';
+import { InstrumentInfoSection } from '@/features/instrument-details/components/instrument-info-section';
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: InstrumentDetailsPage,
@@ -18,13 +21,18 @@ export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
 
 function InstrumentDetailsPage() {
   const { instrumentId } = Route.useParams();
-  const { data: openPositionsData } = useQuery({
-    ...instrumentOpenPositionsQueryOptions({ ticker: instrumentId }),
-  });
-  const { data: currentPriceData } = useQuery({
-    ...instrumentCurrentPriceQueryOptions({ ticker: instrumentId }),
-  });
+  const { data: openPositionsData } = useQuery(
+    instrumentOpenPositionsQueryOptions({ ticker: instrumentId })
+  );
+  const { data: currentPriceData } = useQuery(
+    instrumentCurrentPriceQueryOptions({ ticker: instrumentId })
+  );
+  const { data: instrumentInfoData } = useQuery(
+    instrumentInfoQueryOptions({ ticker: instrumentId })
+  );
   const { t } = useTranslation();
+
+  console.log(instrumentInfoData);
 
   return (
     <AppFrame>
@@ -43,6 +51,8 @@ function InstrumentDetailsPage() {
           />
         </div>
       </div>
+      <InstrumentInfoSection instrumentData={instrumentInfoData} />
+      <NewsSection ticker={instrumentId} />
     </AppFrame>
   );
 }
