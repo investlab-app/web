@@ -1,12 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
 import { type } from 'arktype';
-import { transactionHistoryResponse } from '../types/types';
-import type { useAuth } from '@clerk/clerk-react';
+import { position } from '@/features/transactions/types/types';
 
-const generateRandomTickerTransactionHistory = () => {
-  const names = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'NFLX', 'FB'];
+const generateRandomTickerTransactionHistory = (ticker: string) => {
   const generateRandomHistory = () => {
-    const transactionCount = Math.floor(Math.random() * 3) + 1;
+    const transactionCount = Math.floor(Math.random() * 6) + 1;
     return Array.from({ length: transactionCount }, () =>
       (() => {
         const transactionType = Math.random() > 0.5 ? 'BUY' : 'SELL';
@@ -28,33 +26,31 @@ const generateRandomTickerTransactionHistory = () => {
       })()
     );
   };
-  const transactions = names.map((symbol) => ({
-    name: symbol,
+  return {
+    name: ticker,
     quantity: Math.floor(Math.random() * 10) + 1,
     marketValue: Math.random() * 1000,
     gainLoss: Math.random() * 100 - 50,
     gainLossPct: Math.random() * 100 - 50,
     history: generateRandomHistory(),
-  }));
-  return transactions;
+  };
 };
 
-interface FetchTransactionsHistoryOptions {
-  type: 'open' | 'closed';
+interface fetchInstrumentOpenPositionsOptions {
+  ticker: string;
 }
 
-async function fetchTransactionsHistory({
-  type: transactionType,
-}: FetchTransactionsHistoryOptions) {
+async function fetchInstrumentOpenPositions({
+  ticker,
+}: fetchInstrumentOpenPositionsOptions) {
   const response = await new Promise((resolve) => {
     setTimeout(() => {
-      void transactionType;
-      const history = generateRandomTickerTransactionHistory();
+      const history = generateRandomTickerTransactionHistory(ticker);
       resolve(history);
     }, 3000);
   });
 
-  const result = transactionHistoryResponse(response);
+  const result = position(response);
   if (result instanceof type.errors) {
     console.error('Invalid transactions history response:', result.summary);
     throw new Error(`Invalid transactions history response: ${result.summary}`);
@@ -63,21 +59,15 @@ async function fetchTransactionsHistory({
   return result;
 }
 
-interface TransactionsHistoryQueryOptions {
-  type: 'open' | 'closed';
-  getToken: ReturnType<typeof useAuth>['getToken'];
+interface InstrumentOpenPositionsQueryOptions {
+  ticker: string;
 }
 
-export function transactionsHistoryQueryOptions({
-  type: transactionsType,
-  getToken,
-}: TransactionsHistoryQueryOptions) {
+export function instrumentOpenPositionsQueryOptions({
+  ticker,
+}: InstrumentOpenPositionsQueryOptions) {
   return queryOptions({
-    queryKey: ['positions', transactionsType],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) throw new Error('No auth token available');
-      return fetchTransactionsHistory({ type: transactionsType });
-    },
+    queryKey: [`positions`, ticker],
+    queryFn: () => fetchInstrumentOpenPositions({ ticker: ticker }),
   });
 }

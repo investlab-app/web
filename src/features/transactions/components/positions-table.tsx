@@ -21,7 +21,6 @@ type PositionsTableProps = {
 };
 
 export function PositionsTable({ type }: PositionsTableProps) {
-  const { t } = useTranslation();
   const { navigate } = useRouter();
   const { getToken } = useAuth();
 
@@ -31,29 +30,7 @@ export function PositionsTable({ type }: PositionsTableProps) {
 
   return (
     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead style={{ width: '250px' }}>
-            {t('transactions.table.headers.name')}
-          </TableHead>
-          <TableHead>{t('transactions.table.headers.quantity')}</TableHead>
-          <TableHead className="text-right">
-            {t('transactions.table.headers.share_price')}
-          </TableHead>
-          <TableHead className="text-right">
-            {t('transactions.table.headers.acquisition_price')}
-          </TableHead>
-          <TableHead className="text-right">
-            {t('transactions.table.headers.market_value')}
-          </TableHead>
-          <TableHead className="text-right">
-            {t('transactions.table.headers.gain_loss')}
-          </TableHead>
-          <TableHead className="text-right">
-            {t('transactions.table.headers.gain_loss_pct')}
-          </TableHead>
-        </TableRow>
-      </TableHeader>
+      <PositionsTableHeader />
       <TableBody>
         {!data ? (
           <PositionsTableSkeleton />
@@ -71,11 +48,40 @@ export function PositionsTable({ type }: PositionsTableProps) {
   );
 }
 
-function PositionsTableSkeleton() {
+export function PositionsTableHeader() {
+  const { t } = useTranslation();
+  return (
+    <TableHeader>
+      <TableRow>
+        <TableHead style={{ width: '250px' }}>
+          {t('transactions.table.headers.name')}
+        </TableHead>
+        <TableHead>{t('transactions.table.headers.quantity')}</TableHead>
+        <TableHead className="text-right">
+          {t('transactions.table.headers.share_price')}
+        </TableHead>
+        <TableHead className="hidden xl:table-cell text-right">
+          {t('transactions.table.headers.acquisition_price')}
+        </TableHead>
+        <TableHead className="text-right">
+          {t('transactions.table.headers.market_value')}
+        </TableHead>
+        <TableHead className="text-right">
+          {t('transactions.table.headers.gain_loss')}
+        </TableHead>
+        <TableHead className="text-right">
+          {t('transactions.table.headers.gain_loss_pct')}
+        </TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+}
+
+export function PositionsTableSkeleton({ length = 5 }) {
   const { t } = useTranslation();
   return (
     <>
-      {Array.from({ length: 5 }).map((_, idx) => (
+      {Array.from({ length }).map((_, idx) => (
         <Fragment key={`skeleton-${idx}`}>
           <TableRow>
             <TableCell>

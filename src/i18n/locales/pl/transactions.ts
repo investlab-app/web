@@ -21,6 +21,8 @@ const plTransactions = {
   actions: {
     instrument_details: 'Szczegóły instrumentu',
   },
+  error_loading:
+    'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
 };
 
 export default plTransactions;

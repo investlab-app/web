@@ -17,6 +17,8 @@ import enTransactions from './locales/en/transactions';
 import plTransactions from './locales/pl/transactions';
 import enStatistics from './locales/en/statistics';
 import plStatistics from './locales/pl/statistics';
+import enOrders from './locales/en/orders';
+import plOrders from './locales/pl/orders';
 
 const browserLanguage = navigator.language;
 const defaultLanguage = browserLanguage.split('-')[0];
@@ -38,6 +40,7 @@ i18n.use(initReactI18next).init({
         hero: enHero,
         instruments: enInstruments,
         investor: enInvestor,
+        orders: enOrders,
         settings: enSettings,
         statistics: enStatistics,
         transactions: enTransactions,
@@ -50,6 +53,7 @@ i18n.use(initReactI18next).init({
         hero: plHero,
         instruments: plInstruments,
         investor: plInvestor,
+        orders: plOrders,
         settings: plSettings,
         statistics: plStatistics,
         transactions: plTransactions,

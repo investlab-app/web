@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { getProfabilityColor } from '../utils/colors';
-import type { HistoryEntry } from '../queries/fetch-transactions-history';
+import type { HistoryEntry } from '../types/types';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { dateToLocale } from '@/features/shared/utils/date';
@@ -37,7 +37,7 @@ export function TransactionRow({ entry }: HistoryRowProps) {
         {toFixedLocalized(entry.sharePrice, i18n.language, 2)}{' '}
         {t('common.currency')}
       </TableCell>
-      <TableCell className="text-right text-muted-foreground">
+      <TableCell className="hidden xl:table-cell text-right text-muted-foreground">
         {entry.acquisitionPrice ? (
           <>
             {toFixedLocalized(entry.acquisitionPrice, i18n.language, 2)}{' '}

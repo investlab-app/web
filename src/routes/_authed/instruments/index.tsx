@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Instrument } from '@/features/instruments/types/types';
@@ -21,6 +21,7 @@ function Instruments() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [instrument, setInstrument] = useState<Instrument>();
+  const { navigate } = useRouter();
 
   return (
     <AppFrame>
@@ -30,12 +31,20 @@ function Instruments() {
             <>
               <SheetHeader className="backdrop-blur">
                 <SheetTitle>
-                  {instrument.name} - {t('instruments.overview')}
+                  {instrument.name}
+                  <button
+                    onClick={() =>
+                      navigate({ to: `/instruments/${instrument.symbol}` })
+                    }
+                    className="ml-4 py-1 px-3 hover:bg-muted/20 rounded cursor-pointer border"
+                  >
+                    {t('instruments.see_details')}
+                  </button>
                 </SheetTitle>
                 <SheetDescription>{t('instruments.overview')}</SheetDescription>
               </SheetHeader>
 
-              <div className="p-4 space-y-4 overflow-y-auto">
+              <div className="p-4 space-y-2 overflow-y-auto">
                 <InstrumentDetails instrument={instrument} />
               </div>
             </>

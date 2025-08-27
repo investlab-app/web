@@ -21,6 +21,7 @@ const enTransactions = {
   actions: {
     instrument_details: 'Instrument details',
   },
+  error_loading: 'Sorry, the transaction history could not be loaded.',
 };
 
 export default enTransactions;

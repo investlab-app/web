@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
+import { cn } from '../../utils/styles';
 import { Button } from './button';
 import { Input } from './input';
 import type { NumericFormatProps } from 'react-number-format';
@@ -19,6 +20,7 @@ export interface NumberInputProps
   onValueChange?: (value: number | undefined) => void;
   fixedDecimalScale?: boolean;
   decimalScale?: number;
+  className?: string;
 }
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
@@ -36,6 +38,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       suffix,
       prefix,
       value: controlledValue,
+      className,
       ...props
     },
     ref
@@ -111,7 +114,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     }, [displayValue, min, max, handleValueChange]);
 
     return (
-      <div className="flex items-center">
+      <div className={cn('flex items-center', className)}>
         <NumericFormat
           value={displayValue}
           onValueChange={handleNumericChange}

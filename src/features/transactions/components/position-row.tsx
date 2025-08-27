@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { getProfabilityColor } from '../utils/colors';
 import { TransactionRow } from './transaction-row';
-import type { Position } from '../queries/fetch-transactions-history';
+import type { Position } from '../types/types';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
@@ -51,7 +51,7 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
           {toFixedLocalized(position.quantity, i18n.language, 2)}
         </TableCell>
         <TableCell></TableCell>
-        <TableCell></TableCell>
+        <TableCell className="hidden xl:table-cell"></TableCell>
         <TableCell className="text-right">
           {toFixedLocalized(position.marketValue, i18n.language, 2)}{' '}
           {t('common.currency')}
