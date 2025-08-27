@@ -26,6 +26,7 @@ export const BuySellSection = ({
       fixedDecimalScale
       stepper={mode === 'price' ? (value > 100 ? 100 : 10) : 0.25}
       decimalScale={mode === 'price' ? 2 : 5}
+      className="w-full"
     />
   );
   const topLabel = (
