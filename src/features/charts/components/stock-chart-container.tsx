@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type } from 'arktype';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
@@ -41,10 +41,8 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const { t, i18n } = useTranslation();
 
   const [interval, setInterval] = useState('1h');
-  const [startDate, endDate] = useMemo(
-    () => [intervalToStartDate(interval), new Date()],
-    [interval]
-  );
+  const startDate = intervalToStartDate(interval);
+  const endDate = new Date();
 
   const [isCandlestick, setIsCandlestick] = useState(false);
   const [livePrice, setLivePrice] = useState<

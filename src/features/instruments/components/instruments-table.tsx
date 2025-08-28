@@ -19,6 +19,28 @@ type InstrumentTableProps = {
   loading?: boolean;
 };
 
+const InstrumentTableBodySkeleton = ({ rowCount = 5 }) => {
+  return Array.from({ length: rowCount }).map((_, idx) => (
+    <TableRow key={`skeleton-${idx}`}>
+      <TableCell className="hidden sm:table-cell h-10">
+        <Skeleton className="h-4 w-32" />
+      </TableCell>
+      <TableCell className="h-10">
+        <Skeleton className="h-4 w-16" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-20 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
+    </TableRow>
+  ));
+};
+
 const InstrumentTable = ({
   data,
   onInstrumentPressed,
@@ -26,28 +48,6 @@ const InstrumentTable = ({
   loading = false,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
-
-  const renderSkeletonRows = () => {
-    return Array.from({ length: rowCount }).map((_, idx) => (
-      <TableRow key={`skeleton-${idx}`}>
-        <TableCell className="hidden sm:table-cell h-10">
-          <Skeleton className="h-4 w-32" />
-        </TableCell>
-        <TableCell className="h-10">
-          <Skeleton className="h-4 w-16" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
-        </TableCell>
-      </TableRow>
-    ));
-  };
 
   return (
     <div className="overflow-x-auto">
@@ -70,47 +70,45 @@ const InstrumentTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {loading
-            ? renderSkeletonRows()
-            : data.map((instrument, idx) => (
-                <TableRow
-                  key={idx}
-                  onClick={() => onInstrumentPressed(instrument)}
-                  className="cursor-pointer"
+          {loading ? (
+            <InstrumentTableBodySkeleton rowCount={rowCount} />
+          ) : (
+            data.map((instrument, idx) => (
+              <TableRow
+                key={idx}
+                onClick={() => onInstrumentPressed(instrument)}
+                className="cursor-pointer"
+              >
+                <TableCell className="hidden sm:table-cell">
+                  {instrument.name}
+                </TableCell>
+                <TableCell>{instrument.symbol}</TableCell>
+                <TableCell className="text-right">
+                  {toFixedLocalized(instrument.currentPrice, i18n.language, 2)}{' '}
+                  {t('common.currency')}
+                </TableCell>
+                <TableCell
+                  className={cn(
+                    'text-right',
+                    instrument.dayChange < 0
+                      ? 'text-[var(--red)]'
+                      : 'text-[var(--green)]'
+                  )}
                 >
-                  <TableCell className="hidden sm:table-cell">
-                    {instrument.name}
-                  </TableCell>
-                  <TableCell>{instrument.symbol}</TableCell>
-                  <TableCell className="text-right">
-                    {toFixedLocalized(
-                      instrument.currentPrice,
-                      i18n.language,
-                      2
-                    )}{' '}
-                    {t('common.currency')}
-                  </TableCell>
-                  <TableCell
-                    className={cn(
-                      'text-right',
-                      instrument.dayChange < 0
-                        ? 'text-[var(--red)]'
-                        : 'text-[var(--green)]'
-                    )}
-                  >
-                    {instrument.dayChange < 0 ? '-' : '+'}
-                    {toFixedLocalized(
-                      Math.abs(instrument.dayChange),
-                      i18n.language,
-                      2
-                    )}
-                    %
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {instrument.volume}
-                  </TableCell>
-                </TableRow>
-              ))}
+                  {instrument.dayChange < 0 ? '-' : '+'}
+                  {toFixedLocalized(
+                    Math.abs(instrument.dayChange),
+                    i18n.language,
+                    2
+                  )}
+                  %
+                </TableCell>
+                <TableCell className="text-right">
+                  {instrument.volume}
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

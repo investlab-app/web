@@ -32,8 +32,6 @@ function InstrumentDetailsPage() {
   );
   const { t } = useTranslation();
 
-  console.log(instrumentInfoData);
-
   return (
     <AppFrame>
       <h1 className="text-2xl font-bold mb-4">

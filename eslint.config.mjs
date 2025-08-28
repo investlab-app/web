@@ -1,5 +1,5 @@
 // @ts-check
-import reactHooks from 'eslint-plugin-react-hooks';
+import * as reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 import youMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import pluginRouter from '@tanstack/eslint-plugin-router';
@@ -12,7 +12,7 @@ export default [
   ...pluginRouter.configs['flat/recommended'],
   ...pluginQuery.configs['flat/recommended'],
   youMightNotNeedAnEffect.configs.recommended,
-  reactHooks.configs['recommended-latest'],
+  reactHooks.configs.recommended,
   {
     rules: {
       'pnpm/json-enforce-catalog': 'off',

@@ -71,7 +71,7 @@ const MostTradedOverview = () => {
           {!data
             ? RenderSkeletonRows({})
             : data.map((instrumentOverview: InstrumentSummary) => (
-                <TableRow>
+                <TableRow key={instrumentOverview.symbol}>
                   <TableCell>{instrumentOverview.symbol}</TableCell>
                   <TableCell className="text-right">
                     {instrumentOverview.no_trades}
