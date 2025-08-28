@@ -93,6 +93,9 @@
       "core-js",
       "esbuild",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "devalue": "^5.3.2"
+    }
   }
 }
