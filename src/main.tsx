@@ -5,7 +5,7 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { QueryClient } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { ClerkLoaded, useAuth } from '@clerk/clerk-react';
+import { ClerkLoaded, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'sonner';
 import { routeTree } from './routeTree.gen';
@@ -98,11 +98,16 @@ if (rootElement && !rootElement.innerHTML) {
               persistOptions={{ persister }}
             >
               <ClerkLoaded>
-                <WSProvider>
-                  <ToasterProvider>
-                    <App />
-                  </ToasterProvider>
-                </WSProvider>
+                <SignedIn>
+                  <WSProvider>
+                    <ToasterProvider>
+                      <App />
+                    </ToasterProvider>
+                  </WSProvider>
+                </SignedIn>
+                <SignedOut>
+                  <App />
+                </SignedOut>
               </ClerkLoaded>
             </PersistQueryClientProvider>
           </ConditionalProvider>
