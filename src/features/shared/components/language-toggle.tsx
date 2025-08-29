@@ -37,11 +37,7 @@ export function LanguageToggle() {
         {LANGUAGES.map(({ code, label }) => (
           <DropdownMenuItem
             key={code}
-            onClick={() => {
-              if (code !== currentLang.code) {
-                handleChangeLanguage(code);
-              }
-            }}
+            onClick={() => handleChangeLanguage(code)}
             className={i18n.language === code ? 'font-semibold' : ''}
           >
             {label}
