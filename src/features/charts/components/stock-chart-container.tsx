@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/features/shared/components/ui/select';
-import { useSSE } from '@/features/shared/hooks/use-sse';
+import { useWS } from '@/features/shared/hooks/use-ws';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
@@ -66,17 +66,11 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     })
   );
 
-  const { cleanup } = useSSE({
-    events: new Set([`PRICE_UPDATE_${ticker}`]),
-    callback: (eventData) => {
-      let jsonData;
-      try {
-        jsonData = JSON.parse(eventData.replace(/'/g, '"'));
-      } catch {
-        // ignore
-        return;
-      }
-      const out = livePriceDataDTO(jsonData);
+  const { lastJsonMessage } = useWS([`PRICE_UPDATE_${ticker}`]);
+
+  useEffect(() => {
+    if (lastJsonMessage) {
+      const out = livePriceDataDTO(lastJsonMessage);
       if (out instanceof type.errors) {
         console.error('Invalid data point received:', out.summary);
         return;
@@ -93,10 +87,8 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         close: out.price,
       };
       setLivePrice([newDataPoint, true]);
-    },
-  });
-
-  useEffect(() => cleanup, [cleanup]);
+    }
+  }, [lastJsonMessage, ticker]);
 
   const appliedInterval = useFrozenValue(interval, isFetching);
   const isIntervalChanging = appliedInterval !== interval;

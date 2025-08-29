@@ -8,7 +8,7 @@ import InstrumentTable from './instruments-table';
 import type { Instrument } from '../types/types';
 import { Button } from '@/features/shared/components/ui/button';
 import SearchInput from '@/features/shared/components/ui/search-input';
-import { useSSE } from '@/features/shared/hooks/use-sse';
+import { useWS } from '@/features/shared/hooks/use-ws';
 
 const PAGE_SIZE = 10;
 
@@ -59,18 +59,13 @@ const InstrumentsTableContainer = ({
 
   const tickers = instruments.map((i) => i.symbol);
 
-  const tickersSet = useMemo(
-    () => {
-      return new Set(tickers.map((ticker) => `PRICE_UPDATE_${ticker}`));
-    },
-    [tickers.join(',')] // eslint-disable-line react-hooks/exhaustive-deps
+  const { lastJsonMessage } = useWS(
+    tickers.map((ticker) => `PRICE_UPDATE_${ticker}`)
   );
 
-  const sseCallback = useCallback(
-    (data: string) => {
-      const fixedMessage = data.replace(/'/g, '"');
-
-      const out = livePriceDataDTO(JSON.parse(fixedMessage));
+  useEffect(() => {
+    if (lastJsonMessage) {
+      const out = livePriceDataDTO(lastJsonMessage);
 
       if (out instanceof type.errors) {
         console.error('Invalid live price data received:', out);
@@ -86,18 +81,8 @@ const InstrumentsTableContainer = ({
         };
         return updated;
       });
-    },
-    [setLiveInstruments]
-  );
-
-  const { cleanup: cleanupSSE } = useSSE({
-    events: tickersSet,
-    callback: sseCallback,
-  });
-
-  useEffect(() => {
-    return cleanupSSE;
-  }, [cleanupSSE]);
+    }
+  }, [lastJsonMessage]);
 
   const handleInstrumentPressed = useCallback(
     (asset: Instrument) => {

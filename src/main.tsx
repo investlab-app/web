@@ -5,11 +5,11 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { QueryClient } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { ClerkLoaded, useAuth } from '@clerk/clerk-react';
+import { ClerkLoaded, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from 'sonner';
 import { routeTree } from './routeTree.gen';
-import { SSEProvider } from './features/shared/providers/sse-provider.tsx';
+import { WSProvider } from './features/shared/providers/ws-provider.tsx';
 import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
 import {
   CLERK_PUBLIC_KEY,
@@ -68,6 +68,7 @@ function ToasterProvider({ children }: { children: ReactNode }) {
 function App() {
   const auth = useAuth();
   const i18n = useTranslation();
+
   return (
     <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
   );
@@ -97,11 +98,16 @@ if (rootElement && !rootElement.innerHTML) {
               persistOptions={{ persister }}
             >
               <ClerkLoaded>
-                <SSEProvider>
-                  <ToasterProvider>
-                    <App />
-                  </ToasterProvider>
-                </SSEProvider>
+                <SignedIn>
+                  <WSProvider>
+                    <ToasterProvider>
+                      <App />
+                    </ToasterProvider>
+                  </WSProvider>
+                </SignedIn>
+                <SignedOut>
+                  <App />
+                </SignedOut>
               </ClerkLoaded>
             </PersistQueryClientProvider>
           </ConditionalProvider>
