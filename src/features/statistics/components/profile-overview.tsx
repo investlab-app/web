@@ -13,7 +13,7 @@ import {
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
 
-const RenderSkeletonRow = () => {
+const ProfileOverviewBodySkeleton = () => {
   return (
     <TableRow key={`skeleton`}>
       <TableCell className="h-10">
@@ -67,7 +67,7 @@ const ProfileOverview = () => {
         </TableHeader>
         <TableBody>
           {!data ? (
-            RenderSkeletonRow()
+            <ProfileOverviewBodySkeleton />
           ) : (
             <TableRow>
               <TableCell>{data.level}</TableCell>

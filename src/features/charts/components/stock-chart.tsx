@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import { createChartOptions } from '../utils/chart-options';
@@ -40,17 +40,13 @@ export const StockChart = ({
   const chartRef = useRef<ReactECharts | null>(null);
   const { t, i18n } = useTranslation();
 
-  const chartOptions = useMemo(
-    () =>
-      createChartOptions(
-        stockName,
-        chartData,
-        selectedInterval,
-        zoom,
-        isCandlestick,
-        { t, i18n }
-      ),
-    [stockName, chartData, selectedInterval, zoom, isCandlestick, t, i18n]
+  const chartOptions = createChartOptions(
+    stockName,
+    chartData,
+    selectedInterval,
+    zoom,
+    isCandlestick,
+    { t, i18n }
   );
 
   useEffect(() => {

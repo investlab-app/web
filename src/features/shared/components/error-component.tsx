@@ -28,16 +28,13 @@ export function ErrorComponent({ error }: ErrorComponentProps) {
 
   const [showDetails, setShowDetails] = React.useState(!IS_PROD);
 
-  const details = React.useMemo(() => {
-    const lines = [
-      `Name: ${error.name || 'Error'}`,
-      `Message: ${error.message || '(no message)'}`,
-      '',
-      'Stack:',
-      error.stack || '(no stack available)',
-    ];
-    return lines.join('\n');
-  }, [error]);
+  const details = [
+    `Name: ${error.name || 'Error'}`,
+    `Message: ${error.message || '(no message)'}`,
+    '',
+    'Stack:',
+    error.stack || '(no stack available)',
+  ].join('\n');
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center p-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background">

@@ -9,6 +9,7 @@ import {
 import { PositionRow } from '@/features/transactions/components/position-row';
 import { Message } from '@/features/shared/components/error-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { Table, TableBody } from '@/features/shared/components/ui/table';
 
 interface TransactionsHistorySectionProps {
   positionData: Position | undefined;
@@ -37,8 +38,12 @@ export function TransactionsHistorySection({
             currentPrice={currentPriceData.currentPrice}
             onlySell={true}
           />
-          <PositionsTableHeader />
-          <PositionRow position={positionData} showDetails={() => {}} />
+          <Table>
+            <PositionsTableHeader />
+            <TableBody>
+              <PositionRow position={positionData} showDetails={() => {}} />
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

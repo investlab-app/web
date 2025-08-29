@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { StopLimitSection } from './stop-limit-section';
 
 export const useStopLimitForm = (
@@ -8,22 +8,17 @@ export const useStopLimitForm = (
   const [price, setPrice] = useState(initialVolume * currentPrice);
   const [volume, setVolume] = useState(initialVolume);
 
-  const calcPriceFromVolume = useCallback(
-    (volumeValue: number) => volumeValue * currentPrice,
-    [currentPrice]
-  );
+  const calcPriceFromVolume = (volumeValue: number) =>
+    volumeValue * currentPrice;
 
-  const handleVolumeChange = useCallback(
-    (newVolume: number) => {
-      setVolume(newVolume);
-      setPrice(calcPriceFromVolume(newVolume));
-    },
-    [calcPriceFromVolume]
-  );
+  const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+    setPrice(calcPriceFromVolume(newVolume));
+  };
 
-  const handlePriceChange = useCallback((newPrice: number) => {
+  const handlePriceChange = (newPrice: number) => {
     setPrice(newPrice);
-  }, []);
+  };
 
   return {
     price,

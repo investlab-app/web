@@ -1,5 +1,4 @@
-// BuySellSection.tsx
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { BuySellSection } from '@/features/instrument-details/components/buy-sell-section';
 import { SellOpenSection } from '@/features/instrument-details/components/sell-open-section';
 
@@ -8,35 +7,23 @@ export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
   const [price, setPrice] = useState(initialPrice);
   const [volume, setVolume] = useState(initialPrice / currentPrice);
 
-  const calcVolumeFromPrice = useCallback(
-    (priceValue: number) => priceValue / currentPrice,
-    [currentPrice]
-  );
+  const calcVolumeFromPrice = (priceValue: number) => priceValue / currentPrice;
 
-  const calcPriceFromVolume = useCallback(
-    (volumeValue: number) => volumeValue * currentPrice,
-    [currentPrice]
-  );
+  const calcPriceFromVolume = (volumeValue: number) =>
+    volumeValue * currentPrice;
 
-  const handlePriceChange = useCallback(
-    (newPrice: number) => {
-      setPrice(newPrice);
-      setVolume(calcVolumeFromPrice(newPrice));
-    },
-    [calcVolumeFromPrice]
-  );
+  const handlePriceChange = (newPrice: number) => {
+    setPrice(newPrice);
+    setVolume(calcVolumeFromPrice(newPrice));
+  };
 
-  const handleVolumeChange = useCallback(
-    (newVolume: number) => {
-      setVolume(newVolume);
-      setPrice(calcPriceFromVolume(newVolume));
-    },
-    [calcPriceFromVolume]
-  );
+  const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+    setPrice(calcPriceFromVolume(newVolume));
+  };
 
-  const toggleMode = useCallback(() => {
+  const toggleMode = () =>
     setMode((prev) => (prev === 'price' ? 'volume' : 'price'));
-  }, []);
 
   return {
     mode,

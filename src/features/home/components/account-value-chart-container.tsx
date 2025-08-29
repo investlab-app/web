@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { Message } from '../../shared/components/error-message';
@@ -27,17 +26,14 @@ export const AccountValueChartContainer = () => {
     accountValueOverTimeQueryOptions
   );
 
-  const chartData: Array<InstrumentPriceProps> = useMemo(() => {
-    if (!data) return [];
-    // Map backend data to InstrumentPriceProps for StockChart
-    return data.data.map((point) => ({
+  const chartData: Array<InstrumentPriceProps> =
+    data?.data.map((point) => ({
       date: point.date,
       open: point.value,
       close: point.value,
       high: point.value,
       low: point.value,
-    }));
-  }, [data]);
+    })) || [];
 
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 

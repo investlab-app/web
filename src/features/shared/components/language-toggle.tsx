@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
 
 import { Button } from '@/features/shared/components/ui/button';
 import {
@@ -17,21 +16,20 @@ const LANGUAGES = [
 export function LanguageToggle() {
   const { i18n } = useTranslation();
 
-  const handleChangeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
+  const currentLang =
+    LANGUAGES.find((lang) => lang.code === i18n.language) || LANGUAGES[0];
 
-  const currentLang = LANGUAGES.find((lang) => lang.code === i18n.language);
+  const handleChangeLanguage = (lang: string) => {
+    if (lang !== currentLang.code) {
+      i18n.changeLanguage(lang);
+    }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="size-7">
-          {currentLang ? (
-            <div className="font-semibold"> {currentLang.symbol} </div>
-          ) : (
-            <Globe className="h-[1.2rem] w-[1.2rem]" />
-          )}
+          <div className="font-semibold"> {currentLang.symbol} </div>
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
