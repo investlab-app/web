@@ -1,15 +1,20 @@
-export const timeIntervals = [
-  { labelKey: 'common.intervals.one_minute', value: '1m' },
-  { labelKey: 'common.intervals.five_minutes', value: '5m' },
-  { labelKey: 'common.intervals.thirty_minutes', value: '30m' },
-  { labelKey: 'common.intervals.one_hour', value: '1h' },
-  { labelKey: 'common.intervals.one_day', value: '1d' },
-  { labelKey: 'common.intervals.one_week', value: '1wk' },
-];
+export type TimeInterval = '1m' | '5m' | '30m' | '1h' | '1d' | '1wk';
 
-export const intervalToStartDate = (range: string, date?: Date): Date => {
-  const now = date ?? new Date();
+export const timeIntervals: Record<TimeInterval, string> = {
+  '1m': 'common.intervals.one_minute',
+  '5m': 'common.intervals.five_minutes',
+  '30m': 'common.intervals.thirty_minutes',
+  '1h': 'common.intervals.one_hour',
+  '1d': 'common.intervals.one_day',
+  '1wk': 'common.intervals.one_week',
+};
+
+export const intervalToStartDate = (
+  range: TimeInterval,
+  now = new Date()
+): Date => {
   const start = new Date(now);
+
   switch (range) {
     case '1m':
       start.setDate(now.getDate() - 1);
@@ -30,5 +35,6 @@ export const intervalToStartDate = (range: string, date?: Date): Date => {
       start.setFullYear(now.getFullYear() - 50);
       break;
   }
+
   return start;
 };

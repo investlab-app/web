@@ -6,8 +6,11 @@ import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
 import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
 import { Message } from '../../shared/components/error-message';
-import { StockChart } from './stock-chart';
-import type { InstrumentPriceProps } from '../types/types';
+import { createLineChartOptions } from '../utils/create-line-chart-options';
+import { createCandlestickChartOptions } from '../utils/create-candlestick-chart-options';
+import { StockChart, StockChartSkeleton } from './stock-chart';
+import type { TimeInterval } from '../utils/time-ranges';
+import type { InstrumentPricePoint } from '../types/instrument-price-point';
 import {
   Tabs,
   TabsList,
@@ -33,21 +36,19 @@ import { livePriceDataDTO } from '@/features/instruments/types/types';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
-type StockChartProps = {
+interface StockChartProps {
   ticker: string;
-};
+}
 
-export const StockChartContainer = ({ ticker }: StockChartProps) => {
+export function StockChartContainer({ ticker }: StockChartProps) {
   const { t, i18n } = useTranslation();
 
-  const [interval, setInterval] = useState('1h');
+  const [interval, setInterval] = useState<TimeInterval>('1h');
   const startDate = intervalToStartDate(interval);
   const endDate = new Date();
 
   const [isCandlestick, setIsCandlestick] = useState(false);
-  const [livePrice, setLivePrice] = useState<
-    [InstrumentPriceProps, boolean] | null
-  >(null);
+  const [livePrice, setLivePrice] = useState<InstrumentPricePoint>();
 
   const {
     data: priceHistory,
@@ -64,7 +65,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
     })
   );
 
-  const { lastJsonMessage } = useWS([`PRICE_UPDATE_${ticker}`]);
+  const { lastJsonMessage } = useWS([ticker]);
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -84,7 +85,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
         low: out.price,
         close: out.price,
       };
-      setLivePrice([newDataPoint, true]);
+      setLivePrice(newDataPoint);
     }
   }, [lastJsonMessage, ticker]);
 
@@ -92,8 +93,7 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
   const isIntervalChanging = appliedInterval !== interval;
 
   const currentPrice =
-    livePrice?.[0]?.close ||
-    priceHistory?.data[priceHistory.data.length - 1]?.close;
+    livePrice?.close || priceHistory?.data[priceHistory.data.length - 1]?.close;
 
   return (
     <Card>
@@ -121,49 +121,63 @@ export const StockChartContainer = ({ ticker }: StockChartProps) => {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Select value={interval} onValueChange={setInterval}>
+            <Select
+              value={interval}
+              onValueChange={(value) => setInterval(value as TimeInterval)}
+            >
               <SelectTrigger
-                className={`w-40 ${isIntervalChanging ? 'animate-pulse' : ''}`}
+                className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
                 aria-label="Select time range"
               >
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
-                {timeIntervals.map(({ labelKey, value }) => (
-                  <SelectItem key={value} value={value}>
-                    {t(labelKey)}
-                  </SelectItem>
-                ))}
+                {Object.entries(timeIntervals).map(
+                  ([value, translationKey]) => (
+                    <SelectItem key={value} value={value}>
+                      {t(translationKey)}{' '}
+                    </SelectItem>
+                  )
+                )}
               </SelectContent>
             </Select>
           </div>
         </CardAction>
       </CardHeader>
       <CardContent className="h-96">
-        {isPending && <StockChart.Skeleton />}
+        {isPending && <StockChartSkeleton />}
         {isError && <Message message={t('common.error_loading_data')} />}
         {isSuccess &&
           (priceHistory.data.length ? (
             <StockChart
-              stockName={ticker}
-              chartData={priceHistory.data}
-              selectedInterval={appliedInterval}
+              chartOptions={
+                isCandlestick
+                  ? createCandlestickChartOptions({
+                      stockName: ticker,
+                      chartData: priceHistory.data,
+                      selectedInterval: appliedInterval,
+                      zoom: 0.1,
+                      i18n,
+                    })
+                  : createLineChartOptions({
+                      stockName: ticker,
+                      chartData: priceHistory.data,
+                      selectedInterval: appliedInterval,
+                      zoom: 0.1,
+                      translation: { t, i18n },
+                    })
+              }
               liveUpdateValue={livePrice}
-              zoom={0.1}
-              isCandlestick={isCandlestick}
             />
           ) : (
             <Message
               message={t('instruments.history_empty', {
                 ticker,
-                interval: t(
-                  timeIntervals.find(({ value }) => value === interval)
-                    ?.labelKey || 'intervals.one_hour'
-                ),
+                interval: t(timeIntervals[interval]),
               })}
             />
           ))}
       </CardContent>
     </Card>
   );
-};
+}

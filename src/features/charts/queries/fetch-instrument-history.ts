@@ -1,5 +1,5 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query';
-import { instrumentHistory } from '../types/types';
+import { instrumentHistory } from '../types/instrument-history';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 import { roundDateToInterval } from '@/features/shared/utils/date';
 

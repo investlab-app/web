@@ -1,0 +1,94 @@
+import { formatChartDateByRange } from './chart-formatting';
+import type {
+  EChartsOption,
+  SeriesOption,
+  TooltipComponentFormatterCallbackParams,
+} from 'echarts';
+import type { useTranslation } from 'react-i18next';
+import { cssVar } from '@/features/shared/utils/styles';
+
+interface CreateChartOptionsProps {
+  axisPointerType: 'line' | 'shadow';
+  formatter: (params: TooltipComponentFormatterCallbackParams) => string;
+  dates: Array<string>;
+  boundaryGap: boolean;
+  zoom: number;
+  series: Array<SeriesOption>;
+  interval: string;
+  i18n: ReturnType<typeof useTranslation>['i18n'];
+}
+
+function createLabelIntervalFn(
+  dataLength: number,
+  zoom: number
+): (index: number, value: string) => boolean {
+  if (dataLength <= 10) {
+    return () => true;
+  }
+
+  const interval = Math.floor(dataLength / (3 * (1 / zoom)));
+
+  return (index: number) => index % interval === 0;
+}
+
+export function createChartOptions({
+  axisPointerType,
+  formatter,
+  dates,
+  boundaryGap,
+  zoom,
+  series,
+  interval,
+  i18n,
+}: CreateChartOptionsProps): EChartsOption {
+  return {
+    animation: false,
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: axisPointerType,
+      },
+      backgroundColor: cssVar('--color-card'),
+      textStyle: {
+        color: cssVar('--foreground'),
+      },
+      formatter,
+    },
+    grid: { left: 0, right: 0, top: 0, bottom: 0, containLabel: false },
+    xAxis: {
+      type: 'category',
+      data: dates,
+      boundaryGap,
+      axisTick: { show: false },
+      axisLine: { show: true },
+      axisLabel: {
+        interval: createLabelIntervalFn(dates.length, zoom),
+        formatter: (value: string) =>
+          formatChartDateByRange({
+            date: new Date(value),
+            range: interval,
+            tooltip: false,
+            i18n,
+          }),
+      },
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: true },
+      scale: true,
+      splitLine: { lineStyle: { opacity: 0.2 } },
+    },
+    dataZoom: [
+      {
+        type: 'inside',
+        zoomLock: true,
+        start: (1 - zoom) * 100,
+        end: 100,
+        moveOnMouseWheel: true,
+        moveOnMouseMove: true,
+        zoomOnMouseWheel: false,
+      },
+    ],
+    series,
+  };
+}

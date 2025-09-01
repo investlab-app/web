@@ -1,7 +1,7 @@
 import {
   instrumentOverview,
   instrumentOverviewItemToInstrument,
-} from '../types/types';
+} from '../types/instrument-overview';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 type FetchInstrumentsOverviewOptions = {

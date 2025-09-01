@@ -1,26 +1,18 @@
 import type { useTranslation } from 'react-i18next';
 
-export function createLabelIntervalFn(
-  dataLength: number,
-  zoom: number
-): (index: number, value: string) => boolean {
-  if (dataLength <= 10) {
-    return () => true;
-  }
-
-  const interval = Math.floor(dataLength / (3 * (1 / zoom)));
-
-  return (index: number) => index % interval === 0;
+interface FormatChartDateByRangeProps {
+  date: Date;
+  range: string;
+  tooltip?: boolean;
+  i18n: ReturnType<typeof useTranslation>['i18n'];
 }
 
-export function formatChartDateByRange(
-  value: string,
-  range: string,
+export function formatChartDateByRange({
+  date,
+  range,
   tooltip = false,
-  i18n: ReturnType<typeof useTranslation>['i18n']
-): string {
-  const date = new Date(value);
-
+  i18n,
+}: FormatChartDateByRangeProps): string {
   switch (range) {
     case '1m':
     case '5m':
@@ -39,17 +31,18 @@ export function formatChartDateByRange(
     case '1wk':
       // Show month and year
       return tooltip
-        ? date.toLocaleDateString('en-UK', {
+        ? date.toLocaleDateString(i18n.language, {
             day: 'numeric',
             month: 'short',
             year: 'numeric',
           })
-        : date.toLocaleDateString('en-UK', {
+        : date.toLocaleDateString(i18n.language, {
             month: 'short',
             year: 'numeric',
           });
 
     default:
-      return value; // Fallback
+      // Fallback
+      return date.toLocaleDateString(i18n.language);
   }
 }

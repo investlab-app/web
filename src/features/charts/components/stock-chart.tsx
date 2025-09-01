@@ -1,93 +1,58 @@
 import { useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { useTranslation } from 'react-i18next';
-import { createChartOptions } from '../utils/chart-options';
-import type { InstrumentPriceProps } from '../types/types';
+import type { InstrumentPricePoint } from '../types/instrument-price-point';
+import type { EChartsOption } from 'echarts';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
-type SeriesData = {
-  value: number;
-  high: number;
-  low: number;
-  open: number;
-};
+interface EChartSeries {
+  data: Array<{
+    value: number;
+    high: number;
+    low: number;
+    open: number;
+  }>;
+}
 
-type EChartSeries = {
-  data: Array<SeriesData>;
-};
-
-type EChartXAxis = {
+interface EChartXAxis {
   data: Array<string>;
-};
+}
 
-export type ChartPresentationsProps = {
-  stockName: string;
-  chartData: Array<InstrumentPriceProps>;
-  selectedInterval: string;
-  zoom?: number;
-  isCandlestick: boolean;
-  liveUpdateValue?: [InstrumentPriceProps, boolean] | null;
-};
+export interface StockChartProps {
+  chartOptions: EChartsOption;
+  liveUpdateValue?: InstrumentPricePoint;
+}
 
-export const StockChart = ({
-  stockName,
-  chartData,
-  selectedInterval,
-  zoom,
-  isCandlestick,
-  liveUpdateValue = null,
-}: ChartPresentationsProps) => {
+export function StockChart({ chartOptions, liveUpdateValue }: StockChartProps) {
   const chartRef = useRef<ReactECharts | null>(null);
-  const { t, i18n } = useTranslation();
-
-  const chartOptions = createChartOptions(
-    stockName,
-    chartData,
-    selectedInterval,
-    zoom,
-    isCandlestick,
-    { t, i18n }
-  );
 
   useEffect(() => {
     if (!liveUpdateValue || !chartRef.current) return;
 
     const chartInstance = chartRef.current.getEchartsInstance();
 
-    const [val, isUpdate] = liveUpdateValue;
-
-    const oldSeriesData =
+    const seriesData =
       (chartInstance.getOption().series as Array<EChartSeries>)[0]?.data ?? [];
-    const oldXData =
+    const xAxisData =
       (chartInstance.getOption().xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
-    const newSeriesData = [...oldSeriesData];
-    const newXData = [...oldXData];
+    const liveUpdatePoint = {
+      value: liveUpdateValue.close,
+      high: liveUpdateValue.high,
+      low: liveUpdateValue.low,
+      open: liveUpdateValue.open,
+    };
 
-    if (isUpdate && newSeriesData.length > 0 && newXData.length > 0) {
-      // Update last point
-      newSeriesData[newSeriesData.length - 1] = {
-        value: val.close,
-        high: val.high,
-        low: val.low,
-        open: val.open,
-      };
-      // newXData[newXData.length - 1] = val.date;
+    if (seriesData.length > 0 && xAxisData.length > 0) {
+      seriesData[seriesData.length - 1] = liveUpdatePoint;
     } else {
-      // Append new point
-      newSeriesData.push({
-        value: val.close,
-        high: val.high,
-        low: val.low,
-        open: val.open,
-      });
-      newXData.push(val.date);
+      seriesData.push(liveUpdatePoint);
+      xAxisData.push(liveUpdateValue.date);
     }
 
     chartInstance.setOption(
       {
-        series: [{ data: newSeriesData }],
-        xAxis: { data: newXData },
+        series: [{ data: seriesData }],
+        xAxis: { data: xAxisData },
       },
       {
         notMerge: false,
@@ -106,9 +71,9 @@ export const StockChart = ({
       }}
     />
   );
-};
+}
 
-function StockChartSkeleton() {
+export function StockChartSkeleton() {
   return (
     <div className="h-full w-full flex flex-col">
       <div className="flex-1 relative">
@@ -137,5 +102,3 @@ function StockChartSkeleton() {
     </div>
   );
 }
-
-StockChart.Skeleton = StockChartSkeleton;
