@@ -1,0 +1,19 @@
+version = 1
+
+test_patterns = [
+  "e2e/**",
+  "*/**/*.test.*"
+]
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = ["react"]
+  environment = [
+    "browser",
+    "vitest"
+  ]
+
+[[transformers]]
+name = "prettier"
