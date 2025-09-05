@@ -9,7 +9,7 @@ interface FetchInstrumentHistoryParams {
   startDate: Date;
   endDate: Date;
   interval: TimeInterval;
-  interval_multiplier?: number;
+  intervalMultiplier?: number;
 }
 
 function formatDate(date: Date): string {
@@ -21,15 +21,15 @@ async function fetchInstrumentHistory({
   startDate,
   endDate,
   interval,
-  interval_multiplier,
+  intervalMultiplier,
 }: FetchInstrumentHistoryParams) {
   const queryString = new URLSearchParams({
     ticker,
     start_date: formatDate(startDate),
     end_date: formatDate(endDate),
     interval,
-    ...(interval_multiplier && {
-      interval_multiplier: interval_multiplier.toString(),
+    ...(intervalMultiplier && {
+      interval_multiplier: intervalMultiplier.toString(),
     }),
   });
   return await validatedFetch(
@@ -43,7 +43,7 @@ export function instrumentHistoryQueryOptions({
   startDate,
   endDate,
   interval,
-  interval_multiplier,
+  intervalMultiplier,
 }: FetchInstrumentHistoryParams) {
   const gcTime = 60_000; // 1 minute
 
@@ -57,7 +57,7 @@ export function instrumentHistoryQueryOptions({
       interval,
       roundDateToGCTime(startDate),
       roundDateToGCTime(endDate),
-      interval_multiplier,
+      intervalMultiplier,
     ],
     queryFn: async () => {
       const instrumentHistoryData = await fetchInstrumentHistory({
@@ -65,7 +65,7 @@ export function instrumentHistoryQueryOptions({
         startDate,
         endDate,
         interval,
-        interval_multiplier,
+        intervalMultiplier,
       });
       const data = instrumentHistoryData.map((item) => ({
         date: item.timestamp,
