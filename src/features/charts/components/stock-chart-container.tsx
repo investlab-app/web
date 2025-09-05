@@ -79,22 +79,18 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   useEffect(() => {
     if (lastJsonMessage) {
       const out = livePriceDataDTO(lastJsonMessage);
-      if (out instanceof type.errors) {
-        console.error('Invalid data point received:', out.summary);
-        return;
-      }
-      if (out.id !== ticker) {
-        // ignore
-        return;
-      }
-      const newDataPoint = {
-        date: new Date(parseInt(out.time)).toLocaleTimeString(),
-        open: out.price,
-        high: out.price,
-        low: out.price,
-        close: out.price,
-      };
-      setLivePrice(newDataPoint);
+      if (out instanceof type.errors) return;
+
+      const tickerData = out.prices.find((item) => item.symbol === ticker);
+      if (!tickerData) return;
+
+      setLivePrice({
+        date: new Date(tickerData.end_timestamp).toLocaleTimeString(),
+        open: tickerData.open,
+        high: tickerData.high,
+        low: tickerData.low,
+        close: tickerData.close,
+      });
     }
   }, [lastJsonMessage, ticker]);
 
