@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
 import type { Instrument } from '../types/types';
-import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';
+import { fetchInstrumentsOverview } from '@/features/instruments/queries/fetch-instrument-overview';
 
 type UseInstrumentsOptions = {
   filter?: string;

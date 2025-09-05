@@ -40,10 +40,19 @@ interface StockChartProps {
   ticker: string;
 }
 
+const CHART_INTERVALS: Array<TimeInterval> = [
+  'MINUTE',
+  'HOUR',
+  'DAY',
+  'WEEK',
+  'MONTH',
+  'YEAR',
+];
+
 export function StockChartContainer({ ticker }: StockChartProps) {
   const { t, i18n } = useTranslation();
 
-  const [interval, setInterval] = useState<TimeInterval>('1h');
+  const [interval, setInterval] = useState<TimeInterval>('HOUR');
   const startDate = intervalToStartDate(interval);
   const endDate = new Date();
 
@@ -93,7 +102,12 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const isIntervalChanging = appliedInterval !== interval;
 
   const currentPrice =
-    livePrice?.close || priceHistory?.data[priceHistory.data.length - 1]?.close;
+    livePrice?.close || priceHistory?.[priceHistory.length - 1]?.close;
+
+  // reason for this mad calculation: if we get e.g. only 5 data points and the
+  // zoom is set to 0.1 we'll only see one point on load. This exact situation
+  // happens with yearly interval for polygon since it's capped to past 5 years
+  const zoom = Math.max(0.1, 0.9 - (priceHistory ?? []).length / 100);
 
   return (
     <Card>
@@ -132,13 +146,15 @@ export function StockChartContainer({ ticker }: StockChartProps) {
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(timeIntervals).map(
-                  ([value, translationKey]) => (
+                {Object.entries(timeIntervals)
+                  .filter(([key]) =>
+                    CHART_INTERVALS.includes(key as TimeInterval)
+                  )
+                  .map(([value, translationKey]) => (
                     <SelectItem key={value} value={value}>
                       {t(translationKey)}{' '}
                     </SelectItem>
-                  )
-                )}
+                  ))}
               </SelectContent>
             </Select>
           </div>
@@ -148,22 +164,22 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         {isPending && <StockChartSkeleton />}
         {isError && <Message message={t('common.error_loading_data')} />}
         {isSuccess &&
-          (priceHistory.data.length ? (
+          (priceHistory.length ? (
             <StockChart
               chartOptions={
                 isCandlestick
                   ? createCandlestickChartOptions({
                       stockName: ticker,
-                      chartData: priceHistory.data,
+                      chartData: priceHistory,
                       selectedInterval: appliedInterval,
-                      zoom: 0.1,
+                      zoom,
                       i18n,
                     })
                   : createLineChartOptions({
                       stockName: ticker,
-                      chartData: priceHistory.data,
+                      chartData: priceHistory,
                       selectedInterval: appliedInterval,
-                      zoom: 0.1,
+                      zoom,
                       translation: { t, i18n },
                     })
               }
