@@ -1,8 +1,9 @@
 import type { useTranslation } from 'react-i18next';
+import type { TimeInterval } from './time-ranges';
 
 interface FormatChartDateByRangeProps {
   date: Date;
-  range: string;
+  range: TimeInterval;
   tooltip?: boolean;
   i18n: ReturnType<typeof useTranslation>['i18n'];
 }
@@ -14,10 +15,9 @@ export function formatChartDateByRange({
   i18n,
 }: FormatChartDateByRangeProps): string {
   switch (range) {
-    case '1m':
-    case '5m':
-    case '30m':
-    case '1h':
+    case 'SECOND':
+    case 'MINUTE':
+    case 'HOUR':
       // Show day, month, hour, and minute
       return `${date.toLocaleDateString(i18n.language, {
         day: 'numeric',
@@ -27,8 +27,11 @@ export function formatChartDateByRange({
         minute: '2-digit',
       })}`;
 
-    case '1d':
-    case '1wk':
+    case 'DAY':
+    case 'WEEK':
+    case 'MONTH':
+    case 'QUARTER':
+    case 'YEAR':
       // Show month and year
       return tooltip
         ? date.toLocaleDateString(i18n.language, {

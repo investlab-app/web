@@ -1,11 +1,12 @@
-import { formatChartDateByRange } from './chart-formatting';
+import { formatChartDateByRange } from '../utils/chart-formatting';
 import type {
   EChartsOption,
   SeriesOption,
   TooltipComponentFormatterCallbackParams,
 } from 'echarts';
 import type { useTranslation } from 'react-i18next';
-import { cssVar } from '@/features/shared/utils/styles';
+import type { TimeInterval } from '../utils/time-ranges';
+import { useCssVar } from '@/features/shared/utils/styles';
 
 interface CreateChartOptionsProps {
   axisPointerType: 'line' | 'shadow';
@@ -14,7 +15,7 @@ interface CreateChartOptionsProps {
   boundaryGap: boolean;
   zoom: number;
   series: Array<SeriesOption>;
-  interval: string;
+  interval: TimeInterval;
   i18n: ReturnType<typeof useTranslation>['i18n'];
 }
 
@@ -31,7 +32,7 @@ function createLabelIntervalFn(
   return (index: number) => index % interval === 0;
 }
 
-export function createChartOptions({
+export function useChartOptions({
   axisPointerType,
   formatter,
   dates,
@@ -48,13 +49,13 @@ export function createChartOptions({
       axisPointer: {
         type: axisPointerType,
       },
-      backgroundColor: cssVar('--color-card'),
+      backgroundColor: useCssVar('--color-card'),
       textStyle: {
-        color: cssVar('--foreground'),
+        color: useCssVar('--foreground'),
       },
       formatter,
     },
-    grid: { left: 0, right: 0, top: 0, bottom: 0, containLabel: false },
+    grid: { left: 0, right: 0, top: 0, bottom: 0 },
     xAxis: {
       type: 'category',
       data: dates,

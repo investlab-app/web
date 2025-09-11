@@ -12,7 +12,6 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
-import { createLineChartOptions } from '@/features/charts/utils/create-line-chart-options';
 
 export const accountValueOverTimeQueryOptions = queryOptions({
   queryKey: ['accountValueOverTime'],
@@ -58,12 +57,10 @@ export const AccountValueChartContainer = () => {
       </CardHeader>
       <CardContent className="h-96">
         <StockChart
-          chartOptions={createLineChartOptions({
-            stockName: 'Account Value',
-            chartData: chartData,
-            selectedInterval: '1wk',
-            translation: { t, i18n },
-          })}
+          type="line"
+          ticker="Account Value"
+          priceHistory={chartData}
+          selectedInterval="WEEK"
         />
       </CardContent>
     </Card>

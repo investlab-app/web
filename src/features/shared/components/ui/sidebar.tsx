@@ -5,7 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 import React from 'react';
 import type { VariantProps } from 'class-variance-authority';
 
-import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
+import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
 import { Input } from '@/features/shared/components/ui/input';

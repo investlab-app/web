@@ -6,16 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
 import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
 import { Message } from '../../shared/components/error-message';
-import { createLineChartOptions } from '../utils/create-line-chart-options';
-import { createCandlestickChartOptions } from '../utils/create-candlestick-chart-options';
 import { StockChart, StockChartSkeleton } from './stock-chart';
 import type { TimeInterval } from '../utils/time-ranges';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from '@/features/shared/components/ui/tabs';
 import {
   Card,
   CardAction,
@@ -25,9 +18,16 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
+import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/features/shared/components/ui/select';
@@ -35,6 +35,10 @@ import { useWS } from '@/features/shared/hooks/use-ws';
 import { livePriceDataDTO } from '@/features/instruments/types/types';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@/features/shared/components/ui/toggle-group';
 
 interface StockChartProps {
   ticker: string;
@@ -85,7 +89,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
       if (!tickerData) return;
 
       setLivePrice({
-        date: new Date(tickerData.end_timestamp).toLocaleTimeString(),
+        date: new Date(tickerData.end_timestamp).toISOString(),
         open: tickerData.open,
         high: tickerData.high,
         low: tickerData.low,
@@ -117,40 +121,48 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         )}
         <CardAction>
           <div className="flex items-center gap-1">
-            <Tabs
+            <ToggleGroup
+              type="single"
               value={isCandlestick ? 'candle' : 'line'}
               onValueChange={(value) => setIsCandlestick(value === 'candle')}
+              variant="outline"
               aria-label="Toggle chart type"
             >
-              <TabsList>
-                <TabsTrigger value="line" aria-label="Line chart">
-                  <LineChartIcon strokeWidth={1.5} />
-                </TabsTrigger>
-                <TabsTrigger value="candle" aria-label="Candlestick chart">
-                  <CandlestickChartIcon strokeWidth={1.5} />
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+              <ToggleGroupItem value="line" aria-label="Line chart">
+                <LineChartIcon strokeWidth={1.5} />
+              </ToggleGroupItem>
+              <ToggleGroupItem value="candle" aria-label="Candlestick chart">
+                <CandlestickChartIcon strokeWidth={1.5} />
+              </ToggleGroupItem>
+            </ToggleGroup>
             <Select
               value={interval}
               onValueChange={(value) => setInterval(value as TimeInterval)}
             >
-              <SelectTrigger
-                className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
-                aria-label="Select time range"
-              >
-                <SelectValue placeholder="Select range" />
-              </SelectTrigger>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <SelectTrigger
+                    className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
+                    aria-label="Select interval"
+                  >
+                    <SelectValue placeholder={t('common.select_interval')} />
+                  </SelectTrigger>
+                </TooltipTrigger>
+                <TooltipContent>{t('common.select_interval')}</TooltipContent>
+              </Tooltip>
               <SelectContent>
-                {Object.entries(timeIntervals)
-                  .filter(([key]) =>
-                    CHART_INTERVALS.includes(key as TimeInterval)
-                  )
-                  .map(([value, translationKey]) => (
-                    <SelectItem key={value} value={value}>
-                      {t(translationKey)}{' '}
-                    </SelectItem>
-                  ))}
+                <SelectGroup>
+                  <SelectLabel>{t('common.interval')}</SelectLabel>
+                  {Object.entries(timeIntervals)
+                    .filter(([key]) =>
+                      CHART_INTERVALS.includes(key as TimeInterval)
+                    )
+                    .map(([value, translationKey]) => (
+                      <SelectItem key={value} value={value}>
+                        {t(translationKey)}{' '}
+                      </SelectItem>
+                    ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -162,24 +174,12 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         {isSuccess &&
           (priceHistory.length ? (
             <StockChart
-              chartOptions={
-                isCandlestick
-                  ? createCandlestickChartOptions({
-                      stockName: ticker,
-                      chartData: priceHistory,
-                      selectedInterval: appliedInterval,
-                      zoom,
-                      i18n,
-                    })
-                  : createLineChartOptions({
-                      stockName: ticker,
-                      chartData: priceHistory,
-                      selectedInterval: appliedInterval,
-                      zoom,
-                      translation: { t, i18n },
-                    })
-              }
-              liveUpdateValue={livePrice}
+              type={isCandlestick ? 'candlestick' : 'line'}
+              ticker={ticker}
+              priceHistory={priceHistory}
+              selectedInterval={appliedInterval}
+              zoom={zoom}
+              liveUpdatePoint={livePrice}
             />
           ) : (
             <Message

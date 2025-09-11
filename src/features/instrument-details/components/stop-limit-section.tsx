@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
-import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
-import { useIs2XL } from '@/features/shared/hooks/use-is-2xl';
+import { useIs2XL, useIsMobile } from '@/features/shared/hooks/use-media-query';
 
 export interface StopLimitSectionProps {
   value: number;

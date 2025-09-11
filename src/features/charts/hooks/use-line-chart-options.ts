@@ -1,6 +1,6 @@
 import { type } from 'arktype';
-import { formatChartDateByRange } from './chart-formatting';
-import { createChartOptions } from './create-chart-options';
+import { formatChartDateByRange } from '../utils/chart-formatting';
+import { useChartOptions } from './use-chart-options';
 import type {
   DefaultLabelFormatterCallbackParams,
   SeriesOption,
@@ -8,18 +8,19 @@ import type {
 } from 'echarts';
 import type { useTranslation } from 'react-i18next';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
-import { cssVar } from '@/features/shared/utils/styles';
+import type { TimeInterval } from '../utils/time-ranges';
+import { useCssVar } from '@/features/shared/utils/styles';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface CreateLineChartOptionsProps {
   stockName: string;
   chartData: Array<InstrumentPricePoint>;
-  selectedInterval: string;
+  selectedInterval: TimeInterval;
   zoom?: number;
   translation: Pick<ReturnType<typeof useTranslation>, 't' | 'i18n'>;
 }
 
-export function createLineChartOptions({
+export function useLineChartOptions({
   stockName,
   chartData,
   selectedInterval,
@@ -46,6 +47,7 @@ export function createLineChartOptions({
     const value = type('number')(data);
 
     if (value instanceof type.errors) {
+      console.error('Invalid line chart data format', value);
       return '';
     }
 
@@ -60,8 +62,6 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
     {
       name: stockName,
       type: 'line',
-      animation: true,
-      animationDuration: 0,
       smooth: false,
       data: seriesData,
       showSymbol: false,
@@ -73,19 +73,19 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
           x2: 0,
           y2: 1,
           colorStops: [
-            { offset: 0, color: cssVar('--color-card-foreground-hex')! },
-            { offset: 1, color: cssVar('--color-card-hex')! },
+            { offset: 0, color: useCssVar('--color-card-foreground-hex') },
+            { offset: 1, color: useCssVar('--color-card-hex') },
           ],
         },
       },
       lineStyle: {
-        color: cssVar('--color-card-foreground-hex'),
+        color: useCssVar('--color-card-foreground-hex'),
         width: 1,
       },
     },
   ];
 
-  return createChartOptions({
+  return useChartOptions({
     axisPointerType: 'line',
     formatter,
     dates,

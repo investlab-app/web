@@ -1,74 +1,98 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
+import { useTranslation } from 'react-i18next';
+import { useLineChartOptions } from '../hooks/use-line-chart-options';
+import { useCandlestickChartOptions } from '../hooks/use-candlestick-chart-options';
+import { useLiveChartUpdate } from '../hooks/use-live-chart-update';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
-import type { EChartsOption } from 'echarts';
+import type { TimeInterval } from '../utils/time-ranges';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
-interface EChartSeries {
-  data: Array<{
-    value: number;
-    high: number;
-    low: number;
-    open: number;
-  }>;
-}
-
-interface EChartXAxis {
-  data: Array<string>;
-}
-
 export interface StockChartProps {
-  chartOptions: EChartsOption;
-  liveUpdateValue?: InstrumentPricePoint;
+  type: 'candlestick' | 'line';
+  ticker: string;
+  priceHistory: Array<InstrumentPricePoint>;
+  selectedInterval: TimeInterval;
+  zoom?: number;
+  liveUpdatePoint?: InstrumentPricePoint;
 }
 
-export function StockChart({ chartOptions, liveUpdateValue }: StockChartProps) {
+export function StockChart(props: StockChartProps) {
+  if (props.type === 'candlestick') {
+    return <StockChartCandlestick {...props} />;
+  }
+  return <StockChartLine {...props} />;
+}
+
+function StockChartCandlestick({
+  ticker,
+  priceHistory,
+  selectedInterval,
+  zoom,
+  liveUpdatePoint,
+}: Omit<StockChartProps, 'type'>) {
   const chartRef = useRef<ReactECharts | null>(null);
+  const { i18n } = useTranslation();
 
-  useEffect(() => {
-    if (!liveUpdateValue || !chartRef.current) return;
+  const chartOptions = useCandlestickChartOptions({
+    stockName: ticker,
+    chartData: priceHistory,
+    selectedInterval,
+    zoom: zoom ?? 1 / 3,
+    i18n,
+  });
 
-    const chartInstance = chartRef.current.getEchartsInstance();
-
-    const seriesData =
-      (chartInstance.getOption().series as Array<EChartSeries>)[0]?.data ?? [];
-    const xAxisData =
-      (chartInstance.getOption().xAxis as Array<EChartXAxis>)[0]?.data ?? [];
-
-    const liveUpdatePoint = {
-      value: liveUpdateValue.close,
-      high: liveUpdateValue.high,
-      low: liveUpdateValue.low,
-      open: liveUpdateValue.open,
-    };
-
-    if (seriesData.length > 0 && xAxisData.length > 0) {
-      seriesData[seriesData.length - 1] = liveUpdatePoint;
-    } else {
-      seriesData.push(liveUpdatePoint);
-      xAxisData.push(liveUpdateValue.date);
-    }
-
-    chartInstance.setOption(
-      {
-        series: [{ data: seriesData }],
-        xAxis: { data: xAxisData },
-      },
-      {
-        notMerge: false,
-        lazyUpdate: true,
-      }
-    );
-  }, [liveUpdateValue]);
+  useLiveChartUpdate({
+    chartRef,
+    value: liveUpdatePoint && [
+      liveUpdatePoint.open,
+      liveUpdatePoint.close,
+      liveUpdatePoint.low,
+      liveUpdatePoint.high,
+    ],
+    date: liveUpdatePoint?.date,
+  });
 
   return (
     <ReactECharts
       ref={chartRef}
       option={chartOptions}
-      style={{
-        height: '100%',
-        width: '100%',
-      }}
+      style={{ width: '100%', height: '100%' }}
+      lazyUpdate
+    />
+  );
+}
+
+function StockChartLine({
+  ticker,
+  priceHistory,
+  selectedInterval,
+  zoom,
+  liveUpdatePoint,
+}: Omit<StockChartProps, 'type'>) {
+  const chartRef = useRef<ReactECharts | null>(null);
+  const { t, i18n } = useTranslation();
+
+  const chartOptions = useLineChartOptions({
+    stockName: ticker,
+    chartData: priceHistory,
+    selectedInterval,
+    zoom: zoom ?? 1,
+    translation: { t, i18n },
+  });
+
+  useLiveChartUpdate({
+    chartRef,
+    value: liveUpdatePoint?.close,
+    date: liveUpdatePoint?.date,
+  });
+
+  return (
+    <ReactECharts
+      ref={chartRef}
+      option={chartOptions}
+      style={{ width: '100%', height: '100%' }}
+      lazyUpdate
     />
   );
 }
