@@ -15,9 +15,10 @@ const LANGUAGES = [
 
 export function LanguageToggle() {
   const { i18n } = useTranslation();
+  const { language } = i18n;
 
   const currentLang =
-    LANGUAGES.find((lang) => lang.code === i18n.language) || LANGUAGES[0];
+    LANGUAGES.find((lang) => lang.code === language) || LANGUAGES[0];
 
   const handleChangeLanguage = (lang: string) => {
     if (lang !== currentLang.code) {
@@ -38,7 +39,7 @@ export function LanguageToggle() {
           <DropdownMenuItem
             key={code}
             onClick={() => handleChangeLanguage(code)}
-            className={i18n.language === code ? 'font-semibold' : ''}
+            className={language === code ? 'font-semibold' : ''}
           >
             {label}
           </DropdownMenuItem>
