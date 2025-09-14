@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { BuySellActionProps } from '../types/types';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
-import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
+import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 
 export const BuySellSection = ({
   mode,

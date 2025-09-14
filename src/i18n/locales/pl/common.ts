@@ -28,14 +28,22 @@ const plCommon = {
   expand: 'Rozwiń',
   collapse: 'Zwiń',
   intervals: {
-    one_minute: '1 minuta',
-    five_minutes: '5 minut',
-    thirty_minutes: '30 minut',
-    one_hour: '1 godzina',
-    one_day: '1 dzień',
-    one_week: '1 tydzień',
+    second: 'Sekunda',
+    minute: 'Minuta',
+    hour: 'Godzina',
+    day: 'Dzień',
+    week: 'Tydzień',
+    month: 'Miesiąc',
+    quarter: 'Kwartał',
+    year: 'Rok',
   },
+  select_interval: 'Wybierz interwał',
+  interval: 'Interwał',
   transactions: 'Transakcje',
+  charts: {
+    line_chart: 'Wykres liniowy',
+    candlestick_chart: 'Wykres świecowy',
+  },
 };
 
 export default plCommon;

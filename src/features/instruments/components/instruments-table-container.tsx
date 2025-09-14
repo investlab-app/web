@@ -59,30 +59,36 @@ const InstrumentsTableContainer = ({
 
   const tickers = instruments.map((i) => i.symbol);
 
-  const { lastJsonMessage } = useWS(
-    tickers.map((ticker) => `PRICE_UPDATE_${ticker}`)
-  );
+  const { lastJsonMessage } = useWS(tickers);
 
   useEffect(() => {
     if (lastJsonMessage) {
       const out = livePriceDataDTO(lastJsonMessage);
+      if (out instanceof type.errors) return;
 
-      if (out instanceof type.errors) {
-        console.error('Invalid live price data received:', out);
-        return;
-      }
+      const tickersSet = new Set(tickers);
+      const tickersDataMap = out.prices.reduce((acc, item) => {
+        if (tickersSet.has(item.symbol)) {
+          acc.set(item.symbol, item);
+        }
+        return acc;
+      }, new Map<string, (typeof out.prices)[number]>());
+      if (tickersDataMap.size === 0) return;
 
       setLiveInstruments((prev) => {
-        const updated = { ...prev };
-        updated[out.id] = {
-          ...updated[out.id],
-          currentPrice: out.price,
-          dayChange: out.change || updated[out.id].dayChange,
-        };
-        return updated;
+        tickersDataMap.forEach(
+          (data) =>
+            (prev[data.symbol] = {
+              ...prev[data.symbol],
+              currentPrice: data.close,
+              dayChange: data.close - data.official_open_price,
+            })
+        );
+        return prev;
       });
     }
-  }, [lastJsonMessage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastJsonMessage, JSON.stringify(tickers)]);
 
   const handleInstrumentPressed = useCallback(
     (asset: Instrument) => {

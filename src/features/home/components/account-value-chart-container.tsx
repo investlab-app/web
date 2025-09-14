@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { Message } from '../../shared/components/error-message';
 import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
-import type { InstrumentPriceProps } from '../../charts/types/types';
+import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
   Card,
@@ -26,7 +26,7 @@ export const AccountValueChartContainer = () => {
     accountValueOverTimeQueryOptions
   );
 
-  const chartData: Array<InstrumentPriceProps> =
+  const chartData: Array<InstrumentPricePoint> =
     data?.data.map((point) => ({
       date: point.date,
       open: point.value,
@@ -57,10 +57,10 @@ export const AccountValueChartContainer = () => {
       </CardHeader>
       <CardContent className="h-96">
         <StockChart
-          stockName="Account Value"
-          chartData={chartData}
-          selectedInterval="1wk"
-          isCandlestick={false}
+          type="line"
+          ticker="Account Value"
+          priceHistory={chartData}
+          selectedInterval="WEEK"
         />
       </CardContent>
     </Card>

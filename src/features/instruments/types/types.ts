@@ -41,15 +41,22 @@ export function fromDTO(dto: InstrumentDTO): Instrument | undefined {
 }
 
 export const livePriceDataDTO = type({
-  change_percent: 'number?',
-  change: 'number?',
-  day_volume: 'string?',
-  exchange: 'string',
-  id: 'string',
-  market_hours: 'number?',
-  price_hint: 'string',
-  price: 'number',
-  quote_type: 'number',
-  time: 'string',
+  prices: type({
+    symbol: 'string',
+    volume: 'number',
+    accumulated_volume: 'number',
+    official_open_price: 'number',
+    vwap: 'number',
+    open: 'number',
+    close: 'number',
+    high: 'number',
+    low: 'number',
+    aggregate_vwap: 'number',
+    average_size: 'number',
+    start_timestamp: 'number',
+    end_timestamp: 'number',
+  }).array(),
 });
 export type LivePriceDataDTO = typeof livePriceDataDTO.infer;
+
+export type SortDirection = 'asc' | 'desc';

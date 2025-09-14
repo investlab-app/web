@@ -1,34 +1,56 @@
-export const timeIntervals = [
-  { labelKey: 'common.intervals.one_minute', value: '1m' },
-  { labelKey: 'common.intervals.five_minutes', value: '5m' },
-  { labelKey: 'common.intervals.thirty_minutes', value: '30m' },
-  { labelKey: 'common.intervals.one_hour', value: '1h' },
-  { labelKey: 'common.intervals.one_day', value: '1d' },
-  { labelKey: 'common.intervals.one_week', value: '1wk' },
-];
+export type TimeInterval =
+  | 'SECOND'
+  | 'MINUTE'
+  | 'HOUR'
+  | 'DAY'
+  | 'WEEK'
+  | 'MONTH'
+  | 'QUARTER'
+  | 'YEAR';
 
-export const intervalToStartDate = (range: string, date?: Date): Date => {
-  const now = date ?? new Date();
+export const timeIntervals: Record<TimeInterval, string> = {
+  SECOND: 'common.intervals.second',
+  MINUTE: 'common.intervals.minute',
+  HOUR: 'common.intervals.hour',
+  DAY: 'common.intervals.day',
+  WEEK: 'common.intervals.week',
+  MONTH: 'common.intervals.month',
+  QUARTER: 'common.intervals.quarter',
+  YEAR: 'common.intervals.year',
+};
+
+export const intervalToStartDate = (
+  range: TimeInterval,
+  now = new Date()
+): Date => {
   const start = new Date(now);
+
   switch (range) {
-    case '1m':
+    case 'SECOND':
+      start.setMinutes(now.getMinutes() - 1);
+      break;
+    case 'MINUTE':
       start.setDate(now.getDate() - 1);
       break;
-    case '5m':
+    case 'HOUR':
       start.setDate(now.getDate() - 5);
       break;
-    case '30m':
+    case 'DAY':
       start.setMonth(now.getMonth() - 1);
       break;
-    case '1h':
+    case 'WEEK':
       start.setMonth(now.getMonth() - 3);
       break;
-    case '1d':
+    case 'MONTH':
       start.setFullYear(now.getFullYear() - 5);
       break;
-    case '1wk':
+    case 'QUARTER':
       start.setFullYear(now.getFullYear() - 50);
       break;
+    case 'YEAR':
+      start.setFullYear(Math.max(now.getFullYear() - 100, 1970));
+      break;
   }
+
   return start;
 };

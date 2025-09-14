@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { fetchAvailableInstruments } from '../queries/fetch-available-instruments';
-import type { Instrument } from '../types/types';
-import { fetchInstrumentsOverview } from '@/features/charts/queries/fetch-instrument-overview';
+import type { Instrument, SortDirection } from '../types/types';
+import { fetchInstrumentsOverview } from '@/features/instruments/queries/fetch-instrument-overview';
 
 type UseInstrumentsOptions = {
   filter?: string;
@@ -9,7 +9,7 @@ type UseInstrumentsOptions = {
   perPage: number;
   sector?: string;
   sortBy?: string;
-  sortDirection?: string;
+  sortDirection?: SortDirection;
 };
 
 export const useInstruments = ({

@@ -1,5 +1,6 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query';
-import { instrumentHistory } from '../types/types';
+import { instrumentHistory } from '../types/instrument-history';
+import type { TimeInterval } from '../utils/time-ranges';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 import { roundDateToInterval } from '@/features/shared/utils/date';
 
@@ -7,22 +8,32 @@ interface FetchInstrumentHistoryParams {
   ticker: string;
   startDate: Date;
   endDate: Date;
-  interval: string;
+  interval: TimeInterval;
+  intervalMultiplier?: number;
 }
 
 function formatDate(date: Date): string {
   return date.toISOString().split('.')[0];
 }
 
-async function fetchInstrumentHistory(params: FetchInstrumentHistoryParams) {
+async function fetchInstrumentHistory({
+  ticker,
+  startDate,
+  endDate,
+  interval,
+  intervalMultiplier,
+}: FetchInstrumentHistoryParams) {
   const queryString = new URLSearchParams({
-    ticker: params.ticker,
-    start_date: formatDate(params.startDate),
-    end_date: formatDate(params.endDate),
-    interval: params.interval,
+    ticker,
+    start_date: formatDate(startDate),
+    end_date: formatDate(endDate),
+    interval,
+    ...(intervalMultiplier && {
+      interval_multiplier: intervalMultiplier.toString(),
+    }),
   });
   return await validatedFetch(
-    `/api/prices?${queryString.toString()}`,
+    `/api/prices/ohlc/?${queryString.toString()}`,
     instrumentHistory
   );
 }
@@ -32,6 +43,7 @@ export function instrumentHistoryQueryOptions({
   startDate,
   endDate,
   interval,
+  intervalMultiplier,
 }: FetchInstrumentHistoryParams) {
   const gcTime = 60_000; // 1 minute
 
@@ -45,6 +57,7 @@ export function instrumentHistoryQueryOptions({
       interval,
       roundDateToGCTime(startDate),
       roundDateToGCTime(endDate),
+      intervalMultiplier,
     ],
     queryFn: async () => {
       const instrumentHistoryData = await fetchInstrumentHistory({
@@ -52,20 +65,16 @@ export function instrumentHistoryQueryOptions({
         startDate,
         endDate,
         interval,
+        intervalMultiplier,
       });
-      const data = instrumentHistoryData.data.map((item) => ({
+      const data = instrumentHistoryData.map((item) => ({
         date: item.timestamp,
-        open: parseFloat(item.open),
-        close: parseFloat(item.close),
-        high: parseFloat(item.high),
-        low: parseFloat(item.low),
+        open: item.open,
+        close: item.close,
+        high: item.high,
+        low: item.low,
       }));
-      const result = {
-        min_price: instrumentHistoryData.min_price,
-        max_price: instrumentHistoryData.max_price,
-        data,
-      };
-      return result;
+      return data;
     },
     staleTime: 1000 * 60, // 1 minute
     gcTime,

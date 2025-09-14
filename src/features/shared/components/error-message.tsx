@@ -12,7 +12,7 @@ export const Message = ({
   return (
     <div
       className={cn(
-        'h-32 flex items-center justify-center text-center',
+        'h-full flex items-center justify-center text-center text-muted-foreground',
         className
       )}
     >

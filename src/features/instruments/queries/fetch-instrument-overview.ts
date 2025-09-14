@@ -1,7 +1,8 @@
 import {
   instrumentOverview,
   instrumentOverviewItemToInstrument,
-} from '../types/types';
+} from '../types/instrument-overview';
+import type { SortDirection } from '../types/types';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
 type FetchInstrumentsOverviewOptions = {
@@ -10,7 +11,7 @@ type FetchInstrumentsOverviewOptions = {
   pageSize: number;
   sector?: string;
   sortBy?: string;
-  sortDirection?: string;
+  sortDirection?: SortDirection;
 };
 
 export async function fetchInstrumentsOverview({
@@ -27,7 +28,7 @@ export async function fetchInstrumentsOverview({
     page_size: pageSize.toString(),
     ...(sector && { sector }),
     ...(sortBy && { sort_by: sortBy }),
-    ...(sortDirection && { sort_direction: sortDirection }),
+    sort_direction: sortDirection,
   });
 
   const response = await validatedFetch(

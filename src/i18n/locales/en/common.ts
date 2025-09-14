@@ -28,14 +28,22 @@ const enCommon = {
   expand: 'Expand',
   collapse: 'Collapse',
   intervals: {
-    one_minute: '1 minute',
-    five_minutes: '5 minutes',
-    thirty_minutes: '30 minutes',
-    one_hour: '1 hour',
-    one_day: '1 day',
-    one_week: '1 week',
+    second: 'Second',
+    minute: 'Minute',
+    hour: 'Hour',
+    day: 'Day',
+    week: 'Week',
+    month: 'Month',
+    quarter: 'Quarter',
+    year: 'Year',
   },
+  select_interval: 'Select interval',
+  interval: 'Interval',
   transactions: 'Transactions',
+  charts: {
+    line_chart: 'Line chart',
+    candlestick_chart: 'Candlestick chart',
+  },
 };
 
 export default enCommon;

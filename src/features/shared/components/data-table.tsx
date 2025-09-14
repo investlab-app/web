@@ -51,7 +51,7 @@ import type {
   VisibilityState,
 } from '@tanstack/react-table';
 
-import { useIsMobile } from '@/features/shared/hooks/use-is-mobile';
+import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { Button } from '@/features/shared/components/ui/button';
 import { Checkbox } from '@/features/shared/components/ui/checkbox';
