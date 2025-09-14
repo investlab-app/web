@@ -16,11 +16,15 @@ export function useWS(events: Array<string>) {
       handlerId,
       events: new Set(events),
     });
-  }, [wsContext, events, handlerId]);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps --
+    We only want to update the handler when events change */
+  }, [events, handlerId]);
 
   useEffect(() => {
     return () => wsContext.removeHandler(handlerId);
-  }, [wsContext, handlerId]);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps --
+    We only want to remove the handler on unmount */
+  }, []);
 
   return wsContext.ws;
 }

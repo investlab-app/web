@@ -53,7 +53,9 @@ export function WSProvider({ children }: WSProviderParams) {
 
   function updateHandler({ handlerId, events: newHandlerEvents }: Handler) {
     const newHandlers = new Map(new Map(store.state.handlers));
-    if (newHandlerEvents.size === 0) {
+    if (newHandlerEvents.size > 0) {
+      newHandlers.set(handlerId, { handlerId, events: newHandlerEvents });
+    } else {
       newHandlers.delete(handlerId);
     }
 
@@ -88,19 +90,20 @@ export function WSProvider({ children }: WSProviderParams) {
     });
 
     if (
-      new Set(newEvents.keys()).difference(new Set(oldEvents.keys())).size > 0
+      new Set(newEvents.keys()).symmetricDifference(new Set(oldEvents.keys()))
+        .size > 0
     ) {
       syncBackend();
     }
   }
 
-  function cleanup(handlerId: HandlerId) {
+  function removeHandler(handlerId: HandlerId) {
     updateHandler({ handlerId, events: new Set() });
   }
 
   const contextValue: WSContextType = {
     updateHandler,
-    removeHandler: cleanup,
+    removeHandler,
     ws,
   };
 

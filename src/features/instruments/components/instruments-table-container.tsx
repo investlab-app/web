@@ -76,7 +76,6 @@ const InstrumentsTableContainer = ({
       if (tickersDataMap.size === 0) return;
 
       setLiveInstruments((prev) => {
-        console.log(tickersDataMap);
         tickersDataMap.forEach(
           (data) =>
             (prev[data.symbol] = {
