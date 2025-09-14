@@ -66,8 +66,9 @@ const InstrumentsTableContainer = ({
       const out = livePriceDataDTO(lastJsonMessage);
       if (out instanceof type.errors) return;
 
+      const tickersSet = new Set(tickers);
       const tickersDataMap = out.prices.reduce((acc, item) => {
-        if (tickers.includes(item.symbol)) {
+        if (tickersSet.has(item.symbol)) {
           acc.set(item.symbol, item);
         }
         return acc;
@@ -75,13 +76,13 @@ const InstrumentsTableContainer = ({
       if (tickersDataMap.size === 0) return;
 
       setLiveInstruments((prev) => {
+        console.log(tickersDataMap);
         tickersDataMap.forEach(
           (data) =>
             (prev[data.symbol] = {
               ...prev[data.symbol],
               currentPrice: data.close,
-              // @ts-ignore op should be returned from the API? (TODO)
-              dayChange: data.close - data.op,
+              dayChange: data.close - data.official_open_price,
             })
         );
         return prev;

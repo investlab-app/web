@@ -24,7 +24,7 @@ export function useLiveChartUpdate({
   date,
 }: useLiveChartUpdateProps) {
   useEffect(() => {
-    if (!value || !date || !chartRef.current) return;
+    if (value === undefined || !date || !chartRef.current) return;
 
     const chartInstance = chartRef.current.getEchartsInstance();
     const currentOption = chartInstance.getOption();

@@ -27,7 +27,7 @@ function createLabelIntervalFn(
     return () => true;
   }
 
-  const interval = Math.floor(dataLength / (3 * (1 / zoom)));
+  const interval = Math.floor((dataLength * zoom) / 3);
 
   return (index: number) => index % interval === 0;
 }

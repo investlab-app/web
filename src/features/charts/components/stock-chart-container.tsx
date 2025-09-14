@@ -101,8 +101,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const appliedInterval = useFrozenValue(interval, isFetching);
   const isIntervalChanging = appliedInterval !== interval;
 
-  const currentPrice =
-    livePrice?.close || priceHistory?.[priceHistory.length - 1]?.close;
+  const currentPrice = livePrice?.close || priceHistory?.at(-1)?.close;
 
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation

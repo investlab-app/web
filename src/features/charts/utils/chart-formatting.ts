@@ -1,7 +1,7 @@
 import type { useTranslation } from 'react-i18next';
 import type { TimeInterval } from './time-ranges';
 
-interface FormatChartDateByRangeProps {
+export interface FormatChartDateByRangeProps {
   date: Date;
   range: TimeInterval;
   tooltip?: boolean;

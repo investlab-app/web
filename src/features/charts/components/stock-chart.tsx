@@ -35,8 +35,8 @@ function StockChartCandlestick({
   const { i18n } = useTranslation();
 
   const chartOptions = useCandlestickChartOptions({
-    stockName: ticker,
-    chartData: priceHistory,
+    ticker,
+    priceHistory,
     selectedInterval,
     zoom: zoom ?? 1 / 3,
     i18n,

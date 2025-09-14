@@ -14,22 +14,22 @@ import { useCssVar } from '@/features/shared/utils/styles';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 interface UseCandlestickChartOptionsProps {
-  stockName: string;
-  chartData: Array<InstrumentPricePoint>;
+  ticker: string;
+  priceHistory: Array<InstrumentPricePoint>;
   selectedInterval: TimeInterval;
   zoom?: number;
   i18n: ReturnType<typeof useTranslation>['i18n'];
 }
 
 export function useCandlestickChartOptions({
-  stockName,
-  chartData,
+  ticker,
+  priceHistory,
   selectedInterval,
   zoom = 1 / 3,
   i18n,
 }: UseCandlestickChartOptionsProps) {
-  const dates = chartData.map((item) => item.date);
-  const seriesData = chartData.map((item) => [
+  const dates = priceHistory.map((item) => item.date);
+  const seriesData = priceHistory.map((item) => [
     item.open,
     item.close,
     item.low,
@@ -82,7 +82,7 @@ export function useCandlestickChartOptions({
 
   const series: Array<SeriesOption> = [
     {
-      name: stockName,
+      name: ticker,
       type: 'candlestick',
       data: seriesData,
 

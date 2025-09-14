@@ -58,3 +58,5 @@ export const livePriceDataDTO = type({
   }).array(),
 });
 export type LivePriceDataDTO = typeof livePriceDataDTO.infer;
+
+export type SortDirection = 'asc' | 'desc';

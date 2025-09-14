@@ -1,4 +1,5 @@
 import { type } from 'arktype';
+import { useCallback } from 'react';
 import { formatChartDateByRange } from '../utils/chart-formatting';
 import { useChartOptions } from './use-chart-options';
 import type {
@@ -30,33 +31,36 @@ export function useLineChartOptions({
   const dates = chartData.map((item) => item.date);
   const seriesData = chartData.map((item) => item.close);
 
-  const formatter = (params: TooltipComponentFormatterCallbackParams) => {
-    const paramArray = Array.isArray(params) ? params : [params];
-    const { axisValue, data } =
-      paramArray[0] as DefaultLabelFormatterCallbackParams & {
-        axisValue: string;
-      };
+  const formatter = useCallback(
+    (params: TooltipComponentFormatterCallbackParams) => {
+      const paramArray = Array.isArray(params) ? params : [params];
+      const { axisValue, data } =
+        paramArray[0] as DefaultLabelFormatterCallbackParams & {
+          axisValue: string;
+        };
 
-    const formattedDate = formatChartDateByRange({
-      date: new Date(axisValue),
-      range: selectedInterval,
-      tooltip: true,
-      i18n,
-    });
+      const formattedDate = formatChartDateByRange({
+        date: new Date(axisValue),
+        range: selectedInterval,
+        tooltip: true,
+        i18n,
+      });
 
-    const value = type('number')(data);
+      const value = type('number')(data);
 
-    if (value instanceof type.errors) {
-      console.error('Invalid line chart data format', value);
-      return '';
-    }
+      if (value instanceof type.errors) {
+        console.error('Invalid line chart data format', value);
+        return '';
+      }
 
-    return `<div>
+      return `<div>
 <strong>${formattedDate}</strong>
 <br />
 ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
 </div>`;
-  };
+    },
+    [selectedInterval, i18n, t]
+  );
 
   const series: Array<SeriesOption> = [
     {
