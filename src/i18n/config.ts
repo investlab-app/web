@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 
 import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import enAuth from './locales/en/auth';
 import plAuth from './locales/pl/auth';
 import enCommon from './locales/en/common';
@@ -20,46 +21,51 @@ import plStatistics from './locales/pl/statistics';
 import enOrders from './locales/en/orders';
 import plOrders from './locales/pl/orders';
 
-const browserLanguage = navigator.language;
-const defaultLanguage = browserLanguage.split('-')[0];
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en',
+    debug: import.meta.env.DEV,
 
-i18n.use(initReactI18next).init({
-  lng: defaultLanguage,
-  fallbackLng: 'en',
-  debug: import.meta.env.DEV,
+    detection: {
+      order: ['localStorage', 'cookie', 'navigator'],
+      caches: ['localStorage'],
+      convertDetectedLanguage: (lang) => lang.split('-')[0],
+    },
 
-  interpolation: {
-    escapeValue: false,
-  },
+    interpolation: {
+      escapeValue: false,
+    },
 
-  resources: {
-    en: {
-      translation: {
-        auth: enAuth,
-        common: enCommon,
-        hero: enHero,
-        instruments: enInstruments,
-        investor: enInvestor,
-        orders: enOrders,
-        settings: enSettings,
-        statistics: enStatistics,
-        transactions: enTransactions,
+    resources: {
+      en: {
+        translation: {
+          auth: enAuth,
+          common: enCommon,
+          hero: enHero,
+          instruments: enInstruments,
+          investor: enInvestor,
+          orders: enOrders,
+          settings: enSettings,
+          statistics: enStatistics,
+          transactions: enTransactions,
+        },
+      },
+      pl: {
+        translation: {
+          auth: plAuth,
+          common: plCommon,
+          hero: plHero,
+          instruments: plInstruments,
+          investor: plInvestor,
+          orders: plOrders,
+          settings: plSettings,
+          statistics: plStatistics,
+          transactions: plTransactions,
+        },
       },
     },
-    pl: {
-      translation: {
-        auth: plAuth,
-        common: plCommon,
-        hero: plHero,
-        instruments: plInstruments,
-        investor: plInvestor,
-        orders: plOrders,
-        settings: plSettings,
-        statistics: plStatistics,
-        transactions: plTransactions,
-      },
-    },
-  },
-});
+  });
 
 export default i18n;
