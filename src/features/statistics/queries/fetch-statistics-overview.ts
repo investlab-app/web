@@ -1,37 +1,16 @@
 import { queryOptions } from '@tanstack/react-query';
-import { type } from 'arktype';
-import { statisticsOverview } from '../types/types';
-import type { StatisticsOverview } from '../types/types';
+import { tradingOverview } from '../types/types';
+import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
-export async function fetchStatisticsOverview() {
-  const response = await new Promise((resolve) => {
-    setTimeout(() => {
-      const fakeData = _generateFakeStatisticsOverview();
-      resolve(fakeData);
-    }, 3000);
-  });
-
-  const result = statisticsOverview(response);
-  if (result instanceof type.errors) {
-    console.error('Invalid statistics overview response:', result.summary);
-    throw new Error(`Invalid statistics overview response: ${result.summary}`);
-  }
-
-  return result;
+export async function fetchTradingOverview() {
+  return validatedFetch(
+      `/api/investors/me/statistics/trading-overview/`,
+      tradingOverview
+    );
 }
 
-export const statisticsOverviewQueryOptions = queryOptions({
-  queryKey: ['statisticsOverview'],
-  queryFn: fetchStatisticsOverview,
+export const tradingOverviewQueryOptions = queryOptions({
+  queryKey: ['tradingOverview'],
+  queryFn: fetchTradingOverview,
   staleTime: 1 * 1000,
 });
-
-const _generateFakeStatisticsOverview = (): StatisticsOverview => {
-  return {
-    total_trades: Math.floor(Math.random() * 500),
-    buys_sells: `${Math.floor(Math.random() * 250).toString()} / ${Math.floor(Math.random() * 250).toString()}`,
-    avg_gain: parseFloat((Math.random() * 10).toFixed(2)),
-    avg_loss: parseFloat((Math.random() * 10).toFixed(2)),
-    total_return: parseFloat((Math.random() * 10000).toFixed(2)),
-  };
-};

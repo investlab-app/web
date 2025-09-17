@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { statisticsOverviewQueryOptions } from '../queries/fetch-statistics-overview';
+import { tradingOverviewQueryOptions } from '../queries/fetch-statistics-overview';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
 
@@ -11,7 +11,7 @@ const StatsOverviewRibbon = () => {
     data: stats,
     isLoading,
     isError,
-  } = useQuery(statisticsOverviewQueryOptions);
+  } = useQuery(tradingOverviewQueryOptions);
 
   const tiles = [
     {
@@ -20,7 +20,7 @@ const StatsOverviewRibbon = () => {
     },
     {
       title: t('statistics.buys_sells'),
-      value: stats?.buys_sells,
+      value: `${stats?.buys}/${stats?.sells}`,
     },
     {
       title: t('statistics.avg_gain'),

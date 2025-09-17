@@ -37,7 +37,7 @@ export function WalletSection() {
             new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: t('common.currency'),
-            }).format(accountValue.value)}
+            }).format(accountValue.total_account_value)}
         </a>
       </SidebarMenuButton>
       <Button

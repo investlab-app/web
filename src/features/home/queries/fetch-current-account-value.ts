@@ -1,8 +1,10 @@
 import { type } from 'arktype';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
-const currentAccountValue = type({
-  value: 'number',
+export const currentAccountValue = type({
+  total_account_value: 'number',
+  gain: 'number',
+  gain_percent: 'number',
 });
 export type CurrentAccountValue = typeof currentAccountValue.infer;
 
