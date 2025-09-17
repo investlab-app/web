@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { tradingOverviewQueryOptions } from '../queries/fetch-statistics-overview';
+import { tradingOverviewQueryOptions } from '../queries/fetch-trading-overview';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
 

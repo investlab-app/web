@@ -4,9 +4,9 @@ import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
 import { investorStatsQueryOptions } from '@/features/home/components/account-overview-ribbon';
 import { assetAllocationQueryOptions } from '@/features/home/components/asset-allocation-container';
-import { currentAccountValueQueryOptions } from '@/features/shared/components/wallet-section';
 import { accountValueOverTimeQueryOptions } from '@/features/home/components/account-value-chart-container';
 import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
+import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
 
 export const Route = createFileRoute('/')({
   loader: async ({ context: { queryClient, auth, i18n } }) => {
