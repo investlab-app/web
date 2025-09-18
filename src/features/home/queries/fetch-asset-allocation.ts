@@ -16,5 +16,5 @@ const assetAllocation = type({
 export type AssetAllocation = typeof assetAllocation.infer;
 
 export function fetchAssetAllocation() {
-  return validatedFetch(`/api/investors/me/asset-allocation`, assetAllocation);
+  return validatedFetch(`/api/investors/me/asset-allocation/`, assetAllocation);
 }

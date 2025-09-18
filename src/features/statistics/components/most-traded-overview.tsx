@@ -70,14 +70,14 @@ const MostTradedOverview = () => {
         <TableBody>
           {!data
             ? RenderSkeletonRows({})
-            : data.map((instrumentOverview: InstrumentSummary) => (
+            : data.instruments.map((instrumentOverview: InstrumentSummary) => (
                 <TableRow key={instrumentOverview.symbol}>
                   <TableCell>{instrumentOverview.symbol}</TableCell>
                   <TableCell className="text-right">
                     {instrumentOverview.no_trades}
                   </TableCell>
                   <TableCell className="text-right">
-                    {instrumentOverview.buys_sells}
+                    {`${instrumentOverview.buys}/${instrumentOverview.sells}`}
                   </TableCell>
                   <TableCell
                     className={cn(

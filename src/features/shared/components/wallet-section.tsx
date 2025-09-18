@@ -1,20 +1,14 @@
 import { IconPlus, IconWallet } from '@tabler/icons-react';
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
-import { fetchCurrentAccountValue } from '@/features/home/queries/fetch-current-account-value';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-
-export const currentAccountValueQueryOptions = queryOptions({
-  queryKey: ['currentAccountValue'],
-  queryFn: fetchCurrentAccountValue,
-  staleTime: 60 * 1000,
-});
+import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
 
 export function WalletSection() {
   const { t } = useTranslation();
@@ -37,7 +31,7 @@ export function WalletSection() {
             new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: t('common.currency'),
-            }).format(accountValue.value)}
+            }).format(accountValue.total_account_value)}
         </a>
       </SidebarMenuButton>
       <Button

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { profileOverviewQueryOptions } from '../queries/fetch-profile-overview';
 import {
   Table,
@@ -12,6 +12,7 @@ import {
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
+import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
 
 const ProfileOverviewBodySkeleton = () => {
   return (
@@ -41,7 +42,16 @@ const ProfileOverviewBodySkeleton = () => {
 const ProfileOverview = () => {
   const { t } = useTranslation();
 
-  const { data } = useQuery(profileOverviewQueryOptions);
+  const [profileOverviewResult, currentAccountValueResult] = useQueries({
+    queries: [profileOverviewQueryOptions, currentAccountValueQueryOptions],
+  });
+  const data =
+    profileOverviewResult.data && currentAccountValueResult.data
+      ? {
+          ...profileOverviewResult.data,
+          ...currentAccountValueResult.data,
+        }
+      : undefined;
 
   return (
     <div className="overflow-x-auto">

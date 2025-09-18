@@ -17,5 +17,5 @@ const ownedShares = type({
 export type OwnedShares = typeof ownedShares.infer;
 
 export function fetchOwnedShares() {
-  return validatedFetch(`/api/investors/me/owned-shares`, ownedShares);
+  return validatedFetch(`/api/investors/me/owned-shares/`, ownedShares);
 }

@@ -1,30 +1,35 @@
 import { type } from 'arktype';
 
-export const statisticsOverview = type({
+export const tradingOverview = type({
   total_trades: 'number',
-  buys_sells: 'string',
+  buys: 'number',
+  sells: 'number',
   avg_gain: 'number',
   avg_loss: 'number',
   total_return: 'number',
 });
-export type StatisticsOverview = typeof statisticsOverview.infer;
+export type TradingOverview = typeof tradingOverview.infer;
 
-export const instrumentSummary = type({
+const instrumentSummary = type({
   symbol: 'string',
   no_trades: 'number',
-  buys_sells: 'string',
+  buys: 'number',
+  sells: 'number',
   avg_gain: 'number',
   avg_loss: 'number',
   total_return: 'number',
 });
 export type InstrumentSummary = typeof instrumentSummary.infer;
 
-export const profileSummary = type({
+export const mostTradedOverview = type({
+  instruments: instrumentSummary.array(),
+});
+
+export type MostTradedOverview = typeof mostTradedOverview.infer;
+
+export const profileOverview = type({
   level: 'string',
   exp_points: 'number',
   left_to_next_level: 'number',
-  total_account_value: 'number',
-  gain: 'number',
-  gain_percent: 'number',
 });
-export type ProfileSummary = typeof profileSummary.infer;
+export type ProfileOverview = typeof profileOverview.infer;

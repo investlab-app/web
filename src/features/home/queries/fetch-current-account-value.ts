@@ -1,8 +1,11 @@
 import { type } from 'arktype';
+import { queryOptions } from '@tanstack/react-query';
 import { validatedFetch } from '@/features/shared/queries/validated-fetch';
 
-const currentAccountValue = type({
-  value: 'number',
+export const currentAccountValue = type({
+  total_account_value: 'number',
+  gain: 'number',
+  gain_percent: 'number',
 });
 export type CurrentAccountValue = typeof currentAccountValue.infer;
 
@@ -12,3 +15,9 @@ export function fetchCurrentAccountValue() {
     currentAccountValue
   );
 }
+
+export const currentAccountValueQueryOptions = queryOptions({
+  queryKey: ['currentAccountValue'],
+  queryFn: fetchCurrentAccountValue,
+  staleTime: 60 * 1000,
+});
