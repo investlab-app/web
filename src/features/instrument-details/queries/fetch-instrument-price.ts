@@ -1,47 +1,27 @@
 import { queryOptions } from '@tanstack/react-query';
-import { type } from 'arktype';
-import { instrumentPrice } from '../types/types';
+import { tickerPrice } from '../types/ticker-price';
+import { httpRequest } from '@/features/shared/queries/http-request';
 
-const generateRandomPrice = (ticker: string) => {
-  return {
-    name: ticker,
-    currentPrice: Math.floor(Math.random() * 1000) + 1,
-    dayChange: Math.random() * 10,
-  };
-};
-
-interface fetchInstrumentCurrentPriceOptions {
+interface fetchTickerPriceOptions {
   ticker: string;
 }
 
-async function fetchInstrumentCurrentPrice({
-  ticker,
-}: fetchInstrumentCurrentPriceOptions) {
-  const response = await new Promise((resolve) => {
-    setTimeout(() => {
-      const history = generateRandomPrice(ticker);
-      resolve(history);
-    }, 3000);
+async function fetchTickerPrice({ ticker }: fetchTickerPriceOptions) {
+  return httpRequest({
+    endpoint: `/api/prices/${ticker}/`,
+    validator: tickerPrice,
   });
-
-  const result = instrumentPrice(response);
-  if (result instanceof type.errors) {
-    console.error('Invalid transactions history response:', result.summary);
-    throw new Error(`Invalid transactions history response: ${result.summary}`);
-  }
-
-  return result;
 }
 
 interface InstrumentCurrentPriceQueryOptions {
   ticker: string;
 }
 
-export function instrumentCurrentPriceQueryOptions({
+export function tickerPriceQueryOptions({
   ticker,
 }: InstrumentCurrentPriceQueryOptions) {
   return queryOptions({
-    queryKey: [`instrumentCurrentPrice`, ticker],
-    queryFn: () => fetchInstrumentCurrentPrice({ ticker: ticker }),
+    queryKey: [`ticker-price`, ticker],
+    queryFn: () => fetchTickerPrice({ ticker: ticker }),
   });
 }

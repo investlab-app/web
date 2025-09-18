@@ -5,7 +5,7 @@ interface InvestLabLogoProps {
 }
 
 export function InvestLabLogo({
-  className = '!size-5',
+  className,
   width = 20,
   height = 20,
 }: InvestLabLogoProps) {

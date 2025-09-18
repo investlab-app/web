@@ -22,6 +22,7 @@ const enTransactions = {
     instrument_details: 'Instrument details',
   },
   error_loading: 'Sorry, the transaction history could not be loaded.',
+  no_open_positions: 'You have no open positions for this instrument.',
 };
 
 export default enTransactions;

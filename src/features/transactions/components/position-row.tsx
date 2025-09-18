@@ -1,18 +1,23 @@
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 import { getProfabilityColor } from '../utils/colors';
 import { TransactionRow } from './transaction-row';
 import type { Position } from '../types/types';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { Button } from '@/features/shared/components/ui/button';
 
 interface PositionRowProps {
   position: Position;
-  showDetails: () => void;
+  isNavigable?: boolean;
 }
 
-export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
+export const PositionRow = ({
+  position,
+  isNavigable = true,
+}: PositionRowProps) => {
   const { t, i18n } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -24,8 +29,9 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
       >
         <TableCell>
           <div className="flex items-center gap-1">
-            <button
-              className="p-1 hover:bg-muted/20 rounded cursor-pointer border border-transparent"
+            <Button
+              variant={'ghost'}
+              className="size-8"
               aria-label={collapsed ? t('common.expand') : t('common.collapse')}
             >
               {collapsed ? (
@@ -33,18 +39,21 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
               ) : (
                 <ChevronDown className="h-4 w-4" />
               )}
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                showDetails();
-              }}
-              className="p-1 hover:bg-muted/20 rounded cursor-pointer border border-transparent font-medium"
-              aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
-              title={t('transactions.actions.instrument_details')}
-            >
-              {position.name}
-            </button>
+            </Button>
+            {isNavigable ? (
+              <Button variant={'link'} asChild>
+                <Link
+                  className="p-1! text-foreground! h-8!"
+                  aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
+                  title={t('transactions.actions.instrument_details')}
+                  to={`/instruments/${position.name}`}
+                >
+                  {position.name}
+                </Link>
+              </Button>
+            ) : (
+              <span className="p-1 h-8 flex items-center">{position.name}</span>
+            )}
           </div>
         </TableCell>
         <TableCell>
@@ -53,19 +62,19 @@ export const PositionRow = ({ position, showDetails }: PositionRowProps) => {
         <TableCell></TableCell>
         <TableCell className="hidden xl:table-cell"></TableCell>
         <TableCell className="text-right">
-          {toFixedLocalized(position.marketValue, i18n.language, 2)}{' '}
+          {toFixedLocalized(position.market_value, i18n.language, 2)}{' '}
           {t('common.currency')}
         </TableCell>
         <TableCell
-          className={`text-right ${getProfabilityColor(position.gainLoss)}`}
+          className={`text-right ${getProfabilityColor(position.gain_loss)}`}
         >
-          {toFixedLocalized(position.gainLoss, i18n.language, 2)}{' '}
+          {toFixedLocalized(position.gain_loss, i18n.language, 2)}{' '}
           {t('common.currency')}
         </TableCell>
         <TableCell
-          className={`text-right ${getProfabilityColor(position.gainLoss)}`}
+          className={`text-right ${getProfabilityColor(position.gain_loss)}`}
         >
-          {toFixedLocalized(position.gainLossPct, i18n.language, 2)}%
+          {toFixedLocalized(position.gain_loss_pct, i18n.language, 2)}%
         </TableCell>
       </TableRow>
 

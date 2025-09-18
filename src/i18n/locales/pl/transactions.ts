@@ -23,6 +23,7 @@ const plTransactions = {
   },
   error_loading:
     'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
+  no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
 };
 
 export default plTransactions;

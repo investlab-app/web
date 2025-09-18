@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+import { httpRequest } from '@/features/shared/queries/http-request';
 
 const assetAllocationItem = type({
   asset_class_display_name: 'string',
@@ -16,5 +16,8 @@ const assetAllocation = type({
 export type AssetAllocation = typeof assetAllocation.infer;
 
 export function fetchAssetAllocation() {
-  return validatedFetch(`/api/investors/me/asset-allocation/`, assetAllocation);
+  return httpRequest({
+    endpoint: `/api/investors/me/asset-allocation/`,
+    validator: assetAllocation,
+  });
 }

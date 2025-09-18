@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+import { httpRequest } from '@/features/shared/queries/http-request';
 
 const accountValueData = type({
   date: 'string',
@@ -14,8 +14,8 @@ export type AccountValueData = typeof accountValueData.infer;
 export type AccountValueOverTime = typeof accountValueOverTime.infer;
 
 export async function fetchAccountValueOverTime() {
-  return validatedFetch(
-    '/api/investors/me/account-value/',
-    accountValueOverTime
-  );
+  return httpRequest({
+    endpoint: '/api/investors/me/account-value/',
+    validator: accountValueOverTime,
+  });
 }

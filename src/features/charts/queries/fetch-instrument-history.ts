@@ -1,7 +1,7 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 import { instrumentHistory } from '../types/instrument-history';
 import type { TimeInterval } from '../utils/time-ranges';
-import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+import { httpRequest } from '@/features/shared/queries/http-request';
 import { roundDateToInterval } from '@/features/shared/utils/date';
 
 interface FetchInstrumentHistoryParams {
@@ -23,19 +23,18 @@ async function fetchInstrumentHistory({
   interval,
   intervalMultiplier,
 }: FetchInstrumentHistoryParams) {
-  const queryString = new URLSearchParams({
+  const params = {
     ticker,
     start_date: formatDate(startDate),
     end_date: formatDate(endDate),
     interval,
-    ...(intervalMultiplier && {
-      interval_multiplier: intervalMultiplier.toString(),
-    }),
+    interval_multiplier: intervalMultiplier?.toString(),
+  };
+  return httpRequest({
+    endpoint: `/api/prices/ohlc`,
+    searchParams: params,
+    validator: instrumentHistory,
   });
-  return await validatedFetch(
-    `/api/prices/ohlc/?${queryString.toString()}`,
-    instrumentHistory
-  );
 }
 
 export function instrumentHistoryQueryOptions({

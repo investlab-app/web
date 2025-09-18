@@ -1,0 +1,65 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { InstrumentIconCircle } from './instrument-image-circle';
+import { instrumentDetailQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-detail';
+import { Badge } from '@/features/shared/components/ui/badge';
+
+interface InstrumentWithDescriptionHeaderProps {
+  ticker: string;
+}
+
+export function InstrumentHeader({
+  ticker: instrumentId,
+}: InstrumentWithDescriptionHeaderProps) {
+  const { data: instrumentInfo } = useSuspenseQuery(
+    instrumentDetailQueryOptions({ ticker: instrumentId })
+  );
+
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex gap-4">
+      <div className="flex-shrink-0">
+        <InstrumentIconCircle
+          symbol={instrumentId}
+          name={instrumentInfo.name || instrumentId}
+          icon={instrumentInfo.icon}
+          size="lg"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold">
+          {instrumentInfo.name || instrumentId}
+        </h1>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row flex-wrap gap-2 items-center">
+            {instrumentInfo.primary_exchange && (
+              <Badge variant="secondary">
+                <span className="text-muted-foreground">
+                  {t('instruments.exchange')}:
+                </span>
+                <span className="font-bold">
+                  {instrumentInfo.primary_exchange}
+                </span>
+              </Badge>
+            )}
+            {instrumentInfo.market_cap && instrumentInfo.currency_name && (
+              <Badge variant="secondary">
+                <span className="text-muted-foreground">
+                  {t('instruments.market_capital')}:
+                </span>
+                <span className="font-bold">
+                  {instrumentInfo.market_cap.toUpperCase()}{' '}
+                  {instrumentInfo.currency_name.toUpperCase()}
+                </span>
+              </Badge>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {instrumentInfo.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

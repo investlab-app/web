@@ -1,8 +1,15 @@
 import { IconSwitchVertical } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import type { BuySellActionProps } from '../types/types';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
+
+interface SellOpenSectionProps {
+  mode: 'price' | 'volume';
+  value: number;
+  derivedValue: number;
+  onValueChange: (val: number) => void;
+  onModeToggle: () => void;
+}
 
 export const SellOpenSection = ({
   mode,
@@ -10,9 +17,9 @@ export const SellOpenSection = ({
   derivedValue,
   onValueChange,
   onModeToggle,
-}: BuySellActionProps) => {
+}: SellOpenSectionProps) => {
   const { t } = useTranslation();
-  const handleInputChange = (val: number | null | undefined) => {
+  const handleInputChange = (val: number | undefined) => {
     if (typeof val === 'number' && !isNaN(val)) {
       onValueChange(val);
     }

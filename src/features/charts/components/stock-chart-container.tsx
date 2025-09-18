@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from '@/features/shared/components/ui/select';
 import { useWS } from '@/features/shared/hooks/use-ws';
-import { livePriceDataDTO } from '@/features/instruments/types/types';
+import { livePrice } from '@/features/charts/types/live-price';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import {
@@ -61,7 +61,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const endDate = new Date();
 
   const [isCandlestick, setIsCandlestick] = useState(false);
-  const [livePrice, setLivePrice] = useState<InstrumentPricePoint>();
+  const [currentPrice, setCurrentPrice] = useState<InstrumentPricePoint>();
 
   const {
     data: priceHistory,
@@ -82,13 +82,13 @@ export function StockChartContainer({ ticker }: StockChartProps) {
 
   useEffect(() => {
     if (lastJsonMessage) {
-      const out = livePriceDataDTO(lastJsonMessage);
+      const out = livePrice(lastJsonMessage);
       if (out instanceof type.errors) return;
 
       const tickerData = out.prices.find((item) => item.symbol === ticker);
       if (!tickerData) return;
 
-      setLivePrice({
+      setCurrentPrice({
         date: new Date(tickerData.end_timestamp).toISOString(),
         open: tickerData.open,
         high: tickerData.high,
@@ -101,7 +101,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const appliedInterval = useFrozenValue(interval, isFetching);
   const isIntervalChanging = appliedInterval !== interval;
 
-  const currentPrice = livePrice?.close || priceHistory?.at(-1)?.close;
+  const latestClosingPrice = currentPrice?.close || priceHistory?.at(-1)?.close;
 
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
@@ -112,10 +112,10 @@ export function StockChartContainer({ ticker }: StockChartProps) {
     <Card>
       <CardHeader>
         <CardTitle>{ticker}</CardTitle>
-        {currentPrice && (
+        {latestClosingPrice && (
           <CardDescription>
             {t('instruments.current_price')}: $
-            {toFixedLocalized(currentPrice, i18n.language, 2)}
+            {toFixedLocalized(latestClosingPrice, i18n.language, 2)}
           </CardDescription>
         )}
         <CardAction>
@@ -178,7 +178,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               priceHistory={priceHistory}
               selectedInterval={appliedInterval}
               zoom={zoom}
-              liveUpdatePoint={livePrice}
+              liveUpdatePoint={currentPrice}
             />
           ) : (
             <Message
