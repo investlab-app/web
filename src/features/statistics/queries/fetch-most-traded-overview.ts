@@ -1,12 +1,12 @@
 import { queryOptions } from '@tanstack/react-query';
 import { mostTradedOverview } from '../types/types';
-import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+import { httpRequest } from '@/features/shared/queries/http-request';
 
 export async function fetchMostTradedOverview() {
-  return validatedFetch(
-    `/api/investors/me/statistics/most-traded/`,
-    mostTradedOverview
-  );
+  return httpRequest({
+    endpoint: `/api/investors/me/statistics/most-traded/`,
+    validator: mostTradedOverview,
+  });
 }
 
 export const mostTradedOverviewQueryOptions = queryOptions({

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createFileRoute } from '@tanstack/react-router';
 import { CheckCircle2, CircleDot } from 'lucide-react';
@@ -10,6 +9,7 @@ import {
 } from '@/features/shared/components/ui/tabs';
 import { PositionsTable } from '@/features/transactions/components/positions-table';
 import AppFrame from '@/features/shared/components/app-frame';
+import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 
 export const Route = createFileRoute('/_authed/transactions/')({
   component: TransactionsPage,
@@ -17,11 +17,10 @@ export const Route = createFileRoute('/_authed/transactions/')({
 
 function TransactionsPage() {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<'open' | 'closed'>('open');
 
   return (
     <AppFrame>
-      <Tabs value={tab} onValueChange={(v) => setTab(v as 'open' | 'closed')}>
+      <Tabs defaultValue="open">
         <TabsList>
           <TabsTrigger value="open" className="cursor-pointer text-xs">
             <CircleDot className="opacity-80" />
@@ -33,10 +32,14 @@ function TransactionsPage() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="open">
-          <PositionsTable type="open" />
+          <ScrollableHorizontally>
+            <PositionsTable type="open" />
+          </ScrollableHorizontally>
         </TabsContent>
         <TabsContent value="closed">
-          <PositionsTable type="closed" />
+          <ScrollableHorizontally>
+            <PositionsTable type="closed" />
+          </ScrollableHorizontally>
         </TabsContent>
       </Tabs>
     </AppFrame>

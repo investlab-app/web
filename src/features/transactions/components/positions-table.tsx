@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from '@tanstack/react-router';
 import { transactionsHistoryQueryOptions } from '../queries/fetch-transactions-history';
 import { PositionRow } from './position-row';
 import {
@@ -21,27 +19,16 @@ type PositionsTableProps = {
 };
 
 export function PositionsTable({ type }: PositionsTableProps) {
-  const { navigate } = useRouter();
-  const { getToken } = useAuth();
-
-  const { data } = useQuery(
-    transactionsHistoryQueryOptions({ type, getToken })
-  );
+  const { data } = useQuery(transactionsHistoryQueryOptions({ type }));
 
   return (
-    <Table>
+    <Table className="rounded-md border">
       <PositionsTableHeader />
       <TableBody>
         {!data ? (
-          <PositionsTableSkeleton />
+          <PositionsTableBodySkeleton />
         ) : (
-          data.map((pos) => (
-            <PositionRow
-              key={pos.name}
-              position={pos}
-              showDetails={() => navigate({ to: `/instruments/${pos.name}` })}
-            />
-          ))
+          data.map((pos) => <PositionRow key={pos.name} position={pos} />)
         )}
       </TableBody>
     </Table>
@@ -53,9 +40,7 @@ export function PositionsTableHeader() {
   return (
     <TableHeader>
       <TableRow>
-        <TableHead style={{ width: '250px' }}>
-          {t('transactions.table.headers.name')}
-        </TableHead>
+        <TableHead>{t('transactions.table.headers.name')}</TableHead>
         <TableHead>{t('transactions.table.headers.quantity')}</TableHead>
         <TableHead className="text-right">
           {t('transactions.table.headers.share_price')}
@@ -77,7 +62,7 @@ export function PositionsTableHeader() {
   );
 }
 
-export function PositionsTableSkeleton({ length = 5 }) {
+export function PositionsTableBodySkeleton({ length = 5 }) {
   const { t } = useTranslation();
   return (
     <>
@@ -116,34 +101,39 @@ export function PositionsTableSkeleton({ length = 5 }) {
               <Skeleton className="h-4 w-16 ml-auto" />
             </TableCell>
           </TableRow>
-          {Array.from({ length: Math.floor(Math.random() * 7) + 1 }).map(() => (
-            <TableRow className="bg-muted/5">
-              <TableCell>
-                <div className="flex items-center gap-1">
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-4 w-24" />
-                </div>
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-14" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-16 ml-auto" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-20 ml-auto" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-20 ml-auto" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-16 ml-auto" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-4 w-16 ml-auto" />
-              </TableCell>
-            </TableRow>
-          ))}
+          {Array.from({ length: Math.floor(Math.random() * 7) + 1 }).map(
+            (_value, childIdx) => (
+              <TableRow
+                className="bg-muted/5"
+                key={`skeleton-child-${idx}-${childIdx}`}
+              >
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-14" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16 ml-auto" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-20 ml-auto" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-20 ml-auto" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16 ml-auto" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16 ml-auto" />
+                </TableCell>
+              </TableRow>
+            )
+          )}
         </Fragment>
       ))}
     </>

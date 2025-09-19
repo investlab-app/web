@@ -7,7 +7,7 @@ const plCommon = {
   locale: 'pl-PL',
   currency: 'USD',
   search: 'Wyszukaj...',
-  dashboard: 'Strona Główna',
+  dashboard: 'Strona główna',
   statistics: 'Statystyki',
   stocks: 'Instrumenty',
   wallet: 'Portfel',

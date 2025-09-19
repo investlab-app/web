@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 
 import { useQuery } from '@tanstack/react-query';
 import { mostTradedOverviewQueryOptions } from '../queries/fetch-most-traded-overview';
-import type { InstrumentSummary } from '../types/types';
 import {
   Table,
   TableBody,
@@ -70,7 +69,7 @@ const MostTradedOverview = () => {
         <TableBody>
           {!data
             ? RenderSkeletonRows({})
-            : data.instruments.map((instrumentOverview: InstrumentSummary) => (
+            : data.instruments.map((instrumentOverview) => (
                 <TableRow key={instrumentOverview.symbol}>
                   <TableCell>{instrumentOverview.symbol}</TableCell>
                   <TableCell className="text-right">

@@ -1,64 +1,72 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { instrumentPriceQueryOptions } from '../queries/fetch-instrument-price';
 import { BuySellContainer } from './buy-sell-action';
 import { StopLimitContainer } from './stop-limit-action';
-import type { InstrumentPrice } from '../types/types';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { Message } from '@/features/shared/components/error-message';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
 
 interface OrdersSectionProps {
-  currentPriceData: InstrumentPrice | undefined;
-  isError: boolean;
+  ticker: string;
+  className?: string;
 }
 
 export function OrdersSection({
-  currentPriceData,
-  isError,
+  ticker: instrumentId,
+  className,
 }: OrdersSectionProps) {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<'market' | 'limit' | 'sl_tp'>('market');
+
+  const { data, isError, isPending } = useQuery(
+    instrumentPriceQueryOptions({ ticker: instrumentId })
+  );
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mt-6 mb-4">
-        {t('orders.place_order')}
-      </h2>
-      {isError ? (
-        <Message message={t('orders.current_price_error')} />
-      ) : !currentPriceData ? (
-        <OrderSectionSkeleton />
-      ) : (
-        <Tabs
-          value={tab}
-          onValueChange={(v) => setTab(v as 'market' | 'limit' | 'sl_tp')}
-        >
-          <TabsList>
-            <TabsTrigger value="market" className="cursor-pointer text-xs">
-              {t('orders.tabs.market_order')}
-            </TabsTrigger>
-            <TabsTrigger value="limit" className="cursor-pointer text-xs">
-              {t('orders.tabs.stop_limit_order')}
-            </TabsTrigger>
-            <TabsTrigger value="sl_tp" className="cursor-pointer text-xs">
-              {t('orders.tabs.stop_loss_take_profit')}
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="market">
-            <BuySellContainer currentPrice={currentPriceData.currentPrice} />
-          </TabsContent>
-          <TabsContent value="limit">
-            <StopLimitContainer currentPrice={currentPriceData.currentPrice} />
-          </TabsContent>
-          <TabsContent value="sl_tp"></TabsContent>
-        </Tabs>
-      )}
-    </div>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>{t('orders.place_order')}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {isError ? (
+          <Message message={t('orders.current_price_error')} />
+        ) : isPending ? (
+          <OrderSectionSkeleton />
+        ) : (
+          <Tabs defaultValue="market">
+            <TabsList>
+              <TabsTrigger value="market" className="cursor-pointer text-xs">
+                {t('orders.tabs.market_order')}
+              </TabsTrigger>
+              <TabsTrigger value="limit" className="cursor-pointer text-xs">
+                {t('orders.tabs.stop_limit_order')}
+              </TabsTrigger>
+              <TabsTrigger value="sl_tp" className="cursor-pointer text-xs">
+                {t('orders.tabs.stop_loss_take_profit')}
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="market">
+              <BuySellContainer currentPrice={data.current_price} />
+            </TabsContent>
+            <TabsContent value="limit">
+              <StopLimitContainer currentPrice={data.current_price} />
+            </TabsContent>
+            <TabsContent value="sl_tp"></TabsContent>
+          </Tabs>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

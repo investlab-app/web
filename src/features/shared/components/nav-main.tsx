@@ -23,8 +23,6 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <WalletSection />
-        </SidebarMenu>
-        <SidebarMenu>
           {items.map((item) => {
             const isActive = location.pathname === item.to;
             return (

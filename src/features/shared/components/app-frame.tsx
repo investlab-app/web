@@ -12,9 +12,11 @@ export default function AppFrame({ children }: AppFrameProps) {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <main className="w-full">
+      <main className="w-full overflow-x-auto">
         <SiteHeader className="sticky top-0 bg-[var(--background)]" />
-        <div className="p-4">{children}</div>
+        <div className="py-4 px-(--page-padding) [--page-padding:--spacing(4)]">
+          {children}
+        </div>
       </main>
     </SidebarProvider>
   );

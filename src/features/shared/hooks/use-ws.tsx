@@ -1,6 +1,6 @@
 import { use, useEffect, useMemo } from 'react';
 import { WSContext } from '../providers/ws-provider';
-import { generateUUID } from '../utils/uuid';
+import { generateUUID } from '../utils/pseudo-crypto';
 
 export function useWS(events: Array<string>) {
   const wsContext = use(WSContext);

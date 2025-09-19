@@ -13,15 +13,12 @@ export function BreadcrumbNav() {
     isMatch(match, 'loaderData.crumb')
   );
 
-  const items =
-    matchesWithCrumbs.length < 2
-      ? []
-      : matchesWithCrumbs.map(({ pathname, loaderData }) => {
-          return {
-            href: pathname,
-            label: loaderData?.crumb,
-          };
-        });
+  const items = matchesWithCrumbs.map(({ pathname, loaderData }) => {
+    return {
+      href: pathname,
+      label: loaderData?.crumb,
+    };
+  });
 
   return (
     <Breadcrumb>

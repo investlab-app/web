@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { validatedFetch } from '@/features/shared/queries/validated-fetch';
+import { httpRequest } from '@/features/shared/queries/http-request';
 
 const ownedShareItem = type({
   name: 'string',
@@ -17,5 +17,8 @@ const ownedShares = type({
 export type OwnedShares = typeof ownedShares.infer;
 
 export function fetchOwnedShares() {
-  return validatedFetch(`/api/investors/me/owned-shares/`, ownedShares);
+  return httpRequest({
+    endpoint: `/api/investors/me/owned-shares/`,
+    validator: ownedShares,
+  });
 }

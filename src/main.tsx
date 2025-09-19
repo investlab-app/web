@@ -7,7 +7,6 @@ import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { ClerkLoaded, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
-import { Toaster } from 'sonner';
 import { routeTree } from './routeTree.gen';
 import { WSProvider } from './features/shared/providers/ws-provider.tsx';
 import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
@@ -18,11 +17,8 @@ import {
   POSTHOG_KEY,
 } from './features/shared/utils/constants.ts';
 import { ErrorComponent } from './features/shared/components/error-component.tsx';
-import type { ReactNode } from 'react';
-import {
-  ThemeProvider,
-  useTheme,
-} from '@/features/shared/components/theme-provider.tsx';
+import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
+import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
 import './styles.css';
@@ -33,6 +29,9 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnMount: false,
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      meta: {
+        persist: true,
+      },
     },
   },
 });
@@ -55,16 +54,6 @@ export const router = createRouter({
   },
 });
 
-function ToasterProvider({ children }: { children: ReactNode }) {
-  const { appTheme } = useTheme();
-  return (
-    <>
-      {children}
-      <Toaster theme={appTheme} />
-    </>
-  );
-}
-
 function App() {
   const auth = useAuth();
   const i18n = useTranslation();
@@ -73,10 +62,6 @@ function App() {
     <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
   );
 }
-
-const persister = createAsyncStoragePersister({
-  storage: window.localStorage,
-});
 
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
@@ -95,7 +80,14 @@ if (rootElement && !rootElement.innerHTML) {
           >
             <PersistQueryClientProvider
               client={queryClient}
-              persistOptions={{ persister }}
+              persistOptions={{
+                persister: createAsyncStoragePersister({
+                  storage: window.localStorage,
+                }),
+                dehydrateOptions: {
+                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
+                },
+              }}
             >
               <ClerkLoaded>
                 <SignedIn>

@@ -2,11 +2,11 @@ import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
-import { investorStatsQueryOptions } from '@/features/home/components/account-overview-ribbon';
 import { assetAllocationQueryOptions } from '@/features/home/components/asset-allocation-container';
 import { accountValueOverTimeQueryOptions } from '@/features/home/components/account-value-chart-container';
 import { ownedSharesQueryOptions } from '@/features/home/components/asset-table-container';
 import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
+import { investorStatsQueryOptions } from '@/features/home/queries/fetch-investor-stats';
 
 export const Route = createFileRoute('/')({
   loader: async ({ context: { queryClient, auth, i18n } }) => {

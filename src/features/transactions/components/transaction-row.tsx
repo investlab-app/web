@@ -17,12 +17,12 @@ export function TransactionRow({ entry }: HistoryRowProps) {
     <TableRow className="bg-muted/5">
       <TableCell className={`text-muted-foreground flex items-center gap-2`}>
         <Badge
-          aria-label={dateToLocale(entry.date, i18n.language)}
-          title={entry.date.toString()}
+          aria-label={dateToLocale(new Date(entry.date), i18n.language)}
+          title={entry.date}
           variant="secondary"
           className="min-w-24"
         >
-          {dateToLocale(entry.date, i18n.language)}
+          {dateToLocale(new Date(entry.date), i18n.language)}
         </Badge>
         <Badge variant="outline" className="min-w-20">
           {entry.type === 'BUY'
@@ -34,13 +34,13 @@ export function TransactionRow({ entry }: HistoryRowProps) {
         {toFixedLocalized(entry.quantity, i18n.language, 2)}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
-        {toFixedLocalized(entry.sharePrice, i18n.language, 2)}{' '}
+        {toFixedLocalized(entry.share_price, i18n.language, 2)}{' '}
         {t('common.currency')}
       </TableCell>
       <TableCell className="hidden xl:table-cell text-right text-muted-foreground">
-        {entry.acquisitionPrice ? (
+        {entry.acquisition_price ? (
           <>
-            {toFixedLocalized(entry.acquisitionPrice, i18n.language, 2)}{' '}
+            {toFixedLocalized(entry.acquisition_price, i18n.language, 2)}{' '}
             {t('common.currency')}
           </>
         ) : (
@@ -48,19 +48,19 @@ export function TransactionRow({ entry }: HistoryRowProps) {
         )}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
-        {toFixedLocalized(entry.marketValue, i18n.language, 2)}{' '}
+        {toFixedLocalized(entry.market_value, i18n.language, 2)}{' '}
         {t('common.currency')}
       </TableCell>
       <TableCell
-        className={`text-right font-medium ${getProfabilityColor(entry.gainLoss)}`}
+        className={`text-right font-medium ${getProfabilityColor(entry.gain_loss)}`}
       >
-        {toFixedLocalized(entry.gainLoss, i18n.language, 2)}{' '}
+        {toFixedLocalized(entry.gain_loss, i18n.language, 2)}{' '}
         {t('common.currency')}
       </TableCell>
       <TableCell
-        className={`text-right font-medium ${getProfabilityColor(entry.gainLoss)}`}
+        className={`text-right font-medium ${getProfabilityColor(entry.gain_loss)}`}
       >
-        {toFixedLocalized(entry.gainLossPct, i18n.language, 2)}%
+        {toFixedLocalized(entry.gain_loss_pct, i18n.language, 2)}%
       </TableCell>
     </TableRow>
   );
