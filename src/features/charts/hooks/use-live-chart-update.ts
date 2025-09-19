@@ -29,6 +29,11 @@ export function useLiveChartUpdate({
     const chartInstance = chartRef.current.getEchartsInstance();
     const currentOption = chartInstance.getOption();
 
+    /* eslint-disable-next-line 
+       @typescript-eslint/no-unnecessary-condition --
+       extra careful, there are sometimes some type errors */
+    if (!currentOption) return;
+
     const seriesData =
       (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
     const xAxisData =
