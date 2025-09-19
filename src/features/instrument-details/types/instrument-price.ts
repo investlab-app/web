@@ -1,6 +1,6 @@
 import { type } from 'arktype';
 
-export const tickerPrice = type({
+export const instrumentPrice = type({
   current_price: 'number',
   daily_summary: {
     open: 'number',

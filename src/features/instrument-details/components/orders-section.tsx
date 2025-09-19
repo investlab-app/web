@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { tickerPriceQueryOptions } from '../queries/fetch-instrument-price';
+import { instrumentPriceQueryOptions } from '../queries/fetch-instrument-price';
 import { BuySellContainer } from './buy-sell-action';
 import { StopLimitContainer } from './stop-limit-action';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
@@ -30,7 +30,7 @@ export function OrdersSection({
   const { t } = useTranslation();
 
   const { data, isError, isPending } = useQuery(
-    tickerPriceQueryOptions({ ticker: instrumentId })
+    instrumentPriceQueryOptions({ ticker: instrumentId })
   );
 
   return (

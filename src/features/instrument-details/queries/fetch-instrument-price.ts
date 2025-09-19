@@ -1,15 +1,15 @@
 import { queryOptions } from '@tanstack/react-query';
-import { tickerPrice } from '../types/ticker-price';
+import { instrumentPrice } from '../types/instrument-price';
 import { httpRequest } from '@/features/shared/queries/http-request';
 
-interface fetchTickerPriceOptions {
+interface fetchInstrumentPriceOptions {
   ticker: string;
 }
 
-async function fetchTickerPrice({ ticker }: fetchTickerPriceOptions) {
+async function fetchInstrumentPrice({ ticker }: fetchInstrumentPriceOptions) {
   return httpRequest({
     endpoint: `/api/prices/${ticker}/`,
-    validator: tickerPrice,
+    validator: instrumentPrice,
   });
 }
 
@@ -17,11 +17,11 @@ interface InstrumentCurrentPriceQueryOptions {
   ticker: string;
 }
 
-export function tickerPriceQueryOptions({
+export function instrumentPriceQueryOptions({
   ticker,
 }: InstrumentCurrentPriceQueryOptions) {
   return queryOptions({
-    queryKey: [`ticker-price`, ticker],
-    queryFn: () => fetchTickerPrice({ ticker: ticker }),
+    queryKey: [`instrument-price`, ticker],
+    queryFn: () => fetchInstrumentPrice({ ticker: ticker }),
   });
 }

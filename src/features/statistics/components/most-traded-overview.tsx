@@ -43,8 +43,6 @@ const MostTradedOverview = () => {
 
   const { data } = useQuery(mostTradedOverviewQueryOptions);
 
-  console.log('MostTradedOverview data:', data);
-
   return (
     <div className="overflow-x-auto">
       <Table>

@@ -24,9 +24,11 @@ function InstrumentDetailsPage() {
       <div className="flex flex-col gap-4">
         <InstrumentHeader ticker={ticker} />
         <StockChartContainer ticker={ticker} />
-        <OrdersSection ticker={ticker} />
+        <div className="flex gap-4 flex-col 2xl:flex-row">
+          <OrdersSection ticker={ticker} className="2xl:flex-1" />
+          <TransactionsHistorySection ticker={ticker} className="2xl:flex-2" />
+        </div>
         <NewsSection ticker={ticker} />
-        <TransactionsHistorySection ticker={ticker} />
       </div>
     </AppFrame>
   );

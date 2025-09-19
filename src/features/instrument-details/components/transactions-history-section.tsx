@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { tickerPriceQueryOptions } from '../queries/fetch-instrument-price';
+import { instrumentPriceQueryOptions } from '../queries/fetch-instrument-price';
 import { BuySellContainer } from './buy-sell-action';
 import {
   PositionsTableBodySkeleton,
@@ -33,7 +33,7 @@ export function TransactionsHistorySection({
     data: tickerPrice,
     isError: tickerPriceIsError,
     isPending: tickerPriceIsPending,
-  } = useQuery(tickerPriceQueryOptions({ ticker: instrumentId }));
+  } = useQuery(instrumentPriceQueryOptions({ ticker: instrumentId }));
 
   const {
     data: tickerTransactions,

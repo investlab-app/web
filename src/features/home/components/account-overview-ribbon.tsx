@@ -1,58 +1,48 @@
 import { useTranslation } from 'react-i18next';
-import { useQueries } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { StatTile } from '../../shared/components/stat-tile';
 import { currentAccountValueQueryOptions } from '../queries/fetch-current-account-value';
 import { investorStatsQueryOptions } from '../queries/fetch-investor-stats';
 import { ErrorCard } from '@/features/shared/components/error-card';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
-import { tradingOverviewQueryOptions } from '@/features/statistics/queries/fetch-trading-overview';
 
 const AccountOverviewRibbon = () => {
   const { t, i18n } = useTranslation();
 
   const {
-    data: stats,
-    isPending,
-    isError,
-  } = useQueries({
-    queries: [
-      investorStatsQueryOptions,
-      tradingOverviewQueryOptions,
-      currentAccountValueQueryOptions,
-    ],
-    combine: (results) => {
-      const [investorStats, tradingOverview, currentAccountValue] = results;
-      return {
-        data: {
-          ...(investorStats.data ?? {}),
-          ...(tradingOverview.data ?? {}),
-          ...(currentAccountValue.data ?? {}),
-        },
-        isPending: results.some((result) => result.isPending),
-        isError: results.some((result) => result.isError),
-      };
-    },
-  });
+    data: investorStats,
+    isPending: statsPending,
+    isError: statsError,
+  } = useQuery(investorStatsQueryOptions);
+
+  const {
+    data: currentAccountValue,
+    isPending: accountValuePending,
+    isError: accountValueError,
+  } = useQuery(currentAccountValueQueryOptions);
+
+  const isPending = statsPending || accountValuePending;
+  const isError = statsError || accountValueError;
 
   const tiles = [
     {
       title: t('investor.todays_return'),
-      value: stats.todays_return,
+      value: investorStats?.todays_return,
       isProgress: true,
     },
     {
       title: t('investor.total_return'),
-      value: stats.total_return,
+      value: investorStats?.total_return,
       isProgress: true,
     },
     {
       title: t('investor.invested'),
-      value: stats.invested,
+      value: investorStats?.invested,
       isProgress: false,
     },
     {
-      title: t('investor.total_value'),
-      value: stats.total_value,
+      title: t('investor.total_account_value'),
+      value: currentAccountValue?.total_account_value,
       isProgress: false,
     },
   ];
