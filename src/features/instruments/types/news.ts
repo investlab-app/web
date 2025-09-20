@@ -1,7 +1,7 @@
 import { type } from 'arktype';
 
 const insight = type({
-  sentiment: "'positive' | 'negative' | 'neutral'",
+  sentiment: "'positive' | 'negative' | 'neutral' | 'neutral/positive'",
   sentiment_reasoning: 'string',
   ticker: 'string',
 });
