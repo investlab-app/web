@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { type } from 'arktype';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { infiniteInstrumentsWithPriceInfoQueryOptions } from '../queries/fetch-instruments-with-price-info';
+import { infiniteInstrumentsWithPricesQueryOptions } from '../queries/fetch-instruments-with-prices';
 import type { Instrument } from '../types/instrument';
 import type { SortingState } from '@tanstack/react-table';
 import { livePrice } from '@/features/charts/types/live-price';
@@ -43,7 +43,7 @@ export function useInstrumentsTable({
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    infiniteInstrumentsWithPriceInfoQueryOptions({
+    infiniteInstrumentsWithPricesQueryOptions({
       search: debouncedSearch,
       pageSize,
       ordering: getOrdering(ordering),
@@ -57,9 +57,9 @@ export function useInstrumentsTable({
         // if (!instrument.price_info) return acc;
         acc[instrument.ticker] = {
           name: instrument.name,
-          volume: instrument.price_info?.daily_summary.volume ?? null,
-          currentPrice: instrument.price_info?.current_price ?? null,
-          dayChange: instrument.price_info?.todays_change ?? null,
+          volume: instrument.price?.daily_summary.volume ?? null,
+          currentPrice: instrument.price?.current_price ?? null,
+          dayChange: instrument.price?.todays_change ?? null,
           symbol: instrument.ticker,
           logo: instrument.logo,
           icon: instrument.icon,
