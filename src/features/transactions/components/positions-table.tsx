@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { transactionsHistoryQueryOptions } from '../queries/fetch-transactions-history';
 import { PositionRow } from './position-row';
 import {
   Table,
@@ -13,13 +12,16 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { investorsMeTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
 
 type PositionsTableProps = {
   type: 'open' | 'closed';
 };
 
 export function PositionsTable({ type }: PositionsTableProps) {
-  const { data } = useQuery(transactionsHistoryQueryOptions({ type }));
+  const { data } = useQuery(
+    investorsMeTransactionsHistoryListOptions({ query: { type } })
+  );
 
   return (
     <Table className="rounded-md border">

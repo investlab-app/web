@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { type } from 'arktype';
+import { z } from 'zod';
 import { LoginForm } from '@/features/auth/components/login-form';
 
 export const Route = createFileRoute('/_auth/login')({
   component: Login,
-  validateSearch: type({
-    error: 'string?',
+  validateSearch: z.object({
+    error: z.string().optional(),
   }),
 });
 

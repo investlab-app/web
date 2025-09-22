@@ -1,8 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { ClerkLoaded, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
@@ -78,16 +76,16 @@ if (rootElement && !rootElement.innerHTML) {
               options: { api_host: POSTHOG_HOST },
             }}
           >
-            <PersistQueryClientProvider
+            <QueryClientProvider
               client={queryClient}
-              persistOptions={{
-                persister: createAsyncStoragePersister({
-                  storage: window.localStorage,
-                }),
-                dehydrateOptions: {
-                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
-                },
-              }}
+              // persistOptions={{
+              //   persister: createAsyncStoragePersister({
+              //     storage: window.localStorage,
+              //   }),
+              //   dehydrateOptions: {
+              //     shouldDehydrateQuery: (query) => query.meta?.persist === true,
+              //   },
+              // }}
             >
               <ClerkLoaded>
                 <SignedIn>
@@ -101,7 +99,7 @@ if (rootElement && !rootElement.innerHTML) {
                   <App />
                 </SignedOut>
               </ClerkLoaded>
-            </PersistQueryClientProvider>
+            </QueryClientProvider>
           </ConditionalProvider>
         </ClerkThemedProvider>
       </ThemeProvider>

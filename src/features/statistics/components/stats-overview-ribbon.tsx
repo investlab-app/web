@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { tradingOverviewQueryOptions } from '../queries/fetch-trading-overview';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
+import { investorsMeStatisticsTradingOverviewRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 const StatsOverviewRibbon = () => {
   const { t } = useTranslation();
@@ -11,7 +11,7 @@ const StatsOverviewRibbon = () => {
     data: stats,
     isLoading,
     isError,
-  } = useQuery(tradingOverviewQueryOptions);
+  } = useQuery(investorsMeStatisticsTradingOverviewRetrieveOptions());
 
   const tiles = [
     {
@@ -46,7 +46,13 @@ const StatsOverviewRibbon = () => {
     },
   ];
 
-  function renderStatTile(index: number, tile: (typeof tiles)[number]) {
+  function RenderStatTile({
+    index,
+    tile,
+  }: {
+    index: number;
+    tile: (typeof tiles)[number];
+  }) {
     if (isLoading) {
       return <StatTile.Skeleton />;
     }
@@ -67,7 +73,9 @@ const StatsOverviewRibbon = () => {
 
   return (
     <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
-      {tiles.map((tile, index) => renderStatTile(index, tile))}
+      {tiles.map((tile, index) => (
+        <RenderStatTile key={index} index={index} tile={tile} />
+      ))}
     </div>
   );
 };

@@ -7,6 +7,9 @@ import pluginQuery from '@tanstack/eslint-plugin-query';
 import { tanstackConfig } from '@tanstack/eslint-config';
 
 export default [
+  {
+    ignores: ['**/*.gen*'],
+  },
   ...tseslint.configs.recommended,
   ...tanstackConfig,
   ...pluginRouter.configs['flat/recommended'],

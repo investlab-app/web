@@ -27,3 +27,11 @@ export function dateToLocale(
 export function roundDateToInterval(date: Date, interval: number): Date {
   return new Date(Math.floor(date.getTime() / interval) * interval);
 }
+
+export function roundDateToMinute(date: Date): Date {
+  return roundDateToInterval(date, 60_000);
+}
+
+export function serialize(date: Date): string {
+  return date.toISOString();
+}

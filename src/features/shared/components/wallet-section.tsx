@@ -1,14 +1,14 @@
-import { IconPlus, IconWallet } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { Plus, Wallet } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
+import { investorsMeCurrentAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export function WalletSection() {
   const { t } = useTranslation();
@@ -18,13 +18,13 @@ export function WalletSection() {
     isPending,
     isError,
     isSuccess,
-  } = useQuery(currentAccountValueQueryOptions);
+  } = useQuery(investorsMeCurrentAccountValueRetrieveOptions());
 
   return (
     <SidebarMenuItem className="flex items-center gap-1">
       <SidebarMenuButton tooltip={t('common.wallet')} asChild>
         <a>
-          <IconWallet />
+          <Wallet />
           {isPending && <Skeleton className="h-6 w-24" />}
           {isError && <Skeleton className="h-6 w-24" />}
           {isSuccess &&
@@ -48,7 +48,7 @@ export function WalletSection() {
           })
         }
       >
-        <IconPlus />
+        <Plus />
       </Button>
     </SidebarMenuItem>
   );

@@ -20,7 +20,6 @@ interface InstrumentTableProps {
   rowCount?: number;
   sorting?: SortingState;
   onSortingChange?: OnChangeFn<SortingState>;
-  isFetching?: boolean;
   isPending?: boolean;
 }
 
@@ -30,7 +29,6 @@ export const InstrumentTable = ({
   rowCount = 10,
   sorting: controlledSorting,
   onSortingChange,
-  isFetching,
   isPending,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
@@ -147,7 +145,6 @@ export const InstrumentTable = ({
       sorting={controlledSorting}
       onSortingChange={onSortingChange}
       onRowClick={(row) => onInstrumentPressed(row.original)}
-      isFetching={isFetching}
       isPending={isPending}
       FetchingRowsSkeleton={<InstrumentTableBodySkeleton rowCount={rowCount} />}
     />

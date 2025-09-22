@@ -1,21 +1,23 @@
-import { type } from 'arktype';
+import { z } from 'zod';
 
-export const livePrice = type({
-  prices: type({
-    symbol: 'string',
-    volume: 'number',
-    accumulated_volume: 'number',
-    official_open_price: 'number',
-    vwap: 'number',
-    open: 'number',
-    close: 'number',
-    high: 'number',
-    low: 'number',
-    aggregate_vwap: 'number',
-    average_size: 'number',
-    start_timestamp: 'number',
-    end_timestamp: 'number',
-  }).array(),
+export const livePrice = z.object({
+  prices: z.array(
+    z.object({
+      symbol: z.string(),
+      volume: z.number(),
+      accumulated_volume: z.number(),
+      official_open_price: z.number(),
+      vwap: z.number(),
+      open: z.number(),
+      close: z.number(),
+      high: z.number(),
+      low: z.number(),
+      aggregate_vwap: z.number(),
+      average_size: z.number(),
+      start_timestamp: z.number(),
+      end_timestamp: z.number(),
+    })
+  ),
 });
 
-export type LivePrice = typeof livePrice.infer;
+export type LivePrice = z.infer<typeof livePrice>;

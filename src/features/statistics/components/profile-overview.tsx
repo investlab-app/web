@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
 import { useQueries } from '@tanstack/react-query';
-import { profileOverviewQueryOptions } from '../queries/fetch-profile-overview';
 import {
   Table,
   TableBody,
@@ -12,7 +11,10 @@ import {
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
-import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
+import {
+  investorsMeCurrentAccountValueRetrieveOptions,
+  investorsMeStatisticsProfileOverviewRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 const ProfileOverviewBodySkeleton = () => {
   return (
@@ -43,7 +45,10 @@ const ProfileOverview = () => {
   const { t } = useTranslation();
 
   const [profileOverviewResult, currentAccountValueResult] = useQueries({
-    queries: [profileOverviewQueryOptions, currentAccountValueQueryOptions],
+    queries: [
+      investorsMeStatisticsProfileOverviewRetrieveOptions(),
+      investorsMeCurrentAccountValueRetrieveOptions(),
+    ],
   });
   const data =
     profileOverviewResult.data && currentAccountValueResult.data

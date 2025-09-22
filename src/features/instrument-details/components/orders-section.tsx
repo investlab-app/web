@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { instrumentPriceQueryOptions } from '../queries/fetch-instrument-price';
 import { BuySellContainer } from './buy-sell-action';
 import { StopLimitContainer } from './stop-limit-action';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
@@ -17,6 +16,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
+import { pricesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface OrdersSectionProps {
   ticker: string;
@@ -30,7 +30,10 @@ export function OrdersSection({
   const { t } = useTranslation();
 
   const { data, isError, isPending } = useQuery(
-    instrumentPriceQueryOptions({ ticker: instrumentId })
+    pricesRetrieveOptions({
+      path: { ticker: instrumentId },
+      throwOnError: true,
+    })
   );
 
   return (
@@ -57,10 +60,12 @@ export function OrdersSection({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="market">
-              <BuySellContainer currentPrice={data.current_price} />
+              <BuySellContainer currentPrice={parseFloat(data.current_price)} />
             </TabsContent>
             <TabsContent value="limit">
-              <StopLimitContainer currentPrice={data.current_price} />
+              <StopLimitContainer
+                currentPrice={parseFloat(data.current_price)}
+              />
             </TabsContent>
             <TabsContent value="sl_tp"></TabsContent>
           </Tabs>

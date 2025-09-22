@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { instrumentPriceQueryOptions } from '../queries/fetch-instrument-price';
 import { BuySellContainer } from './buy-sell-action';
 import {
   PositionsTableBodySkeleton,
@@ -16,7 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { tickerTransactionsHistoryQueryOptions } from '@/features/transactions/queries/fetch-transactions-history';
+import {
+  investorsMeTransactionsHistoryListOptions,
+  pricesRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -33,16 +35,24 @@ export function TransactionsHistorySection({
     data: tickerPrice,
     isError: tickerPriceIsError,
     isPending: tickerPriceIsPending,
-  } = useQuery(instrumentPriceQueryOptions({ ticker: instrumentId }));
+  } = useQuery(
+    pricesRetrieveOptions({
+      path: {
+        ticker: instrumentId,
+      },
+    })
+  );
 
   const {
     data: tickerTransactions,
     isError: tickerTransactionsIsError,
     isPending: tickerTransactionsIsPending,
   } = useQuery(
-    tickerTransactionsHistoryQueryOptions({
-      type: 'open',
-      ticker: instrumentId,
+    investorsMeTransactionsHistoryListOptions({
+      query: {
+        type: 'open',
+        ticker: instrumentId,
+      },
     })
   );
 
@@ -59,21 +69,24 @@ export function TransactionsHistorySection({
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (
           <Message message={t('transactions.error_loading')} />
-        ) : !tickerTransactions ? (
+        ) : !tickerTransactions.length ? (
           <Message message={t('transactions.no_open_positions')} />
         ) : (
           <>
             <BuySellContainer
-              currentPrice={tickerPrice.current_price}
+              currentPrice={parseFloat(tickerPrice.current_price)}
               onlySell={true}
             />
             <Table>
               <PositionsTableHeader />
               <TableBody>
-                <PositionRow
-                  position={tickerTransactions}
-                  isNavigable={false}
-                />
+                {tickerTransactions.map((position) => (
+                  <PositionRow
+                    key={position.name}
+                    position={position}
+                    isNavigable={false}
+                  />
+                ))}
               </TableBody>
             </Table>
           </>

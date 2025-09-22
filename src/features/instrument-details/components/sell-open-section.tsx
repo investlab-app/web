@@ -1,5 +1,5 @@
-import { IconSwitchVertical } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { ArrowUpDown } from 'lucide-react';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 
@@ -53,9 +53,9 @@ export const SellOpenSection = ({
               : t('orders.switch_to_price')
           }
         >
-          <IconSwitchVertical />
+          <ArrowUpDown />
         </Button>
-        <Button className="bg-red-600 hover:bg-red-700  w-1/3">
+        <Button className="bg-red-600 hover:bg-red-700 w-1/3">
           {t('instruments.sell')}
         </Button>
       </div>

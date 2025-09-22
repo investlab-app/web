@@ -28,7 +28,6 @@ export const InstrumentsTableContainer = ({
 
   const {
     data,
-    isFetching,
     isFetchingNextPage,
     isPending,
     hasNextPage,
@@ -63,7 +62,6 @@ export const InstrumentsTableContainer = ({
           sorting={ordering}
           onSortingChange={setOrdering}
           isPending={isPending}
-          isFetching={isFetching}
         />
       </ScrollableHorizontally>
       <div className="flex justify-center mt-4">

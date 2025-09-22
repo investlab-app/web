@@ -1,15 +1,15 @@
-import {
-  IconChartPie,
-  IconDashboard,
-  IconHelp,
-  IconHistory,
-  IconListDetails,
-  IconSettings,
-} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
+import {
+  HelpCircle,
+  History,
+  LayoutDashboardIcon,
+  List,
+  PieChart,
+  Settings,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -39,34 +39,34 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t('common.dashboard'),
         to: '/',
-        icon: IconDashboard,
+        icon: LayoutDashboardIcon,
       },
       {
         title: t('common.stocks'),
         to: '/instruments',
-        icon: IconListDetails,
+        icon: List,
       },
       {
         title: t('common.transactions'),
         to: '/transactions',
-        icon: IconHistory,
+        icon: History,
       },
       {
         title: t('common.statistics'),
         to: '/statistics',
-        icon: IconChartPie,
+        icon: PieChart,
       },
     ],
     navSecondary: [
       {
         title: t('common.settings'),
         to: '/settings',
-        icon: IconSettings,
+        icon: Settings,
       },
       {
         title: t('common.help'),
         to: '/help',
-        icon: IconHelp,
+        icon: HelpCircle,
       },
     ],
   };

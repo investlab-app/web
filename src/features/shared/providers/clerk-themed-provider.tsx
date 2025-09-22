@@ -2,18 +2,20 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
 import { enUS, plPL } from '@clerk/localizations';
 import { useTranslation } from 'react-i18next';
-import { match } from 'arktype';
 import type { ReactNode } from 'react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 
-const languageMatcher = match.in<string>().match({
-  "'pl'": () => plPL,
-  "'en'": () => enUS,
-  default: (lang) => {
-    console.error(`Unsupported language: ${lang}. Defaulting to 'en'`);
-    return enUS;
-  },
-});
+const languageMatcher = (lang: string) => {
+  switch (lang) {
+    case 'pl':
+      return plPL;
+    case 'en':
+      return enUS;
+    default:
+      console.error(`Unsupported language: ${lang}. Defaulting to 'en'`);
+      return enUS;
+  }
+};
 
 export function ClerkThemedProvider({
   children,

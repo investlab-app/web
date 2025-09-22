@@ -29,7 +29,6 @@ interface DataTableProps<TData, TValue> {
   onSortingChange?: OnChangeFn<SortingState>;
   getRowId?: (row: TData) => string;
   onRowClick?: (row: Row<TData>) => void;
-  isFetching?: boolean;
   isPending?: boolean;
   FetchingRowsSkeleton: JSX.Element;
 }
@@ -41,7 +40,6 @@ export function DataTable<TData, TValue>({
   onSortingChange,
   getRowId,
   onRowClick,
-  isFetching,
   isPending,
   FetchingRowsSkeleton,
 }: DataTableProps<TData, TValue>) {
@@ -79,7 +77,7 @@ export function DataTable<TData, TValue>({
       </TableHeader>
       <TableBody>
         {!table.getRowModel().rows.length
-          ? !isFetching && <DataTableEmptyState columns={columns} />
+          ? !isPending && <DataTableEmptyState columns={columns} />
           : table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
