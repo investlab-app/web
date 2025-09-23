@@ -27,6 +27,7 @@ jobs:
           fetch-depth: '1'
       - name: Fetch backend schema
         run: |
+          set -e
           curl -f -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/investlab-app/backend/contents/backend/schema.yml?ref=develop \
             | jq -r .content | base64 -d > schema.yml
