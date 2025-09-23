@@ -25,6 +25,19 @@ jobs:
           node-version: '22'
           pnpm-version: '10'
           fetch-depth: '1'
+      - name: Fetch backend schema
+        run: |
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/investlab-app/backend/contents/backend/schema.yml?ref=develop \
+            | jq -r .content | base64 -d > schema.yml
+      - name: Generate OpenAPI types
+        run: pnpm openapi-ts -i schema.yml
+      - name: Check type changes
+        run: |
+          if ! git diff --exit-code web/src/client/; then
+            echo "Generated types have changed; please commit updated types."
+            exit 1
+          fi
       - name: Run lint checks
         run: pnpm lint
       - name: Check code formatting
