@@ -1,7 +1,7 @@
 import { type } from 'arktype';
 import { pagedInstrumentsItem } from './paged-instruments';
 
-const priceInfo = type({
+const price = type({
   current_price: 'number',
   daily_summary: {
     open: 'number',
@@ -16,13 +16,13 @@ const priceInfo = type({
   last_updated: 'string',
 });
 
-export const pagedInstrumentsItemWithPriceInfo = pagedInstrumentsItem.and({
-  price_info: priceInfo.or('null'),
+export const pagedInstrumentsItemWithPrices = pagedInstrumentsItem.and({
+  price: price.or('null'),
 });
 
-export const pagedInstrumentsWithPriceInfo = type({
+export const pagedInstrumentsWithPrices = type({
   count: 'number',
   next: 'string | null',
   previous: 'string | null',
-  results: pagedInstrumentsItemWithPriceInfo.array(),
+  results: pagedInstrumentsItemWithPrices.array(),
 });
