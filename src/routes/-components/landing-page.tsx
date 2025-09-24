@@ -203,29 +203,29 @@ export function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="text-sm text-muted-foreground mb-4 sm:mb-0">
-              © 2025 InvestLab. Student project for educational purposes.
+              © 2025 InvestLab.
             </div>
             <div className="flex space-x-6">
               <Link
-                to="/faq"
+                to="/privacy-policy"
                 target="_blank"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                FAQ
+                {t('common.privacy_policy')}
               </Link>
               <Link
                 to="/terms-of-service"
                 target="_blank"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Terms of Service
+                {t('common.terms_of_service')}
               </Link>
               <Link
-                to="/privacy-policy"
+                to="/faq"
                 target="_blank"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Privacy Policy
+                {t('common.faq')}
               </Link>
             </div>
           </div>

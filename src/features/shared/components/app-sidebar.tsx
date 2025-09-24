@@ -67,19 +67,19 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     ],
     legal: [
       {
-        title: 'Privacy Policy',
+        title: t('common.privacy_policy'),
         to: '/privacy-policy',
         target: '_blank',
         icon: IconHelp,
       },
       {
-        title: 'Terms of Service',
+        title: t('common.terms_of_service'),
         to: '/terms-of-service',
         target: '_blank',
         icon: IconHelp,
       },
       {
-        title: 'FAQ',
+        title: t('common.faq'),
         to: '/faq',
         target: '_blank',
         icon: IconHelp,
@@ -122,21 +122,21 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               target="_blank"
               className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              Privacy Policy
+              {t('common.privacy_policy')}
             </Link>
             <Link
               to="/terms-of-service"
               target="_blank"
               className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              Terms of Service
+              {t('common.terms_of_service')}
             </Link>
             <Link
               to="/faq"
               target="_blank"
               className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              FAQ
+              {t('common.faq')}
             </Link>
           </div>
         </div>

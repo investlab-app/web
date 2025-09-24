@@ -6,10 +6,10 @@ import StatsOverviewRibbon from '@/features/statistics/components/stats-overview
 import AppFrame from '@/features/shared/components/app-frame';
 
 export const Route = createFileRoute('/_authed/statistics/')({
-  component: Statistics,
+  component: RouteComponent,
 });
 
-function Statistics() {
+function RouteComponent() {
   const { t } = useTranslation();
   return (
     <AppFrame>

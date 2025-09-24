@@ -8,7 +8,7 @@ import { NewsSection } from '@/features/instruments/components/news-section';
 import { InstrumentHeader } from '@/features/instruments/components/instrument-with-description-header';
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
-  component: InstrumentDetailsPage,
+  component: RouteComponent,
   loader: ({ params: { instrumentId } }) => {
     return {
       crumb: instrumentId,
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   },
 });
 
-function InstrumentDetailsPage() {
+function RouteComponent() {
   const { instrumentId: ticker } = Route.useParams();
 
   return (

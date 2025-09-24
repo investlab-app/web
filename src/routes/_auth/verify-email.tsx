@@ -3,13 +3,13 @@ import { type } from 'arktype';
 import { EmailVerificationForm } from '@/features/auth/components/email-verification-form';
 
 export const Route = createFileRoute('/_auth/verify-email')({
-  component: VerifyEmail,
+  component: RouteComponent,
   validateSearch: type({
     error: 'string?',
   }),
 });
 
-function VerifyEmail() {
+function RouteComponent() {
   const { error } = Route.useSearch();
   return <EmailVerificationForm pageError={error} />;
 }

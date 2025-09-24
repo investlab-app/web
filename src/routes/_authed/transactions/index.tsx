@@ -12,10 +12,10 @@ import AppFrame from '@/features/shared/components/app-frame';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 
 export const Route = createFileRoute('/_authed/transactions/')({
-  component: TransactionsPage,
+  component: RouteComponent,
 });
 
-function TransactionsPage() {
+function RouteComponent() {
   const { t } = useTranslation();
 
   return (
