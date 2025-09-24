@@ -10,7 +10,7 @@ const plPrivacyPolicy = {
   },
 
   interpretationDefinitions: {
-    title: 'Interpretacja i Definicje',
+    title: 'Interpretacja i definicje',
     interpretation: {
       title: 'Interpretacja',
       description:
