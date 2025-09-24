@@ -3,13 +3,13 @@ import { type } from 'arktype';
 import { SignUpForm } from '@/features/auth/components/signup-form';
 
 export const Route = createFileRoute('/_auth/signup')({
-  component: SignUpPage,
+  component: RouteComponent,
   validateSearch: type({
     error: 'string?',
   }),
 });
 
-function SignUpPage() {
+function RouteComponent() {
   const { error } = Route.useSearch();
   return <SignUpForm pageError={error} />;
 }

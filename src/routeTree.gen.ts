@@ -10,14 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
+import { Route as LegalRouteRouteImport } from './routes/_legal/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LegalTermsOfServiceRouteImport } from './routes/_legal/terms-of-service'
+import { Route as LegalPrivacyPolicyRouteImport } from './routes/_legal/privacy-policy'
+import { Route as LegalFaqRouteImport } from './routes/_legal/faq'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedTransactionsRouteRouteImport } from './routes/_authed/transactions/route'
+import { Route as AuthedStatisticsRouteRouteImport } from './routes/_authed/statistics/route'
 import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
 import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
@@ -27,6 +32,10 @@ import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_aut
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/$not-found',
   path: '/$not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRouteRoute = LegalRouteRouteImport.update({
+  id: '/_legal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
@@ -41,6 +50,21 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermsOfServiceRoute = LegalTermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => LegalRouteRoute,
+} as any)
+const LegalPrivacyPolicyRoute = LegalPrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => LegalRouteRoute,
+} as any)
+const LegalFaqRoute = LegalFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => LegalRouteRoute,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -67,6 +91,11 @@ const AuthedTransactionsRouteRoute = AuthedTransactionsRouteRouteImport.update({
   path: '/transactions',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
+const AuthedStatisticsRouteRoute = AuthedStatisticsRouteRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
 const AuthedInstrumentsRouteRoute = AuthedInstrumentsRouteRouteImport.update({
   id: '/instruments',
   path: '/instruments',
@@ -78,9 +107,9 @@ const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
   getParentRoute: () => AuthedTransactionsRouteRoute,
 } as any)
 const AuthedStatisticsIndexRoute = AuthedStatisticsIndexRouteImport.update({
-  id: '/statistics/',
-  path: '/statistics/',
-  getParentRoute: () => AuthedRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedStatisticsRouteRoute,
 } as any)
 const AuthedInstrumentsIndexRoute = AuthedInstrumentsIndexRouteImport.update({
   id: '/',
@@ -98,14 +127,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
   '/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
+  '/statistics': typeof AuthedStatisticsRouteRouteWithChildren
   '/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/faq': typeof LegalFaqRoute
+  '/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
-  '/statistics': typeof AuthedStatisticsIndexRoute
+  '/statistics/': typeof AuthedStatisticsIndexRoute
   '/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -115,6 +148,9 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/faq': typeof LegalFaqRoute
+  '/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
@@ -125,13 +161,18 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_authed': typeof AuthedRouteRouteWithChildren
+  '/_legal': typeof LegalRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
   '/_authed/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
+  '/_authed/statistics': typeof AuthedStatisticsRouteRouteWithChildren
   '/_authed/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/_legal/faq': typeof LegalFaqRoute
+  '/_legal/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
   '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
@@ -143,14 +184,18 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/instruments'
+    | '/statistics'
     | '/transactions'
     | '/login'
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
+    | '/faq'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments/'
-    | '/statistics'
+    | '/statistics/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -160,6 +205,9 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
+    | '/faq'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments'
     | '/statistics'
@@ -169,13 +217,18 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/_authed'
+    | '/_legal'
     | '/$not-found'
     | '/_authed/instruments'
+    | '/_authed/statistics'
     | '/_authed/transactions'
     | '/_auth/login'
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
+    | '/_legal/faq'
+    | '/_legal/privacy-policy'
+    | '/_legal/terms-of-service'
     | '/_authed/instruments/$instrumentId'
     | '/_authed/instruments/'
     | '/_authed/statistics/'
@@ -186,6 +239,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  LegalRouteRoute: typeof LegalRouteRouteWithChildren
   NotFoundRoute: typeof NotFoundRoute
 }
 
@@ -196,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/$not-found'
       fullPath: '/$not-found'
       preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_legal': {
+      id: '/_legal'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LegalRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed': {
@@ -218,6 +279,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_legal/terms-of-service': {
+      id: '/_legal/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof LegalTermsOfServiceRouteImport
+      parentRoute: typeof LegalRouteRoute
+    }
+    '/_legal/privacy-policy': {
+      id: '/_legal/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof LegalPrivacyPolicyRouteImport
+      parentRoute: typeof LegalRouteRoute
+    }
+    '/_legal/faq': {
+      id: '/_legal/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof LegalFaqRouteImport
+      parentRoute: typeof LegalRouteRoute
     }
     '/_auth/verify-email': {
       id: '/_auth/verify-email'
@@ -254,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTransactionsRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
+    '/_authed/statistics': {
+      id: '/_authed/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AuthedStatisticsRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
     '/_authed/instruments': {
       id: '/_authed/instruments'
       path: '/instruments'
@@ -270,10 +359,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authed/statistics/': {
       id: '/_authed/statistics/'
-      path: '/statistics'
-      fullPath: '/statistics'
+      path: '/'
+      fullPath: '/statistics/'
       preLoaderRoute: typeof AuthedStatisticsIndexRouteImport
-      parentRoute: typeof AuthedRouteRoute
+      parentRoute: typeof AuthedStatisticsRouteRoute
     }
     '/_authed/instruments/': {
       id: '/_authed/instruments/'
@@ -326,6 +415,19 @@ const AuthedInstrumentsRouteRouteWithChildren =
     AuthedInstrumentsRouteRouteChildren,
   )
 
+interface AuthedStatisticsRouteRouteChildren {
+  AuthedStatisticsIndexRoute: typeof AuthedStatisticsIndexRoute
+}
+
+const AuthedStatisticsRouteRouteChildren: AuthedStatisticsRouteRouteChildren = {
+  AuthedStatisticsIndexRoute: AuthedStatisticsIndexRoute,
+}
+
+const AuthedStatisticsRouteRouteWithChildren =
+  AuthedStatisticsRouteRoute._addFileChildren(
+    AuthedStatisticsRouteRouteChildren,
+  )
+
 interface AuthedTransactionsRouteRouteChildren {
   AuthedTransactionsIndexRoute: typeof AuthedTransactionsIndexRoute
 }
@@ -342,24 +444,41 @@ const AuthedTransactionsRouteRouteWithChildren =
 
 interface AuthedRouteRouteChildren {
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
+  AuthedStatisticsRouteRoute: typeof AuthedStatisticsRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
-  AuthedStatisticsIndexRoute: typeof AuthedStatisticsIndexRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
+  AuthedStatisticsRouteRoute: AuthedStatisticsRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
-  AuthedStatisticsIndexRoute: AuthedStatisticsIndexRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
   AuthedRouteRouteChildren,
 )
 
+interface LegalRouteRouteChildren {
+  LegalFaqRoute: typeof LegalFaqRoute
+  LegalPrivacyPolicyRoute: typeof LegalPrivacyPolicyRoute
+  LegalTermsOfServiceRoute: typeof LegalTermsOfServiceRoute
+}
+
+const LegalRouteRouteChildren: LegalRouteRouteChildren = {
+  LegalFaqRoute: LegalFaqRoute,
+  LegalPrivacyPolicyRoute: LegalPrivacyPolicyRoute,
+  LegalTermsOfServiceRoute: LegalTermsOfServiceRoute,
+}
+
+const LegalRouteRouteWithChildren = LegalRouteRoute._addFileChildren(
+  LegalRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
+  LegalRouteRoute: LegalRouteRouteWithChildren,
   NotFoundRoute: NotFoundRoute,
 }
 export const routeTree = rootRouteImport

@@ -7,10 +7,10 @@ import AppFrame from '@/features/shared/components/app-frame';
 import { InstrumentSheetContent } from '@/features/instrument-details/components/instrument-sheet';
 
 export const Route = createFileRoute('/_authed/instruments/')({
-  component: Instruments,
+  component: RouteComponent,
 });
 
-function Instruments() {
+function RouteComponent() {
   const [open, setOpen] = useState(false);
   const [instrument, setInstrument] = useState<Instrument>();
 

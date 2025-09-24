@@ -44,6 +44,9 @@ const enCommon = {
     line_chart: 'Line chart',
     candlestick_chart: 'Candlestick chart',
   },
+  privacy_policy: 'Privacy Policy',
+  terms_of_service: 'Terms of Service',
+  faq: 'FAQ',
 };
 
 export default enCommon;
