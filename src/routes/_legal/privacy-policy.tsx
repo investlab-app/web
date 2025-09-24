@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_legal/privacy-policy')({
   component: RouteComponent,
@@ -15,8 +15,8 @@ function RouteComponent() {
         {t('legal.privacyPolicy.lastUpdated', { date: new Date(2025, 8, 24) })}
       </p>
 
-      <p>{t('legal.privacyPolicy.intro1')}</p>
-      <p>{t('legal.privacyPolicy.intro2')}</p>
+      <p>{t('legal.privacyPolicy.intro.description')}</p>
+      <p>{t('legal.privacyPolicy.intro.agreement')}</p>
 
       <h2>{t('legal.privacyPolicy.interpretationDefinitions.title')}</h2>
 
@@ -26,7 +26,9 @@ function RouteComponent() {
         )}
       </h3>
       <p>
-        {t('legal.privacyPolicy.interpretationDefinitions.interpretation.text')}
+        {t(
+          'legal.privacyPolicy.interpretationDefinitions.interpretation.description'
+        )}
       </p>
 
       <h3>
@@ -34,146 +36,408 @@ function RouteComponent() {
       </h3>
       <ul>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.account">
-            <strong>Account</strong> – A unique account created for you to
-            access our Service.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.account.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.account.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.affiliate">
-            <strong>Affiliate</strong> – An entity that controls, is controlled
-            by, or under common control with us.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.affiliate.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.affiliate.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.company">
-            <strong>Company</strong> (referred to as “the Company”, “We”, “Us”
-            or “Our”) refers to InvestLab.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.company.term'
+            )}
+          </strong>{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.company.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.cookies">
-            <strong>Cookies</strong> – Small files placed on your device by a
-            website.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.cookies.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.cookies.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.country">
-            <strong>Country</strong> – Refers to Poland.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.country.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.country.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.device">
-            <strong>Device</strong> – Any device that can access the Service
-            (e.g. laptop, tablet, smartphone).
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.device.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.device.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.personalData">
-            <strong>Personal Data</strong> – Information that relates to an
-            identified or identifiable individual.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.personalData.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.personalData.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.service">
-            <strong>Service</strong> – The InvestLab website and related
-            application functionality.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.service.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.service.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.serviceProvider">
-            <strong>Service Provider</strong> – A third‑party that processes
-            data on behalf of the Company.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.serviceProvider.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.serviceProvider.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.thirdParty">
-            <strong>Third‑Party Social Media Service</strong> – External
-            services (e.g. Google) for login or account creation.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.thirdPartySocial.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.thirdPartySocial.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.usageData">
-            <strong>Usage Data</strong> – Data collected automatically (e.g. IP
-            address, browser type, time spent on pages).
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.usageData.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.usageData.description'
+          )}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.website">
-            <strong>Website</strong> – Refers to InvestLab, accessible from
-            <a href="https://investlab.app/" target="_blank" rel="noopener">
-              https://investlab.app/
-            </a>
-            .
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.website.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.website.description'
+          )}
+          <a href="https://investlab.app/" target="_blank" rel="noopener">
+            https://investlab.app/
+          </a>
+          .
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.interpretationDefinitions.definitions.you">
-            <strong>You</strong> – The individual or entity using our Service.
-          </Trans>
+          <strong>
+            {t(
+              'legal.privacyPolicy.interpretationDefinitions.definitions.you.term'
+            )}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.interpretationDefinitions.definitions.you.description'
+          )}
         </li>
       </ul>
 
-      {/* ------- The rest of the document continues exactly the same way ------- */}
-      {/* Each heading, paragraph, and <li> should be wrapped either in t("...")   */}
-      {/* or <Trans i18nKey="..."> depending on whether it includes HTML elements */}
+      <h2>{t('legal.privacyPolicy.collectingData.title')}</h2>
+      <h3>{t('legal.privacyPolicy.collectingData.typesOfData.title')}</h3>
 
-      {/* Examples for variety below */}
-
-      <h2>{t('legal.privacyPolicy.collecting.title')}</h2>
-      <h3>{t('legal.privacyPolicy.collecting.typesOfData')}</h3>
-
-      <h4>{t('legal.privacyPolicy.collecting.personalData.title')}</h4>
-      <p>{t('legal.privacyPolicy.collecting.personalData.text')}</p>
+      <h4>{t('legal.privacyPolicy.collectingData.personalData.title')}</h4>
+      <p>{t('legal.privacyPolicy.collectingData.personalData.description')}</p>
       <ul>
-        <li>{t('legal.privacyPolicy.collecting.personalData.email')}</li>
-        <li>{t('legal.privacyPolicy.collecting.personalData.name')}</li>
-        <li>{t('legal.privacyPolicy.collecting.personalData.usageData')}</li>
+        <li>{t('legal.privacyPolicy.collectingData.personalData.email')}</li>
+        <li>{t('legal.privacyPolicy.collectingData.personalData.name')}</li>
+        <li>
+          {t('legal.privacyPolicy.collectingData.personalData.usageData')}
+        </li>
       </ul>
 
-      <h4>{t('legal.privacyPolicy.collecting.usageData.title')}</h4>
-      <p>{t('legal.privacyPolicy.collecting.usageData.text')}</p>
+      <h4>{t('legal.privacyPolicy.collectingData.usageData.title')}</h4>
+      <p>{t('legal.privacyPolicy.collectingData.usageData.description')}</p>
 
-      <h4>{t('legal.privacyPolicy.collecting.thirdPartySocial.title')}</h4>
-      <p>{t('legal.privacyPolicy.collecting.thirdPartySocial.text')}</p>
+      <h4>{t('legal.privacyPolicy.collectingData.thirdParty.title')}</h4>
+      <p>{t('legal.privacyPolicy.collectingData.thirdParty.description')}</p>
 
-      <h4>{t('legal.privacyPolicy.collecting.cookies.title')}</h4>
-      <p>{t('legal.privacyPolicy.collecting.cookies.text')}</p>
+      <h4>{t('legal.privacyPolicy.collectingData.cookies.title')}</h4>
+      <p>{t('legal.privacyPolicy.collectingData.cookies.description')}</p>
       <ul>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.collecting.cookies.essential">
-            <strong>Essential Cookies (Authentication)</strong> – Used by{' '}
-            <a href="https://clerk.com">Clerk</a>
-          </Trans>
+          <strong>
+            {t('legal.privacyPolicy.collectingData.cookies.essential.title')}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.collectingData.cookies.essential.description'
+          )}
+          <a href="https://clerk.com" target="_blank" rel="noopener">
+            Clerk
+          </a>
+          {t('legal.privacyPolicy.collectingData.cookies.essential.suffix')}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.collecting.cookies.analytics">
-            <strong>Analytics (Cookieless)</strong> – We use{' '}
-            <a href="https://posthog.com">PostHog</a>
-          </Trans>
+          <strong>
+            {t('legal.privacyPolicy.collectingData.cookies.analytics.title')}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.collectingData.cookies.analytics.description'
+          )}
+          <a href="https://posthog.com" target="_blank" rel="noopener">
+            PostHog
+          </a>
+          {t('legal.privacyPolicy.collectingData.cookies.analytics.suffix')}
         </li>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.collecting.cookies.preference">
-            <strong>Preference Cookies</strong> – Remember your settings.
-          </Trans>
+          <strong>
+            {t('legal.privacyPolicy.collectingData.cookies.preference.title')}
+          </strong>{' '}
+          –{' '}
+          {t(
+            'legal.privacyPolicy.collectingData.cookies.preference.description'
+          )}
         </li>
       </ul>
-      <p>{t('legal.privacyPolicy.collecting.cookies.notice')}</p>
+      <p>{t('legal.privacyPolicy.collectingData.cookies.browserSettings')}</p>
 
-      {/* ... The rest of the Privacy Policy continues with the same pattern:
-          - Headings => t("...")
-          - Simple paragraphs => t("...")
-          - List items with <strong>/<a> => <Trans i18nKey="..."> ... </Trans>
-      */}
+      <h3>{t('legal.privacyPolicy.useOfData.title')}</h3>
+      <p>{t('legal.privacyPolicy.useOfData.description')}</p>
+      <ul>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.provide.title')}
+          </strong>
+          {t('legal.privacyPolicy.useOfData.purposes.provide.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.manage.title')}
+          </strong>
+          {t('legal.privacyPolicy.useOfData.purposes.manage.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.contract.title')}
+          </strong>
+          {t('legal.privacyPolicy.useOfData.purposes.contract.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.contact.title')}
+          </strong>
+          {t('legal.privacyPolicy.useOfData.purposes.contact.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.news.title')}
+          </strong>{' '}
+          {t('legal.privacyPolicy.useOfData.purposes.news.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.requests.title')}
+          </strong>{' '}
+          {t('legal.privacyPolicy.useOfData.purposes.requests.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.transfers.title')}
+          </strong>{' '}
+          {t('legal.privacyPolicy.useOfData.purposes.transfers.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.useOfData.purposes.analytics.title')}
+          </strong>{' '}
+          {t('legal.privacyPolicy.useOfData.purposes.analytics.description')}
+        </li>
+      </ul>
+
+      <p>{t('legal.privacyPolicy.sharingData.description')}</p>
+      <ul>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.sharingData.authProviders.title')}
+          </strong>
+          <a href="https://clerk.com" target="_blank" rel="noopener">
+            Clerk
+          </a>
+          {t('legal.privacyPolicy.sharingData.authProviders.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.sharingData.analyticsProviders.title')}
+          </strong>
+          <a href="https://posthog.com" target="_blank" rel="noopener">
+            PostHog
+          </a>
+          {t('legal.privacyPolicy.sharingData.analyticsProviders.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.sharingData.otherProviders.title')}
+          </strong>{' '}
+          – {t('legal.privacyPolicy.sharingData.otherProviders.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.sharingData.businessTransfers.title')}
+          </strong>
+          {t('legal.privacyPolicy.sharingData.businessTransfers.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.sharingData.affiliates.title')}
+          </strong>
+          {t('legal.privacyPolicy.sharingData.affiliates.description')}
+        </li>
+        <li>
+          <strong>{t('legal.privacyPolicy.sharingData.partners.title')}</strong>{' '}
+          {t('legal.privacyPolicy.sharingData.partners.description')}
+        </li>
+        <li>
+          <strong>{t('legal.privacyPolicy.sharingData.users.title')}</strong>
+          {t('legal.privacyPolicy.sharingData.users.description')}
+        </li>
+        <li>
+          <strong>{t('legal.privacyPolicy.sharingData.consent.title')}</strong>
+          {t('legal.privacyPolicy.sharingData.consent.description')}
+        </li>
+      </ul>
+
+      <h3>{t('legal.privacyPolicy.retention.title')}</h3>
+      <p>{t('legal.privacyPolicy.retention.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.transfer.title')}</h3>
+      <p>{t('legal.privacyPolicy.transfer.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.delete.title')}</h3>
+      <p>{t('legal.privacyPolicy.delete.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.disclosure.title')}</h3>
+      <h4>{t('legal.privacyPolicy.disclosure.businessTransactions.title')}</h4>
+      <p>
+        {t('legal.privacyPolicy.disclosure.businessTransactions.description')}
+      </p>
+      <h4>{t('legal.privacyPolicy.disclosure.lawEnforcement.title')}</h4>
+      <p>{t('legal.privacyPolicy.disclosure.lawEnforcement.description')}</p>
+      <h4>{t('legal.privacyPolicy.disclosure.otherLegal.title')}</h4>
+      <p>{t('legal.privacyPolicy.disclosure.otherLegal.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.security.title')}</h3>
+      <p>{t('legal.privacyPolicy.security.description')}</p>
+
+      <h2>{t('legal.privacyPolicy.gdpr.title')}</h2>
+      <p>{t('legal.privacyPolicy.gdpr.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.gdpr.lawfulBases.title')}</h3>
+      <ul>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.gdpr.lawfulBases.contract.title')}
+          </strong>{' '}
+          – {t('legal.privacyPolicy.gdpr.lawfulBases.contract.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.gdpr.lawfulBases.consent.title')}
+          </strong>{' '}
+          – {t('legal.privacyPolicy.gdpr.lawfulBases.consent.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.gdpr.lawfulBases.legitimate.title')}
+          </strong>{' '}
+          – {t('legal.privacyPolicy.gdpr.lawfulBases.legitimate.description')}
+        </li>
+        <li>
+          <strong>
+            {t('legal.privacyPolicy.gdpr.lawfulBases.legal.title')}
+          </strong>{' '}
+          – {t('legal.privacyPolicy.gdpr.lawfulBases.legal.description')}
+        </li>
+      </ul>
+
+      <h3>{t('legal.privacyPolicy.gdpr.transfers.title')}</h3>
+      <p>{t('legal.privacyPolicy.gdpr.transfers.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.gdpr.rights.title')}</h3>
+      <ul>
+        <li>{t('legal.privacyPolicy.gdpr.rights.access')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.correct')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.delete')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.restrict')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.portability')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.withdraw')}</li>
+        <li>{t('legal.privacyPolicy.gdpr.rights.complaint')}</li>
+      </ul>
+
+      <h3>{t('legal.privacyPolicy.gdpr.children.title')}</h3>
+      <p>{t('legal.privacyPolicy.gdpr.children.description')}</p>
+
+      <h3>{t('legal.privacyPolicy.gdpr.contact.title')}</h3>
+      <ul>
+        <li>
+          {t('legal.privacyPolicy.gdpr.contact.email')}{' '}
+          <a href="mailto:app.investlab@gmail.com">app.investlab@gmail.com</a>
+        </li>
+      </ul>
+
+      <h2>{t('legal.privacyPolicy.links.title')}</h2>
+      <p>{t('legal.privacyPolicy.links.description')}</p>
+
+      <h2>{t('legal.privacyPolicy.changes.title')}</h2>
+      <p>{t('legal.privacyPolicy.changes.description')}</p>
 
       <h2>{t('legal.privacyPolicy.contact.title')}</h2>
-      <p>{t('legal.privacyPolicy.contact.text')}</p>
+      <p>{t('legal.privacyPolicy.contact.description')}</p>
       <ul>
         <li>
-          <Trans i18nKey="legal.privacyPolicy.contact.email">
-            Email:{' '}
-            <a href="mailto:app.investlab@gmail.com">app.investlab@gmail.com</a>
-          </Trans>
+          {t('legal.privacyPolicy.contact.email')}{' '}
+          <a href="mailto:app.investlab@gmail.com">app.investlab@gmail.com</a>
         </li>
       </ul>
     </div>

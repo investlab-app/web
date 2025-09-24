@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_legal/terms-of-service')({
   component: RouteComponent,
@@ -16,52 +16,43 @@ function RouteComponent() {
       </p>
 
       <h2>{t('legal.termsOfService.userEligibility.title')}</h2>
-      <p>{t('legal.termsOfService.userEligibility.text1')}</p>
-      <p>{t('legal.termsOfService.userEligibility.text2')}</p>
+      <p>{t('legal.termsOfService.userEligibility.ageRequirement')}</p>
+      <p>{t('legal.termsOfService.userEligibility.accountAccuracy')}</p>
 
-      <h2>{t('legal.termsOfService.acceptance.title')}</h2>
-      <p>
-        <Trans i18nKey="legal.termsOfService.acceptance.text">
-          By accessing the platform at{' '}
-          <a href="http://www.investlab.app">http://www.investlab.app</a>, you
-          are agreeing to be bound by these terms of service...
-        </Trans>
-      </p>
+      <h2>{t('legal.termsOfService.acceptanceOfTerms.title')}</h2>
+      <p>{t('legal.termsOfService.acceptanceOfTerms.description')}</p>
 
       <h2>{t('legal.termsOfService.useLicense.title')}</h2>
-      <p>{t('legal.termsOfService.useLicense.text')}</p>
+      <p>{t('legal.termsOfService.useLicense.description')}</p>
 
       <h2>{t('legal.termsOfService.disclaimer.title')}</h2>
-      <p>{t('legal.termsOfService.disclaimer.text')}</p>
+      <p>{t('legal.termsOfService.disclaimer.description')}</p>
 
       <h2>{t('legal.termsOfService.educationalDisclaimer.title')}</h2>
       <p>
-        <Trans i18nKey="legal.termsOfService.educationalDisclaimer.text">
-          <strong>IMPORTANT NOTICE:</strong> This platform is for educational
-          and informational purposes only and simulates paper trading without
-          involving real money...
-        </Trans>
+        <strong>
+          {t('legal.termsOfService.educationalDisclaimer.notice')}
+        </strong>{' '}
+        {t('legal.termsOfService.educationalDisclaimer.description')}
+        <br />
+        <br />
+        {t('legal.termsOfService.educationalDisclaimer.asIsBasis')}
       </p>
 
       <h2>{t('legal.termsOfService.limitations.title')}</h2>
-      <p>{t('legal.termsOfService.limitations.text')}</p>
+      <p>{t('legal.termsOfService.limitations.description')}</p>
 
-      <h2>{t('legal.termsOfService.accuracy.title')}</h2>
-      <p>{t('legal.termsOfService.accuracy.text')}</p>
+      <h2>{t('legal.termsOfService.accuracyOfMaterials.title')}</h2>
+      <p>{t('legal.termsOfService.accuracyOfMaterials.description')}</p>
 
-      <h2>{t('legal.termsOfService.contact.title')}</h2>
-      <p>
-        <Trans i18nKey="legal.termsOfService.contact.text">
-          For any questions about these Terms of Service, please contact us at:{' '}
-          <a href="mailto:app-investlab@gmail.com">app-investlab@gmail.com</a>
-        </Trans>
-      </p>
+      <h2>{t('legal.termsOfService.contactInformation.title')}</h2>
+      <p>{t('legal.termsOfService.contactInformation.description')}</p>
 
       <h2>{t('legal.termsOfService.governingLaw.title')}</h2>
-      <p>{t('legal.termsOfService.governingLaw.text')}</p>
+      <p>{t('legal.termsOfService.governingLaw.description')}</p>
 
-      <h2>{t('legal.termsOfService.dispute.title')}</h2>
-      <p>{t('legal.termsOfService.dispute.text')}</p>
+      <h2>{t('legal.termsOfService.disputeResolution.title')}</h2>
+      <p>{t('legal.termsOfService.disputeResolution.description')}</p>
     </div>
   );
 }
