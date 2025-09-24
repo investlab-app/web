@@ -37,13 +37,16 @@ export function NavUser({ user }: NavUserProps) {
           <div ref={userButtonRef} className="flex items-center size-7">
             <UserButton
               appearance={{
+                variables: {
+                  colorBackground: 'var(--background)',
+                  borderRadius: 'var(--radius)', // Apply consistent border radius
+                },
                 elements: {
                   userButtonPopoverCard: {
                     pointerEvents: 'initial', // Allow interaction on smaller screens
                     marginTop: '-8px', // Adjust vertical positioning
                     marginLeft: '-8px', // Align with the left edge of SidebarMenuItem
                     maxWidth: 'calc(100vw - 16px)', // Ensure popover fits within viewport
-                    borderRadius: 'var(--radius)', // Apply consistent border radius
                   },
                 },
               }}

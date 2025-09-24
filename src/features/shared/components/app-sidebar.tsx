@@ -89,7 +89,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="border-b h-(--header-height) justify-center">
+      <SidebarHeader className="border-b border-sidebar-border h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -115,7 +115,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           {user ? <NavUser user={user} /> : <NavUserSkeleton />}
         </div>
         <div>
-          <Separator className="mb-2" />
+          <Separator className="mb-2 bg-sidebar-border" />
           <div className="px-4 flex gap-4">
             <Link
               to="/privacy-policy"

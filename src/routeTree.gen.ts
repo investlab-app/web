@@ -22,6 +22,7 @@ import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedTransactionsRouteRouteImport } from './routes/_authed/transactions/route'
+import { Route as AuthedStatisticsRouteRouteImport } from './routes/_authed/statistics/route'
 import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
 import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
@@ -90,6 +91,11 @@ const AuthedTransactionsRouteRoute = AuthedTransactionsRouteRouteImport.update({
   path: '/transactions',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
+const AuthedStatisticsRouteRoute = AuthedStatisticsRouteRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
 const AuthedInstrumentsRouteRoute = AuthedInstrumentsRouteRouteImport.update({
   id: '/instruments',
   path: '/instruments',
@@ -101,9 +107,9 @@ const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
   getParentRoute: () => AuthedTransactionsRouteRoute,
 } as any)
 const AuthedStatisticsIndexRoute = AuthedStatisticsIndexRouteImport.update({
-  id: '/statistics/',
-  path: '/statistics/',
-  getParentRoute: () => AuthedRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedStatisticsRouteRoute,
 } as any)
 const AuthedInstrumentsIndexRoute = AuthedInstrumentsIndexRouteImport.update({
   id: '/',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
   '/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
+  '/statistics': typeof AuthedStatisticsRouteRouteWithChildren
   '/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
@@ -131,7 +138,7 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
-  '/statistics': typeof AuthedStatisticsIndexRoute
+  '/statistics/': typeof AuthedStatisticsIndexRoute
   '/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -157,6 +164,7 @@ export interface FileRoutesById {
   '/_legal': typeof LegalRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
   '/_authed/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
+  '/_authed/statistics': typeof AuthedStatisticsRouteRouteWithChildren
   '/_authed/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
@@ -176,6 +184,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/instruments'
+    | '/statistics'
     | '/transactions'
     | '/login'
     | '/signup'
@@ -186,7 +195,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments/'
-    | '/statistics'
+    | '/statistics/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/_legal'
     | '/$not-found'
     | '/_authed/instruments'
+    | '/_authed/statistics'
     | '/_authed/transactions'
     | '/_auth/login'
     | '/_auth/signup'
@@ -326,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTransactionsRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
+    '/_authed/statistics': {
+      id: '/_authed/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AuthedStatisticsRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
     '/_authed/instruments': {
       id: '/_authed/instruments'
       path: '/instruments'
@@ -342,10 +359,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authed/statistics/': {
       id: '/_authed/statistics/'
-      path: '/statistics'
-      fullPath: '/statistics'
+      path: '/'
+      fullPath: '/statistics/'
       preLoaderRoute: typeof AuthedStatisticsIndexRouteImport
-      parentRoute: typeof AuthedRouteRoute
+      parentRoute: typeof AuthedStatisticsRouteRoute
     }
     '/_authed/instruments/': {
       id: '/_authed/instruments/'
@@ -398,6 +415,19 @@ const AuthedInstrumentsRouteRouteWithChildren =
     AuthedInstrumentsRouteRouteChildren,
   )
 
+interface AuthedStatisticsRouteRouteChildren {
+  AuthedStatisticsIndexRoute: typeof AuthedStatisticsIndexRoute
+}
+
+const AuthedStatisticsRouteRouteChildren: AuthedStatisticsRouteRouteChildren = {
+  AuthedStatisticsIndexRoute: AuthedStatisticsIndexRoute,
+}
+
+const AuthedStatisticsRouteRouteWithChildren =
+  AuthedStatisticsRouteRoute._addFileChildren(
+    AuthedStatisticsRouteRouteChildren,
+  )
+
 interface AuthedTransactionsRouteRouteChildren {
   AuthedTransactionsIndexRoute: typeof AuthedTransactionsIndexRoute
 }
@@ -414,14 +444,14 @@ const AuthedTransactionsRouteRouteWithChildren =
 
 interface AuthedRouteRouteChildren {
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
+  AuthedStatisticsRouteRoute: typeof AuthedStatisticsRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
-  AuthedStatisticsIndexRoute: typeof AuthedStatisticsIndexRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
+  AuthedStatisticsRouteRoute: AuthedStatisticsRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
-  AuthedStatisticsIndexRoute: AuthedStatisticsIndexRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
