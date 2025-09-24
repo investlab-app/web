@@ -10,9 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotFoundRouteImport } from './routes/$not-found'
+import { Route as LegalRouteRouteImport } from './routes/_legal/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LegalTermsOfServiceRouteImport } from './routes/_legal/terms-of-service'
+import { Route as LegalPrivacyPolicyRouteImport } from './routes/_legal/privacy-policy'
+import { Route as LegalFaqRouteImport } from './routes/_legal/faq'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
@@ -29,6 +33,10 @@ const NotFoundRoute = NotFoundRouteImport.update({
   path: '/$not-found',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalRouteRoute = LegalRouteRouteImport.update({
+  id: '/_legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
@@ -41,6 +49,21 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermsOfServiceRoute = LegalTermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => LegalRouteRoute,
+} as any)
+const LegalPrivacyPolicyRoute = LegalPrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => LegalRouteRoute,
+} as any)
+const LegalFaqRoute = LegalFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => LegalRouteRoute,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -103,6 +126,9 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/faq': typeof LegalFaqRoute
+  '/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
@@ -115,6 +141,9 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/faq': typeof LegalFaqRoute
+  '/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
@@ -125,6 +154,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_authed': typeof AuthedRouteRouteWithChildren
+  '/_legal': typeof LegalRouteRouteWithChildren
   '/$not-found': typeof NotFoundRoute
   '/_authed/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
   '/_authed/transactions': typeof AuthedTransactionsRouteRouteWithChildren
@@ -132,6 +162,9 @@ export interface FileRoutesById {
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/_legal/faq': typeof LegalFaqRoute
+  '/_legal/privacy-policy': typeof LegalPrivacyPolicyRoute
+  '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
   '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
@@ -148,6 +181,9 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
+    | '/faq'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments/'
     | '/statistics'
@@ -160,6 +196,9 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
+    | '/faq'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments'
     | '/statistics'
@@ -169,6 +208,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/_authed'
+    | '/_legal'
     | '/$not-found'
     | '/_authed/instruments'
     | '/_authed/transactions'
@@ -176,6 +216,9 @@ export interface FileRouteTypes {
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
+    | '/_legal/faq'
+    | '/_legal/privacy-policy'
+    | '/_legal/terms-of-service'
     | '/_authed/instruments/$instrumentId'
     | '/_authed/instruments/'
     | '/_authed/statistics/'
@@ -186,6 +229,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  LegalRouteRoute: typeof LegalRouteRouteWithChildren
   NotFoundRoute: typeof NotFoundRoute
 }
 
@@ -196,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/$not-found'
       fullPath: '/$not-found'
       preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_legal': {
+      id: '/_legal'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LegalRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed': {
@@ -218,6 +269,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_legal/terms-of-service': {
+      id: '/_legal/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof LegalTermsOfServiceRouteImport
+      parentRoute: typeof LegalRouteRoute
+    }
+    '/_legal/privacy-policy': {
+      id: '/_legal/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof LegalPrivacyPolicyRouteImport
+      parentRoute: typeof LegalRouteRoute
+    }
+    '/_legal/faq': {
+      id: '/_legal/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof LegalFaqRouteImport
+      parentRoute: typeof LegalRouteRoute
     }
     '/_auth/verify-email': {
       id: '/_auth/verify-email'
@@ -356,10 +428,27 @@ const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
   AuthedRouteRouteChildren,
 )
 
+interface LegalRouteRouteChildren {
+  LegalFaqRoute: typeof LegalFaqRoute
+  LegalPrivacyPolicyRoute: typeof LegalPrivacyPolicyRoute
+  LegalTermsOfServiceRoute: typeof LegalTermsOfServiceRoute
+}
+
+const LegalRouteRouteChildren: LegalRouteRouteChildren = {
+  LegalFaqRoute: LegalFaqRoute,
+  LegalPrivacyPolicyRoute: LegalPrivacyPolicyRoute,
+  LegalTermsOfServiceRoute: LegalTermsOfServiceRoute,
+}
+
+const LegalRouteRouteWithChildren = LegalRouteRoute._addFileChildren(
+  LegalRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AuthedRouteRoute: AuthedRouteRouteWithChildren,
+  LegalRouteRoute: LegalRouteRouteWithChildren,
   NotFoundRoute: NotFoundRoute,
 }
 export const routeTree = rootRouteImport

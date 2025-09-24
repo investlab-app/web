@@ -75,7 +75,10 @@ if (rootElement && !rootElement.innerHTML) {
             provider={PostHogProvider}
             providerProps={{
               apiKey: POSTHOG_KEY,
-              options: { api_host: POSTHOG_HOST },
+              options: {
+                api_host: POSTHOG_HOST,
+                cookieless_mode: 'always',
+              },
             }}
           >
             <PersistQueryClientProvider

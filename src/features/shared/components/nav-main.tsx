@@ -14,6 +14,7 @@ export interface NavItem {
   title: string;
   to: LinkProps['to'];
   icon: Icon;
+  target?: string;
 }
 
 export function NavMain({ items }: { items: Array<NavItem> }) {
@@ -32,7 +33,7 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
                   asChild
                   isActive={isActive}
                 >
-                  <Link to={item.to}>
+                  <Link to={item.to} target={item.target}>
                     <item.icon />
                     <span>{item.title}</span>
                   </Link>
