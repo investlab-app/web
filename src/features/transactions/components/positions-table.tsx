@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Info } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { transactionsHistoryQueryOptions } from '../queries/fetch-transactions-history';
 import { PositionRow } from './position-row';
@@ -13,6 +13,11 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
 
 type PositionsTableProps = {
   type: 'open' | 'closed';
@@ -40,22 +45,131 @@ export function PositionsTableHeader() {
   return (
     <TableHeader>
       <TableRow>
-        <TableHead>{t('transactions.table.headers.name')}</TableHead>
-        <TableHead>{t('transactions.table.headers.quantity')}</TableHead>
+        <TableHead>
+          <div className="flex items-center gap-1">
+            <span>{t('transactions.table.headers.name')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.name',
+                    'Name of the financial instrument'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TableHead>
+        <TableHead>
+          <div className="flex items-center gap-1">
+            <span>{t('transactions.table.headers.quantity')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.quantity',
+                    'Number of shares owned'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TableHead>
         <TableHead className="text-right">
-          {t('transactions.table.headers.share_price')}
+          <div className="flex items-center gap-1 justify-end">
+            <span>{t('transactions.table.headers.share_price')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.share_price',
+                    'Current price per share'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </TableHead>
         <TableHead className="hidden xl:table-cell text-right">
-          {t('transactions.table.headers.acquisition_price')}
+          <div className="flex items-center gap-1 justify-end">
+            <span>{t('transactions.table.headers.acquisition_price')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.acquisition_price',
+                    'Average price paid per share'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </TableHead>
         <TableHead className="text-right">
-          {t('transactions.table.headers.market_value')}
+          <div className="flex items-center gap-1 justify-end">
+            <span>{t('transactions.table.headers.market_value')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.market_value',
+                    'Total current value of the position'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </TableHead>
         <TableHead className="text-right">
-          {t('transactions.table.headers.gain_loss')}
+          <div className="flex items-center gap-1 justify-end">
+            <span>{t('transactions.table.headers.gain_loss')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.gain_loss',
+                    'Absolute profit or loss amount'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </TableHead>
         <TableHead className="text-right">
-          {t('transactions.table.headers.gain_loss_pct')}
+          <div className="flex items-center gap-1 justify-end">
+            <span>{t('transactions.table.headers.gain_loss_pct')}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t(
+                    'transactions.tooltips.gain_loss_pct',
+                    'Percentage profit or loss'
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </TableHead>
       </TableRow>
     </TableHeader>
@@ -71,9 +185,21 @@ export function PositionsTableBodySkeleton({ length = 5 }) {
           <TableRow>
             <TableCell>
               <div className="flex items-center gap-1">
-                <button className="p-1 rounded border border-transparent">
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="p-1 rounded border border-transparent">
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {t(
+                        'tooltips.transactions.expand_details',
+                        'Expand to view transaction details'
+                      )}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
                 <button
                   className="p-1 rounded border border-transparent"
                   title={t('transactions.actions.instrument_details')}

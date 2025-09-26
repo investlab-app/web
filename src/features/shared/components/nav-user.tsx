@@ -34,7 +34,7 @@ export function NavUser({ user }: NavUserProps) {
           onClick={handleClick}
           className="cursor-pointer"
         >
-          <div ref={userButtonRef} className="flex items-center size-7">
+          <div ref={userButtonRef} className="flex items-center">
             <UserButton
               appearance={{
                 variables: {
@@ -42,6 +42,11 @@ export function NavUser({ user }: NavUserProps) {
                   borderRadius: 'var(--radius)', // Apply consistent border radius
                 },
                 elements: {
+                  button: {},
+                  userButtonAvatarBox: {
+                    height: '32px',
+                    width: '32px',
+                  },
                   userButtonPopoverCard: {
                     pointerEvents: 'initial', // Allow interaction on smaller screens
                     marginTop: '-8px', // Adjust vertical positioning
@@ -52,7 +57,7 @@ export function NavUser({ user }: NavUserProps) {
               }}
             />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+          <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">{name}</span>
             <span className="text-muted-foreground truncate text-xs">
               {email}

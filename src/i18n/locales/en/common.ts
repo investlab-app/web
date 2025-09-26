@@ -47,6 +47,18 @@ const enCommon = {
   privacy_policy: 'Privacy Policy',
   terms_of_service: 'Terms of Service',
   faq: 'FAQ',
+  tooltips: {
+    navigation: {
+      dashboard: 'Portfolio overview and account summary',
+      instruments: 'Browse instruments',
+      transactions: 'Trading history',
+      statistics: 'Portfolio performance analysis',
+    },
+    charts: {
+      line_chart: 'Line chart',
+      candlestick_chart: 'Candlestick chart (OHLC)',
+    },
+  },
 };
 
 export default enCommon;

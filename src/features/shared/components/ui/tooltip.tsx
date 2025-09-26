@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tooltip as TooltipPrimitive } from 'radix-ui';
 
+import { forwardRef } from 'react';
 import { cn } from '@/features/shared/utils/styles';
 
 function TooltipProvider({
@@ -26,10 +27,41 @@ function Tooltip({
   );
 }
 
+/** This filter slot prevents the Tooltip from overwriting its children's "data-state" attribute,
+ *  ensuring that child components can maintain their own state without interference.
+ *  Reference: https://github.com/shadcn-ui/ui/issues/1988 */
+const FilterDataStateSlot = forwardRef<
+  HTMLButtonElement,
+  React.PropsWithChildren<Record<string, unknown>>
+>((props, ref) => {
+  const { 'data-state': unused, children, ...otherProps } = props;
+  void unused;
+  return React.cloneElement(
+    children as React.ReactElement<Record<string, unknown>>,
+    {
+      ref,
+      ...otherProps,
+    }
+  );
+});
+
 function TooltipTrigger({
+  asChild = false,
+  children,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+}: React.ComponentProps<typeof TooltipPrimitive.Trigger> & {
+  asChild?: boolean;
+  children?: React.ReactNode;
+}) {
+  return (
+    <TooltipPrimitive.Trigger
+      asChild={asChild}
+      data-slot="tooltip-trigger"
+      {...props}
+    >
+      {asChild ? <FilterDataStateSlot>{children}</FilterDataStateSlot> : null}
+    </TooltipPrimitive.Trigger>
+  );
 }
 
 function TooltipContent({
