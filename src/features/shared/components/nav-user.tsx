@@ -34,16 +34,19 @@ export function NavUser({ user }: NavUserProps) {
           onClick={handleClick}
           className="cursor-pointer"
         >
-          <div ref={userButtonRef} className="flex items-center">
+          <div ref={userButtonRef} className="my-auto">
             <UserButton
               appearance={{
                 variables: {
                   colorBackground: 'var(--background)',
                   borderRadius: 'var(--radius)', // Apply consistent border radius
                 },
+                layout: {
+                  shimmer: false,
+                },
                 elements: {
-                  button: {},
                   userButtonAvatarBox: {
+                    transform: 'scale(0.8)',
                     height: '32px',
                     width: '32px',
                   },
@@ -57,7 +60,7 @@ export function NavUser({ user }: NavUserProps) {
               }}
             />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
+          <div className="flex flex-col">
             <span className="truncate font-medium">{name}</span>
             <span className="text-muted-foreground truncate text-xs">
               {email}
