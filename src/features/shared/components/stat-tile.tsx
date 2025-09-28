@@ -75,7 +75,7 @@ export const StatTile = ({
 
 const StatTileSkeleton = () => {
   return (
-    <Card className="min-w-[280px] @container/card border-border shadow-lg">
+    <Card className="@container/card border-border shadow-lg">
       <CardHeader>
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-8 w-40 mt-1" />
