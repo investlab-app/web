@@ -18,6 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
+import { Button } from '@/features/shared/components/ui/button';
 
 type PositionsTableProps = {
   type: 'open' | 'closed';
@@ -31,7 +32,16 @@ export function PositionsTable({ type }: PositionsTableProps) {
       <PositionsTableHeader />
       <TableBody>
         {!data ? (
-          <PositionsTableBodySkeleton />
+          <PositionRow
+            position={{
+              name: '',
+              quantity: 0,
+              market_value: 0,
+              gain_loss: 0,
+              gain_loss_pct: 0,
+              history: [],
+            }}
+          />
         ) : (
           data.map((pos) => <PositionRow key={pos.name} position={pos} />)
         )}
@@ -53,12 +63,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.name',
-                    'Name of the financial instrument'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.name')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -71,12 +76,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.quantity',
-                    'Number of shares owned'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.quantity')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -89,12 +89,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.share_price',
-                    'Current price per share'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.share_price')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -107,12 +102,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.acquisition_price',
-                    'Average price paid per share'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.acquisition_price')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -125,12 +115,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.market_value',
-                    'Total current value of the position'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.market_value')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -143,12 +128,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.gain_loss',
-                    'Absolute profit or loss amount'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.gain_loss')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -161,12 +141,7 @@ export function PositionsTableHeader() {
                 <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {t(
-                    'transactions.tooltips.gain_loss_pct',
-                    'Percentage profit or loss'
-                  )}
-                </p>
+                <p>{t('transactions.tooltips.gain_loss_pct')}</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -185,21 +160,9 @@ export function PositionsTableBodySkeleton({ length = 5 }) {
           <TableRow>
             <TableCell>
               <div className="flex items-center gap-1">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="p-1 rounded border border-transparent">
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>
-                      {t(
-                        'tooltips.transactions.expand_details',
-                        'Expand to view transaction details'
-                      )}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
+                <Button variant={'ghost'} className="size-8" disabled>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
                 <button
                   className="p-1 rounded border border-transparent"
                   title={t('transactions.actions.instrument_details')}

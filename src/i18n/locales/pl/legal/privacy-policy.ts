@@ -1,6 +1,7 @@
 const plPrivacyPolicy = {
   title: 'Polityka prywatności',
-  lastUpdated: 'Ostatnia aktualizacja: {{date, datetime}}',
+  lastUpdated:
+    'Ostatnia aktualizacja: {{date, datetime(year: numeric; month: long; day: numeric)}}',
 
   intro: {
     description:

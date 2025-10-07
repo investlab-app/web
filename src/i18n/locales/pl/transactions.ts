@@ -33,6 +33,7 @@ const plTransactions = {
     gain_loss: 'Bezwzględna kwota zysku lub straty',
     gain_loss_pct: 'Procentowy zysk lub strata',
     expand_details: 'Rozwiń, aby zobaczyć szczegóły transakcji',
+    hide_details: 'Ukryj szczegóły transakcji',
   },
 };
 

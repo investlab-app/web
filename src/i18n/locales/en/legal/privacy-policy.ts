@@ -1,6 +1,7 @@
 const enPrivacyPolicy = {
   title: 'Privacy Policy',
-  lastUpdated: 'Last updated: {{date, datetime}}',
+  lastUpdated:
+    'Last updated: {{date, datetime(year: numeric; month: long; day: numeric)}}',
 
   intro: {
     description:

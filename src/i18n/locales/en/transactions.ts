@@ -32,6 +32,7 @@ const enTransactions = {
     gain_loss: 'Absolute profit or loss amount',
     gain_loss_pct: 'Percentage profit or loss',
     expand_details: 'Expand to view transaction details',
+    hide_details: 'Hide transaction details',
   },
 };
 
