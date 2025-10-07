@@ -63,14 +63,22 @@ function App() {
   const i18n = useTranslation();
   const auth = useAuth();
   const clerk = useClerk();
-  const isLoggedInBefore =
-    document.cookie.includes('__session=') || auth.isSignedIn;
+  const isSessionCookie = document.cookie.includes('__session=');
+  const isLoggedInBefore = isSessionCookie || auth.isSignedIn;
 
   useEffect(() => {
+    // ensure session is fresh when back online
     if (isOnline && !clerk.loaded) {
       clerk.session?.reload();
     }
   }, [isOnline, clerk]);
+
+  useEffect(() => {
+    // sign out explicitly if signed out but session cookie exists
+    if (auth.isLoaded && !auth.isSignedIn && isSessionCookie) {
+      auth.signOut();
+    }
+  }, [auth, isSessionCookie]);
 
   return (
     <WSProvider>
