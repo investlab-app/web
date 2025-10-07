@@ -52,6 +52,13 @@ const plAuth = {
     description:
       'Proszę czekać, podczas gdy bezpiecznie logujemy Cię za pomocą dostawcy.',
   },
+  acceptTermsPrivacy: {
+    byClickingContinueYouAgreeToOur:
+      'Klikając kontynuuj, wyrażasz zgodę na nasz',
+    termsOfService: 'Regulamin',
+    and: 'i',
+    privacyPolicy: 'Politykę prywatności',
+  },
 };
 
 export default plAuth;
