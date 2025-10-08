@@ -8,35 +8,45 @@ import {
 } from '@xyflow/react';
 import { useCallback } from 'react';
 import { DnDProvider } from '../utils/dnd-context';
-import { ConnectorNode } from './connector-node';
-import { RuleNode } from './rule-node';
+import { RuleNode } from '../nodes/rule/rule-node';
+import { evaluators } from '../utils/evaluators';
+import { ConnectorNode } from '../nodes/connector/connector-node';
+import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { DnDSidebar } from './dnd-sidebar';
+import { ExecuteButton } from './execute-button';
 import type { Connection, NodeTypes } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
 
-// const initialNodes = [
-//   {
-//     id: 'n1',
-//     position: { x: 0, y: 0 },
-//     data: { children: <div>Node 1</div> },
-//     type: 'ruleNode',
-//   },
-//   {
-//     id: 'n23',
-//     position: { x: 200, y: 150 },
-//     data: { isAnd: false },
-//     type: 'connectorNode',
-//   },
-// ];
+const initialNodes = [
+  {
+    id: 'n1',
+    position: { x: 0, y: 0 },
+    data: { children: <div>Node 1</div> },
+    type: 'ruleNode',
+  },
+  {
+    id: 'n23',
+    position: { x: 200, y: 150 },
+    data: { isAnd: false },
+    type: 'connectorNode',
+  },
+  {
+    id: 'n20',
+    position: { x: 200, y: 50 },
+    data: { value: 'AAPL', direction: 'rises' },
+    type: 'priceChangesNode',
+  },
+];
 
 const nodeTypes: NodeTypes = {
   ruleNode: RuleNode,
   connectorNode: ConnectorNode,
+  priceChangesNode: PriceChangesNode
 };
 
 export function FlowsBoard() {
-  const [nodes, , onNodesChange] = useNodesState([]);
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   const onConnect = useCallback(
@@ -74,6 +84,7 @@ export function FlowsBoard() {
       <div className="w-64 bg-gray-100 p-4">
         <DnDSidebar />
       </div>
+      <ExecuteButton evaluators={evaluators} />
     </div>
     </DnDProvider>
     </ReactFlowProvider>
