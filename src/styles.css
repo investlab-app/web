@@ -88,6 +88,12 @@ code {
   --green: theme('colors.green.500');
   --green-lighter: theme('colors.green.400');
   --green-darker: theme('colors.green.600');
+  --yellow: theme('colors.yellow.500');
+  --yellow-lighter: theme('colors.yellow.400');
+  --yellow-darker: theme('colors.yellow.600');
+  --blue: theme('colors.blue.500');
+  --blue-lighter: theme('colors.blue.400');
+  --blue-darker: theme('colors.blue.600');
   --red: theme('colors.red.500');
   --red-lighter: theme('colors.red.400');
   --red-darker: theme('colors.red.600');
@@ -101,6 +107,10 @@ code {
 
   --card-hex: rgb(255, 255, 255);
   --card-foreground-hex: rgb(15, 15, 15);
+
+  --node-predicate: oklch(74.366% 0.1009 241.416);
+  --node-trigger: oklch(87.55% 0.08737 113.792);
+  --node-action: oklch(83.744% 0.15703 144.26);
 }
 
 .dark {
@@ -175,6 +185,10 @@ code {
 
   --card-hex: rgb(25, 25, 25);
   --card-foreground-hex: rgb(255, 255, 255);
+
+  --node-predicate: oklch(38.736% 0.08462 244.406);
+  --node-trigger: oklch(48.554% 0.10403 116.512);
+  --node-action: oklch(41.121% 0.12896 143.034);
 }
 
 @theme inline {

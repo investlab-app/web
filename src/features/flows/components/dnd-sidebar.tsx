@@ -1,9 +1,12 @@
 import { useReactFlow } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
+import { EventWithinNodeUI } from '../nodes/rule/trigger/event-within-node-ui';
+import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node-ui';
+import { ConnectorNodeUI } from '../nodes/connector/connector-node-ui';
+import { HappensBetweenNodeUI } from '../nodes/rule/trigger/happens-between-node-ui';
+import { CustomNodeTypes } from '../types/node-types';
 import { DragGhost } from './drag-ghost';
-import { ConnectorNodeUI } from './nodes-ui/connector-node-ui';
-import { PriceChangesNodeUI } from './nodes-ui/price-changes-node-ui';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { XYPosition } from '@xyflow/react';
 
@@ -18,7 +21,7 @@ export function DnDSidebar() {
   const createAddNewNode = useCallback(
     (
       nodeType: string,
-      data: Record<string, boolean | string>
+      data: Record<string, boolean | string | number>
     ): OnDropAction => {
       return ({ position }: { position: XYPosition }) => {
         const newNode = {
@@ -45,7 +48,7 @@ export function DnDSidebar() {
   return (
     <>
       {isDragging && <DragGhost type={type} />}
-      <aside>
+      <div>
         <div>Logical Operators</div>
         <div
           onPointerDown={(event) => {
@@ -53,7 +56,7 @@ export function DnDSidebar() {
             onDragStart(event, createConnectorNode(true));
           }}
         >
-          <ConnectorNodeUI isAnd={true} id={"preview-and"} />
+          <ConnectorNodeUI isAnd={true} id={'preview-and'} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -61,7 +64,7 @@ export function DnDSidebar() {
             onDragStart(event, createConnectorNode(false));
           }}
         >
-            <ConnectorNodeUI isAnd={false} id={"preview-and"} />
+          <ConnectorNodeUI isAnd={false} id={'preview-and'} />
         </div>
         <div>Triggers</div>
         <div
@@ -69,18 +72,51 @@ export function DnDSidebar() {
             setType('priceChangesNode');
             onDragStart(
               event,
-              createAddNewNode('priceChangesNode', {
+              createAddNewNode(CustomNodeTypes.PriceChanges, {
                 value: '',
                 direction: 'rise',
               })
             );
           }}
         >
-         <PriceChangesNodeUI id="preview-price-change" value="TICKER" direction='rises' />
+          <PriceChangesNodeUI
+            id="preview-price-change"
+            value="TICKER"
+            direction="rises"
+          />
         </div>
-      </aside>
+        <div
+          onPointerDown={(event) => {
+            setType('eventWithinNode');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.EventWithin, {
+                value: 1,
+              })
+            );
+          }}
+        >
+          <EventWithinNodeUI id="preview-price-change" value={1} />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('happensBetweenNode');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.HappensBetween, {
+                startDate: Date.now(),
+                endDate: 7 * 24 * 60 * 60 * 1000 + Date.now(),
+              })
+            );
+          }}
+        >
+          <HappensBetweenNodeUI
+            id="preview-price-change"
+            startDate={new Date()}
+            endDate={new Date(7 * 24 * 60 * 60 * 1000 + Date.now())}
+          />
+        </div>
+      </div>
     </>
   );
 }
-
-
