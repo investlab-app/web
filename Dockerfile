@@ -27,9 +27,13 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy built assets from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx config template and startup script
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
+COPY start-nginx.sh /start-nginx.sh
+
+# Make the startup script executable
+RUN chmod +x /start-nginx.sh
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["/start-nginx.sh"]

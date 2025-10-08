@@ -20,14 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Generate changelog and create release
-        id: release_drafter
-        uses: release-drafter/release-drafter@v6
-        with:
-          config-name: release-drafter.yml
-          publish: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup and Build
         uses: ./.github/actions/setup-and-build
         with:
@@ -38,25 +30,6 @@ jobs:
           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
           VITE_PUBLIC_POSTHOG_KEY: ${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}
           VITE_PUBLIC_POSTHOG_HOST: ${{ secrets.VITE_PUBLIC_POSTHOG_HOST }}
-      - name: Zip dist directory
-        run: |
-          if [ -d "dist" ]; then
-            zip -r dist.zip ./dist
-          else
-            echo "dist directory not found, skipping zip."
-            exit 0
-          fi
-        shell: bash
-      - name: Upload release asset (dist.zip)
-        if: steps.release_drafter.outputs.upload_url && hashFiles('./dist.zip')
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.release_drafter.outputs.tag_name }}
-          name: ${{ steps.release_drafter.outputs.name }}
-          body: ${{ steps.release_drafter.outputs.body }}
-          files: ./dist.zip
-          draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate a .env file
         run: |
           echo "VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}" >> .env
