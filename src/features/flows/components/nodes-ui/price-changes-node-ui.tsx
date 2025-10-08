@@ -25,14 +25,14 @@ export function PriceChangesNodeUI({
         placeholder="Ticker (e.g. AAPL)"
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          onValueChange??(e.target.value)
+          onValueChange!(e.target.value)
         }
       />
       <select
         className="w-full px-2 py-1 border rounded text-sm"
         value={direction}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onDirectionChange??(e.target.value as 'rises' | 'falls')
+          onDirectionChange!(e.target.value as 'rises' | 'falls')
         }
       >
         <option value="rises">rises</option>
