@@ -1,6 +1,6 @@
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
 
-import { CommandNodeUI } from './command-node-ui';
+import { NodeUI } from '../node-ui';
 import type { ReactNode } from 'react';
 
 interface RuleNodeUIProps {
@@ -12,7 +12,7 @@ interface RuleNodeUIProps {
 export function RuleNodeUI({ children, id, className }: RuleNodeUIProps) {
   const connections = useNodeConnections({ id: id });
   return (
-    <CommandNodeUI className={className}>
+    <NodeUI className={`${className} min-w-[200px]`}>
       {children}
       <Handle
         type="source"
@@ -20,6 +20,6 @@ export function RuleNodeUI({ children, id, className }: RuleNodeUIProps) {
         id="right"
         isConnectable={connections.length < 1}
       />
-    </CommandNodeUI>
+    </NodeUI>
   );
 }

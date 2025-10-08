@@ -3,7 +3,7 @@ import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import { PriceChangesNodeUI } from '@/features/flows/nodes/rule/trigger/price-changes-node-ui';
 
-export type PriceChangesNode = Node<
+export type PriceHigherLowerNode = Node<
   {
     value: string;
     direction: 'rises' | 'falls';
@@ -11,7 +11,9 @@ export type PriceChangesNode = Node<
   CustomNodeTypes.PriceChanges
 >;
 
-export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
+export const PriceHigherLowerNode = (
+  props: NodeProps<PriceHigherLowerNode>
+) => {
   const updateNodeInternals = useUpdateNodeInternals();
   return (
     <PriceChangesNodeUI

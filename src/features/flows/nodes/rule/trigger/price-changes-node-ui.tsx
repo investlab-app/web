@@ -5,8 +5,8 @@ interface PriceChangesNodeUIProps {
   id: string;
   value: string;
   direction: 'rises' | 'falls';
-  onValueChange?: (value: string) => void ;
-  onDirectionChange?: (direction: 'rises' | 'falls') => void ;
+  onValueChange?: (value: string) => void;
+  onDirectionChange?: (direction: 'rises' | 'falls') => void;
 }
 
 export function PriceChangesNodeUI({
