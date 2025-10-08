@@ -9,9 +9,7 @@ export const Route = createFileRoute('/_authed/flows/')({
 function RouteComponent() {
   return (
     <AppFrame>
-      dupa daup
       <FlowsBoard />
-      aaa
     </AppFrame>
   );
 }
