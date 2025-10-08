@@ -1,5 +1,5 @@
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
-import { CommandNodeUI } from './command-node-ui';
+import { NodeUI } from '../node-ui';
 
 interface ConnectorNodeUIProps {
   isAnd: boolean;
@@ -23,7 +23,7 @@ export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
   });
 
   return (
-    <CommandNodeUI>
+    <NodeUI className="bg-[var(--background)]">
       {isAnd ? 'AND' : 'OR'}
 
       <Handle
@@ -49,6 +49,6 @@ export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
         isConnectable={bottomConnections.length < 1}
         isValidConnection={(connection) => connection.source !== id}
       />
-    </CommandNodeUI>
+    </NodeUI>
   );
 }

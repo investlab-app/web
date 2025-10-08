@@ -8,27 +8,33 @@ import {
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { DnDProvider } from '../utils/dnd-context';
-import { RuleNode } from '../nodes/rule/rule-node';
-// import { evaluators } from '../utils/evaluators';
 import { ConnectorNode } from '../nodes/connector/connector-node';
 import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
+import { HappensBetweenNode } from '../nodes/rule/trigger/happens-between-node';
+import { CustomNodeTypes } from '../types/node-types';
+import { EventWithinNode } from '../nodes/rule/trigger/event-within-node';
 import { DnDSidebar } from './dnd-sidebar';
 import { ExecuteButton } from './execute-button';
-import type { Connection, NodeTypes, ReactFlowInstance } from '@xyflow/react';
+import type {
+  Connection,
+  Edge,
+  Node,
+  NodeTypes,
+  ReactFlowInstance,
+} from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
 
-
-
 const nodeTypes: NodeTypes = {
-  ruleNode: RuleNode,
-  connectorNode: ConnectorNode,
-  priceChangesNode: PriceChangesNode,
+  [CustomNodeTypes.Connector]: ConnectorNode,
+  [CustomNodeTypes.PriceChanges]: PriceChangesNode,
+  [CustomNodeTypes.EventWithin]: EventWithinNode,
+  [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
 };
 
 export function FlowsBoard() {
-  const [nodes, , onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, , onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   const onConnect = useCallback(
     (params: Connection) =>
@@ -72,7 +78,7 @@ export function FlowsBoard() {
               <Background />
             </ReactFlow>
           </div>
-          <div className="w-64 bg-gray-100 p-4">
+          <div className="w-64 bg-(var[--muted]) p-4">
             <DnDSidebar />
           </div>
           <ExecuteButton onExecute={onSave} />

@@ -8,19 +8,19 @@ interface ExecuteButtonProps {
 }
 
 export function ExecuteButton({ onExecute }: ExecuteButtonProps) {
-//   const nodes = useNodes();
-//   const edges = useEdges();
+  //   const nodes = useNodes();
+  //   const edges = useEdges();
 
-//   const execute = useCallback(() => {
-//     console.log('Evaluating graph with nodes:', nodes);
+  //   const execute = useCallback(() => {
+  //     console.log('Evaluating graph with nodes:', nodes);
 
-//     const result = nodes.map((node) => {
-//       console.log('Evaluating node:', node);
-//       const evaluator = evaluators[node.type!];
-//       return evaluator.evaluate(node, nodes, edges, evaluators);
-//     });
-//     console.log('evaluation result:', result);
-//   }, [nodes, edges, evaluators]);
+  //     const result = nodes.map((node) => {
+  //       console.log('Evaluating node:', node);
+  //       const evaluator = evaluators[node.type!];
+  //       return evaluator.evaluate(node, nodes, edges, evaluators);
+  //     });
+  //     console.log('evaluation result:', result);
+  //   }, [nodes, edges, evaluators]);
 
   return (
     <Button

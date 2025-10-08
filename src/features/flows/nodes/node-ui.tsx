@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 
-interface CommandNodeUIProps {
+interface NodeUIProps {
   children?: ReactNode;
   className?: string;
 }
 
-export function CommandNodeUI({ children, className }: CommandNodeUIProps) {
+export function NodeUI({ children, className }: NodeUIProps) {
   return (
     <div
       className={`p-2 border border-[#555] rounded min-w-[100px] flex items-center justify-center ${className ?? ''}`}
