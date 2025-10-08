@@ -6,15 +6,15 @@ import {
   useEdgesState,
   useNodesState,
 } from '@xyflow/react';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { DnDProvider } from '../utils/dnd-context';
 import { RuleNode } from '../nodes/rule/rule-node';
-import { evaluators } from '../utils/evaluators';
+// import { evaluators } from '../utils/evaluators';
 import { ConnectorNode } from '../nodes/connector/connector-node';
 import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { DnDSidebar } from './dnd-sidebar';
 import { ExecuteButton } from './execute-button';
-import type { Connection, NodeTypes } from '@xyflow/react';
+import type { Connection, NodeTypes, ReactFlowInstance } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
 
@@ -38,6 +38,15 @@ export function FlowsBoard() {
 
   const { appTheme: theme } = useTheme();
 
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
+
+  const onSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      localStorage.setItem('example-flow', JSON.stringify(flow));
+    }
+  }, [rfInstance]);
+
   return (
     <ReactFlowProvider>
       <DnDProvider>
@@ -53,6 +62,7 @@ export function FlowsBoard() {
               nodeTypes={nodeTypes}
               // panOnDrag={false}
               // zoomOnPinch={false}
+              onInit={setRfInstance}
               autoPanOnConnect={false}
               autoPanOnNodeDrag={false}
               zoomOnScroll={false}
@@ -65,7 +75,7 @@ export function FlowsBoard() {
           <div className="w-64 bg-gray-100 p-4">
             <DnDSidebar />
           </div>
-          <ExecuteButton evaluators={evaluators} />
+          <ExecuteButton onExecute={onSave} />
         </div>
       </DnDProvider>
     </ReactFlowProvider>

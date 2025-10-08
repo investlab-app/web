@@ -11,9 +11,9 @@ export type ConnectorNode = Node<
   'connectorNode'
 >;
 
-export const ConnectorNode = memo((props: NodeProps<ConnectorNode>) => {
+export const ConnectorNode = (props: NodeProps<ConnectorNode>) => {
   return <ConnectorNodeUI id={props.id} isAnd={props.data.isAnd} />;
-});
+};
 
 export const ConnectorNodeEvaluator: CommandNodeEvaluator = {
   evaluate(node, allNodes, allEdges, evaluators) {
