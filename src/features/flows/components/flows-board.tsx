@@ -12,6 +12,7 @@ import { ConnectorNode } from '../nodes/connector/connector-node';
 import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { HappensBetweenNode } from '../nodes/rule/trigger/happens-between-node';
 import { CustomNodeTypes } from '../types/node-types';
+import { BackgroundNode } from '../nodes/background-node';
 import { EventWithinNode } from '../nodes/rule/trigger/event-within-node';
 import { DnDSidebar } from './dnd-sidebar';
 import { ExecuteButton } from './execute-button';
@@ -30,10 +31,46 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.EventWithin]: EventWithinNode,
   [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
+  bg: BackgroundNode
 };
 
+const backgroundNodes = [
+  {
+    id: 'background-triggers',
+    type: 'bg',
+    position: { x: 0, y: 0 },
+    data: { colorClass: 'bg-[var(--color-triggers)]' },
+    selectable: false,
+    draggable: false,
+    deletable: false,
+    connectable: false,
+  },
+  {
+    id: 'background-predicates',
+    type: 'bg',
+    position: { x:1000, y: 0 },
+    data: { colorClass: 'bg-[var(--color-predicates)]' },
+    selectable: false,
+    draggable: false,
+    deletable: false,
+    connectable: false,
+    
+  },
+  {
+    id: 'background-actions',
+    type: 'bg',
+    position: { x: 2000, y: 0 },
+    data: { colorClass: 'bg-[var(--color-actions)]' },
+    selectable: false,
+    draggable: false,
+    deletable: false,
+    connectable: false,
+  },
+];
+
+
 export function FlowsBoard() {
-  const [nodes, , onNodesChange] = useNodesState<Node>([]);
+  const [nodes, , onNodesChange] = useNodesState<Node>([...backgroundNodes]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   const onConnect = useCallback(
@@ -53,12 +90,16 @@ export function FlowsBoard() {
     }
   }, [rfInstance]);
 
+  
+
   return (
     <ReactFlowProvider>
       <DnDProvider>
-        <div className="flex w-full h-[500px]">
+        <div className="flex w-full h-[600px]">
           <div className="flex-1">
             <ReactFlow
+            translateExtent={[[0, 0],[3000, 1000]]}
+            nodeExtent={[[0, 0],[3000, 1000]]}
               colorMode={theme}
               nodes={nodes}
               edges={edges}
