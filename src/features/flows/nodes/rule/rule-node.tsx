@@ -11,9 +11,9 @@ export type RuleNode = Node<
   'ruleNode'
 >;
 
-export const RuleNode = memo((props: NodeProps<RuleNode>) => {
+export const RuleNode = (props: NodeProps<RuleNode>) => {
   return <RuleNodeUI id={props.id} children={props.data.children} />;
-});
+};
 
 export const RuleNodeEvaluator: CommandNodeEvaluator = {
   evaluate() {

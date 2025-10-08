@@ -31,7 +31,7 @@ export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
         position={Position.Right}
         id="right"
         isConnectable={outConnections.length < 1}
-        isValidConnection={(connection) => connection.source !== id}
+        isValidConnection={(connection) => connection.target !== id}
       />
       <Handle
         type="target"

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+// import { memo } from 'react';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CommandNodeEvaluator } from '@/features/flows/types/command-node-evaluator';
@@ -12,7 +12,7 @@ export type PriceChangesNode = Node<
   'priceChangesNode'
 >;
 
-export const PriceChangesNode = memo((props: NodeProps<PriceChangesNode>) => {
+export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
   const updateNodeInternals = useUpdateNodeInternals();
   return (
     <PriceChangesNodeUI
@@ -30,7 +30,7 @@ export const PriceChangesNode = memo((props: NodeProps<PriceChangesNode>) => {
       }}
     />
   );
-});
+};
 
 export const PriceChangeNodeEvaluator: CommandNodeEvaluator = {
   evaluate(node, ) {
