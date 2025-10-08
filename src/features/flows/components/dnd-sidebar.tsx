@@ -1,31 +1,31 @@
 import { useReactFlow } from '@xyflow/react';
 import { useCallback, useState } from 'react';
-import { useDnD, useDnDPosition } from '../hooks/use-dnd';
+import { useDnD } from '../hooks/use-dnd';
+import { DragGhost } from './drag-ghost';
+import { ConnectorNodeUI } from './nodes-ui/connector-node-ui';
+import { PriceChangesNodeUI } from './nodes-ui/price-changes-node-ui';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { XYPosition } from '@xyflow/react';
 
-// This is a simple ID generator for the nodes.
-// You can customize this to use your own ID generation logic.
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 export function DnDSidebar() {
   const { onDragStart, isDragging } = useDnD();
-  // The type of the node that is being dragged.
   const [type, setType] = useState<string | null>(null);
-
   const { setNodes } = useReactFlow();
 
   const createAddNewNode = useCallback(
-    (nodeType: string): OnDropAction => {
+    (
+      nodeType: string,
+      data: Record<string, boolean | string>
+    ): OnDropAction => {
       return ({ position }: { position: XYPosition }) => {
-        // Here, we create a new node and add it to the flow.
-        // You can customize the behavior of what happens when a node is dropped on the flow here.
         const newNode = {
           id: getId(),
           type: nodeType,
           position,
-          data: { label: `${nodeType} node` },
+          data: data,
         };
 
         setNodes((nds) => nds.concat(newNode));
@@ -35,59 +35,52 @@ export function DnDSidebar() {
     [setNodes, setType]
   );
 
+  const createConnectorNode = useCallback(
+    (isAnd: boolean): OnDropAction => {
+      return createAddNewNode('connectorNode', { isAnd: isAnd });
+    },
+    [createAddNewNode]
+  );
+
   return (
     <>
-      {/* The ghost node will be rendered at pointer position when dragging. */}
       {isDragging && <DragGhost type={type} />}
       <aside>
-        <div>You can drag these nodes to the pane to create new nodes.</div>
+        <div>Logical Operators</div>
         <div
           onPointerDown={(event) => {
-            setType('input');
-            onDragStart(event, createAddNewNode('input'));
+            setType('connectorNode');
+            onDragStart(event, createConnectorNode(true));
           }}
         >
-          Input Node
+          <ConnectorNodeUI isAnd={true} id={"preview-and"} />
         </div>
         <div
           onPointerDown={(event) => {
-            setType('default');
-            onDragStart(event, createAddNewNode('default'));
+            setType('and node');
+            onDragStart(event, createConnectorNode(false));
           }}
         >
-          Default Node
+            <ConnectorNodeUI isAnd={false} id={"preview-and"} />
         </div>
+        <div>Triggers</div>
         <div
           onPointerDown={(event) => {
-            setType('output');
-            onDragStart(event, createAddNewNode('output'));
+            setType('priceChangesNode');
+            onDragStart(
+              event,
+              createAddNewNode('priceChangesNode', {
+                value: '',
+                direction: 'rise',
+              })
+            );
           }}
         >
-          Output Node
+         <PriceChangesNodeUI id="preview-price-change" value="TICKER" direction='rises' />
         </div>
       </aside>
     </>
   );
 }
 
-interface DragGhostProps {
-  type: string | null;
-}
 
-// The DragGhost component is used to display a ghost node when dragging a node into the flow.
-export function DragGhost({ type }: DragGhostProps) {
-  const { position } = useDnDPosition();
-
-  if (!position) return null;
-
-  return (
-    <div
-      className={`dndnode ghostnode ${type}`}
-      style={{
-        transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
-      }}
-    >
-      {type && `${type.charAt(0).toUpperCase() + type.slice(1)} Node`}
-    </div>
-  );
-}
