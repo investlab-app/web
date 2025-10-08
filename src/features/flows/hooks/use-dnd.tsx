@@ -23,6 +23,7 @@ export const useDnD = () => {
       event.preventDefault();
       (event.target as HTMLElement).setPointerCapture(event.pointerId);
       setIsDragging(true);
+      console.log("im being dragged");
       setDropAction(onDrop);
     },
     [setIsDragging, setDropAction]

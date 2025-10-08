@@ -6,7 +6,7 @@ interface ConnectorNodeUIProps {
   id: string;
 }
 
-export function ConnectorNodeUI({ isAnd,  id }: ConnectorNodeUIProps) {
+export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
   const topConnections = useNodeConnections({
     id: id,
     handleId: 'top-left',
@@ -23,7 +23,7 @@ export function ConnectorNodeUI({ isAnd,  id }: ConnectorNodeUIProps) {
   });
 
   return (
-   <CommandNodeUI>
+    <CommandNodeUI>
       {isAnd ? 'AND' : 'OR'}
 
       <Handle
@@ -49,6 +49,6 @@ export function ConnectorNodeUI({ isAnd,  id }: ConnectorNodeUIProps) {
         isConnectable={bottomConnections.length < 1}
         isValidConnection={(connection) => connection.source !== id}
       />
-</CommandNodeUI>
+    </CommandNodeUI>
   );
 }
