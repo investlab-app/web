@@ -43,16 +43,21 @@ export const useDnD = () => {
         event.clientX,
         event.clientY
       );
-      const isDroppingOnFlow = elementUnderPointer?.closest('.react-flow');
+      const canvasDiv =
+        elementUnderPointer?.closest('.react-flow')?.parentElement;
       event.preventDefault();
 
       // Only allow dropping on the flow area
-      if (isDroppingOnFlow) {
+      if (canvasDiv) {
         const flowPosition = screenToFlowPosition({
           x: event.clientX,
           y: event.clientY,
         });
-        dropAction?.({ position: flowPosition });
+        console.log('droppoign');
+        console.log(canvasDiv);
+        const canvasId = canvasDiv.id;
+        console.log(canvasId);
+        dropAction?.({ position: flowPosition, id: canvasId });
       }
 
       setIsDragging(false);
