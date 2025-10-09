@@ -1,4 +1,3 @@
-import { useReactFlow } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
 import { EventWithinNodeUI } from '../nodes/rule/trigger/event-within-node-ui';
@@ -10,75 +9,45 @@ import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+let nodeid = 0;
+const getId = () => `dndnode_${nodeid++}`;
 
-const allowedTypesPerSection: Record<string, Array<string>> = {
-  'background-triggers': [
-    CustomNodeTypes.PriceChanges,
-    CustomNodeTypes.EventWithin,
-    CustomNodeTypes.HappensBetween,
-    CustomNodeTypes.Connector
-],
-'background-actions': [
-
-    CustomNodeTypes.Connector
-], // Fill this with allowed actions
-'background-predicates': [
-    CustomNodeTypes.Connector
-    
-  ], // or whatever type you use
-};
-
-function isPositionInsideNode(pos: XYPosition, node: Node): boolean {
-    console.log("checking position", pos, node);
-  const { x, y } = node.position;
-  const width = 1000;
-  const height =1000;
-
-  return (
-    pos.x >= x &&
-    pos.x <= x + width &&
-    pos.y >= y &&
-    pos.y <= y + height
-  );
+interface FlowTarget {
+  id: string;
+  addNode: (node: Node) => void;
+  allowedTypes: Array<string>;
 }
 
-export function DnDSidebar() {
+interface DnDSidebarProps {
+  flows: Array<FlowTarget>;
+}
+
+export function DnDSidebar({ flows }: DnDSidebarProps) {
   const { onDragStart, isDragging } = useDnD();
   const [type, setType] = useState<string | null>(null);
-  const { setNodes, getNodes } = useReactFlow();
 
   const createAddNewNode = useCallback(
     (
       nodeType: string,
       data: Record<string, boolean | string | number>
     ): OnDropAction => {
-      return ({ position }: { position: XYPosition }) => {
-        console.log("getting");
-        const allNodes = getNodes();
-        const backgroundNodes = allNodes.filter((node) => node.type === 'bg');
-        console.log("background nodes", backgroundNodes);
+      return ({ position, id }: { position: XYPosition; id: string }) => {
+        const targetFlow = flows.find((flow) => flow.id === id);
+        if (!targetFlow) {
+          console.warn(`No flow with id "${id}" found`);
+          return;
+        }
+        console.log(targetFlow);
+        console.log(nodeType);
 
-      const targetZone = backgroundNodes.find((node) =>
-        isPositionInsideNode(position, node)
-      );
+        if (!targetFlow.allowedTypes.includes(nodeType)) {
+          console.warn(
+            `Node type "${nodeType}" not allowed in flow with id "${id}"`
+          );
+          return;
+        }
 
-
-      console.log('Target zone:', targetZone);
-
-      if (!targetZone) {
-        console.warn('Dropped outside any section. Node rejected.');
-        return; // Drop outside of a zone, reject
-      }
-
-      const allowedTypes = allowedTypesPerSection[targetZone.id] ;
-      if (!allowedTypes.includes(nodeType)) {
-        console.warn(`Node type "${nodeType}" not allowed in zone "${targetZone.id}".`);
-        return; // Drop into wrong zone, reject
-      }
-
-console.log("great success");
+        console.log('great success');
         const newNode = {
           id: getId(),
           type: nodeType,
@@ -86,11 +55,11 @@ console.log("great success");
           data: data,
         };
 
-        setNodes((nds) => nds.concat(newNode));
+        targetFlow.addNode(newNode);
         setType(null);
       };
     },
-    [setNodes, setType, getNodes]
+    [setType, flows]
   );
 
   const createConnectorNode = useCallback(

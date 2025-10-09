@@ -2,7 +2,13 @@ import { createContext, useState } from 'react';
 import type { XYPosition } from '@xyflow/react';
 import type { Dispatch, SetStateAction } from 'react';
 
-export type OnDropAction = ({ position }: { position: XYPosition }) => void;
+export type OnDropAction = ({
+  position,
+  id,
+}: {
+  position: XYPosition;
+  id: string;
+}) => void;
 
 interface DnDContextType {
   // If a node is being dragged.
