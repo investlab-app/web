@@ -1,4 +1,4 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
 import { HappensBetweenNodeUI } from './happens-between-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -13,7 +13,7 @@ export type HappensBetweenNode = Node<
 
 export const HappensBetweenNode = (props: NodeProps<HappensBetweenNode>) => {
   const updateNodeInternals = useUpdateNodeInternals();
-
+  const connections = useNodeConnections({ id: props.id });
   const { startDate, endDate } = props.data;
 
   const handleStartChange = (date: Date | undefined) => {
@@ -33,6 +33,7 @@ export const HappensBetweenNode = (props: NodeProps<HappensBetweenNode>) => {
       endDate={new Date(endDate)}
       onStartChange={handleStartChange}
       onEndChange={handleEndChange}
+      connectionsLen={connections.length}
     />
   );
 };

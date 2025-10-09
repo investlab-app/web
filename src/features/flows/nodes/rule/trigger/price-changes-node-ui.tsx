@@ -7,6 +7,7 @@ interface PriceChangesNodeUIProps {
   direction: 'rises' | 'falls';
   onValueChange?: (value: string) => void;
   onDirectionChange?: (direction: 'rises' | 'falls') => void;
+  connectionsLen?: number;
 }
 
 export function PriceChangesNodeUI({
@@ -15,9 +16,10 @@ export function PriceChangesNodeUI({
   direction,
   onValueChange,
   onDirectionChange,
+  connectionsLen,
 }: PriceChangesNodeUIProps) {
   return (
-    <TriggerNodeUI id={id}>
+    <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
       <div className="text-sm">Price of instrument</div>
       <input
         className="w-full px-2 py-1 border rounded text-sm"
