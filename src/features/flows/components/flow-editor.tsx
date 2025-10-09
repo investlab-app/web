@@ -6,6 +6,7 @@ import { HappensBetweenNode } from '../nodes/rule/trigger/happens-between-node';
 import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { CustomNodeTypes } from '../types/node-types';
 
+import { validateNodes } from '../utils/nodes-validator';
 import { DnDProvider } from '../utils/dnd-context';
 import { FlowCanvas } from './flow-canvas';
 import { DnDSidebar } from './dnd-sidebar';
@@ -45,7 +46,12 @@ export function FlowsEditor() {
     },
   ];
 
-  const handleSave = () => {
+  const trySave = () => {
+    for (const [, instance] of Object.entries(rfInstances.current)) {
+      if (!validateNodes(instance.getNodes(), instance.getEdges())) {
+        return;
+      }
+    }
     for (const [id, instance] of Object.entries(rfInstances.current)) {
       localStorage.setItem(`flow-${id}`, JSON.stringify(instance.toObject()));
     }
@@ -83,7 +89,7 @@ export function FlowsEditor() {
             />
 
             <div className="mt-2">
-              <ExecuteButton onExecute={handleSave} />
+              <ExecuteButton onExecute={trySave} />
             </div>
           </ReactFlowProvider>
         </div>

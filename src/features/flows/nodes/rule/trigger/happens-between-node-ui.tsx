@@ -31,7 +31,7 @@ export function HappensBetweenNodeUI({
 
   return (
     <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
-      <div>Happens between</div>
+      <div className="text-sm px-1">Happens between</div>
       {onStartChange && (
         <input
           type="date"
@@ -40,7 +40,7 @@ export function HappensBetweenNodeUI({
           className="border p-1 rounded mr-2"
         />
       )}
-      {onEndChange && <div className="inline-block mx-2">and</div>}
+      {onEndChange && <div className="inline-block text-sm mx-2">and</div>}
       {onEndChange && (
         <input
           type="date"
