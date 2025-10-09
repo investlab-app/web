@@ -16,7 +16,7 @@ export function EventWithinNodeUI({
 }: EventWithinNodeUIProps) {
   return (
     <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
-      <div>Happens in the past</div>
+      <div className="text-sm px-1">Happens in the past</div>
       {onValueChange && (
         <NumberInput
           className="w-20 mx-2"
@@ -28,7 +28,7 @@ export function EventWithinNodeUI({
         />
       )}
       {!onValueChange && <div className="px-1" />}
-      <div>days</div>
+      <div className="text-sm">days</div>
     </TriggerNodeUI>
   );
 }
