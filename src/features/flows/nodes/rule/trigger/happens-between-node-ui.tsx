@@ -6,6 +6,7 @@ interface HappensBetweenNodeUIProps {
   endDate: Date;
   onStartChange?: (value: Date | undefined) => void;
   onEndChange?: (value: Date | undefined) => void;
+  connectionsLen?: number;
 }
 
 export function HappensBetweenNodeUI({
@@ -14,8 +15,8 @@ export function HappensBetweenNodeUI({
   endDate,
   onStartChange,
   onEndChange,
+  connectionsLen,
 }: HappensBetweenNodeUIProps) {
-  // Helper to convert Date to yyyy-MM-dd string for input value
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
   const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +30,7 @@ export function HappensBetweenNodeUI({
   };
 
   return (
-    <TriggerNodeUI id={id}>
+    <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
       <div>Happens between</div>
       {onStartChange && (
         <input

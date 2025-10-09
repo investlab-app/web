@@ -1,4 +1,4 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
 import type { Node, NodeProps } from '@xyflow/react';
 
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -13,6 +13,7 @@ export type EventWithinNode = Node<
 
 export const EventWithinNode = (props: NodeProps<EventWithinNode>) => {
   const updateNodeInternals = useUpdateNodeInternals();
+  const connections = useNodeConnections({ id: props.id });
   return (
     <EventWithinNodeUI
       id={props.id}
@@ -21,6 +22,7 @@ export const EventWithinNode = (props: NodeProps<EventWithinNode>) => {
         props.data.value = val!;
         updateNodeInternals(props.id);
       }}
+      connectionsLen={connections.length}
     />
   );
 };

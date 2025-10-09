@@ -1,4 +1,4 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import { PriceChangesNodeUI } from '@/features/flows/nodes/rule/trigger/price-changes-node-ui';
@@ -13,6 +13,7 @@ export type PriceChangesNode = Node<
 
 export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
   const updateNodeInternals = useUpdateNodeInternals();
+  const connections = useNodeConnections({ id: props.id });
   return (
     <PriceChangesNodeUI
       id={props.id}
@@ -26,6 +27,7 @@ export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
         props.data.direction = dir;
         updateNodeInternals(props.id);
       }}
+      connectionsLen={connections.length}
     />
   );
 };

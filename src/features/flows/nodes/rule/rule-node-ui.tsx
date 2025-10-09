@@ -1,4 +1,4 @@
-import { Handle, Position, useNodeConnections } from '@xyflow/react';
+import { Handle, Position } from '@xyflow/react';
 
 import { NodeUI } from '../node-ui';
 import type { ReactNode } from 'react';
@@ -7,18 +7,26 @@ interface RuleNodeUIProps {
   children?: ReactNode;
   id: string;
   className?: string;
+  connectionsLen?: number;
 }
 
-export function RuleNodeUI({ children, id, className }: RuleNodeUIProps) {
-  const connections = useNodeConnections({ id: id });
+export function RuleNodeUI({
+  children,
+  className,
+  connectionsLen,
+}: RuleNodeUIProps) {
+  const hasNoConnections = connectionsLen !== undefined && connectionsLen < 1;
+
   return (
-    <NodeUI className={`${className}`}>
+    <NodeUI
+      className={` ${hasNoConnections ? 'border-red-500' : ''} ${className}`}
+    >
       {children}
       <Handle
         type="source"
         position={Position.Right}
         id="right"
-        isConnectable={connections.length < 1}
+        isConnectable={connectionsLen ? connectionsLen < 1 : true}
       />
     </NodeUI>
   );

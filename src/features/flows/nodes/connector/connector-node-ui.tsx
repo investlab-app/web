@@ -1,36 +1,39 @@
-import { Handle, Position, useNodeConnections } from '@xyflow/react';
+import { Handle, Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 
 interface ConnectorNodeUIProps {
   isAnd: boolean;
   id: string;
+  outConnectionsLen?: number;
+  topConnectionsLen?: number;
+  bottomConnectionsLen?: number;
 }
 
-export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
-  const topConnections = useNodeConnections({
-    id: id,
-    handleId: 'top-left',
-    handleType: 'target',
-  });
-  const bottomConnections = useNodeConnections({
-    id: id,
-    handleId: 'bottom-left',
-    handleType: 'target',
-  });
-  const outConnections = useNodeConnections({
-    id: id,
-    handleType: 'source',
-  });
+export function ConnectorNodeUI({
+  isAnd,
+  id,
+  outConnectionsLen,
+  topConnectionsLen,
+  bottomConnectionsLen,
+}: ConnectorNodeUIProps) {
+  const hasNoConnections =
+    topConnectionsLen !== undefined &&
+    bottomConnectionsLen !== undefined &&
+    (topConnectionsLen < 1 || bottomConnectionsLen < 1);
 
   return (
-    <NodeUI className="bg-[var(--background)]">
+    <NodeUI
+      className={` ${
+        hasNoConnections ? 'border-red-500' : ''
+      } bg-[var(--background)]`}
+    >
       {isAnd ? 'AND' : 'OR'}
 
       <Handle
         type="source"
         position={Position.Right}
         id="right"
-        isConnectable={outConnections.length < 1}
+        isConnectable={outConnectionsLen ? outConnectionsLen < 1 : true}
         isValidConnection={(connection) => connection.target !== id}
       />
       <Handle
@@ -38,7 +41,7 @@ export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
         position={Position.Left}
         id="top-left"
         style={{ top: '30%' }}
-        isConnectable={topConnections.length < 1}
+        isConnectable={topConnectionsLen ? topConnectionsLen < 1 : true}
         isValidConnection={(connection) => connection.source !== id}
       />
       <Handle
@@ -46,7 +49,7 @@ export function ConnectorNodeUI({ isAnd, id }: ConnectorNodeUIProps) {
         position={Position.Left}
         style={{ top: '70%' }}
         id="bottom-left"
-        isConnectable={bottomConnections.length < 1}
+        isConnectable={bottomConnectionsLen ? bottomConnectionsLen < 1 : true}
         isValidConnection={(connection) => connection.source !== id}
       />
     </NodeUI>

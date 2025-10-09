@@ -5,15 +5,17 @@ interface EventWithinNodeUIProps {
   id: string;
   value: number;
   onValueChange?: (value: number | undefined) => void;
+  connectionsLen?: number;
 }
 
 export function EventWithinNodeUI({
   id,
   value,
   onValueChange,
+  connectionsLen,
 }: EventWithinNodeUIProps) {
   return (
-    <TriggerNodeUI id={id}>
+    <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
       <div>Happens in the past</div>
       {onValueChange && (
         <NumberInput
