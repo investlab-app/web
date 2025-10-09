@@ -28,7 +28,7 @@ export const DnDContext = createContext<DnDContextType | null>(null);
 export function DnDProvider({ children }: { children: React.ReactNode }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dropAction, setDropAction] = useState<OnDropAction | null>(null);
-  
+
   return (
     <DnDContext.Provider
       value={{

@@ -4,7 +4,6 @@ import type { OnDropAction } from '../utils/dnd-context';
 import type { XYPosition } from '@xyflow/react';
 
 export const useDnD = () => {
-
   const context = useContext(DnDContext);
 
   if (!context) {
@@ -45,15 +44,15 @@ export const useDnD = () => {
         elementUnderPointer?.closest('.react-flow')?.parentElement;
       event.preventDefault();
 
-const canvasId = canvasDiv?.id;
+      const canvasId = canvasDiv?.id;
       if (canvasId) {
-  const screenPos = { x: event.clientX, y: event.clientY };  
-  dropAction?.({ position: screenPos, id: canvasId });
-}
+        const screenPos = { x: event.clientX, y: event.clientY };
+        dropAction?.({ position: screenPos, id: canvasId });
+      }
 
       setIsDragging(false);
     },
-    [ setIsDragging, dropAction, isDragging]
+    [setIsDragging, dropAction, isDragging]
   );
 
   // Add global touch event listeners
