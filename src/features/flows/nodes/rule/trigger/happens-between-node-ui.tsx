@@ -30,20 +30,24 @@ export function HappensBetweenNodeUI({
 
   return (
     <TriggerNodeUI id={id}>
-      <div className="text-sm mb-1">Happens between</div>
-      <input
-        type="date"
-        value={formatDate(startDate)}
-        onChange={handleStartChange}
-        className="border p-1 rounded mr-2"
-      />
-      <div className="inline-block mx-2">and</div>
-      <input
-        type="date"
-        value={formatDate(endDate)}
-        onChange={handleEndChange}
-        className="border p-1 rounded"
-      />
+      <div>Happens between</div>
+      {onStartChange && (
+        <input
+          type="date"
+          value={formatDate(startDate)}
+          onChange={handleStartChange}
+          className="border p-1 rounded mr-2"
+        />
+      )}
+      {onEndChange && <div className="inline-block mx-2">and</div>}
+      {onEndChange && (
+        <input
+          type="date"
+          value={formatDate(endDate)}
+          onChange={handleEndChange}
+          className="border p-1 rounded"
+        />
+      )}
     </TriggerNodeUI>
   );
 }

@@ -12,7 +12,7 @@ interface RuleNodeUIProps {
 export function RuleNodeUI({ children, id, className }: RuleNodeUIProps) {
   const connections = useNodeConnections({ id: id });
   return (
-    <NodeUI className={`${className} min-w-[200px]`}>
+    <NodeUI className={`${className}`}>
       {children}
       <Handle
         type="source"
