@@ -16,6 +16,7 @@ interface FlowTarget {
   id: string;
   addNode: (node: Node) => void;
   allowedTypes: Array<string>;
+  screenToFlowPosition: (pos: XYPosition) => XYPosition;
 }
 
 interface DnDSidebarProps {
@@ -37,6 +38,7 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           console.warn(`No flow with id "${id}" found`);
           return;
         }
+        const flowPos = targetFlow.screenToFlowPosition(position);
         console.log(targetFlow);
         console.log(nodeType);
 
@@ -51,7 +53,7 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
         const newNode = {
           id: getId(),
           type: nodeType,
-          position,
+          position: flowPos,
           data: data,
         };
 
