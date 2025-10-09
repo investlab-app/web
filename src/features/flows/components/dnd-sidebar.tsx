@@ -39,8 +39,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           return;
         }
         const flowPos = targetFlow.screenToFlowPosition(position);
-        console.log(targetFlow);
-        console.log(nodeType);
 
         if (!targetFlow.allowedTypes.includes(nodeType)) {
           console.warn(
@@ -48,8 +46,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           );
           return;
         }
-
-        console.log('great success');
         const newNode = {
           id: getId(),
           type: nodeType,
@@ -72,7 +68,7 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
   );
 
   return (
-    <>
+    <div className="p-2">
       {isDragging && <DragGhost type={type} />}
       <div>
         <div>Logical Operators</div>
@@ -143,6 +139,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }

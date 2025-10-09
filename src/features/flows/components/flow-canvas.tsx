@@ -46,9 +46,7 @@ export function FlowCanvas({
 
   const handleInit = (flow: ReactFlowInstance) => {
     setInstance(flow);
-    console.log('supa');
     onInstanceReady?.(id, flow);
-    console.log('fajne');
 
     if (onRegisterAddNode) {
       onRegisterAddNode(id, addNode);
