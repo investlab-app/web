@@ -1,11 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useReactFlow } from '@xyflow/react';
 import { DnDContext } from '../utils/dnd-context';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { XYPosition } from '@xyflow/react';
 
 export const useDnD = () => {
-  const { screenToFlowPosition } = useReactFlow();
 
   const context = useContext(DnDContext);
 
@@ -47,22 +45,15 @@ export const useDnD = () => {
         elementUnderPointer?.closest('.react-flow')?.parentElement;
       event.preventDefault();
 
-      // Only allow dropping on the flow area
-      if (canvasDiv) {
-        const flowPosition = screenToFlowPosition({
-          x: event.clientX,
-          y: event.clientY,
-        });
-        console.log('droppoign');
-        console.log(canvasDiv);
-        const canvasId = canvasDiv.id;
-        console.log(canvasId);
-        dropAction?.({ position: flowPosition, id: canvasId });
-      }
+const canvasId = canvasDiv?.id;
+      if (canvasId) {
+  const screenPos = { x: event.clientX, y: event.clientY };  
+  dropAction?.({ position: screenPos, id: canvasId });
+}
 
       setIsDragging(false);
     },
-    [screenToFlowPosition, setIsDragging, dropAction, isDragging]
+    [ setIsDragging, dropAction, isDragging]
   );
 
   // Add global touch event listeners

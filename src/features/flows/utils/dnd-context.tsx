@@ -14,7 +14,6 @@ interface DnDContextType {
   // If a node is being dragged.
   isDragging: boolean;
   setIsDragging: Dispatch<SetStateAction<boolean>>;
-  // The action to be performed when something is dropped on the flow.
   dropAction: OnDropAction | null;
   setDropAction: Dispatch<SetStateAction<OnDropAction | null>>;
 }
@@ -29,14 +28,13 @@ export const DnDContext = createContext<DnDContextType | null>(null);
 export function DnDProvider({ children }: { children: React.ReactNode }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dropAction, setDropAction] = useState<OnDropAction | null>(null);
-
+  
   return (
     <DnDContext.Provider
       value={{
         isDragging,
         setIsDragging,
         dropAction,
-        // This is a workaround to ensure that the drop action is not treated as a lazy function.
         setDropAction: (action) => setDropAction(() => action),
       }}
     >
