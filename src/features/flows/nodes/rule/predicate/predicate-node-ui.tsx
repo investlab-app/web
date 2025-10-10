@@ -5,24 +5,36 @@ import type { ReactNode } from 'react';
 
 interface PredicateNodeUIProps {
   children?: ReactNode;
-  connectionsLen?: number;
+  toConnectionsLen?: number;
+  fromConnectionsLen?: number;
 }
 
-export function PredicateNodeUI({ children, connectionsLen }: PredicateNodeUIProps) {
-   const hasNoConnections = connectionsLen !== undefined && connectionsLen < 1;
+export function PredicateNodeUI({
+  children,
+  toConnectionsLen,
+  fromConnectionsLen,
+}: PredicateNodeUIProps) {
+  const notEnoughConnections =
+    (toConnectionsLen !== undefined && toConnectionsLen < 1) ||
+    (fromConnectionsLen !== undefined && fromConnectionsLen < 1);
 
   return (
     <NodeUI
-      className={`bg-[var(--node-predicate)] ${hasNoConnections ? 'border-red-500' : ''}`}
+      className={`bg-[var(--node-predicate)] ${notEnoughConnections ? 'border-red-500' : ''}`}
     >
       {children}
       <Handle
         type="source"
         position={Position.Right}
         id="right"
-        isConnectable={connectionsLen ? connectionsLen < 1 : true}
+        isConnectable={fromConnectionsLen ? fromConnectionsLen < 1 : true}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="left"
+        isConnectable={toConnectionsLen ? toConnectionsLen < 1 : true}
       />
     </NodeUI>
   );
-
 }

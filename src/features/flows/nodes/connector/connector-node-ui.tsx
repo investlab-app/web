@@ -1,16 +1,17 @@
 import { Handle, Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
+import type { ReactNode } from 'react';
 
 interface ConnectorNodeUIProps {
-  isAnd: boolean;
   id: string;
   outConnectionsLen?: number;
   topConnectionsLen?: number;
   bottomConnectionsLen?: number;
+  children?: ReactNode;
 }
 
 export function ConnectorNodeUI({
-  isAnd,
+  children,
   id,
   outConnectionsLen,
   topConnectionsLen,
@@ -27,7 +28,7 @@ export function ConnectorNodeUI({
         hasNoConnections ? 'border-red-500' : ''
       } bg-[var(--background)]`}
     >
-      {isAnd ? 'AND' : 'OR'}
+      {children}
 
       <Handle
         type="source"

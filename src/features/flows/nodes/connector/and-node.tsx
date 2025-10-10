@@ -3,14 +3,12 @@ import { ConnectorNodeUI } from './connector-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
-export type ConnectorNode = Node<
-  {
-    isAnd: boolean;
-  },
-  CustomNodeTypes.Connector
+export type AndNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  CustomNodeTypes.And
 >;
 
-export const ConnectorNode = (props: NodeProps<ConnectorNode>) => {
+export const AndNode = (props: NodeProps<AndNode>) => {
   const topConnections = useNodeConnections({
     id: props.id,
     handleId: 'top-left',
@@ -26,12 +24,36 @@ export const ConnectorNode = (props: NodeProps<ConnectorNode>) => {
     handleType: 'source',
   });
   return (
-    <ConnectorNodeUI
+    <AndNodeUI
       id={props.id}
-      isAnd={props.data.isAnd}
       topConnectionsLen={topConnections.length}
       bottomConnectionsLen={bottomConnections.length}
       outConnectionsLen={outConnections.length}
     />
   );
 };
+
+export interface AndNodeUIProps {
+  id: string;
+  outConnectionsLen?: number;
+  topConnectionsLen?: number;
+  bottomConnectionsLen?: number;
+}
+
+export function AndNodeUI({
+  id,
+  outConnectionsLen,
+  topConnectionsLen,
+  bottomConnectionsLen,
+}: AndNodeUIProps) {
+  return (
+    <ConnectorNodeUI
+      id={id}
+      outConnectionsLen={outConnectionsLen}
+      topConnectionsLen={topConnectionsLen}
+      bottomConnectionsLen={bottomConnectionsLen}
+    >
+      AND
+    </ConnectorNodeUI>
+  );
+}

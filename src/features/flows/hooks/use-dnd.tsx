@@ -39,14 +39,12 @@ export const useDnD = () => {
         event.clientX,
         event.clientY
       );
-      const canvasDiv =
-        elementUnderPointer?.closest('.react-flow')?.parentElement;
+      const canvasDiv = elementUnderPointer?.closest('.react-flow');
       event.preventDefault();
 
-      const canvasId = canvasDiv?.id;
-      if (canvasId) {
+      if (canvasDiv) {
         const screenPos = { x: event.clientX, y: event.clientY };
-        dropAction?.({ position: screenPos, id: canvasId });
+        dropAction?.({ position: screenPos });
       }
 
       setIsDragging(false);

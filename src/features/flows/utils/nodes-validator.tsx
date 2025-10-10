@@ -25,7 +25,7 @@ export function validateNodes(nodes: Array<Node>, edges: Array<Edge>): boolean {
   };
 
   for (const node of nodes) {
-    if (node.type === CustomNodeTypes.Connector) {
+    if (node.type === CustomNodeTypes.And || node.type === CustomNodeTypes.Or) {
       const topConnections = getConnections(node.id, 'top-left', 'target');
       const bottomConnections = getConnections(
         node.id,
