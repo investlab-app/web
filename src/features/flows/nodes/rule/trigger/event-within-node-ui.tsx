@@ -27,7 +27,7 @@ export function EventWithinNodeUI({
           decimalScale={0}
         />
       )}
-      {!onValueChange && <div className="px-1" />}
+      {!onValueChange && <div className="px-1">X</div>}
       <div className="text-sm">days</div>
     </TriggerNodeUI>
   );

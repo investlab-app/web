@@ -7,6 +7,7 @@ import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { CustomNodeTypes } from '../types/node-types';
 
 import { validateNodes } from '../utils/nodes-validator';
+import { PriceHigherLowerNode } from '../nodes/rule/predicate/price-higher-lower-node';
 import { DnDProvider } from '../utils/dnd-context';
 import { FlowCanvas } from './flow-canvas';
 import { DnDSidebar } from './dnd-sidebar';
@@ -36,6 +37,7 @@ export function FlowsEditor() {
       id: '2',
       nodeTypes: {
         [CustomNodeTypes.Connector]: ConnectorNode,
+        [CustomNodeTypes.PriceHigherLower]: PriceHigherLowerNode
       },
       colorClass: 'bg-[var(--color-predicates)]',
     },
