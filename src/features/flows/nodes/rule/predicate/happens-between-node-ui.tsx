@@ -1,21 +1,17 @@
-import { TriggerNodeUI } from './trigger-node-ui';
+import { TriggerNodeUI } from '../trigger/trigger-node-ui';
 
 interface HappensBetweenNodeUIProps {
-  id: string;
   startDate: Date;
   endDate: Date;
   onStartChange?: (value: Date | undefined) => void;
   onEndChange?: (value: Date | undefined) => void;
-  connectionsLen?: number;
 }
 
 export function HappensBetweenNodeUI({
-  id,
   startDate,
   endDate,
   onStartChange,
   onEndChange,
-  connectionsLen,
 }: HappensBetweenNodeUIProps) {
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -30,7 +26,7 @@ export function HappensBetweenNodeUI({
   };
 
   return (
-    <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
+    <TriggerNodeUI>
       <div className="text-sm px-1">Happens between</div>
       {onStartChange && (
         <input
