@@ -3,7 +3,6 @@ import type { ChangeEvent } from 'react';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface PriceHigherLowerNodeUIProps {
-  id: string;
   value: number;
   state: 'over' | 'under';
   onValueChange?: (value: number | undefined) => void;
@@ -12,7 +11,6 @@ interface PriceHigherLowerNodeUIProps {
 }
 
 export function PriceHigherLowerNodeUI({
-  id,
   value,
   state,
   onValueChange,
@@ -20,7 +18,7 @@ export function PriceHigherLowerNodeUI({
   connectionsLen,
 }: PriceHigherLowerNodeUIProps) {
   return (
-    <PredicateNodeUI id={id} connectionsLen={connectionsLen}>
+    <PredicateNodeUI connectionsLen={connectionsLen}>
       <div className="text-sm px-1">Price</div>
       <select
         className="mx-2 px-2 py-1 border rounded text-xs"

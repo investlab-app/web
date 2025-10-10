@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { ConnectorNode } from '../nodes/connector/connector-node';
-import { EventWithinNode } from '../nodes/rule/trigger/event-within-node';
-import { HappensBetweenNode } from '../nodes/rule/trigger/happens-between-node';
+import { EventWithinNode } from '../nodes/rule/predicate/event-within-node';
+import { HappensBetweenNode } from '../nodes/rule/predicate/happens-between-node';
 import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
 import { CustomNodeTypes } from '../types/node-types';
 

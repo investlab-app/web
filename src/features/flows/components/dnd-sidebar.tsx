@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
-import { EventWithinNodeUI } from '../nodes/rule/trigger/event-within-node-ui';
+import { EventWithinNodeUI } from '../nodes/rule/predicate/event-within-node-ui';
 import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node-ui';
 import { ConnectorNodeUI } from '../nodes/connector/connector-node-ui';
-import { HappensBetweenNodeUI } from '../nodes/rule/trigger/happens-between-node-ui';
+import { HappensBetweenNodeUI } from '../nodes/rule/predicate/happens-between-node-ui';
 import { PriceHigherLowerNodeUI } from '../nodes/rule/predicate/price-higher-lower-node-ui';
 import { CustomNodeTypes } from '../types/node-types';
 import { DragGhost } from './drag-ghost';
@@ -103,7 +103,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           }}
         >
           <PriceChangesNodeUI
-            id="preview-price-change"
             value="TICKER"
             direction="rises"
           />
@@ -119,7 +118,7 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
             );
           }}
         >
-          <EventWithinNodeUI id="preview-price-change" value={1} />
+          <EventWithinNodeUI value={1} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -134,7 +133,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           }}
         >
           <HappensBetweenNodeUI
-            id="preview-price-change"
             startDate={new Date()}
             endDate={new Date(7 * 24 * 60 * 60 * 1000 + Date.now())}
           />
@@ -153,7 +151,6 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
           }}
         >
           <PriceHigherLowerNodeUI
-            id="preview-price-change"
             value={100}
             state='over'
           />
