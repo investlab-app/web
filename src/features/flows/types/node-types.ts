@@ -1,9 +1,11 @@
 export enum CustomNodeTypes {
-  Connector = 'connectorNode',
+  // Connectors
+  And = 'andNode',
+  Or = 'orNode',
   // Triggers
   PriceChanges = 'priceChangesNode',
+  // Predicates
   HappensBetween = 'happensBetweenNode',
   EventWithin = 'eventWithinNode',
-  // Predicates
-  PriceHigherLower = 'priceHigherLower'
+  PriceHigherLower = 'priceHigherLower',
 }
