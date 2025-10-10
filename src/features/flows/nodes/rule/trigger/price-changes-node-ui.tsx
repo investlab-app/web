@@ -22,7 +22,7 @@ export function PriceChangesNodeUI({
     <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
       <div className="text-sm px-1">Price of instrument</div>
       <input
-        className="w-full px-2 py-1 border rounded text-xs"
+        className="mx-2 px-2 py-1 border rounded text-xs"
         type="text"
         placeholder="AAPL"
         value={value}
@@ -31,7 +31,7 @@ export function PriceChangesNodeUI({
         }
       />
       <select
-        className="w-full px-2 py-1 border rounded text-xs"
+        className="px-2 py-1 border rounded text-xs"
         value={direction}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           onDirectionChange!(e.target.value as 'rises' | 'falls')
