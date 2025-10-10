@@ -1,21 +1,18 @@
-import { TriggerNodeUI } from './trigger-node-ui';
+
+import { TriggerNodeUI } from '../trigger/trigger-node-ui';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface EventWithinNodeUIProps {
-  id: string;
   value: number;
   onValueChange?: (value: number | undefined) => void;
-  connectionsLen?: number;
 }
 
 export function EventWithinNodeUI({
-  id,
   value,
   onValueChange,
-  connectionsLen,
 }: EventWithinNodeUIProps) {
   return (
-    <TriggerNodeUI id={id} connectionsLen={connectionsLen}>
+    <TriggerNodeUI>
       <div className="text-sm px-1">Happens in the past</div>
       {onValueChange && (
         <NumberInput

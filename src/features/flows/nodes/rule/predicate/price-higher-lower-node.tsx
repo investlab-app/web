@@ -18,7 +18,6 @@ export const PriceHigherLowerNode = (
     const connections = useNodeConnections({ id: props.id });
   return (
     <PriceHigherLowerNodeUI
-      id={props.id}
       value={props.data.value}
       state={props.data.state}
       onValueChange={(val) => {
