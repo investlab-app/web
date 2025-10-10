@@ -1,30 +1,25 @@
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
-import { EventWithinNodeUI } from '../nodes/rule/predicate/event-within-node-ui';
-import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node-ui';
-import { ConnectorNodeUI } from '../nodes/connector/connector-node-ui';
-import { HappensBetweenNodeUI } from '../nodes/rule/predicate/happens-between-node-ui';
-import { PriceHigherLowerNodeUI } from '../nodes/rule/predicate/price-higher-lower-node-ui';
+import { EventWithinNodeUI } from '../nodes/rule/predicate/event-within-node';
+import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node';
+import { HappensBetweenNodeUI } from '../nodes/rule/predicate/happens-between-node';
+import { PriceHigherLowerNodeUI } from '../nodes/rule/predicate/price-higher-lower-node';
+import { AndNodeUI } from '../nodes/connector/and-node';
+import { OrNodeUI } from '../nodes/connector/or-node';
 import { CustomNodeTypes } from '../types/node-types';
 import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
 
 let nodeid = 0;
-const getId = () => `dndnode_${nodeid++}`;
+const getId = () => `node_${nodeid++}`;
 
-interface FlowTarget {
-  id: string;
+interface DnDSidebarProps {
   addNode: (node: Node) => void;
-  allowedTypes: Array<string>;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
 }
 
-interface DnDSidebarProps {
-  flows: Array<FlowTarget>;
-}
-
-export function DnDSidebar({ flows }: DnDSidebarProps) {
+export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
   const { onDragStart, isDragging } = useDnD();
   const [type, setType] = useState<string | null>(null);
 
@@ -33,39 +28,21 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
       nodeType: string,
       data: Record<string, boolean | string | number>
     ): OnDropAction => {
-      return ({ position, id }: { position: XYPosition; id: string }) => {
-        const targetFlow = flows.find((flow) => flow.id === id);
-        if (!targetFlow) {
-          console.warn(`No flow with id "${id}" found`);
-          return;
-        }
-        const flowPos = targetFlow.screenToFlowPosition(position);
+      return ({ position }: { position: XYPosition }) => {
+        const flowPos = screenToFlowPosition(position);
 
-        if (!targetFlow.allowedTypes.includes(nodeType)) {
-          console.warn(
-            `Node type "${nodeType}" not allowed in flow with id "${id}"`
-          );
-          return;
-        }
         const newNode = {
           id: getId(),
           type: nodeType,
           position: flowPos,
           data: data,
         };
-
-        targetFlow.addNode(newNode);
+        console.log('love you');
+        addNode(newNode);
         setType(null);
       };
     },
-    [setType, flows]
-  );
-
-  const createConnectorNode = useCallback(
-    (isAnd: boolean): OnDropAction => {
-      return createAddNewNode('connectorNode', { isAnd: isAnd });
-    },
-    [createAddNewNode]
+    [setType, addNode, screenToFlowPosition]
   );
 
   return (
@@ -76,18 +53,18 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
         <div
           onPointerDown={(event) => {
             setType('connectorNode');
-            onDragStart(event, createConnectorNode(true));
+            onDragStart(event, createAddNewNode(CustomNodeTypes.And, {}));
           }}
         >
-          <ConnectorNodeUI isAnd={true} id={'preview-and'} />
+          <AndNodeUI id={'preview-and'} />
         </div>
         <div
           onPointerDown={(event) => {
             setType('and node');
-            onDragStart(event, createConnectorNode(false));
+            onDragStart(event, createAddNewNode(CustomNodeTypes.Or, {}));
           }}
         >
-          <ConnectorNodeUI isAnd={false} id={'preview-and'} />
+          <OrNodeUI id={'preview-and'} />
         </div>
         <div>Triggers</div>
         <div
@@ -102,10 +79,7 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
             );
           }}
         >
-          <PriceChangesNodeUI
-            value="TICKER"
-            direction="rises"
-          />
+          <PriceChangesNodeUI value="TICKER" direction="rises" />
         </div>
         <div
           onPointerDown={(event) => {
@@ -145,15 +119,12 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
               event,
               createAddNewNode(CustomNodeTypes.PriceHigherLower, {
                 value: 100,
-                state: "over"
+                state: 'over',
               })
             );
           }}
         >
-          <PriceHigherLowerNodeUI
-            value={100}
-            state='over'
-          />
+          <PriceHigherLowerNodeUI value={100} state="over" />
         </div>
       </div>
     </div>
