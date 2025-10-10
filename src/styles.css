@@ -106,9 +106,9 @@ code {
   --node-trigger: oklch(86.096% 0.0881 99.427);
   --node-action: oklch(83.744% 0.15703 144.26);
 
-  --color-triggers: rgba(255, 251, 0, 0.1);
-  --color-actions: rgba(0, 128, 0, 0.1);
-  --color-predicates: rgba(0, 0, 255, 0.1);
+  --color-triggers: rgba(255, 251, 0, 0.2);
+  --color-actions: rgba(0, 128, 0, 0.2);
+  --color-predicates: rgba(0, 0, 255, 0.2);
 }
 
 .dark {

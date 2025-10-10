@@ -1,33 +1,35 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
+import { PriceHigherLowerNodeUI } from './price-higher-lower-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
-import { PriceChangesNodeUI } from '@/features/flows/nodes/rule/trigger/price-changes-node-ui';
 
 export type PriceHigherLowerNode = Node<
   {
-    value: string;
-    direction: 'rises' | 'falls';
+    value: number;
+    state: 'over' | 'under';
   },
-  CustomNodeTypes.PriceChanges
+  CustomNodeTypes.PriceHigherLower
 >;
 
 export const PriceHigherLowerNode = (
   props: NodeProps<PriceHigherLowerNode>
 ) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+   const updateNodeInternals = useUpdateNodeInternals();
+    const connections = useNodeConnections({ id: props.id });
   return (
-    <PriceChangesNodeUI
+    <PriceHigherLowerNodeUI
       id={props.id}
       value={props.data.value}
-      direction={props.data.direction}
+      state={props.data.state}
       onValueChange={(val) => {
-        props.data.value = val;
+        props.data.value = val!;
         updateNodeInternals(props.id);
       }}
-      onDirectionChange={(dir) => {
-        props.data.direction = dir;
+      onStateChange={(dir) => {
+        props.data.state = dir;
         updateNodeInternals(props.id);
       }}
+      connectionsLen={connections.length}
     />
   );
 };

@@ -4,6 +4,7 @@ import { EventWithinNodeUI } from '../nodes/rule/trigger/event-within-node-ui';
 import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node-ui';
 import { ConnectorNodeUI } from '../nodes/connector/connector-node-ui';
 import { HappensBetweenNodeUI } from '../nodes/rule/trigger/happens-between-node-ui';
+import { PriceHigherLowerNodeUI } from '../nodes/rule/predicate/price-higher-lower-node-ui';
 import { CustomNodeTypes } from '../types/node-types';
 import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
@@ -136,6 +137,25 @@ export function DnDSidebar({ flows }: DnDSidebarProps) {
             id="preview-price-change"
             startDate={new Date()}
             endDate={new Date(7 * 24 * 60 * 60 * 1000 + Date.now())}
+          />
+        </div>
+        <div>Prediates</div>
+        <div
+          onPointerDown={(event) => {
+            setType('price higher lower');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.PriceHigherLower, {
+                value: 100,
+                state: "over"
+              })
+            );
+          }}
+        >
+          <PriceHigherLowerNodeUI
+            id="preview-price-change"
+            value={100}
+            state='over'
           />
         </div>
       </div>
