@@ -1,28 +1,26 @@
-import { Handle, Position } from '@xyflow/react';
+import { Position } from '@xyflow/react';
 import { NodeUI } from '../../node-ui';
 import type { ReactNode } from 'react';
+import { CustomHandle } from '@/features/flows/components/validated-handle';
 
 interface TriggerNodeUIProps {
   children?: ReactNode;
-  connectionsLen?: number;
+  nodeId: string;
 }
 
-export function TriggerNodeUI({
-  children,
-  connectionsLen,
-}: TriggerNodeUIProps) {
-  const hasNoConnections = connectionsLen !== undefined && connectionsLen < 1;
+export function TriggerNodeUI({ children, nodeId }: TriggerNodeUIProps) {
+  const hasNoConnections = false;
 
   return (
     <NodeUI
       className={`bg-[var(--node-trigger)] ${hasNoConnections ? 'border-red-500' : ''}`}
     >
       {children}
-      <Handle
+      <CustomHandle
+        nodeId={nodeId}
         type="source"
         position={Position.Right}
         id="right"
-        isConnectable={connectionsLen ? connectionsLen < 1 : true}
       />
     </NodeUI>
   );

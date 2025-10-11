@@ -1,7 +1,7 @@
-import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
+import { useUpdateNodeInternals } from '@xyflow/react';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
+import type { TriggerNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 
 export type PriceChangesNode = Node<
@@ -9,12 +9,12 @@ export type PriceChangesNode = Node<
     value: string;
     direction: 'rises' | 'falls';
   },
-  CustomNodeTypes.PriceChanges
+  TriggerNodeTypes.PriceChanges
 >;
 
 export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
   const updateNodeInternals = useUpdateNodeInternals();
-  const connections = useNodeConnections({ id: props.id });
+
   return (
     <PriceChangesNodeUI
       value={props.data.value}
@@ -27,7 +27,7 @@ export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
         props.data.direction = dir;
         updateNodeInternals(props.id);
       }}
-      connectionsLen={connections.length}
+      nodeId={props.id}
     />
   );
 };
@@ -37,7 +37,7 @@ interface PriceChangesNodeUIProps {
   direction: 'rises' | 'falls';
   onValueChange?: (value: string) => void;
   onDirectionChange?: (direction: 'rises' | 'falls') => void;
-  connectionsLen?: number;
+  nodeId: string;
 }
 
 export function PriceChangesNodeUI({
@@ -45,10 +45,10 @@ export function PriceChangesNodeUI({
   direction,
   onValueChange,
   onDirectionChange,
-  connectionsLen,
+  nodeId,
 }: PriceChangesNodeUIProps) {
   return (
-    <TriggerNodeUI connectionsLen={connectionsLen}>
+    <TriggerNodeUI nodeId={nodeId}>
       <div className="text-sm px-1">Price of instrument</div>
       {onValueChange && (
         <input
