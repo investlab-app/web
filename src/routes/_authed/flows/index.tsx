@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import AppFrame from '@/features/shared/components/app-frame';
 import { FlowsBoard } from '@/features/flows/components/flows-board';
+import { ReactFlowProvider } from '@xyflow/react';
 
 export const Route = createFileRoute('/_authed/flows/')({
   component: RouteComponent,
@@ -9,7 +10,9 @@ export const Route = createFileRoute('/_authed/flows/')({
 function RouteComponent() {
   return (
     <AppFrame>
-      <FlowsBoard />
+      <ReactFlowProvider>
+        <FlowsBoard />
+      </ReactFlowProvider>
     </AppFrame>
   );
 }
