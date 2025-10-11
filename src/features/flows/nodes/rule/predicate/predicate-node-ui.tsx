@@ -1,39 +1,29 @@
-import { Handle, Position } from '@xyflow/react';
+import { Position } from '@xyflow/react';
 import { NodeUI } from '../../node-ui';
 
 import type { ReactNode } from 'react';
+import { CustomHandle } from '@/features/flows/components/validated-handle';
 
 interface PredicateNodeUIProps {
   children?: ReactNode;
-  toConnectionsLen?: number;
-  fromConnectionsLen?: number;
+  nodeId: string;
 }
 
-export function PredicateNodeUI({
-  children,
-  toConnectionsLen,
-  fromConnectionsLen,
-}: PredicateNodeUIProps) {
-  const notEnoughConnections =
-    (toConnectionsLen !== undefined && toConnectionsLen < 1) ||
-    (fromConnectionsLen !== undefined && fromConnectionsLen < 1);
-
+export function PredicateNodeUI({ children, nodeId }: PredicateNodeUIProps) {
   return (
-    <NodeUI
-      className={`bg-[var(--node-predicate)] ${notEnoughConnections ? 'border-red-500' : ''}`}
-    >
+    <NodeUI className={`bg-[var(--node-predicate)] `}>
       {children}
-      <Handle
+      <CustomHandle
+        nodeId={nodeId}
         type="source"
         position={Position.Right}
         id="right"
-        isConnectable={fromConnectionsLen ? fromConnectionsLen < 1 : true}
       />
-      <Handle
+      <CustomHandle
+        nodeId={nodeId}
         type="target"
         position={Position.Left}
         id="left"
-        isConnectable={toConnectionsLen ? toConnectionsLen < 1 : true}
       />
     </NodeUI>
   );

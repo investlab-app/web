@@ -1,7 +1,7 @@
-import { useNodeConnections, useUpdateNodeInternals } from '@xyflow/react';
+import { useUpdateNodeInternals } from '@xyflow/react';
 import { PredicateNodeUI } from './predicate-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
+import type { RuleNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
@@ -10,21 +10,14 @@ export type PriceHigherLowerNode = Node<
     value: number;
     state: 'over' | 'under';
   },
-  CustomNodeTypes.PriceHigherLower
+  RuleNodeTypes.PriceOverUnder
 >;
 
 export const PriceHigherLowerNode = (
   props: NodeProps<PriceHigherLowerNode>
 ) => {
   const updateNodeInternals = useUpdateNodeInternals();
-  const toConnections = useNodeConnections({
-    id: props.id,
-    handleType: 'target',
-  });
-  const fromConnections = useNodeConnections({
-    id: props.id,
-    handleType: 'source',
-  });
+
   return (
     <PriceHigherLowerNodeUI
       value={props.data.value}
@@ -37,8 +30,7 @@ export const PriceHigherLowerNode = (
         props.data.state = dir;
         updateNodeInternals(props.id);
       }}
-      fromConnectionsLen={fromConnections.length}
-      toConnectionsLen={toConnections.length}
+      nodeId={props.id}
     />
   );
 };
@@ -48,8 +40,7 @@ interface PriceHigherLowerNodeUIProps {
   state: 'over' | 'under';
   onValueChange?: (value: number | undefined) => void;
   onStateChange?: (state: 'over' | 'under') => void;
-  toConnectionsLen?: number;
-  fromConnectionsLen?: number;
+  nodeId: string;
 }
 
 export function PriceHigherLowerNodeUI({
@@ -57,14 +48,10 @@ export function PriceHigherLowerNodeUI({
   state,
   onValueChange,
   onStateChange,
-  toConnectionsLen,
-  fromConnectionsLen,
+  nodeId,
 }: PriceHigherLowerNodeUIProps) {
   return (
-    <PredicateNodeUI
-      toConnectionsLen={toConnectionsLen}
-      fromConnectionsLen={fromConnectionsLen}
-    >
+    <PredicateNodeUI nodeId={nodeId}>
       <div className="text-sm px-1">Price</div>
       <select
         className="mx-2 px-2 py-1 border rounded text-xs"
