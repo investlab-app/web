@@ -1,87 +1,46 @@
-// // Enums
-// export enum SuperNodeTypes {
-//   Connector = 'connector',
-//   Rule = 'rule',
-//   Action = 'action',
-//   Trigger = 'trigger'
-// }
-
-// export enum ConnectorNodeTypes {
-//   And = 'and',
-//   Or = 'or',
-// }
-
-// export enum RuleNodeTypes {
-//   PriceOverUnder = 'priceOverUnder',
-//   HappensBetween = 'happensBetween',
-// }
-// export enum TriggerNodeTypes {
-//   PriceChanges = 'priceChanges',
-// }
-
-// // Mapped relationships
-// type NodeTypeMap =
-//   | { super: SuperNodeTypes.Connector, sub: ConnectorNodeTypes.And }
-//   | { super: SuperNodeTypes.Connector, sub: ConnectorNodeTypes.Or }
-//   | { super: SuperNodeTypes.Rule, sub: RuleNodeTypes.PriceOverUnder }
-//   | { super: SuperNodeTypes.Rule, sub: RuleNodeTypes.HappensBetween }
-//   | { super: SuperNodeTypes.Trigger, sub: TriggerNodeTypes.PriceChanges }
-//   ;
-
-// type AllSubtypes = NodeTypeMap['sub'];
-// type AllSupertypes = NodeTypeMap['super'];
-
-// export type SuperTypeOf<TSub extends AllSubtypes> =
-//   Extract<NodeTypeMap, { sub: TSub }>['super'];
-
-// // Runtime map
-// const subtypeToSupertypeMap: Record<AllSubtypes, AllSupertypes> = {
-//   [ConnectorNodeTypes.And]: SuperNodeTypes.Connector,
-//   [ConnectorNodeTypes.Or]: SuperNodeTypes.Connector,
-//   [RuleNodeTypes.PriceOverUnder]: SuperNodeTypes.Rule,
-//   [RuleNodeTypes.HappensBetween]: SuperNodeTypes.Rule,
-//   [TriggerNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
-
-// };
-
-// // Function 1: get subtype string
-// export function getSubtypeString(subtype: AllSubtypes): string {
-//   return subtype;
-// }
-
-// // Function 2: get supertype from subtype
-// export function getSupertype(subtype: AllSubtypes): AllSupertypes {
-//   return subtypeToSupertypeMap[subtype];
-// }
-
-// Enums
 export enum SuperNodeTypes {
   Connector = 'connector',
+  FlowIf = 'flowIf',
+  FlowThenElse = 'flowThenElse',
+  FlowThen = 'flowThen',
   Rule = 'rule',
   Action = 'action',
   Trigger = 'trigger',
 }
 
-export enum ConnectorNodeTypes {
+export enum CustomNodeTypes {
+  // Connector
   And = 'and',
   Or = 'or',
-}
 
-export enum RuleNodeTypes {
-  PriceOverUnder = 'priceOverUnder',
-  HappensBetween = 'happensBetween',
-}
+  // Flow
+  If = 'if',
+  ThenElse = 'thenElse',
+  Then = 'then',
 
-export enum TriggerNodeTypes {
+  // Trigger
   PriceChanges = 'priceChanges',
+
+  // Rule
+  PriceOverUnder = 'priceOverUnder',
+  HappensWithin = 'happensWithin',
+  HappensBetween = 'happensBetween',
+
+  // Action
+  BuySellAmount = 'buySellAmount',
 }
 
 export const TypesMapping = {
-  [ConnectorNodeTypes.And]: SuperNodeTypes.Connector,
-  [ConnectorNodeTypes.Or]: SuperNodeTypes.Connector,
-  [RuleNodeTypes.PriceOverUnder]: SuperNodeTypes.Rule,
-  [RuleNodeTypes.HappensBetween]: SuperNodeTypes.Rule,
-  [TriggerNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
+  [CustomNodeTypes.And]: SuperNodeTypes.Connector,
+  [CustomNodeTypes.Or]: SuperNodeTypes.Connector,
+  [CustomNodeTypes.If]: SuperNodeTypes.FlowIf,
+  [CustomNodeTypes.ThenElse]: SuperNodeTypes.FlowThenElse,
+  [CustomNodeTypes.Then]: SuperNodeTypes.FlowThen,
+  [CustomNodeTypes.PriceOverUnder]: SuperNodeTypes.Rule,
+  [CustomNodeTypes.HappensBetween]: SuperNodeTypes.Rule,
+  [CustomNodeTypes.HappensWithin]: SuperNodeTypes.Rule,
+  [CustomNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
+  [CustomNodeTypes.BuySellAmount]: SuperNodeTypes.Action,
 };
 
 // // Single source of truth mapping

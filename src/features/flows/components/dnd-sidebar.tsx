@@ -1,16 +1,19 @@
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
-// import { EventWithinNodeUI } from '../nodes/rule/predicate/event-within-node';
-import { PriceChangesNodeUI } from '../nodes/rule/trigger/price-changes-node';
-import { RuleNodeTypes, TriggerNodeTypes } from '../types/node-types';
-// import { HappensBetweenNodeUI } from '../nodes/rule/predicate/happens-between-node';
-import { PriceHigherLowerNodeUI } from '../nodes/rule/predicate/price-higher-lower-node';
-// import { AndNodeUI } from '../nodes/connector/and-node';
-// import { OrNodeUI } from '../nodes/connector/or-node';
-// import { CustomNodeTypes } from '../types/node-types';
+import { PriceChangesNodeUI } from '../nodes/trigger/price-changes-node';
+import { CustomNodeTypes } from '../types/node-types';
+import { HappensBetweenNodeUI } from '../nodes/rule/happens-between-node';
+import { BuySellAmountNodeUI } from '../nodes/action/buy-sell-amount-node';
+import { IfNodeUI } from '../nodes/flow/if-node';
+import { ThenNodeUI } from '../nodes/flow/then-node';
+import { PriceHigherLowerNodeUI } from '../nodes/rule/price-higher-lower-node';
+import { AndNodeUI } from '../nodes/connector/and-node';
+import { HappensWithinNodeUI } from '../nodes/rule/happens-within-node';
+import { OrNodeUI } from '../nodes/connector/or-node';
 import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
+import { ThenElseNodeUI } from '../nodes/flow/then-else-node';
 
 let nodeid = 0;
 const getId = () => `node_${nodeid++}`;
@@ -51,13 +54,13 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
       {isDragging && <DragGhost type={type} />}
       <div>
         <div>Logical Operators</div>
-        {/* <div
+        <div
           onPointerDown={(event) => {
             setType('connectorNode');
             onDragStart(event, createAddNewNode(CustomNodeTypes.And, {}));
           }}
         >
-          <AndNodeUI id={'preview-and'} />
+          <AndNodeUI id={'preview-and'} preview={true} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -65,36 +68,66 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.Or, {}));
           }}
         >
-          <OrNodeUI id={'preview-and'} />
+          <OrNodeUI id={'preview-and'} preview={true} />
         </div>
-        <div>Triggers</div> */}
+        <div>Flow Nodes</div>
+        <div
+          onPointerDown={(event) => {
+            setType('if');
+            onDragStart(event, createAddNewNode(CustomNodeTypes.If, {}));
+          }}
+        >
+          <IfNodeUI id={'preview-if'} preview={true} />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('then node');
+            onDragStart(event, createAddNewNode(CustomNodeTypes.Then, {}));
+          }}
+        >
+          <ThenNodeUI id={'preview-then'} preview={true} />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('then else node');
+            onDragStart(event, createAddNewNode(CustomNodeTypes.ThenElse, {}));
+          }}
+        >
+          <ThenElseNodeUI id={'preview-then-else'} preview={true} />
+        </div>
+        <div>Triggers</div>
         <div
           onPointerDown={(event) => {
             setType('priceChangesNode');
             onDragStart(
               event,
-              createAddNewNode(TriggerNodeTypes.PriceChanges, {
+              createAddNewNode(CustomNodeTypes.PriceChanges, {
                 value: '',
                 direction: 'rise',
               })
             );
           }}
         >
-          <PriceChangesNodeUI nodeId="test" value="TICKER" direction="rises" />
+          <PriceChangesNodeUI
+            preview={true}
+            nodeId="test"
+            value="TICKER"
+            direction="rises"
+          />
         </div>
-        {/* <div>Prediates</div>
+        <div>Prediates</div>
         <div
           onPointerDown={(event) => {
             setType('eventWithinNode');
             onDragStart(
               event,
-              createAddNewNode(CustomNodeTypes.EventWithin, {
+              createAddNewNode(CustomNodeTypes.HappensWithin, {
                 value: 1,
               })
             );
           }}
         >
-          <EventWithinNodeUI value={1} />
+          <HappensWithinNodeUI value={1} nodeId="preview" preview={true} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -109,23 +142,52 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           }}
         >
           <HappensBetweenNodeUI
+            preview={true}
+            nodeId={'preview-between'}
             startDate={new Date()}
             endDate={new Date(7 * 24 * 60 * 60 * 1000 + Date.now())}
           />
-        </div> */}
+        </div>
         <div
           onPointerDown={(event) => {
             setType('price higher lower');
             onDragStart(
               event,
-              createAddNewNode(RuleNodeTypes.PriceOverUnder, {
+              createAddNewNode(CustomNodeTypes.PriceOverUnder, {
                 value: 100,
                 state: 'over',
               })
             );
           }}
         >
-          <PriceHigherLowerNodeUI nodeId="testa" value={100} state="over" />
+          <PriceHigherLowerNodeUI
+            preview={true}
+            nodeId="testa"
+            value={100}
+            state="over"
+          />
+        </div>
+        Actions
+        <div
+          onPointerDown={(event) => {
+            setType('buy sell');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.BuySellAmount, {
+                action: 'buy',
+                amount: 1,
+                instrument: '',
+              })
+            );
+          }}
+        >
+          <BuySellAmountNodeUI
+            action="buy"
+            preview={true}
+            nodeId="preview-buysell"
+            amount={1}
+            instrument="aapl"
+          />
         </div>
       </div>
     </div>

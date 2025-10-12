@@ -2,21 +2,28 @@ import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
 import type { ReactNode } from 'react';
+import type { Node, NodeProps } from '@xyflow/react';
+import type { CustomNodeTypes } from '../../types/node-types';
 
-interface ConnectorNodeUIProps {
+export type ThenNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  CustomNodeTypes.Then
+>;
+
+export const ThenNode = (props: NodeProps<ThenNode>) => {
+  return <ThenNodeUI id={props.id} />;
+};
+
+interface ThenNodeUIProps {
   id: string;
   children?: ReactNode;
   preview?: boolean;
 }
 
-export function ConnectorNodeUI({
-  children,
-  id,
-  preview,
-}: ConnectorNodeUIProps) {
+export function ThenNodeUI({ id, preview }: ThenNodeUIProps) {
   return (
     <NodeUI preview={preview} nodeId={id} className={`bg-[var(--background)]`}>
-      {children}
+      <div>Then</div>
 
       <CustomHandle
         nodeId={id}
@@ -28,15 +35,7 @@ export function ConnectorNodeUI({
         nodeId={id}
         type="target"
         position={Position.Left}
-        id="top-left"
-        style={{ top: '30%' }}
-      />
-      <CustomHandle
-        nodeId={id}
-        type="target"
-        position={Position.Left}
-        style={{ top: '70%' }}
-        id="bottom-left"
+        id="left"
       />
     </NodeUI>
   );

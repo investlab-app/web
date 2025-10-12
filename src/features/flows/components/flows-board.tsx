@@ -7,15 +7,18 @@ import {
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { DnDProvider } from '../utils/dnd-context';
-import { PriceChangesNode } from '../nodes/rule/trigger/price-changes-node';
-// import { CustomNodeTypes } from '../types/node-types';
-// import { HappensBetweenNode } from '../nodes/rule/predicate/happens-between-node';
-// import { AndNode } from '../nodes/connector/and-node';
-// import { OrNode } from '../nodes/connector/or-node';
-import { PriceHigherLowerNode } from '../nodes/rule/predicate/price-higher-lower-node';
-// import { EventWithinNode } from '../nodes/rule/predicate/event-within-node';
-import { RuleNodeTypes, TriggerNodeTypes } from '../types/node-types';
+import { PriceChangesNode } from '../nodes/trigger/price-changes-node';
+import { HappensBetweenNode } from '../nodes/rule/happens-between-node';
+import { PriceHigherLowerNode } from '../nodes/rule/price-higher-lower-node';
+import { AndNode } from '../nodes/connector/and-node';
+import { OrNode } from '../nodes/connector/or-node';
+import { CustomNodeTypes } from '../types/node-types';
 import { useValidators } from '../hooks/use-validators';
+import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
+import { IfNode } from '../nodes/flow/if-node';
+import { ThenElseNode } from '../nodes/flow/then-else-node';
+import { ThenNode } from '../nodes/flow/then-node';
+import { HappensWithinNode } from '../nodes/rule/happens-within-node';
 import { DnDSidebar } from './dnd-sidebar';
 import { ExecuteButton } from './execute-button';
 import type {
@@ -29,12 +32,16 @@ import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
 
 const nodeTypes: NodeTypes = {
-  //   [CustomNodeTypes.And]: AndNode,
-  //   [CustomNodeTypes.Or]: OrNode,
-  [TriggerNodeTypes.PriceChanges]: PriceChangesNode,
-  //   [CustomNodeTypes.EventWithin]: EventWithinNode,
-  //   [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
-  [RuleNodeTypes.PriceOverUnder]: PriceHigherLowerNode,
+  [CustomNodeTypes.And]: AndNode,
+  [CustomNodeTypes.Or]: OrNode,
+  [CustomNodeTypes.If]: IfNode,
+  [CustomNodeTypes.ThenElse]: ThenElseNode,
+  [CustomNodeTypes.Then]: ThenNode,
+  [CustomNodeTypes.PriceChanges]: PriceChangesNode,
+  [CustomNodeTypes.HappensWithin]: HappensWithinNode,
+  [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
+  [CustomNodeTypes.PriceOverUnder]: PriceHigherLowerNode,
+  [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
 };
 
 export function FlowsBoard() {
@@ -80,7 +87,6 @@ export function FlowsBoard() {
             onInit={setRfInstance}
             isValidConnection={validateConnection}
             zoomOnScroll={false}
-            fitView
           >
             <Background />
           </ReactFlow>
