@@ -1,59 +1,25 @@
-// import { useNodeConnections } from '@xyflow/react';
-// import { ConnectorNodeUI } from './connector-node-ui';
-// import type { CustomNodeTypes } from '../../types/node-types';
-// import type { Node, NodeProps } from '@xyflow/react';
+import { ConnectorNodeUI } from './connector-node-ui';
+import type { Node, NodeProps } from '@xyflow/react';
+import type { ConnectorNodeTypes } from '../../types/node-types';
 
-// export type AndNode = Node<
-//   {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-//   CustomNodeTypes.And
-// >;
+export type AndNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  ConnectorNodeTypes.And
+>;
 
-// export const AndNode = (props: NodeProps<AndNode>) => {
-//   const topConnections = useNodeConnections({
-//     id: props.id,
-//     handleId: 'top-left',
-//     handleType: 'target',
-//   });
-//   const bottomConnections = useNodeConnections({
-//     id: props.id,
-//     handleId: 'bottom-left',
-//     handleType: 'target',
-//   });
-//   const outConnections = useNodeConnections({
-//     id: props.id,
-//     handleType: 'source',
-//   });
-//   return (
-//     <AndNodeUI
-//       id={props.id}
-//       topConnectionsLen={topConnections.length}
-//       bottomConnectionsLen={bottomConnections.length}
-//       outConnectionsLen={outConnections.length}
-//     />
-//   );
-// };
+export const AndNode = (props: NodeProps<AndNode>) => {
+  return <AndNodeUI id={props.id} />;
+};
 
-// export interface AndNodeUIProps {
-//   id: string;
-//   outConnectionsLen?: number;
-//   topConnectionsLen?: number;
-//   bottomConnectionsLen?: number;
-// }
+export interface AndNodeUIProps {
+  id: string;
+  preview?: boolean;
+}
 
-// export function AndNodeUI({
-//   id,
-//   outConnectionsLen,
-//   topConnectionsLen,
-//   bottomConnectionsLen,
-// }: AndNodeUIProps) {
-//   return (
-//     <ConnectorNodeUI
-//       id={id}
-//       outConnectionsLen={outConnectionsLen}
-//       topConnectionsLen={topConnectionsLen}
-//       bottomConnectionsLen={bottomConnectionsLen}
-//     >
-//       AND
-//     </ConnectorNodeUI>
-//   );
-// }
+export function AndNodeUI({ id, preview }: AndNodeUIProps) {
+  return (
+    <ConnectorNodeUI id={id} preview={preview}>
+      AND
+    </ConnectorNodeUI>
+  );
+}
