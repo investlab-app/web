@@ -1,16 +1,15 @@
 import { getOutgoers, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
-import { allowedConnections, handleConnectionCount } from '../utils/rules';
+import {
+  allowedConnections,
+  handleConnectionCount,
+} from '../utils/connection-rules';
 import { TypesMapping } from '../types/node-types';
-import type {
-  ConnectorNodeTypes,
-  RuleNodeTypes,
-  TriggerNodeTypes,
-} from '../types/node-types';
+import type { CustomNodeTypes } from '../types/node-types';
 import type { Connection, Edge, HandleType, Node } from '@xyflow/react';
 
 export const useValidators = () => {
-  const { getNodes, getEdges } = useReactFlow();
+  const { getNodes, getEdges, getNode } = useReactFlow();
 
   const _hasCycle = useCallback(
     (
@@ -32,6 +31,16 @@ export const useValidators = () => {
     []
   );
 
+  function _validateNonEmptyStrings(obj: Record<string, unknown>): boolean {
+    for (const key in obj) {
+      const value = obj[key];
+      if (typeof value === 'string' && value.trim() === '') {
+        return false;
+      }
+    }
+    return true;
+  }
+
   const validateConnection = useCallback(
     (connection: Connection | Edge) => {
       const nodes = getNodes();
@@ -41,14 +50,8 @@ export const useValidators = () => {
       if (!target || !source) {
         return false;
       }
-      const sourceSupertype =
-        TypesMapping[
-          source.type as ConnectorNodeTypes | RuleNodeTypes | TriggerNodeTypes
-        ];
-      const tragetSupertype =
-        TypesMapping[
-          target.type as ConnectorNodeTypes | RuleNodeTypes | TriggerNodeTypes
-        ];
+      const sourceSupertype = TypesMapping[source.type as CustomNodeTypes];
+      const tragetSupertype = TypesMapping[target.type as CustomNodeTypes];
       console.log(sourceSupertype, tragetSupertype);
       if (
         !allowedConnections[sourceSupertype].find(
@@ -64,16 +67,37 @@ export const useValidators = () => {
     [getEdges, getNodes, _hasCycle]
   );
 
+  const isConnectionValid = (connectionsLen: number, allowed: number) => {
+    return allowed >= 0 ? connectionsLen < allowed : true;
+  };
+
   const getAllowedConnections = (nodeId: string, type: HandleType) => {
-    const nodes = getNodes();
-    const node = nodes.find((found) => found.id === nodeId);
+    const node = getNode(nodeId);
     if (!node) return 0;
-    const supertype =
-      TypesMapping[
-        node.type as ConnectorNodeTypes | RuleNodeTypes | TriggerNodeTypes
-      ];
+    const supertype = TypesMapping[node.type as CustomNodeTypes];
     return handleConnectionCount[supertype][type];
   };
 
-  return { validateConnection, getAllowedConnections };
+  const validateNode = (
+    nodeId: string,
+    connectionsIn: number,
+    connectionsOut: number
+  ) => {
+    const node = getNode(nodeId);
+    if (!node || !_validateNonEmptyStrings(node.data)) return false;
+    const supertype = TypesMapping[node.type as CustomNodeTypes];
+    const minAllowedIn = handleConnectionCount[supertype]['validIn'];
+    const minAllowedOut = handleConnectionCount[supertype]['validOut'];
+
+    const inValid = connectionsIn >= minAllowedIn;
+    const outValid = connectionsOut >= minAllowedOut;
+    return inValid && outValid;
+  };
+
+  return {
+    validateConnection,
+    getAllowedConnections,
+    validateNode,
+    isConnectionValid,
+  };
 };

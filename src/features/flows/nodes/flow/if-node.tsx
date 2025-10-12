@@ -2,22 +2,28 @@ import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
 import type { ReactNode } from 'react';
+import type { Node, NodeProps } from '@xyflow/react';
+import type { CustomNodeTypes } from '../../types/node-types';
 
-interface ConnectorNodeUIProps {
+export type IfNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  CustomNodeTypes.If
+>;
+
+export const IfNode = (props: NodeProps<IfNode>) => {
+  return <IfNodeUI id={props.id} />;
+};
+
+interface IfNodeUIProps {
   id: string;
   children?: ReactNode;
   preview?: boolean;
 }
 
-export function ConnectorNodeUI({
-  children,
-  id,
-  preview,
-}: ConnectorNodeUIProps) {
+export function IfNodeUI({ id, preview }: IfNodeUIProps) {
   return (
     <NodeUI preview={preview} nodeId={id} className={`bg-[var(--background)]`}>
-      {children}
-
+      If
       <CustomHandle
         nodeId={id}
         type="source"
@@ -28,15 +34,7 @@ export function ConnectorNodeUI({
         nodeId={id}
         type="target"
         position={Position.Left}
-        id="top-left"
-        style={{ top: '30%' }}
-      />
-      <CustomHandle
-        nodeId={id}
-        type="target"
-        position={Position.Left}
-        style={{ top: '70%' }}
-        id="bottom-left"
+        id="left"
       />
     </NodeUI>
   );

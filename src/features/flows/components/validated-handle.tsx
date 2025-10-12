@@ -7,6 +7,7 @@ export interface CustomHandleProps {
   id: string;
   type: HandleType;
   position: Position;
+  style?: Record<string, string>;
 }
 
 export const CustomHandle = ({
@@ -14,8 +15,9 @@ export const CustomHandle = ({
   id,
   type,
   position,
+  style,
 }: CustomHandleProps) => {
-  const { getAllowedConnections } = useValidators();
+  const { getAllowedConnections, isConnectionValid } = useValidators();
   const connections = useNodeConnections({
     id: nodeId,
     handleType: type,
@@ -26,7 +28,11 @@ export const CustomHandle = ({
       id={id}
       type={type}
       position={position}
-      isConnectable={connections.length < getAllowedConnections(nodeId, type)}
+      isConnectable={isConnectionValid(
+        connections.length,
+        getAllowedConnections(nodeId, type)
+      )}
+      style={style}
     />
   );
 };
