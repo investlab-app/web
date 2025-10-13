@@ -13,6 +13,7 @@ import {
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
 import { currentAccountValueQueryOptions } from '@/features/home/queries/fetch-current-account-value';
+import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 
 const ProfileOverviewBodySkeleton = () => {
   return (
@@ -54,7 +55,7 @@ const ProfileOverview = () => {
       : undefined;
 
   return (
-    <div className="overflow-x-auto">
+    <ScrollableHorizontally>
       <Table>
         <TableHeader>
           <TableRow>
@@ -118,7 +119,7 @@ const ProfileOverview = () => {
           )}
         </TableBody>
       </Table>
-    </div>
+    </ScrollableHorizontally>
   );
 };
 

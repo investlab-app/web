@@ -13,8 +13,8 @@ export default function AppFrame({ children }: AppFrameProps) {
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar collapsible="icon" />
       <main className="w-full overflow-x-auto">
-        <SiteHeader className="sticky top-0 bg-[var(--background)]" />
-        <div className="py-4 px-(--page-padding) [--page-padding:--spacing(4)]">
+        <SiteHeader />
+        <div className="mt-[var(--header-height)] py-4 px-(--page-padding) [--page-padding:--spacing(4)]">
           {children}
         </div>
       </main>
