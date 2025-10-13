@@ -2,14 +2,7 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
-import {
-  HelpCircle,
-  History,
-  LayoutDashboardIcon,
-  List,
-  PieChart,
-  Settings,
-} from 'lucide-react';
+import { History, LayoutDashboardIcon, List, PieChart } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,

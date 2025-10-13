@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       backend_tag:
-        description: "Backend image tag"
+        description: 'Backend image tag'
   push:
     branches:
       - main
@@ -22,9 +22,9 @@ jobs:
       - name: Setup and Build
         uses: ./.github/actions/setup-and-build
         with:
-          node-version: "22"
-          pnpm-version: "10"
-          fetch-depth: "1"
+          node-version: '22'
+          pnpm-version: '10'
+          fetch-depth: '1'
       - name: Fetch backend schema
         run: |
           set -euo pipefail
@@ -88,7 +88,7 @@ jobs:
         env:
           DEBUG: false
           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          ALLOWED_HOSTS: "*"
+          ALLOWED_HOSTS: '*'
           POSTGRES_HOST: db
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
@@ -114,8 +114,8 @@ jobs:
       - name: Setup and build frontend
         uses: ./.github/actions/setup-and-build
         with:
-          node-version: "22"
-          pnpm-version: "10"
+          node-version: '22'
+          pnpm-version: '10'
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
