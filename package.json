@@ -24,6 +24,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@fontsource-variable/spline-sans": "^5.2.6",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.12",
     "@tanstack/query-async-storage-persister": "^5.85.3",
     "@tanstack/react-form": "^1.19.2",
