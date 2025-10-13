@@ -24,6 +24,14 @@ const enInstruments = {
     info_loading: 'Sorry, the instrument information could not be loaded.',
     news_unavailable: 'News are currently unavailable for this instrument.',
   },
+  tooltips: {
+    symbol: 'Stock ticker symbol for identification',
+    name: 'Full company or instrument name',
+    current_price: 'Current market price per share',
+    day_change: 'Price change percentage from previous trading day',
+    volume: 'Number of shares traded today',
+    load_more: 'Load more instruments from the list',
+  },
 };
 
 export default enInstruments;

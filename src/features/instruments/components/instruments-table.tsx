@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp, Info } from 'lucide-react';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -13,6 +13,11 @@ import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
 
 interface InstrumentTableProps {
   data: Array<Instrument>;
@@ -39,18 +44,33 @@ export const InstrumentTable = ({
     {
       accessorKey: 'symbol',
       header: ({ column }) => (
-        <Button
-          variant="ghost"
-          className="-mx-1.5! px-1.5!"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          {t('instruments.symbol')}
-          {column.getIsSorted() === 'asc' ? (
-            <ArrowDown className="h-4 w-4" />
-          ) : (
-            <ArrowUp className="h-4 w-4" />
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            className="-mx-1.5! px-1.5!"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowDown className="h-4 w-4" />
+            ) : (
+              <ArrowUp className="h-4 w-4" />
+            )}
+            {t('instruments.symbol')}
+          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.symbol',
+                  'Stock ticker symbol for identification'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
@@ -68,7 +88,22 @@ export const InstrumentTable = ({
     {
       accessorKey: 'name',
       header: () => (
-        <div className="not-sm:hidden">{t('instruments.name')}</div>
+        <div className="flex items-center gap-1 not-sm:hidden">
+          <span className="not-sm:hidden">{t('instruments.name')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.name',
+                  'Full company or instrument name'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       ),
       cell: ({ row }) => (
         <div className="not-sm:hidden">{row.original.name}</div>
@@ -78,7 +113,22 @@ export const InstrumentTable = ({
     {
       accessorKey: 'currentPrice',
       header: () => (
-        <div className={'text-right'}>{t('instruments.current_price')}</div>
+        <div className="flex items-center gap-1 justify-end">
+          <span className={'text-right'}>{t('instruments.current_price')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.current_price',
+                  'Current market price per share'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       ),
       cell: ({ row }) => {
         const currentPrice = row.original.currentPrice;
@@ -100,7 +150,22 @@ export const InstrumentTable = ({
     {
       accessorKey: 'todaysChange',
       header: () => (
-        <div className="text-right">{t('instruments.day_change')}</div>
+        <div className="flex items-center gap-1 justify-end">
+          <span className="text-right">{t('instruments.day_change')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.day_change',
+                  'Price change percentage from previous trading day'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       ),
       cell: ({ row }) => {
         const dayChange = row.original.dayChange;
@@ -125,7 +190,24 @@ export const InstrumentTable = ({
     },
     {
       accessorKey: 'volume',
-      header: () => <div className="text-right">{t('instruments.volume')}</div>,
+      header: () => (
+        <div className="flex items-center gap-1 justify-end">
+          <span className="text-right">{t('instruments.volume')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.volume',
+                  'Number of shares traded today'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => (
         <div className="text-right">
           {row.original.volume === null ? (

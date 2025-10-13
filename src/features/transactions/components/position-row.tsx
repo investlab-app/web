@@ -8,6 +8,11 @@ import type { Position } from '../types/types';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
 
 interface PositionRowProps {
   position: Position;
@@ -29,17 +34,30 @@ export const PositionRow = ({
       >
         <TableCell>
           <div className="flex items-center gap-1">
-            <Button
-              variant={'ghost'}
-              className="size-8"
-              aria-label={collapsed ? t('common.expand') : t('common.collapse')}
-            >
-              {collapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={'ghost'}
+                  className="size-8"
+                  aria-label={
+                    collapsed ? t('common.expand') : t('common.collapse')
+                  }
+                >
+                  {collapsed ? (
+                    <ChevronRight className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {collapsed ? (
+                  <p>{t('transactions.tooltips.expand_details')}</p>
+                ) : (
+                  <p>{t('transactions.tooltips.hide_details')}</p>
+                )}
+              </TooltipContent>
+            </Tooltip>
             {isNavigable ? (
               <Button variant={'link'} asChild>
                 <Link

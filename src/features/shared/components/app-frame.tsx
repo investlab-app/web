@@ -11,7 +11,7 @@ export default function AppFrame({ children }: AppFrameProps) {
   const defaultOpen = getCookie('sidebar_state') === 'true';
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
+      <AppSidebar collapsible="icon" />
       <main className="w-full overflow-x-auto">
         <SiteHeader className="sticky top-0 bg-[var(--background)]" />
         <div className="py-4 px-(--page-padding) [--page-padding:--spacing(4)]">

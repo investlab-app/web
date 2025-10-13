@@ -47,6 +47,18 @@ const plCommon = {
   privacy_policy: 'Polityka prywatności',
   terms_of_service: 'Regulamin',
   faq: 'FAQ',
+  tooltips: {
+    navigation: {
+      dashboard: 'Przegląd portfela i konta',
+      instruments: 'Przeglądaj instrumenty',
+      transactions: 'Historia transakcji',
+      statistics: 'Analiza wyników portfela',
+    },
+    charts: {
+      line_chart: 'Wykres liniowy',
+      candlestick_chart: 'Wykres świecowy (OHLC)',
+    },
+  },
 };
 
 export default plCommon;

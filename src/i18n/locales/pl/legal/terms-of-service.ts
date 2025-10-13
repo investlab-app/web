@@ -1,6 +1,7 @@
 const plTermsOfService = {
   title: 'Regulamin',
-  lastUpdated: 'Ostatnia aktualizacja: {{date, datetime}}',
+  lastUpdated:
+    'Ostatnia aktualizacja: {{date, datetime(year: numeric; month: long; day: numeric)}}',
 
   userEligibility: {
     title: 'Kwalifikacje użytkownika i wymagania dotyczące konta',

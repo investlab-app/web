@@ -23,7 +23,7 @@ export function WalletSection() {
   return (
     <SidebarMenuItem className="flex items-center gap-1">
       <SidebarMenuButton tooltip={t('common.wallet')} asChild>
-        <a>
+        <div className="flex items-center justify-between">
           <IconWallet />
           {isPending && <Skeleton className="h-6 w-24" />}
           {isError && <Skeleton className="h-6 w-24" />}
@@ -32,24 +32,24 @@ export function WalletSection() {
               style: 'currency',
               currency: t('common.currency'),
             }).format(accountValue.total_account_value)}
-        </a>
+          <Button
+            size="icon"
+            className="ml-auto size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"
+            aria-label={t('common.add')}
+            onClick={() =>
+              toast('Wallet clicked!', {
+                duration: Infinity,
+                action: {
+                  label: 'Close',
+                  onClick: () => console.log('Close'),
+                },
+              })
+            }
+          >
+            <IconPlus />
+          </Button>
+        </div>
       </SidebarMenuButton>
-      <Button
-        size="icon"
-        className="size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"
-        aria-label={t('common.add')}
-        onClick={() =>
-          toast('Wallet clicked!', {
-            duration: Infinity,
-            action: {
-              label: 'Close',
-              onClick: () => console.log('Close'),
-            },
-          })
-        }
-      >
-        <IconPlus />
-      </Button>
     </SidebarMenuItem>
   );
 }
