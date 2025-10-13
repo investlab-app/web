@@ -38,7 +38,7 @@ jobs:
         run: pnpm openapi-ts -i schema.yml
       - name: Check type changes
         run: |
-          if ! git diff --exit-code web/src/client/; then
+          if ! git diff --exit-code src/client/; then
             echo "Generated types have changed; please commit updated types."
             exit 1
           fi
