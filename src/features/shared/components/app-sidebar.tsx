@@ -1,14 +1,8 @@
-import {
-  IconChartPie,
-  IconDashboard,
-  IconHelp,
-  IconHistory,
-  IconListDetails,
-} from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
+import { History, LayoutDashboardIcon, List, PieChart } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -38,13 +32,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const data: {
     navMain: Array<NavItem>;
     navSecondary: Array<NavItem>;
-    legal: Array<NavItem>;
   } = {
     navMain: [
       {
         title: t('common.dashboard'),
         to: '/',
-        icon: IconDashboard,
+        icon: LayoutDashboardIcon,
         tooltip: t(
           'common.tooltips.navigation.dashboard',
           'View your portfolio overview and account summary'
@@ -53,7 +46,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t('common.stocks'),
         to: '/instruments',
-        icon: IconListDetails,
+        icon: List,
         tooltip: t(
           'common.tooltips.navigation.instruments',
           'Browse and analyze available financial instruments'
@@ -62,7 +55,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t('common.transactions'),
         to: '/transactions',
-        icon: IconHistory,
+        icon: History,
         tooltip: t(
           'common.tooltips.navigation.transactions',
           'View your trading history and portfolio positions'
@@ -71,7 +64,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t('common.statistics'),
         to: '/statistics',
-        icon: IconChartPie,
+        icon: PieChart,
         tooltip: t(
           'common.tooltips.navigation.statistics',
           'Analyze your portfolio performance and trends'
@@ -84,26 +77,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       //   to: '/settings',
       //   icon: IconSettings,
       // },
-    ],
-    legal: [
-      {
-        title: t('common.privacy_policy'),
-        to: '/privacy-policy',
-        target: '_blank',
-        icon: IconHelp,
-      },
-      {
-        title: t('common.terms_of_service'),
-        to: '/terms-of-service',
-        target: '_blank',
-        icon: IconHelp,
-      },
-      {
-        title: t('common.faq'),
-        to: '/faq',
-        target: '_blank',
-        icon: IconHelp,
-      },
     ],
   };
 

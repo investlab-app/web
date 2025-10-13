@@ -1,7 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { WalletSection } from './wallet-section';
 import type { LinkProps } from '@tanstack/react-router';
-import type { Icon } from '@tabler/icons-react';
+import type { LucideIcon } from 'lucide-react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,7 +13,7 @@ import {
 export interface NavItem {
   title: string;
   to: LinkProps['to'];
-  icon: Icon;
+  icon: LucideIcon;
   target?: string;
   tooltip?: string;
 }

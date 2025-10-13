@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { InstrumentIconCircle } from './instrument-image-circle';
-import { instrumentDetailQueryOptions } from '@/features/instrument-details/queries/fetch-instrument-detail';
 import { Badge } from '@/features/shared/components/ui/badge';
+import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
   ticker: string;
@@ -12,7 +12,11 @@ export function InstrumentHeader({
   ticker: instrumentId,
 }: InstrumentWithDescriptionHeaderProps) {
   const { data: instrumentInfo } = useSuspenseQuery(
-    instrumentDetailQueryOptions({ ticker: instrumentId })
+    instrumentsDetailRetrieveOptions({
+      query: {
+        ticker: instrumentId,
+      },
+    })
   );
 
   const { t } = useTranslation();
@@ -23,7 +27,7 @@ export function InstrumentHeader({
         <InstrumentIconCircle
           symbol={instrumentId}
           name={instrumentInfo.name || instrumentId}
-          icon={instrumentInfo.icon}
+          icon={instrumentInfo.icon ?? null}
           size="lg"
         />
       </div>

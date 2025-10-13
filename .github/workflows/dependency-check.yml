@@ -9,6 +9,10 @@ on:
     paths: ['pnpm-lock.yaml']
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ort-analysis:
     name: ORT Analysis

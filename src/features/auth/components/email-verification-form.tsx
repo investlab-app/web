@@ -1,6 +1,6 @@
 import { useSignUp } from '@clerk/clerk-react';
 import { useNavigate } from '@tanstack/react-router';
-import { match, type } from 'arktype';
+import { z } from 'zod';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { useTranslation } from 'react-i18next';
 import { BackButton } from './back-button';
@@ -49,18 +49,20 @@ export function EmailVerificationForm({
             ? t('auth.unknown_error', { cause: e.message })
             : t('auth.could_not_verify_email')
       )
-        .andThen((signUpResource) =>
-          match({
-            "'complete'": () =>
-              signUpResource.createdSessionId
+        .andThen((signUpResource) => {
+          switch (signUpResource.status) {
+            case 'complete':
+              return signUpResource.createdSessionId
                 ? ok(signUpResource.createdSessionId)
-                : err('No session created'),
-            "'abandoned'": () => err(t('auth.abandoned')),
-            "'missing_requirements'": () => err(t('auth.missing_requirements')),
-            null: () => err(t('auth.could_not_verify_email')),
-            default: 'never',
-          })(signUpResource.status)
-        )
+                : err('No session created');
+            case 'abandoned':
+              return err(t('auth.abandoned'));
+            case 'missing_requirements':
+              return err(t('auth.missing_requirements'));
+            default:
+              return err(t('auth.could_not_verify_email'));
+          }
+        })
         .match(
           (sessionId) => {
             setActive({ session: sessionId });
@@ -85,17 +87,13 @@ export function EmailVerificationForm({
           <CardDescription>{t('auth.verify_email_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <ErrorAlert title="Error" errors={[pageError]} />
+          <ErrorAlert title="Error" errors={pageError ? [pageError] : []} />
           <form.AppField
             name="code"
             validators={{
-              onBlur: type('string == 6')
-                .configure({
-                  message: t('auth.code_must_be_digits', {
-                    digits: 6,
-                  }),
-                })
-                .pipe(() => undefined),
+              onBlur: z.string().length(6, {
+                message: t('auth.code_must_be_digits', { digits: 6 }),
+              }),
             }}
             children={(field) => (
               <>
@@ -104,7 +102,9 @@ export function EmailVerificationForm({
                 </div>
                 <ErrorAlert
                   title={t('auth.code')}
-                  errors={field.state.meta.errors}
+                  errors={field.state.meta.errors
+                    .filter((e) => e != null)
+                    .map((e) => e.message)}
                 />
               </>
             )}

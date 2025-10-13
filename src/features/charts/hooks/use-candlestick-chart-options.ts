@@ -1,5 +1,5 @@
-import { type } from 'arktype';
 import { useCallback } from 'react';
+import { z } from 'zod';
 import { formatChartDateByRange } from '../utils/chart-formatting';
 import { useChartOptions } from './use-chart-options';
 import type {
@@ -51,18 +51,22 @@ export function useCandlestickChartOptions({
         i18n,
       });
 
-      const candlestickData = type([
-        'number', // id
-        'number', // open
-        'number', // close
-        'number', // low
-        'number', // high
-      ])(data);
+      const CandlestickDataSchema = z.tuple([
+        z.number(), // id
+        z.number(), // open
+        z.number(), // close
+        z.number(), // low
+        z.number(), // high
+      ]);
 
-      if (candlestickData instanceof type.errors) {
-        console.error('Invalid candlestick data format', candlestickData);
+      const parseResult = CandlestickDataSchema.safeParse(data);
+
+      if (!parseResult.success) {
+        console.error('Invalid candlestick data format', parseResult.error);
         return '';
       }
+
+      const candlestickData = parseResult.data;
 
       return `<div>
   <strong>${formattedDate}</strong><br />

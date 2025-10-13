@@ -1,6 +1,5 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { fetchAssetAllocation } from '../queries/fetch-asset-allocation';
 import { AssetAllocationTile } from './asset-allocation-tile';
 import {
   Card,
@@ -10,11 +9,7 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Message } from '@/features/shared/components/error-message';
-
-export const assetAllocationQueryOptions = queryOptions({
-  queryKey: ['asset-allocation'],
-  queryFn: fetchAssetAllocation,
-});
+import { investorsMeAssetAllocationRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 const AssetAllocationContainer = () => {
   const { t } = useTranslation();
@@ -23,7 +18,7 @@ const AssetAllocationContainer = () => {
     data: assetAllocation,
     isPending,
     isError,
-  } = useQuery(assetAllocationQueryOptions);
+  } = useQuery(investorsMeAssetAllocationRetrieveOptions());
 
   if (isPending) {
     return (

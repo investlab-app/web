@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Message } from '../../shared/components/error-message';
-import { fetchAccountValueOverTime } from '../queries/fetch-account-value-over-time';
 import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
@@ -12,23 +11,18 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
-
-export const accountValueOverTimeQueryOptions = queryOptions({
-  queryKey: ['accountValueOverTime'],
-  queryFn: fetchAccountValueOverTime,
-  staleTime: 60 * 1000,
-});
+import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
   const { data, isPending, isError } = useQuery(
-    accountValueOverTimeQueryOptions
+    investorsMeAccountValueRetrieveOptions()
   );
 
   const chartData: Array<InstrumentPricePoint> =
     data?.data.map((point) => ({
-      date: point.date,
+      date: new Date(point.date).toISOString(),
       open: point.value,
       close: point.value,
       high: point.value,

@@ -1,12 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { type } from 'arktype';
+import { z } from 'zod';
 import { SignUpForm } from '@/features/auth/components/signup-form';
 import { AcceptTermsPrivacy } from '@/features/auth/components/accept-terms-privacy';
 
 export const Route = createFileRoute('/_auth/signup')({
   component: RouteComponent,
-  validateSearch: type({
-    error: 'string?',
+  validateSearch: z.object({
+    error: z.string().optional(),
   }),
 });
 

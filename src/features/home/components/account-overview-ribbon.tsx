@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { StatTile } from '../../shared/components/stat-tile';
-import { currentAccountValueQueryOptions } from '../queries/fetch-current-account-value';
-import { investorStatsQueryOptions } from '../queries/fetch-investor-stats';
 import { ErrorCard } from '@/features/shared/components/error-card';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import {
+  investorsMeCurrentAccountValueRetrieveOptions,
+  investorsMeStatsRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 const AccountOverviewRibbon = () => {
   const { t, i18n } = useTranslation();
@@ -13,13 +15,13 @@ const AccountOverviewRibbon = () => {
     data: investorStats,
     isPending: statsPending,
     isError: statsError,
-  } = useQuery(investorStatsQueryOptions);
+  } = useQuery(investorsMeStatsRetrieveOptions());
 
   const {
     data: currentAccountValue,
     isPending: accountValuePending,
     isError: accountValueError,
-  } = useQuery(currentAccountValueQueryOptions);
+  } = useQuery(investorsMeCurrentAccountValueRetrieveOptions());
 
   const isPending = statsPending || accountValuePending;
   const isError = statsError || accountValueError;
@@ -51,9 +53,9 @@ const AccountOverviewRibbon = () => {
     <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
       {tiles.map((tile, index) =>
         isPending ? (
-          <StatTile.Skeleton />
+          <StatTile.Skeleton key={`skeleton-${index}`} />
         ) : isError || !tile.value ? (
-          <ErrorCard />
+          <ErrorCard key={`error-${index}`} />
         ) : (
           <StatTile
             key={index}

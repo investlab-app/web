@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { type } from 'arktype';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { infiniteInstrumentsWithPricesQueryOptions } from '../queries/fetch-instruments-with-prices';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import type { Instrument } from '../types/instrument';
 import type { SortingState } from '@tanstack/react-table';
 import { livePrice } from '@/features/charts/types/live-price';
 import { useDebounce } from '@/features/shared/hooks/use-debounce';
 import { useWS } from '@/features/shared/hooks/use-ws';
+import { instrumentsWithPricesListInfiniteOptions } from '@/client/@tanstack/react-query.gen';
 
 type UseInstrumentsTableParams = {
   ordering?: SortingState;
@@ -36,33 +35,49 @@ export function useInstrumentsTable({
   const debouncedSearch = useDebounce(search, 500);
 
   const {
-    data,
+    data = undefined,
     hasNextPage,
     fetchNextPage,
     isPending,
     isFetching,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    infiniteInstrumentsWithPricesQueryOptions({
-      search: debouncedSearch,
-      pageSize,
-      ordering: getOrdering(ordering),
-    })
-  );
+  } = useInfiniteQuery({
+    ...instrumentsWithPricesListInfiniteOptions({
+      query: {
+        search: debouncedSearch,
+        page_size: pageSize,
+        ordering: getOrdering(ordering),
+      },
+    }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      const lastPageNumber =
+        typeof lastPageParam === 'number'
+          ? lastPageParam
+          : (lastPageParam.query?.page ?? 1);
+      return lastPage.next ? lastPageNumber + 1 : undefined;
+    },
+    placeholderData: keepPreviousData,
+    meta: {
+      persist: false,
+    },
+  });
 
   const instruments = (data?.pages ?? [])
     .flatMap((page) => page.results)
     .reduce(
       (acc, instrument) => {
-        // if (!instrument.price_info) return acc;
+        const priceInfo = instrument.price_info;
+        const dailySummary = priceInfo.daily_summary;
+
         acc[instrument.ticker] = {
           name: instrument.name,
-          volume: instrument.price?.daily_summary.volume ?? null,
-          currentPrice: instrument.price?.current_price ?? null,
-          dayChange: instrument.price?.todays_change ?? null,
+          volume: Number(dailySummary.volume),
+          currentPrice: Number(priceInfo.current_price),
+          dayChange: Number(priceInfo.todays_change),
           symbol: instrument.ticker,
-          logo: instrument.logo,
-          icon: instrument.icon,
+          logo: instrument.logo ?? null,
+          icon: instrument.icon ?? null,
         } as Instrument;
         return acc;
       },
@@ -78,10 +93,13 @@ export function useInstrumentsTable({
   useEffect(() => {
     if (!lastJsonMessage) return;
 
-    const out = livePrice(lastJsonMessage);
-    if (out instanceof type.errors) return;
+    const out = livePrice.safeParse(lastJsonMessage);
 
-    const tickersData = out.prices.filter((item) =>
+    if (!out.success) return;
+
+    const parsed = out.data;
+
+    const tickersData = parsed.prices.filter((item) =>
       tickers.includes(item.symbol)
     );
     if (tickersData.length === 0) return;

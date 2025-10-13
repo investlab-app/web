@@ -2,7 +2,7 @@ import { useSignUp } from '@clerk/clerk-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
-import { match, type } from 'arktype';
+import { z } from 'zod';
 import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
@@ -53,15 +53,20 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           e instanceof Error
             ? t('auth.unknown_error', { cause: e.message })
             : t('auth.could_not_sign_up')
-      ).andThen(
-        match.at('status').match({
-          "'complete'": () => ok(),
-          "'abandoned'": () => err(t('auth.abandoned')),
-          "'missing_requirements'": () => ok(), // email verification is required
-          null: () => err(t('auth.could_not_sign_up')),
-          default: 'never',
-        })
-      );
+      ).andThen((result) => {
+        switch (result.status) {
+          case 'complete':
+            return ok();
+          case 'abandoned':
+            return err(t('auth.abandoned'));
+          case 'missing_requirements':
+            return ok(); // email verification is required
+          case null:
+            return err(t('auth.could_not_sign_up'));
+          default:
+            throw new Error('Unexpected status');
+        }
+      });
 
       if (signUpResult.isErr()) {
         navigate({
@@ -79,16 +84,22 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
             e instanceof Error
               ? t('auth.unknown_error', { cause: e.message })
               : t('auth.could_not_prepare_email_address_verification')
-        ).andThen(
-          match.at('status').match({
-            "'complete'": () => ok(),
-            "'abandoned'": () => err(t('auth.abandoned')),
-            "'missing_requirements'": () => ok(), // email verification is required
-            null: () =>
-              err(t('auth.could_not_prepare_email_address_verification')),
-            default: 'never',
-          })
-        );
+        ).andThen((result) => {
+          switch (result.status) {
+            case 'complete':
+              return ok();
+            case 'abandoned':
+              return err(t('auth.abandoned'));
+            case 'missing_requirements':
+              return ok(); // email verification is required
+            case null:
+              return err(
+                t('auth.could_not_prepare_email_address_verification')
+              );
+            default:
+              throw new Error('Unexpected status');
+          }
+        });
 
       if (prepareEmailAddressVerificationResult.isErr()) {
         navigate({
@@ -110,7 +121,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
         <CardDescription>{t('auth.signup_form_desc')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <ErrorAlert errors={[pageError]} />
+        <ErrorAlert errors={pageError ? [pageError] : []} />
         <ContinueWithGoogle />
         <Divider
           text={t('auth.or_continue')}
@@ -121,11 +132,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="firstName"
             validators={{
-              onBlur: type('string > 0')
-                .configure({
-                  message: t('auth.first_name_required'),
-                })
-                .pipe(() => undefined),
+              onBlur: z.string().min(1, t('auth.first_name_required')),
             }}
             children={(field) => (
               <>
@@ -139,7 +146,9 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                 />
                 <ErrorAlert
                   title={t('auth.first_name')}
-                  errors={field.state.meta.errors}
+                  errors={field.state.meta.errors
+                    .filter((e) => e != undefined)
+                    .map((e) => e.message)}
                 />
               </>
             )}
@@ -147,11 +156,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="lastName"
             validators={{
-              onBlur: type('string > 0')
-                .configure({
-                  message: t('auth.last_name_required'),
-                })
-                .pipe(() => undefined),
+              onBlur: z.string().min(1, t('auth.last_name_required')),
             }}
             children={(field) => (
               <>
@@ -165,7 +170,9 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                 />
                 <ErrorAlert
                   title={t('auth.last_name')}
-                  errors={field.state.meta.errors}
+                  errors={field.state.meta.errors
+                    .filter((e) => e != undefined)
+                    .map((e) => e.message)}
                 />
               </>
             )}
@@ -173,11 +180,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlur: type('string.email')
-                .configure({
-                  message: t('auth.invalid_email'),
-                })
-                .pipe(() => undefined),
+              onBlur: z.email(t('auth.invalid_email')),
             }}
             children={(field) => (
               <>
@@ -190,7 +193,12 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="email"
                   required
                 />
-                <ErrorAlert title="Email" errors={field.state.meta.errors} />
+                <ErrorAlert
+                  title="Email"
+                  errors={field.state.meta.errors
+                    .filter((e) => e != undefined)
+                    .map((e) => e.message)}
+                />
               </>
             )}
           />
@@ -216,7 +224,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                 />
                 <ErrorAlert
                   title={t('auth.password')}
-                  errors={field.state.meta.errors}
+                  errors={field.state.meta.errors.filter((e) => e != undefined)}
                 />
               </>
             )}
@@ -244,7 +252,9 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   autoComplete="new-password"
                   required
                 />
-                <ErrorAlert errors={field.state.meta.errors} />
+                <ErrorAlert
+                  errors={field.state.meta.errors.filter((e) => e != undefined)}
+                />
               </>
             )}
           />
