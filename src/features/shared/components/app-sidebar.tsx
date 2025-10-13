@@ -19,6 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from './ui/sidebar';
+import { Separator } from './ui/separator';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
 import {
@@ -58,22 +59,17 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       },
     ],
     navSecondary: [
-      {
-        title: t('common.settings'),
-        to: '/settings',
-        icon: Settings,
-      },
-      {
-        title: t('common.help'),
-        to: '/help',
-        icon: HelpCircle,
-      },
+      // {
+      //   title: t('common.settings'),
+      //   to: '/settings',
+      //   icon: IconSettings,
+      // },
     ],
   };
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="border-b h-(--header-height) justify-center">
+      <SidebarHeader className="border-b border-sidebar-border h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -94,8 +90,36 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        {user ? <NavUser user={user} /> : <NavUserSkeleton />}
+      <SidebarFooter className="px-0">
+        <div className="px-2">
+          {user ? <NavUser user={user} /> : <NavUserSkeleton />}
+        </div>
+        <div>
+          <Separator className="mb-2 bg-sidebar-border" />
+          <div className="px-4 flex gap-4">
+            <Link
+              to="/privacy-policy"
+              target="_blank"
+              className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t('common.privacy_policy')}
+            </Link>
+            <Link
+              to="/terms-of-service"
+              target="_blank"
+              className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t('common.terms_of_service')}
+            </Link>
+            <Link
+              to="/faq"
+              target="_blank"
+              className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t('common.faq')}
+            </Link>
+          </div>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

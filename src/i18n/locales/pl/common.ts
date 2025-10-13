@@ -44,6 +44,9 @@ const plCommon = {
     line_chart: 'Wykres liniowy',
     candlestick_chart: 'Wykres świecowy',
   },
+  privacy_policy: 'Polityka prywatności',
+  terms_of_service: 'Regulamin',
+  faq: 'FAQ',
 };
 
 export default plCommon;

@@ -20,6 +20,12 @@ import enStatistics from './locales/en/statistics';
 import plStatistics from './locales/pl/statistics';
 import enOrders from './locales/en/orders';
 import plOrders from './locales/pl/orders';
+import enFaq from './locales/en/legal/faq';
+import plFaq from './locales/pl/legal/faq';
+import plPrivacyPolicy from './locales/pl/legal/privacy-policy';
+import plTermsOfService from './locales/pl/legal/terms-of-service';
+import enPrivacyPolicy from './locales/en/legal/privacy-policy';
+import enTermsOfService from './locales/en/legal/terms-of-service';
 
 i18n
   .use(LanguageDetector)
@@ -35,7 +41,16 @@ i18n
     },
 
     interpolation: {
-      escapeValue: false,
+      format: (value, _format, lng) => {
+        if (value instanceof Date) {
+          return new Intl.DateTimeFormat(lng, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }).format(value);
+        }
+        return value;
+      },
     },
 
     resources: {
@@ -50,6 +65,11 @@ i18n
           settings: enSettings,
           statistics: enStatistics,
           transactions: enTransactions,
+          legal: {
+            faq: enFaq,
+            privacyPolicy: enPrivacyPolicy,
+            termsOfService: enTermsOfService,
+          },
         },
       },
       pl: {
@@ -63,6 +83,11 @@ i18n
           settings: plSettings,
           statistics: plStatistics,
           transactions: plTransactions,
+          legal: {
+            faq: plFaq,
+            privacyPolicy: plPrivacyPolicy,
+            termsOfService: plTermsOfService,
+          },
         },
       },
     },

@@ -10,10 +10,10 @@ import {
 import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
 
 export const Route = createFileRoute('/_auth/sso-callback')({
-  component: SSOCallback,
+  component: RouteComponent,
 });
 
-function SSOCallback() {
+function RouteComponent() {
   const { t } = useTranslation();
 
   return (
