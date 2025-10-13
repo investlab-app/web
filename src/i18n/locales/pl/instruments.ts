@@ -25,6 +25,14 @@ const plInstruments = {
       'Przepraszamy, informacje o instrumencie nie mogły zostać załadowane.',
     news_unavailable: 'Wiadomości są obecnie niedostępne dla tego instrumentu.',
   },
+  tooltips: {
+    symbol: 'Symbol giełdowy instrumentu do identyfikacji',
+    name: 'Pełna nazwa spółki lub instrumentu',
+    current_price: 'Aktualna cena rynkowa za akcję',
+    day_change: 'Procentowa zmiana ceny od poprzedniego dnia handlowego',
+    volume: 'Liczba akcji handlowanych dzisiaj',
+    load_more: 'Załaduj więcej instrumentów z listy',
+  },
 };
 
 export default plInstruments;

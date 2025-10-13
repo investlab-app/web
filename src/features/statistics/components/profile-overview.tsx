@@ -15,6 +15,7 @@ import {
   investorsMeCurrentAccountValueRetrieveOptions,
   investorsMeStatisticsProfileOverviewRetrieveOptions,
 } from '@/client/@tanstack/react-query.gen';
+import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 
 const ProfileOverviewBodySkeleton = () => {
   return (
@@ -59,7 +60,7 @@ const ProfileOverview = () => {
       : undefined;
 
   return (
-    <div className="overflow-x-auto">
+    <ScrollableHorizontally>
       <Table>
         <TableHeader>
           <TableRow>
@@ -123,7 +124,7 @@ const ProfileOverview = () => {
           )}
         </TableBody>
       </Table>
-    </div>
+    </ScrollableHorizontally>
   );
 };
 

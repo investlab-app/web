@@ -1,6 +1,7 @@
 const enTermsOfService = {
   title: 'Terms of Service',
-  lastUpdated: 'Last updated: {{date, datetime}}',
+  lastUpdated:
+    'Last updated: {{date, datetime(year: numeric; month: long; day: numeric)}}',
 
   userEligibility: {
     title: 'User Eligibility and Account Requirements',

@@ -1,3 +1,8 @@
+import {
+  ScrollArea,
+  ScrollBar,
+} from '@/features/shared/components/ui/scroll-area';
+
 interface ScrollableHorizontallyProps {
   children: React.ReactNode;
 }
@@ -6,8 +11,9 @@ export function ScrollableHorizontally({
   children,
 }: ScrollableHorizontallyProps) {
   return (
-    <div className="-mx-(--page-padding) flex overflow-x-auto">
+    <ScrollArea className="-mx-(--page-padding) flex">
       <div className="px-(--page-padding) grow">{children}</div>
-    </div>
+      <ScrollBar orientation="horizontal" className="bg-background" />
+    </ScrollArea>
   );
 }

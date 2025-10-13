@@ -23,6 +23,17 @@ const enTransactions = {
   },
   error_loading: 'Sorry, the transaction history could not be loaded.',
   no_open_positions: 'You have no open positions for this instrument.',
+  tooltips: {
+    name: 'Name of the financial instrument',
+    quantity: 'Number of shares owned',
+    share_price: 'Current price per share',
+    acquisition_price: 'Average price paid per share',
+    market_value: 'Total current value of the position',
+    gain_loss: 'Absolute profit or loss amount',
+    gain_loss_pct: 'Percentage profit or loss',
+    expand_details: 'Expand to view transaction details',
+    hide_details: 'Hide transaction details',
+  },
 };
 
 export default enTransactions;

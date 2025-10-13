@@ -147,12 +147,41 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               variant="outline"
               aria-label="Toggle chart type"
             >
-              <ToggleGroupItem value="line" aria-label="Line chart">
-                <LineChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
-              <ToggleGroupItem value="candle" aria-label="Candlestick chart">
-                <CandlestickChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ToggleGroupItem value="line" aria-label="Line chart">
+                    <LineChartIcon strokeWidth={1.5} />
+                  </ToggleGroupItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.line_chart',
+                      'Display price data as a simple line chart'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <ToggleGroupItem
+                      value="candle"
+                      aria-label="Candlestick chart"
+                    >
+                      <CandlestickChartIcon strokeWidth={1.5} />
+                    </ToggleGroupItem>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.candlestick_chart',
+                      'Display detailed candlestick chart with open, high, low, close data'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </ToggleGroup>
             <Select
               value={interval}
