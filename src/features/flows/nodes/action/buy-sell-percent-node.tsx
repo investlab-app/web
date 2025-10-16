@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
+import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -36,8 +37,8 @@ export const BuySellPercentNode = (props: NodeProps<BuySellPercentNode>) => {
       onActionChange={(val) => {
         props.data.action = val!;
         if (val === 'sell' && props.data.percent > 100) {
-    props.data.percent = 100;
-  }
+          props.data.percent = 100;
+        }
         updateNodeInternals(props.id);
       }}
     />
@@ -66,19 +67,7 @@ export function BuySellPercentNodeUI({
   const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
-      {onActionChange && (
-        <select
-          className="px-2 py-1 border rounded"
-          value={action}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onActionChange(e.target.value as 'buy' | 'sell')
-          }
-        >
-          <option value="buy">{t('flows.nodes.buy')}</option>
-          <option value="sell">{t('flows.nodes.sell')}</option>
-        </select>
-      )}
-      {!onActionChange && <div className="px-1">{t('flows.placeholders.buy_sell')}</div>}
+      <BuySellSelect action={action} onActionChange={onActionChange} />
       {onPercentChange && (
         <NumberInput
           className="w-30 mx-2"
@@ -86,7 +75,7 @@ export function BuySellPercentNodeUI({
           max={action === 'sell' ? 100 : undefined}
           defaultValue={10}
           stepper={5}
-          suffix='%'
+          suffix="%"
           value={percent}
           onValueChange={(val) => {
             if (action === 'sell' && val && val > 100) {
@@ -105,7 +94,7 @@ export function BuySellPercentNodeUI({
         <input
           className="mx-2 px-2 py-1 border rounded"
           type="text"
-          placeholder='AAPL'
+          placeholder="AAPL"
           value={instrument}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onInstrumentChange(e.target.value)

@@ -14,7 +14,7 @@ export const AndNode = (props: NodeProps<AndNode>) => {
 };
 
 export function AndNodeUI({ nodeId, preview }: CustomNodeProps) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <ConnectorNodeUI nodeId={nodeId} preview={preview}>
       {t('flows.nodes.and').toUpperCase()}
