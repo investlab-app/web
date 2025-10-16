@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-import { investorsMeCurrentAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { statisticsCurrentAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export function WalletSection() {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export function WalletSection() {
     isPending,
     isError,
     isSuccess,
-  } = useQuery(investorsMeCurrentAccountValueRetrieveOptions());
+  } = useQuery(statisticsCurrentAccountValueRetrieveOptions());
 
   return (
     <SidebarMenuItem className="flex items-center gap-1">

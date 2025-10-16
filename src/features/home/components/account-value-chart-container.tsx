@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { Message } from '../../shared/components/error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
@@ -11,17 +11,18 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
-import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { data, isPending, isError } = useQuery(
-    investorsMeAccountValueRetrieveOptions()
+  const { data, isPending, isError, isSuccess } = useQuery(
+    investorsMeAccountValueListOptions()
   );
 
   const chartData: Array<InstrumentPricePoint> =
-    data?.data.map((point) => ({
+    data?.map((point) => ({
       date: new Date(point.date).toISOString(),
       open: point.value,
       close: point.value,
@@ -31,12 +32,20 @@ export const AccountValueChartContainer = () => {
 
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 
-  if (isPending) {
-    return <AccountValueChartContainer.Skeleton />;
-  }
-
-  if (isError) {
-    return <AccountValueChartContainer.Error />;
+  if (!isSuccess) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">
+            {t('investor.account_value_over_time')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isPending && <Skeleton className="w-full h-full" />}
+          {isError && <ErrorMessage message={t('common.error_loading_data')} />}
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -50,44 +59,23 @@ export const AccountValueChartContainer = () => {
         </div>
       </CardHeader>
       <CardContent className="h-96">
-        <StockChart
-          type="line"
-          ticker="Account Value"
-          priceHistory={chartData}
-          selectedInterval="WEEK"
-        />
+        {chartData.length === 0 ? (
+          <EmptyMessage
+            message={t('investor.no_account_value_data')}
+            cta={{
+              to: '/instruments',
+              label: t('instruments.browse_instruments'),
+            }}
+          />
+        ) : (
+          <StockChart
+            type="line"
+            ticker="Account Value"
+            priceHistory={chartData}
+            selectedInterval="WEEK"
+          />
+        )}
       </CardContent>
     </Card>
   );
 };
-
-function AccountValueChartContainerSkeleton() {
-  return (
-    <Card>
-      <CardHeader>
-        <Skeleton className="h-6 w-1/2" />
-      </CardHeader>
-      <CardContent className="h-96">
-        <Skeleton className="w-full h-full" />
-      </CardContent>
-    </Card>
-  );
-}
-
-AccountValueChartContainer.Skeleton = AccountValueChartContainerSkeleton;
-
-function AccountValueChartContainerError() {
-  const { t } = useTranslation();
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('investor.account_value_over_time')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Message message={t('common.error_loading_data')} />
-      </CardContent>
-    </Card>
-  );
-}
-
-AccountValueChartContainer.Error = AccountValueChartContainerError;

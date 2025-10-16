@@ -10,7 +10,7 @@ import {
 import { useTheme } from '@/features/shared/components/theme-provider';
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { userTheme, setTheme } = useTheme();
 
   return (
     <DropdownMenu modal={false}>
@@ -22,13 +22,22 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
+        <DropdownMenuItem
+          onClick={() => setTheme('light')}
+          className={userTheme === 'light' ? 'font-semibold' : ''}
+        >
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
+        <DropdownMenuItem
+          onClick={() => setTheme('dark')}
+          className={userTheme === 'dark' ? 'font-semibold' : ''}
+        >
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
+        <DropdownMenuItem
+          onClick={() => setTheme('system')}
+          className={userTheme === 'system' ? 'font-semibold' : ''}
+        >
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

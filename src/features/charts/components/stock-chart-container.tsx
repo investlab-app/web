@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
-import { Message } from '../../shared/components/error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import { StockChart, StockChartSkeleton } from './stock-chart';
 import type { TimeInterval } from '../utils/time-ranges';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
@@ -40,6 +40,7 @@ import {
 import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
 import { pricesBars } from '@/client';
 import { roundDateToMinute, serialize } from '@/features/shared/utils/date';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface StockChartProps {
   ticker: string;
@@ -218,7 +219,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
       </CardHeader>
       <CardContent className="h-96">
         {isPending && <StockChartSkeleton />}
-        {isError && <Message message={t('common.error_loading_data')} />}
+        {isError && <ErrorMessage message={t('common.error_loading_data')} />}
         {isSuccess &&
           (priceHistory.length ? (
             <StockChart
@@ -230,7 +231,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               liveUpdatePoint={currentPrice}
             />
           ) : (
-            <Message
+            <EmptyMessage
               message={t('instruments.history_empty', {
                 ticker,
                 interval: t(timeIntervals[interval]),

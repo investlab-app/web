@@ -4,32 +4,31 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
-export type AccountValueData = {
+/**
+ * Serializer for AccountValueSnapshot model.
+ */
+export type AccountValueSnapshotDaily = {
     /**
      * Date of the value measurement
      */
-    date: string;
+    readonly date: string;
     /**
      * Account value on this date
      */
     value: number;
 };
 
-export type AccountValueOverTime = {
-    /**
-     * List of account value data points
-     */
-    data: Array<AccountValueData>;
-};
-
 export type AssetAllocation = {
     total_value: number;
-    total_return_this_year: number;
+    total_gain_this_year: number;
     allocations: Array<AssetAllocationItem>;
 };
 
 export type AssetAllocationItem = {
-    asset_class_display_name: string;
+    instrument_name: string;
+    instrument_ticker: string;
+    instrument_logo: string | null;
+    instrument_icon: string | null;
     value: number;
     percentage: number;
 };
@@ -57,11 +56,6 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
-export type CreateMarketOrder = {
-    readonly id: string;
-    readonly investor: string;
-};
-
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
@@ -71,18 +65,18 @@ export type CreateMarketOrderRequest = {
 export type CurrentAccountValue = {
     total_account_value: number;
     gain: number;
-    gain_percent: number;
+    gain_percentage: number | null;
 };
 
 export type HistoryEntry = {
     /**
      * Date of the transaction
      */
-    date: string;
+    timestamp: string;
     /**
-     * Transaction type: BUY or SELL
+     * True if the transaction was a buy False if it was a sell
      */
-    type: string;
+    is_buy: boolean;
     /**
      * Number of shares traded
      */
@@ -95,18 +89,6 @@ export type HistoryEntry = {
      * Acquisition price (null for SELL transactions)
      */
     acquisition_price: number | null;
-    /**
-     * Current market value
-     */
-    market_value: number;
-    /**
-     * Gain or loss amount
-     */
-    gain_loss: number;
-    /**
-     * Gain or loss percentage
-     */
-    gain_loss_pct: number;
 };
 
 export type Insight = {
@@ -249,15 +231,18 @@ export type Investor = {
     watching_instruments?: Array<string>;
 };
 
+/**
+ * Serializer for investor statistics data.
+ */
 export type InvestorStats = {
     /**
-     * Today's return in currency
+     * Today's gain in currency
      */
-    todays_return: number;
+    todays_gain: number;
     /**
-     * Total return in currency
+     * Total gain in currency
      */
-    total_return: number;
+    total_gain: number;
     /**
      * Total amount invested
      */
@@ -361,6 +346,7 @@ export type MarketIndices = {
 };
 
 export type MarketOrder = {
+    readonly detail_type: string;
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
@@ -381,13 +367,8 @@ export type MostTradedItem = {
     no_trades: number;
     buys: number;
     sells: number;
-    avg_gain: number;
-    avg_loss: number;
-    total_return: number;
-};
-
-export type MostTradedOverview = {
-    instruments: Array<MostTradedItem>;
+    gain: number;
+    gain_percentage: number;
 };
 
 export type NotificationConfig = {
@@ -439,20 +420,21 @@ export type NotificationConfigRequest = {
 export type Order = {
     readonly id: string;
     ticker: InstrumentName;
-    detail: MarketOrder;
+    detail_type: number;
+    detail: OrderDetail;
 };
 
-export type OwnedShareItem = {
+export type OrderDetail = {
+    detail_type: 'market';
+} & MarketOrder;
+
+export type OwnedShare = {
     name: string;
     symbol: string;
     volume: number;
     value: number;
-    profit: number;
-    profit_percentage: number;
-};
-
-export type OwnedShares = {
-    owned_shares: Array<OwnedShareItem>;
+    gain: number;
+    gain_percentage: number | null;
 };
 
 export type PaginatedInstrumentListList = {
@@ -513,11 +495,11 @@ export type Position = {
     /**
      * Total gain or loss
      */
-    gain_loss: number;
+    gain: number;
     /**
      * Total gain or loss percentage
      */
-    gain_loss_pct: number;
+    gain_percentage: number;
     /**
      * Transaction history
      */
@@ -581,12 +563,6 @@ export type PriceDailySummary = {
     last_updated: string;
 };
 
-export type ProfileOverview = {
-    level: string;
-    exp_points: number;
-    left_to_next_level: number;
-};
-
 export type Publisher = {
     favicon_url?: string | null;
     homepage_url?: string | null;
@@ -645,13 +621,21 @@ export type TradingOverview = {
     total_trades: number;
     buys: number;
     sells: number;
-    avg_gain: number;
-    avg_loss: number;
-    total_return: number;
+    total_gain: number;
 };
 
 export type VapidPublicKey = {
     public_key: string;
+};
+
+/**
+ * Serializer for AccountValueSnapshot model.
+ */
+export type AccountValueSnapshotDailyWritable = {
+    /**
+     * Account value on this date
+     */
+    value: number;
 };
 
 export type InstrumentListWritable = {
@@ -776,6 +760,12 @@ export type InvestorUpdateWritable = {
     watching_instruments?: Array<string>;
 };
 
+export type MarketOrderWritable = {
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+};
+
 export type NotificationConfigWritable = {
     /**
      * Send Email
@@ -801,6 +791,7 @@ export type NotificationConfigCreateRequestWritable = {
 
 export type OrderWritable = {
     ticker: InstrumentName;
+    detail_type: number;
 };
 
 export type PriceAlertWritable = {
@@ -1003,44 +994,18 @@ export type InvestorsMeRetrieveResponses = {
 
 export type InvestorsMeRetrieveResponse = InvestorsMeRetrieveResponses[keyof InvestorsMeRetrieveResponses];
 
-export type InvestorsMeAccountValueRetrieveData = {
+export type InvestorsMeAccountValueListData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/api/investors/me/account-value/';
 };
 
-export type InvestorsMeAccountValueRetrieveResponses = {
-    200: AccountValueOverTime;
+export type InvestorsMeAccountValueListResponses = {
+    200: Array<AccountValueSnapshotDaily>;
 };
 
-export type InvestorsMeAccountValueRetrieveResponse = InvestorsMeAccountValueRetrieveResponses[keyof InvestorsMeAccountValueRetrieveResponses];
-
-export type InvestorsMeAssetAllocationRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/asset-allocation/';
-};
-
-export type InvestorsMeAssetAllocationRetrieveResponses = {
-    200: AssetAllocation;
-};
-
-export type InvestorsMeAssetAllocationRetrieveResponse = InvestorsMeAssetAllocationRetrieveResponses[keyof InvestorsMeAssetAllocationRetrieveResponses];
-
-export type InvestorsMeCurrentAccountValueRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/current-account-value/';
-};
-
-export type InvestorsMeCurrentAccountValueRetrieveResponses = {
-    200: CurrentAccountValue;
-};
-
-export type InvestorsMeCurrentAccountValueRetrieveResponse = InvestorsMeCurrentAccountValueRetrieveResponses[keyof InvestorsMeCurrentAccountValueRetrieveResponses];
+export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
 
 export type InvestorsMeLanguageCreateData = {
     body: LanguageUpdateRequest;
@@ -1054,97 +1019,6 @@ export type InvestorsMeLanguageCreateResponses = {
 };
 
 export type InvestorsMeLanguageCreateResponse = InvestorsMeLanguageCreateResponses[keyof InvestorsMeLanguageCreateResponses];
-
-export type InvestorsMeOwnedSharesRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/owned-shares/';
-};
-
-export type InvestorsMeOwnedSharesRetrieveResponses = {
-    200: OwnedShares;
-};
-
-export type InvestorsMeOwnedSharesRetrieveResponse = InvestorsMeOwnedSharesRetrieveResponses[keyof InvestorsMeOwnedSharesRetrieveResponses];
-
-export type InvestorsMeStatisticsMostTradedRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/statistics/most-traded/';
-};
-
-export type InvestorsMeStatisticsMostTradedRetrieveResponses = {
-    200: MostTradedOverview;
-};
-
-export type InvestorsMeStatisticsMostTradedRetrieveResponse = InvestorsMeStatisticsMostTradedRetrieveResponses[keyof InvestorsMeStatisticsMostTradedRetrieveResponses];
-
-export type InvestorsMeStatisticsProfileOverviewRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/statistics/profile-overview/';
-};
-
-export type InvestorsMeStatisticsProfileOverviewRetrieveResponses = {
-    200: ProfileOverview;
-};
-
-export type InvestorsMeStatisticsProfileOverviewRetrieveResponse = InvestorsMeStatisticsProfileOverviewRetrieveResponses[keyof InvestorsMeStatisticsProfileOverviewRetrieveResponses];
-
-export type InvestorsMeStatisticsTradingOverviewRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/statistics/trading-overview/';
-};
-
-export type InvestorsMeStatisticsTradingOverviewRetrieveResponses = {
-    200: TradingOverview;
-};
-
-export type InvestorsMeStatisticsTradingOverviewRetrieveResponse = InvestorsMeStatisticsTradingOverviewRetrieveResponses[keyof InvestorsMeStatisticsTradingOverviewRetrieveResponses];
-
-export type InvestorsMeStatsRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/stats/';
-};
-
-export type InvestorsMeStatsRetrieveResponses = {
-    200: InvestorStats;
-};
-
-export type InvestorsMeStatsRetrieveResponse = InvestorsMeStatsRetrieveResponses[keyof InvestorsMeStatsRetrieveResponses];
-
-export type InvestorsMeTransactionsHistoryListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * Filter by specific ticker symbol
-         */
-        ticker?: string;
-        /**
-         * Type of positions to fetch: 'open', 'closed', or 'both'
-         *
-         * * `open` - open
-         * * `closed` - closed
-         * * `both` - both
-         */
-        type?: 'open' | 'closed' | 'both';
-    };
-    url: '/api/investors/me/transactions-history/';
-};
-
-export type InvestorsMeTransactionsHistoryListResponses = {
-    200: Array<Position>;
-};
-
-export type InvestorsMeTransactionsHistoryListResponse = InvestorsMeTransactionsHistoryListResponses[keyof InvestorsMeTransactionsHistoryListResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;
@@ -1258,7 +1132,7 @@ export type OrdersMarketCreateData = {
 };
 
 export type OrdersMarketCreateResponses = {
-    201: CreateMarketOrder;
+    201: Order;
 };
 
 export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
@@ -1422,6 +1296,110 @@ export type PricesPriceAlertUpdateResponses = {
 };
 
 export type PricesPriceAlertUpdateResponse = PricesPriceAlertUpdateResponses[keyof PricesPriceAlertUpdateResponses];
+
+export type StatisticsAssetAllocationRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/asset-allocation/';
+};
+
+export type StatisticsAssetAllocationRetrieveResponses = {
+    200: AssetAllocation;
+};
+
+export type StatisticsAssetAllocationRetrieveResponse = StatisticsAssetAllocationRetrieveResponses[keyof StatisticsAssetAllocationRetrieveResponses];
+
+export type StatisticsCurrentAccountValueRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/current-account-value/';
+};
+
+export type StatisticsCurrentAccountValueRetrieveResponses = {
+    200: CurrentAccountValue;
+};
+
+export type StatisticsCurrentAccountValueRetrieveResponse = StatisticsCurrentAccountValueRetrieveResponses[keyof StatisticsCurrentAccountValueRetrieveResponses];
+
+export type StatisticsOwnedSharesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/owned-shares/';
+};
+
+export type StatisticsOwnedSharesListResponses = {
+    200: Array<OwnedShare>;
+};
+
+export type StatisticsOwnedSharesListResponse = StatisticsOwnedSharesListResponses[keyof StatisticsOwnedSharesListResponses];
+
+export type StatisticsStatisticsMostTradedListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/statistics/most-traded/';
+};
+
+export type StatisticsStatisticsMostTradedListResponses = {
+    200: Array<MostTradedItem>;
+};
+
+export type StatisticsStatisticsMostTradedListResponse = StatisticsStatisticsMostTradedListResponses[keyof StatisticsStatisticsMostTradedListResponses];
+
+export type StatisticsStatisticsTradingOverviewRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/statistics/trading-overview/';
+};
+
+export type StatisticsStatisticsTradingOverviewRetrieveResponses = {
+    200: TradingOverview;
+};
+
+export type StatisticsStatisticsTradingOverviewRetrieveResponse = StatisticsStatisticsTradingOverviewRetrieveResponses[keyof StatisticsStatisticsTradingOverviewRetrieveResponses];
+
+export type StatisticsStatsRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/statistics/stats/';
+};
+
+export type StatisticsStatsRetrieveResponses = {
+    200: InvestorStats;
+};
+
+export type StatisticsStatsRetrieveResponse = StatisticsStatsRetrieveResponses[keyof StatisticsStatsRetrieveResponses];
+
+export type StatisticsTransactionsHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * List of ticker symbols to fetch prices for (max 50).
+         */
+        tickers?: Array<string>;
+        /**
+         * Type of positions to fetch: 'open', 'closed', or 'both'
+         *
+         * * `open` - open
+         * * `closed` - closed
+         * * `both` - both
+         */
+        type?: 'open' | 'closed' | 'both';
+    };
+    url: '/api/statistics/transactions-history/';
+};
+
+export type StatisticsTransactionsHistoryListResponses = {
+    200: Array<Position>;
+};
+
+export type StatisticsTransactionsHistoryListResponse = StatisticsTransactionsHistoryListResponses[keyof StatisticsTransactionsHistoryListResponses];
 
 export type StatusRetrieveData = {
     body?: never;

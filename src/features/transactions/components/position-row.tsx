@@ -84,15 +84,15 @@ export const PositionRow = ({
           {t('common.currency')}
         </TableCell>
         <TableCell
-          className={`text-right ${getProfabilityColor(position.gain_loss)}`}
+          className={`text-right ${getProfabilityColor(position.gain)}`}
         >
-          {toFixedLocalized(position.gain_loss, i18n.language, 2)}{' '}
+          {toFixedLocalized(position.gain, i18n.language, 2)}{' '}
           {t('common.currency')}
         </TableCell>
         <TableCell
-          className={`text-right ${getProfabilityColor(position.gain_loss)}`}
+          className={`text-right ${getProfabilityColor(position.gain)}`}
         >
-          {toFixedLocalized(position.gain_loss_pct, i18n.language, 2)}%
+          {toFixedLocalized(position.gain_percentage, i18n.language, 2)}%
         </TableCell>
       </TableRow>
 

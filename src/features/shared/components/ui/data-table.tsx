@@ -4,7 +4,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '../../utils/styles';
+import { EmptyMessage } from '../empty-message';
 import type {
   ColumnDef,
   OnChangeFn,
@@ -105,10 +107,11 @@ interface DataTableEmptyStateProps<TData, TValue> {
 function DataTableEmptyState<TData, TValue>({
   columns,
 }: DataTableEmptyStateProps<TData, TValue>) {
+  const { t } = useTranslation();
   return (
     <TableRow>
       <TableCell colSpan={columns.length} className="h-24 text-center">
-        No results.
+        <EmptyMessage message={t('instruments.no_instruments_found')} />
       </TableCell>
     </TableRow>
   );

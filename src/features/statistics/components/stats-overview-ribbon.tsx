@@ -2,16 +2,16 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
-import { investorsMeStatisticsTradingOverviewRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { statisticsStatisticsTradingOverviewRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 const StatsOverviewRibbon = () => {
   const { t } = useTranslation();
 
   const {
     data: stats,
-    isLoading,
+    isPending,
     isError,
-  } = useQuery(investorsMeStatisticsTradingOverviewRetrieveOptions());
+  } = useQuery(statisticsStatisticsTradingOverviewRetrieveOptions());
 
   const tiles = [
     {
@@ -23,26 +23,13 @@ const StatsOverviewRibbon = () => {
       value: `${stats?.buys}/${stats?.sells}`,
     },
     {
-      title: t('statistics.avg_gain'),
-      value: `${stats?.avg_gain} ${t('common.currency')}`,
+      title: t('statistics.total_return'),
+      value: `${stats?.total_gain} ${t('common.currency')}`,
       coloring: stats
-        ? stats.avg_gain > 0
+        ? stats.total_gain > 0
           ? StatTile.Coloring.POSITIVE
           : StatTile.Coloring.NEUTRAL
         : StatTile.Coloring.NEUTRAL,
-    },
-    {
-      title: t('statistics.avg_loss'),
-      value: `${stats?.avg_loss} ${t('common.currency')}`,
-      coloring: stats
-        ? stats.avg_loss > 0
-          ? StatTile.Coloring.NEGATIVE
-          : StatTile.Coloring.NEUTRAL
-        : StatTile.Coloring.NEUTRAL,
-    },
-    {
-      title: t('statistics.total_return'),
-      value: `${stats?.total_return} ${t('common.currency')}`,
     },
   ];
 
@@ -53,11 +40,11 @@ const StatsOverviewRibbon = () => {
     index: number;
     tile: (typeof tiles)[number];
   }) {
-    if (isLoading) {
+    if (isPending) {
       return <StatTile.Skeleton />;
     }
 
-    if (isError || !tile.value) {
+    if (isError || tile.value === undefined) {
       return <ErrorCard />;
     }
 

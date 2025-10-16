@@ -9,6 +9,7 @@ const plCommon = {
   search: 'Wyszukaj...',
   dashboard: 'Strona główna',
   statistics: 'Statystyki',
+  flows: 'Strategie',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   add: 'Dodaj',

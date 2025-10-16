@@ -12,6 +12,9 @@ const enInvestor = {
   value: 'Value',
   owned_shares: 'Owned assets',
   account_value_over_time: 'Account value over time',
+  no_asset_allocation_data: 'No asset allocation data available',
+  no_account_value_data: 'No account value data available',
+  no_owned_shares: 'No owned shares data available',
 };
 
 export default enInvestor;

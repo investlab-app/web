@@ -55,6 +55,8 @@ const plInstruments = {
     volume: 'Liczba akcji handlowanych dzisiaj',
     load_more: 'Załaduj więcej instrumentów z listy',
   },
+  browse_instruments: 'Przeglądaj instrumenty',
+  no_instruments_found: 'Nie znaleziono instrumentów',
 };
 
 export default plInstruments;

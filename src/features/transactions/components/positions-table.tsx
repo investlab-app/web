@@ -12,41 +12,52 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { investorsMeTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
+import { statisticsTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
 import { Button } from '@/features/shared/components/ui/button';
+import { ErrorMessage } from '@/features/shared/components/error-message';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 type PositionsTableProps = {
   type: 'open' | 'closed';
 };
 
 export function PositionsTable({ type }: PositionsTableProps) {
-  const { data } = useQuery(
-    investorsMeTransactionsHistoryListOptions({ query: { type } })
+  const { t } = useTranslation();
+  const { data, isPending, isError, isSuccess } = useQuery(
+    statisticsTransactionsHistoryListOptions({ query: { type } })
   );
+
+  if (isError) {
+    return (
+      <ErrorMessage message="Error loading positions. Please try again later." />
+    );
+  }
 
   return (
     <Table className="rounded-md border">
       <PositionsTableHeader />
       <TableBody>
-        {!data ? (
-          <PositionRow
-            position={{
-              name: '',
-              quantity: 0,
-              market_value: 0,
-              gain_loss: 0,
-              gain_loss_pct: 0,
-              history: [],
-            }}
-          />
-        ) : (
-          data.map((pos) => <PositionRow key={pos.name} position={pos} />)
+        {isPending && <PositionsTableBodySkeleton length={5} />}
+        {isSuccess && data.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={5} className="h-24 p-0 border-0">
+              <EmptyMessage
+                message={t('transactions.no_open_positions')}
+                cta={{
+                  to: '/instruments',
+                  label: t('instruments.browse_instruments'),
+                }}
+              />
+            </TableCell>
+          </TableRow>
         )}
+        {isSuccess &&
+          data.map((pos) => <PositionRow key={pos.name} position={pos} />)}
       </TableBody>
     </Table>
   );
@@ -105,19 +116,6 @@ export function PositionsTableHeader() {
               </TooltipTrigger>
               <TooltipContent>
                 <p>{t('transactions.tooltips.acquisition_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.market_value')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.market_value')}</p>
               </TooltipContent>
             </Tooltip>
           </div>

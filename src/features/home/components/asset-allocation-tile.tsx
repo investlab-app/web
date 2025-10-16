@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import type { AssetAllocationItem } from '@/client';
 import {
   Card,
   CardContent,
@@ -6,12 +7,13 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface AssetAllocationProps {
   totalValue: number;
   yearlyGain: number;
   currency?: string;
-  assets: Array<[string, number]>;
+  assets: Array<AssetAllocationItem>;
 }
 
 export const AssetAllocationTile = ({
@@ -20,7 +22,7 @@ export const AssetAllocationTile = ({
   currency = 'USD',
   assets,
 }: AssetAllocationProps) => {
-  const totalAssetValue = assets.reduce((sum, [, value]) => sum + value, 0);
+  const totalAssetValue = assets.reduce((sum, { value }) => sum + value, 0);
   const { t, i18n } = useTranslation();
 
   const formatPercentage = (val: number) => {
@@ -43,51 +45,67 @@ export const AssetAllocationTile = ({
         </span>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">
-            {t('investor.distribution')}
-          </h3>
-
-          <div className="flex w-full gap-2 h-8 rounded-lg">
-            {assets.map(([name, value], index) => {
-              const percentage = (value / totalAssetValue) * 100;
-              return (
-                <div
-                  key={name}
-                  className="rounded-md h-4"
-                  style={{
-                    width: `${percentage}%`,
-                    backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
-                  }}
-                />
-              );
-            })}
-          </div>
-
+        {assets.length === 0 ? (
+          <EmptyMessage
+            message={t('investor.no_asset_allocation_data')}
+            cta={{
+              to: '/instruments',
+              label: t('instruments.browse_instruments'),
+            }}
+          />
+        ) : (
           <div className="space-y-4">
-            {assets.map(([name, value], index) => (
-              <div key={name} className="flex items-center justify-between">
-                <div key={name} className="flex items-center gap-3">
+            <h3 className="text-lg font-semibold">
+              {t('investor.distribution')}
+            </h3>
+
+            <div className="flex w-full gap-2 h-8 rounded-lg">
+              {assets.map(({ instrument_name, value }, index) => {
+                const percentage = (value / totalAssetValue) * 100;
+                return (
                   <div
-                    className="size-4 rounded-full"
+                    key={instrument_name}
+                    className="rounded-md h-4"
                     style={{
+                      width: `${percentage}%`,
                       backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
                     }}
                   />
-                  <div className="space-y-1">
-                    <div className="font-medium">{name}</div>
-                    <div className="text-gray-400 text-sm">
-                      {formatPercentage(value)}%
+                );
+              })}
+            </div>
+
+            <div className="space-y-4">
+              {assets.map(({ instrument_name, value }, index) => (
+                <div
+                  key={instrument_name}
+                  className="flex items-center justify-between"
+                >
+                  <div
+                    key={instrument_name}
+                    className="flex items-center gap-3"
+                  >
+                    <div
+                      className="size-4 rounded-full"
+                      style={{
+                        backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
+                      }}
+                    />
+                    <div className="space-y-1">
+                      <div className="font-medium">{instrument_name}</div>
+                      <div className="text-gray-400 text-sm">
+                        {formatPercentage(value)}%
+                      </div>
                     </div>
                   </div>
+                  <div className="font-semibold tabular-nums">
+                    {toFixedLocalized(value, i18n.language)} {currency}
+                  </div>
                 </div>
-                <div className="font-semibold tabular-nums">
-                  {toFixedLocalized(value, i18n.language)} {currency}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

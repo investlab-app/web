@@ -35,7 +35,7 @@ export const StatTile = ({
   return (
     <Card
       className={cn(
-        'min-w-[200px] @container/card border border-[color:var(--color-border)] shadow-lg transition-all duration-200 hover:shadow-xl',
+        'min-w-[200px] @container/card border border-[color:var(--color-border)] shadow-lg transition-shadow duration-200 hover:shadow-xl',
         coloring === TileColoring.NEUTRAL
           ? 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
           : coloring === TileColoring.POSITIVE

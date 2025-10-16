@@ -6,7 +6,7 @@ import {
   PositionsTableHeader,
 } from '@/features/transactions/components/positions-table';
 import { PositionRow } from '@/features/transactions/components/position-row';
-import { Message } from '@/features/shared/components/error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Table, TableBody } from '@/features/shared/components/ui/table';
 import {
@@ -16,9 +16,10 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
-  investorsMeTransactionsHistoryListOptions,
   pricesRetrieveOptions,
+  statisticsTransactionsHistoryListOptions,
 } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -48,10 +49,10 @@ export function TransactionsHistorySection({
     isError: tickerTransactionsIsError,
     isPending: tickerTransactionsIsPending,
   } = useQuery(
-    investorsMeTransactionsHistoryListOptions({
+    statisticsTransactionsHistoryListOptions({
       query: {
         type: 'open',
-        ticker: instrumentId,
+        tickers: [instrumentId],
       },
     })
   );
@@ -64,17 +65,18 @@ export function TransactionsHistorySection({
       <CardHeader>
         <CardTitle>{t('transactions.tabs.open_positions')}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="h-full">
         {isPending ? (
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (
-          <Message message={t('transactions.error_loading')} />
+          <ErrorMessage message={t('transactions.error_loading')} />
         ) : !tickerTransactions.length ? (
-          <Message message={t('transactions.no_open_positions')} />
+          <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
           <>
             <BuySellContainer
               currentPrice={parseFloat(tickerPrice.current_price)}
+              ticker={instrumentId}
               onlySell={true}
             />
             <Table>
