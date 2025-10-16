@@ -85,19 +85,21 @@ export function BuySellPriceNodeUI({
           }
         />
       )}
-      <div className="text-sm">for $</div>
+      <div className="text-sm">shares for</div>
       {onPriceChange && (
         <NumberInput
-          className="w-24"
+          className="w-35 ml-2"
           min={0}
           defaultValue={1}
+          prefix='$'
           stepper={0.5}
           value={price}
           onValueChange={onPriceChange}
           decimalScale={2}
+          fixedDecimalScale={true}
         />
       )}
-      {!onPriceChange && <div className="px-1">X</div>}
+      {!onPriceChange && <div className="px-1">$X</div>}
     </ActionNodeUI>
   );
 }

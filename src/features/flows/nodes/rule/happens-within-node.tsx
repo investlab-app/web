@@ -40,7 +40,7 @@ export function HappensWithinNodeUI({
 }: HappensWithinNodeUIProps & CustomNodeProps) {
   return (
     <RuleNodeUI preview={preview} nodeId={nodeId}>
-      <div className="text-sm px-1">Happens in the past</div>
+      <div className="text-sm">Happens in the past</div>
       {onValueChange && (
         <NumberInput
           className="w-20 mx-2"
