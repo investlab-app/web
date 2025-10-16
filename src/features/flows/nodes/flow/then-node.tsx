@@ -1,4 +1,5 @@
 import { Position } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -15,13 +16,14 @@ export const ThenNode = (props: NodeProps<ThenNode>) => {
 };
 
 export function ThenNodeUI({ nodeId, preview }: CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <NodeUI
       preview={preview}
       nodeId={nodeId}
       className={`bg-[var(--background)]`}
     >
-      <div>Then</div>
+      <div>{t('flows.nodes.then')}</div>
 
       <CustomHandle
         nodeId={nodeId}
