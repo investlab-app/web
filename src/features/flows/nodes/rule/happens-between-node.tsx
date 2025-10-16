@@ -77,7 +77,9 @@ export function HappensBetweenNodeUI({
           className="border p-1 rounded mx-2"
         />
       )}
-      {onEndChange && <div className="inline-block">{t('flows.nodes.and')}</div>}
+      {onEndChange && (
+        <div className="inline-block">{t('flows.nodes.and')}</div>
+      )}
       {onEndChange && (
         <input
           type="date"

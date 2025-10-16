@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
+import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -60,28 +60,15 @@ export function BuySellAmountNodeUI({
   nodeId,
   preview,
 }: BuySellAmountNodeUIProps & CustomNodeProps) {
-  const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
-      {onActionChange && (
-        <select
-          className="px-2 py-1 border rounded"
-          value={action}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onActionChange(e.target.value as 'buy' | 'sell')
-          }
-        >
-          <option value="buy">{t('flows.nodes.buy')}</option>
-          <option value="sell">{t('flows.nodes.sell')}</option>
-        </select>
-      )}
-      {!onActionChange && <div>{t('flows.placeholders.buy_sell')} X</div>}
+      <BuySellSelect action={action} onActionChange={onActionChange} />
+      {!onActionChange && <div>X</div>}
       {onAmountChange && (
         <NumberInput
           className="w-40 mx-2"
           min={0}
           defaultValue={1}
-          prefix='@'
           stepper={0.1}
           value={amount}
           onValueChange={onAmountChange}
@@ -91,13 +78,13 @@ export function BuySellAmountNodeUI({
       )}
       {onInstrumentChange && (
         <input
-        className="px-2 py-1 border rounded"
-        type="text"
-        placeholder='AAPL'
-        value={instrument}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          onInstrumentChange(e.target.value)
-        }
+          className="px-2 py-1 border rounded"
+          type="text"
+          placeholder="AAPL"
+          value={instrument}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onInstrumentChange(e.target.value)
+          }
         />
       )}
     </ActionNodeUI>

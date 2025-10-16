@@ -56,16 +56,20 @@ export function PriceHigherLowerNodeUI({
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
       <div>{t('flows.nodes.price')}</div>
-     { onStateChange ? ( <select
-        className="mx-2 px-2 py-1 border rounded"
-        value={state}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onStateChange(e.target.value as 'over' | 'under')
-        }
-      >
-        <option value="over">{t('flows.nodes.over')}</option>
-        <option value="under">{t('flows.nodes.under')}</option>
-      </select>) : (<div className="pl-1">{t('flows.placeholders.reaches_threshold')}</div>)}
+      {onStateChange ? (
+        <select
+          className="mx-2 px-2 py-1 border rounded"
+          value={state}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            onStateChange(e.target.value as 'over' | 'under')
+          }
+        >
+          <option value="over">{t('flows.nodes.over')}</option>
+          <option value="under">{t('flows.nodes.under')}</option>
+        </select>
+      ) : (
+        <div className="pl-1">{t('flows.placeholders.reaches_threshold')}</div>
+      )}
       {onValueChange && (
         <NumberInput
           className="w-30"

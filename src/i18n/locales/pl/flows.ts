@@ -1,5 +1,3 @@
-const plFlows = {
-
-};
+const plFlows = {};
 
 export default plFlows;
