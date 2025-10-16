@@ -1,16 +1,9 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
-
-import type { ReactNode } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 import { CustomHandle } from '@/features/flows/components/validated-handle';
 
-interface ActionNodeUIProps {
-  children?: ReactNode;
-  preview?: boolean;
-  nodeId: string;
-}
-
-export function ActionNodeUI({ children, preview, nodeId }: ActionNodeUIProps) {
+export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
   return (
     <NodeUI
       nodeId={nodeId}

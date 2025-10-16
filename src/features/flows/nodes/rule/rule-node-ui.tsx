@@ -1,16 +1,10 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 
-import type { ReactNode } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 import { CustomHandle } from '@/features/flows/components/validated-handle';
 
-interface RuleNodeUIProps {
-  children?: ReactNode;
-  nodeId: string;
-  preview?: boolean;
-}
-
-export function RuleNodeUI({ children, nodeId, preview }: RuleNodeUIProps) {
+export function RuleNodeUI({ children, nodeId, preview }: CustomNodeProps) {
   return (
     <NodeUI
       className={`bg-[var(--node-predicate)] `}

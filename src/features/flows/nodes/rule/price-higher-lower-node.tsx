@@ -3,6 +3,7 @@ import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 export type PriceHigherLowerNode = Node<
@@ -40,8 +41,6 @@ interface PriceHigherLowerNodeUIProps {
   state: 'over' | 'under';
   onValueChange?: (value: number | undefined) => void;
   onStateChange?: (state: 'over' | 'under') => void;
-  nodeId: string;
-  preview?: boolean;
 }
 
 export function PriceHigherLowerNodeUI({
@@ -51,7 +50,7 @@ export function PriceHigherLowerNodeUI({
   onStateChange,
   nodeId,
   preview,
-}: PriceHigherLowerNodeUIProps) {
+}: PriceHigherLowerNodeUIProps & CustomNodeProps) {
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
       <div className="text-sm px-1">Price</div>

@@ -2,6 +2,7 @@ import { useUpdateNodeInternals } from '@xyflow/react';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
+import type { CustomNodeProps } from '../../types/node-props';
 
 export type HappensBetweenNode = Node<
   {
@@ -41,8 +42,6 @@ interface HappensBetweenNodeUIProps {
   endDate: Date;
   onStartChange?: (value: Date | undefined) => void;
   onEndChange?: (value: Date | undefined) => void;
-  nodeId: string;
-  preview?: boolean;
 }
 
 export function HappensBetweenNodeUI({
@@ -52,7 +51,7 @@ export function HappensBetweenNodeUI({
   onEndChange,
   nodeId,
   preview,
-}: HappensBetweenNodeUIProps) {
+}: HappensBetweenNodeUIProps & CustomNodeProps) {
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
   const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
