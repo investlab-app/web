@@ -1,16 +1,18 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 
-interface ExecuteButtonProps {
-  onExecute: () => void;
+interface SaveButtonProps {
+  onSave: () => void;
 }
 
-export function ExecuteButton({ onExecute }: ExecuteButtonProps) {
+export function SaveButton({ onSave }: SaveButtonProps) {
+  const { t } = useTranslation();
   return (
     <Button
-      onClick={onExecute}
-      className="m-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      onClick={onSave}
+      className="px-4 w-full py-2 bg-[var(--primary)] text-white rounded"
     >
-      Execute Flow
+      {t('flows.sidebar.save_flow')}
     </Button>
   );
 }
