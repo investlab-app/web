@@ -6,6 +6,7 @@ const enFlows = {
         bought_sold: "bought/sold",
         reaches_threshold: "reaches threshold",
         email_push: "email/push",
+        instrument: "instrument",
         shares: "shares",
     },
     sidebar:{
@@ -23,6 +24,7 @@ const enFlows = {
         then: "then",
         else: "else",
         price_of: "price of",
+        price: "price",
         shares: "shares",
         happens_within: "happens within",
         happens_between: "happens between",
@@ -31,6 +33,12 @@ const enFlows = {
         under: "under",
         buy: "buy",
         sell: "sell",
+        rises: "rises",
+        falls: "falls",
+        bought: "bought",
+        sold: "sold",
+        email: "email",
+        push: "push",
         of_owned: "of owned",
         send_notification: "send notification via",
     }

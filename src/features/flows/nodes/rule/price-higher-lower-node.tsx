@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -51,22 +52,23 @@ export function PriceHigherLowerNodeUI({
   nodeId,
   preview,
 }: PriceHigherLowerNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm">Price</div>
+      <div>{t('flows.nodes.price')}</div>
      { onStateChange ? ( <select
-        className="mx-2 px-2 py-1 border rounded text-xs"
+        className="mx-2 px-2 py-1 border rounded"
         value={state}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           onStateChange(e.target.value as 'over' | 'under')
         }
       >
-        <option value="over">over</option>
-        <option value="under">under</option>
-      </select>) : (<div className="pl-1">reaches threshold</div>)}
+        <option value="over">{t('flows.nodes.over')}</option>
+        <option value="under">{t('flows.nodes.under')}</option>
+      </select>) : (<div className="pl-1">{t('flows.placeholders.reaches_threshold')}</div>)}
       {onValueChange && (
         <NumberInput
-          className="text-xs w-30"
+          className="w-30"
           min={1}
           stepper={25}
           defaultValue={100.0}
