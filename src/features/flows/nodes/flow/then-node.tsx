@@ -1,9 +1,9 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
-import type { ReactNode } from 'react';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types';
+import type { CustomNodeProps } from '../../types/node-props';
 
 export type ThenNode = Node<
   {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
@@ -11,28 +11,26 @@ export type ThenNode = Node<
 >;
 
 export const ThenNode = (props: NodeProps<ThenNode>) => {
-  return <ThenNodeUI id={props.id} />;
+  return <ThenNodeUI nodeId={props.id} />;
 };
 
-interface ThenNodeUIProps {
-  id: string;
-  children?: ReactNode;
-  preview?: boolean;
-}
-
-export function ThenNodeUI({ id, preview }: ThenNodeUIProps) {
+export function ThenNodeUI({ nodeId, preview }: CustomNodeProps) {
   return (
-    <NodeUI preview={preview} nodeId={id} className={`bg-[var(--background)]`}>
+    <NodeUI
+      preview={preview}
+      nodeId={nodeId}
+      className={`bg-[var(--background)]`}
+    >
       <div>Then</div>
 
       <CustomHandle
-        nodeId={id}
+        nodeId={nodeId}
         type="source"
         position={Position.Right}
         id="right"
       />
       <CustomHandle
-        nodeId={id}
+        nodeId={nodeId}
         type="target"
         position={Position.Left}
         id="left"

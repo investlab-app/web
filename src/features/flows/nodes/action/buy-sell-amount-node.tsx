@@ -3,6 +3,7 @@ import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 export type BuySellAmountNode = Node<
@@ -46,8 +47,6 @@ interface BuySellAmountNodeUIProps {
   onAmountChange?: (value: number | undefined) => void;
   action: string;
   onActionChange?: (value: string) => void;
-  nodeId: string;
-  preview?: boolean;
 }
 
 export function BuySellAmountNodeUI({
@@ -59,7 +58,7 @@ export function BuySellAmountNodeUI({
   onActionChange,
   nodeId,
   preview,
-}: BuySellAmountNodeUIProps) {
+}: BuySellAmountNodeUIProps & CustomNodeProps) {
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       {onActionChange && (
@@ -87,7 +86,7 @@ export function BuySellAmountNodeUI({
         />
       )}
       {!onAmountChange && <div className="px-1">X</div>}
-      <div className="text-sm">volume of instrument</div>
+      <div className="text-sm">stock(s) of instrument</div>
       {onInstrumentChange && (
         <input
           className="mx-2 px-2 py-1 border rounded text-xs"

@@ -1,19 +1,13 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
-import type { ReactNode } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 import { CustomHandle } from '@/features/flows/components/validated-handle';
-
-interface TriggerNodeUIProps {
-  children?: ReactNode;
-  nodeId: string;
-  preview?: boolean;
-}
 
 export function TriggerNodeUI({
   children,
   nodeId,
   preview = false,
-}: TriggerNodeUIProps) {
+}: CustomNodeProps) {
   return (
     <NodeUI
       className={`bg-[var(--node-trigger)]`}

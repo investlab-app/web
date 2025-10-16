@@ -1,6 +1,7 @@
 import { ConnectorNodeUI } from './connector-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { CustomNodeProps } from '../../types/node-props';
 
 export type OrNode = Node<
   {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
@@ -8,17 +9,12 @@ export type OrNode = Node<
 >;
 
 export const OrNode = (props: NodeProps<OrNode>) => {
-  return <OrNodeUI id={props.id} />;
+  return <OrNodeUI nodeId={props.id} />;
 };
 
-interface OrNodeUIProps {
-  id: string;
-  preview?: boolean;
-}
-
-export function OrNodeUI({ id, preview }: OrNodeUIProps) {
+export function OrNodeUI({ nodeId, preview }: CustomNodeProps) {
   return (
-    <ConnectorNodeUI id={id} preview={preview}>
+    <ConnectorNodeUI nodeId={nodeId} preview={preview}>
       OR
     </ConnectorNodeUI>
   );

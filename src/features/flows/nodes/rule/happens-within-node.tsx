@@ -2,6 +2,7 @@ import { useUpdateNodeInternals } from '@xyflow/react';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
+import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 export type HappensWithinNode = Node<
@@ -29,8 +30,6 @@ export const HappensWithinNode = (props: NodeProps<HappensWithinNode>) => {
 interface HappensWithinNodeUIProps {
   value: number;
   onValueChange?: (value: number | undefined) => void;
-  nodeId: string;
-  preview?: boolean;
 }
 
 export function HappensWithinNodeUI({
@@ -38,7 +37,7 @@ export function HappensWithinNodeUI({
   onValueChange,
   nodeId,
   preview,
-}: HappensWithinNodeUIProps) {
+}: HappensWithinNodeUIProps & CustomNodeProps) {
   return (
     <RuleNodeUI preview={preview} nodeId={nodeId}>
       <div className="text-sm px-1">Happens in the past</div>

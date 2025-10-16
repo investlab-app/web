@@ -10,10 +10,10 @@ import { PriceHigherLowerNodeUI } from '../nodes/rule/price-higher-lower-node';
 import { AndNodeUI } from '../nodes/connector/and-node';
 import { HappensWithinNodeUI } from '../nodes/rule/happens-within-node';
 import { OrNodeUI } from '../nodes/connector/or-node';
+import { ThenElseNodeUI } from '../nodes/flow/then-else-node';
 import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
-import { ThenElseNodeUI } from '../nodes/flow/then-else-node';
 
 let nodeid = 0;
 const getId = () => `node_${nodeid++}`;
@@ -60,7 +60,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.And, {}));
           }}
         >
-          <AndNodeUI id={'preview-and'} preview={true} />
+          <AndNodeUI nodeId={'preview-and'} preview={true} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -68,7 +68,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.Or, {}));
           }}
         >
-          <OrNodeUI id={'preview-and'} preview={true} />
+          <OrNodeUI nodeId={'preview-and'} preview={true} />
         </div>
         <div>Flow Nodes</div>
         <div
@@ -77,7 +77,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.If, {}));
           }}
         >
-          <IfNodeUI id={'preview-if'} preview={true} />
+          <IfNodeUI nodeId={'preview-if'} preview={true} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -85,7 +85,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.Then, {}));
           }}
         >
-          <ThenNodeUI id={'preview-then'} preview={true} />
+          <ThenNodeUI nodeId={'preview-then'} preview={true} />
         </div>
         <div
           onPointerDown={(event) => {
@@ -93,7 +93,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(event, createAddNewNode(CustomNodeTypes.ThenElse, {}));
           }}
         >
-          <ThenElseNodeUI id={'preview-then-else'} preview={true} />
+          <ThenElseNodeUI nodeId={'preview-then-else'} preview={true} />
         </div>
         <div>Triggers</div>
         <div
