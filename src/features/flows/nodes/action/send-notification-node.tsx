@@ -40,10 +40,10 @@ export function SendNotificationNodeUI({
 }: SendNotificationNodeUIProps & CustomNodeProps) {
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
-      <div className="text-sm px-1">send</div>
+      <div className="text-sm">send</div>
       {onTypeChange && (
         <select
-          className="px-2 py-1 border rounded text-xs"
+          className="px-2 mx-2 py-1 border rounded text-xs"
           value={type}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onTypeChange(e.target.value as 'email' | 'push')

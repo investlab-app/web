@@ -79,14 +79,14 @@ export function BuySellPercentNodeUI({
       {!onActionChange && <div className="px-1">buy/sell</div>}
       {onPercentChange && (
         <NumberInput
-          className="w-20 mx-2"
+          className="w-30 mx-2"
           min={0}
           max={action === 'sell' ? 100 : undefined}
           defaultValue={10}
           stepper={5}
+          suffix='%'
           value={percent}
           onValueChange={(val) => {
-            // Ensure the value doesn't exceed 100 for sell action
             if (action === 'sell' && val && val > 100) {
               onPercentChange(100);
             } else {
@@ -96,8 +96,9 @@ export function BuySellPercentNodeUI({
           decimalScale={0}
         />
       )}
-      {!onPercentChange && <div className="px-1">X</div>}
-      <div className="text-sm">percent of owned</div>
+      {!onPercentChange && <div className="px-1">X%</div>}
+      <div className="">of owned</div>
+      {!onPercentChange && <div className="px-1"></div>}
       {onInstrumentChange && (
         <input
           className="mx-2 px-2 py-1 border rounded text-xs"
@@ -109,7 +110,7 @@ export function BuySellPercentNodeUI({
           }
         />
       )}
-      <div className="text-sm">stock</div>
+      <div className="text-sm">shares</div>
     </ActionNodeUI>
   );
 }
