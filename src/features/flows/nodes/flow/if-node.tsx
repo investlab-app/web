@@ -1,4 +1,5 @@
 import { Position } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -15,13 +16,14 @@ export const IfNode = (props: NodeProps<IfNode>) => {
 };
 
 export function IfNodeUI({ nodeId, preview }: CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <NodeUI
       preview={preview}
       nodeId={nodeId}
       className={`bg-[var(--background)]`}
     >
-      IF
+      {t('flows.nodes.if').toUpperCase()}
       <CustomHandle
         nodeId={nodeId}
         type="source"

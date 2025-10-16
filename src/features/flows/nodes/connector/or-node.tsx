@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ConnectorNodeUI } from './connector-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -13,9 +14,10 @@ export const OrNode = (props: NodeProps<OrNode>) => {
 };
 
 export function OrNodeUI({ nodeId, preview }: CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <ConnectorNodeUI nodeId={nodeId} preview={preview}>
-      OR
+      {t('flows.nodes.or').toUpperCase()}
     </ConnectorNodeUI>
   );
 }

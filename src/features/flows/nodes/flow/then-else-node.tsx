@@ -1,4 +1,5 @@
 import { Position } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -15,6 +16,7 @@ export const ThenElseNode = (props: NodeProps<ThenElseNode>) => {
 };
 
 export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <NodeUI
       preview={preview}
@@ -22,8 +24,8 @@ export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
       className={`bg-[var(--background)]`}
     >
       <div className="flex flex-col gap-2 text-center">
-        <div>Then</div>
-        <div>Else</div>
+        <div>{t('flows.nodes.then')}</div>
+        <div>{t('flows.nodes.else')}</div>
       </div>
 
       <CustomHandle
