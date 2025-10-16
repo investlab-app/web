@@ -3,6 +3,7 @@ import { TriggerNodeUI } from './trigger-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
+import type { CustomNodeProps } from '../../types/node-props';
 
 export type PriceChangesNode = Node<
   {
@@ -37,8 +38,6 @@ interface PriceChangesNodeUIProps {
   direction: 'rises' | 'falls';
   onValueChange?: (value: string) => void;
   onDirectionChange?: (direction: 'rises' | 'falls') => void;
-  nodeId: string;
-  preview?: boolean;
 }
 
 export function PriceChangesNodeUI({
@@ -48,7 +47,7 @@ export function PriceChangesNodeUI({
   onDirectionChange,
   nodeId,
   preview,
-}: PriceChangesNodeUIProps) {
+}: PriceChangesNodeUIProps & CustomNodeProps) {
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
       <div className="text-sm px-1">Price of instrument</div>

@@ -1,15 +1,17 @@
 import { useNodeConnections } from '@xyflow/react';
 import { useValidators } from '../hooks/use-validators';
-import type { ReactNode } from 'react';
+import type { CustomNodeProps } from '../types/node-props';
 
 interface NodeUIProps {
-  children?: ReactNode;
   className?: string;
-  preview?: boolean;
-  nodeId: string;
 }
 
-export function NodeUI({ children, className, preview, nodeId }: NodeUIProps) {
+export function NodeUI({
+  children,
+  className,
+  preview,
+  nodeId,
+}: NodeUIProps & CustomNodeProps) {
   const { validateNode } = useValidators();
   const inConnections = useNodeConnections({
     id: nodeId,

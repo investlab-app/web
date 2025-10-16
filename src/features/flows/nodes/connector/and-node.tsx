@@ -1,24 +1,20 @@
 import { ConnectorNodeUI } from './connector-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { ConnectorNodeTypes } from '../../types/node-types';
+import type { CustomNodeTypes } from '../../types/node-types';
+import type { CustomNodeProps } from '../../types/node-props';
 
 export type AndNode = Node<
   {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-  ConnectorNodeTypes.And
+  CustomNodeTypes.And
 >;
 
 export const AndNode = (props: NodeProps<AndNode>) => {
-  return <AndNodeUI id={props.id} />;
+  return <AndNodeUI nodeId={props.id} />;
 };
 
-export interface AndNodeUIProps {
-  id: string;
-  preview?: boolean;
-}
-
-export function AndNodeUI({ id, preview }: AndNodeUIProps) {
+export function AndNodeUI({ nodeId, preview }: CustomNodeProps) {
   return (
-    <ConnectorNodeUI id={id} preview={preview}>
+    <ConnectorNodeUI nodeId={nodeId} preview={preview}>
       AND
     </ConnectorNodeUI>
   );

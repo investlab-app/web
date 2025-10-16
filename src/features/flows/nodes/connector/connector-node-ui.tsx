@@ -1,38 +1,36 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import { CustomHandle } from '../../components/validated-handle';
-import type { ReactNode } from 'react';
-
-interface ConnectorNodeUIProps {
-  id: string;
-  children?: ReactNode;
-  preview?: boolean;
-}
+import type { CustomNodeProps } from '../../types/node-props';
 
 export function ConnectorNodeUI({
   children,
-  id,
+  nodeId,
   preview,
-}: ConnectorNodeUIProps) {
+}: CustomNodeProps) {
   return (
-    <NodeUI preview={preview} nodeId={id} className={`bg-[var(--background)]`}>
+    <NodeUI
+      preview={preview}
+      nodeId={nodeId}
+      className={`bg-[var(--background)]`}
+    >
       {children}
 
       <CustomHandle
-        nodeId={id}
+        nodeId={nodeId}
         type="source"
         position={Position.Right}
         id="right"
       />
       <CustomHandle
-        nodeId={id}
+        nodeId={nodeId}
         type="target"
         position={Position.Left}
         id="top-left"
         style={{ top: '30%' }}
       />
       <CustomHandle
-        nodeId={id}
+        nodeId={nodeId}
         type="target"
         position={Position.Left}
         style={{ top: '70%' }}
