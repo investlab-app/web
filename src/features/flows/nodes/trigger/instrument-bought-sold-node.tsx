@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -48,30 +49,30 @@ export function InstrumentBoughtSoldNodeUI({
   nodeId,
   preview,
 }: InstrumentBoughtSoldNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
-      {onValueChange && (
+      {onValueChange ? (
           <input
-          className="px-2 py-1 border rounded text-xs"
+          className="px-2 py-1 border rounded"
           type="text"
-          placeholder="AAPL"
+          placeholder='AAPL'
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onValueChange(e.target.value)
         }
         />
-    )}
-    <div className="text-sm mx-2">shares</div>
+    ) : (<div>{t('flows.placeholders.instrument')}</div>)}
      { onActionChange  ?( <select
-        className="px-2 py-1 border rounded text-xs"
+        className="px-2 ml-2 py-1 border rounded"
         value={action}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           onActionChange(e.target.value as 'bought' | 'sold')
         }
       >
-        <option value="bought">bought</option>
-        <option value="sold">sold</option>
-      </select>) :  (<div>bought/sold</div>)}
+        <option value="bought">{t('flows.nodes.bought')}</option>
+        <option value="sold">{t('flows.nodes.sold')}</option>
+      </select>) :  (<div className="pl-1">{t('flows.placeholders.bought_sold')}</div>)}
     </TriggerNodeUI>
   );
 }

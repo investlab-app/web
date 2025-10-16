@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -38,9 +39,10 @@ export function HappensWithinNodeUI({
   nodeId,
   preview,
 }: HappensWithinNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <RuleNodeUI preview={preview} nodeId={nodeId}>
-      <div className="text-sm">Happens in the past</div>
+      <div>{t('flows.nodes.happens_within')}</div>
       {onValueChange && (
         <NumberInput
           className="w-20 mx-2"
@@ -52,7 +54,7 @@ export function HappensWithinNodeUI({
         />
       )}
       {!onValueChange && <div className="px-1">X</div>}
-      <div className="text-sm">days</div>
+      <div>{t('flows.nodes.days')}</div>
     </RuleNodeUI>
   );
 }

@@ -23,7 +23,7 @@ export function ThenNodeUI({ nodeId, preview }: CustomNodeProps) {
       nodeId={nodeId}
       className={`bg-[var(--background)]`}
     >
-      <div>{t('flows.nodes.then')}</div>
+      <div>{t('flows.nodes.then').toUpperCase()}</div>
 
       <CustomHandle
         nodeId={nodeId}
