@@ -1,4 +1,5 @@
 import { useUpdateNodeInternals } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -52,6 +53,7 @@ export function HappensBetweenNodeUI({
   nodeId,
   preview,
 }: HappensBetweenNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
   const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,22 +68,22 @@ export function HappensBetweenNodeUI({
 
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm">Happens between</div>
+      <div>{t('flows.nodes.happens_between')}</div>
       {onStartChange && (
         <input
           type="date"
           value={formatDate(startDate)}
           onChange={handleStartChange}
-          className="border p-1 rounded mx-2 text-xs"
+          className="border p-1 rounded mx-2"
         />
       )}
-      {onEndChange && <div className="inline-block text-sm">and</div>}
+      {onEndChange && <div className="inline-block">{t('flows.nodes.and')}</div>}
       {onEndChange && (
         <input
           type="date"
           value={formatDate(endDate)}
           onChange={handleEndChange}
-          className="border p-1 rounded ml-2 text-xs"
+          className="border p-1 rounded ml-2"
         />
       )}
     </RuleNodeUI>

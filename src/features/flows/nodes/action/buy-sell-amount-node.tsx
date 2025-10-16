@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -59,21 +60,22 @@ export function BuySellAmountNodeUI({
   nodeId,
   preview,
 }: BuySellAmountNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       {onActionChange && (
         <select
-          className="px-2 py-1 border rounded text-xs"
+          className="px-2 py-1 border rounded"
           value={action}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onActionChange(e.target.value as 'buy' | 'sell')
           }
         >
-          <option value="buy">buy</option>
-          <option value="sell">sell</option>
+          <option value="buy">{t('flows.nodes.buy')}</option>
+          <option value="sell">{t('flows.nodes.sell')}</option>
         </select>
       )}
-      {!onActionChange && <div >buy/sell X</div>}
+      {!onActionChange && <div>{t('flows.placeholders.buy_sell')} X</div>}
       {onAmountChange && (
         <NumberInput
           className="w-40 mx-2"
@@ -89,16 +91,15 @@ export function BuySellAmountNodeUI({
       )}
       {onInstrumentChange && (
         <input
-        className="px-2 py-1 border rounded text-xs"
+        className="px-2 py-1 border rounded"
         type="text"
-        placeholder="AAPL"
+        placeholder='AAPL'
         value={instrument}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           onInstrumentChange(e.target.value)
         }
         />
       )}
-      <div className="text-sm ml-2">shares</div>
     </ActionNodeUI>
   );
 }

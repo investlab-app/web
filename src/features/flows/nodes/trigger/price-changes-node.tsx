@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -48,30 +49,31 @@ export function PriceChangesNodeUI({
   nodeId,
   preview,
 }: PriceChangesNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm">Price of</div>
-      {onValueChange && (
+      <div>{t('flows.nodes.price_of')}</div>
+      {onValueChange ? (
         <input
-          className="mx-2 px-2 py-1 border rounded text-xs"
+          className="mx-2 px-2 py-1 border rounded"
           type="text"
-          placeholder="AAPL"
+          placeholder='AAPL'
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onValueChange(e.target.value)
           }
         />
-      )}
+      ) : (<div className="px-1">{t('flows.placeholders.instrument')}</div>)}
       {onDirectionChange ? (<select
-        className="px-2 py-1 border rounded text-xs"
+        className="px-2 py-1 border rounded"
         value={direction}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           onDirectionChange(e.target.value as 'rises' | 'falls')
         }
       >
-        <option value="rises">rises</option>
-        <option value="falls">falls</option>
-      </select>) : (<div className="px-1">instrument changes</div>)}
+        <option value="rises">{t('flows.nodes.rises')}</option>
+        <option value="falls">{t('flows.nodes.falls')}</option>
+      </select>) : (<div >{t('flows.placeholders.rises_falls')}</div>)}
     </TriggerNodeUI>
   );
 }

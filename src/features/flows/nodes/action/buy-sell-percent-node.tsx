@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useUpdateNodeInternals } from '@xyflow/react';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -62,21 +63,22 @@ export function BuySellPercentNodeUI({
   nodeId,
   preview,
 }: BuySellPercentNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       {onActionChange && (
         <select
-          className="px-2 py-1 border rounded text-xs"
+          className="px-2 py-1 border rounded"
           value={action}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onActionChange(e.target.value as 'buy' | 'sell')
           }
         >
-          <option value="buy">buy</option>
-          <option value="sell">sell</option>
+          <option value="buy">{t('flows.nodes.buy')}</option>
+          <option value="sell">{t('flows.nodes.sell')}</option>
         </select>
       )}
-      {!onActionChange && <div className="px-1">buy/sell</div>}
+      {!onActionChange && <div className="px-1">{t('flows.placeholders.buy_sell')}</div>}
       {onPercentChange && (
         <NumberInput
           className="w-30 mx-2"
@@ -96,21 +98,20 @@ export function BuySellPercentNodeUI({
           decimalScale={0}
         />
       )}
-      {!onPercentChange && <div className="px-1">X%</div>}
-      <div className="">of owned</div>
+      {!onPercentChange && <div className="pr-1">X%</div>}
+      <div>{t('flows.nodes.of_owned')}</div>
       {!onPercentChange && <div className="px-1"></div>}
       {onInstrumentChange && (
         <input
-          className="mx-2 px-2 py-1 border rounded text-xs"
+          className="mx-2 px-2 py-1 border rounded"
           type="text"
-          placeholder="AAPL"
+          placeholder='AAPL'
           value={instrument}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onInstrumentChange(e.target.value)
           }
         />
       )}
-      <div className="text-sm">shares</div>
     </ActionNodeUI>
   );
 }

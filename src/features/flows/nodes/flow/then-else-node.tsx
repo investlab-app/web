@@ -24,8 +24,8 @@ export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
       className={`bg-[var(--background)]`}
     >
       <div className="flex flex-col gap-2 text-center">
-        <div>{t('flows.nodes.then')}</div>
-        <div>{t('flows.nodes.else')}</div>
+        <div>{t('flows.nodes.then').toUpperCase()}</div>
+        <div>{t('flows.nodes.else').toUpperCase()}</div>
       </div>
 
       <CustomHandle
