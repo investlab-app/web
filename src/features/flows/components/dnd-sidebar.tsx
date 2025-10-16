@@ -6,6 +6,7 @@ import { CustomNodeTypes } from '../types/node-types';
 import { HappensBetweenNodeUI } from '../nodes/rule/happens-between-node';
 import { BuySellAmountNodeUI } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNodeUI } from '../nodes/action/buy-sell-price-node';
+import { BuySellPercentNodeUI } from '../nodes/action/buy-sell-percent-node';
 import { IfNodeUI } from '../nodes/flow/if-node';
 import { ThenNodeUI } from '../nodes/flow/then-node';
 import { PriceHigherLowerNodeUI } from '../nodes/rule/price-higher-lower-node';
@@ -228,6 +229,27 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             preview={true}
             nodeId="preview-buysell-price"
             price={100}
+            instrument="aapl"
+          />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('buy sell percent');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.BuySellPercent, {
+                action: 'buy',
+                percent: 10,
+                instrument: '',
+              })
+            );
+          }}
+        >
+          <BuySellPercentNodeUI
+            action="buy"
+            preview={true}
+            nodeId="preview-buysell-percent"
+            percent={10}
             instrument="aapl"
           />
         </div>
