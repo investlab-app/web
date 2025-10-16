@@ -29,6 +29,7 @@ export enum CustomNodeTypes {
 
   // Action
   BuySellAmount = 'buySellAmount',
+  BuySellPrice = 'buySellPrice',
 }
 
 export const TypesMapping = {
@@ -43,6 +44,7 @@ export const TypesMapping = {
   [CustomNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.InstrumentBoughtSold]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.BuySellAmount]: SuperNodeTypes.Action,
+  [CustomNodeTypes.BuySellPrice]: SuperNodeTypes.Action,
 };
 
 // // Single source of truth mapping
