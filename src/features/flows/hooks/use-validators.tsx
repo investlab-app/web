@@ -2,7 +2,7 @@ import { getOutgoers, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import {
   allowedConnections,
-  handleConnectionCount,
+  connectionCounts,
 } from '../utils/connection-rules';
 import { TypesMapping } from '../types/node-types';
 import type { CustomNodeTypes } from '../types/node-types';
@@ -75,7 +75,7 @@ export const useValidators = () => {
     const node = getNode(nodeId);
     if (!node) return 0;
     const supertype = TypesMapping[node.type as CustomNodeTypes];
-    return handleConnectionCount[supertype][type];
+    return connectionCounts[supertype][type];
   };
 
   const validateNode = (
@@ -86,8 +86,8 @@ export const useValidators = () => {
     const node = getNode(nodeId);
     if (!node || !_validateNonEmptyStrings(node.data)) return false;
     const supertype = TypesMapping[node.type as CustomNodeTypes];
-    const minAllowedIn = handleConnectionCount[supertype]['validIn'];
-    const minAllowedOut = handleConnectionCount[supertype]['validOut'];
+    const minAllowedIn = connectionCounts[supertype]['validIn'];
+    const minAllowedOut = connectionCounts[supertype]['validOut'];
 
     const inValid = connectionsIn >= minAllowedIn;
     const outValid = connectionsOut >= minAllowedOut;

@@ -1,31 +1,122 @@
-# Node types
+# Node types and Connection Rules
 
-## Connector nodes: - TWO incoming nodes of type Connector/Rule and ONE outcoming node of type Connector/Flow(then part)
+## Connector nodes
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **2** valid incoming
+- Outgoing (source): **1** connection per handle, requires **1** valid outgoing
 
-- And
-- Or
+**Allowed Connections:**
+- Incoming from: `Rule`, `Connector`
+- Outgoing to: `Connector`, `FlowThenElse`
 
-## Flow nodes: - ONE incoming node of type Trigger and INFINITE outcoming nodes of type Action (either from the THEN or ELSE handle). Between if and then/else all the relevant Rule nodes should be placed
+**Types:**
+- `And`
+- `Or`
 
-- If - then/else - if node connects with then/else node
+## Flow nodes
+Each of the flow nodes has different validation rules, so they have been defined as separate supertypes
 
-## Trigger nodes: - NO incoming nodes and ONE outcoming node of type Flow(if part)
+### FlowIf node
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **1** valid incoming
+- Outgoing (source): **1** connection per handle, requires **1** valid outgoing
 
-- PriceChanges - Price of (instrument) (rises / falls)
-- InstrumentSoldBought - (instrument) (bought / sold)
+**Allowed Connections:**
+- Incoming from: `Trigger`
+- Outgoing to: `Rule`
 
-## Rule nodes: - ONE incoming node of type Flow(if part)/Connector and ONE outcoming node of type Connector/Flow(then part)
+**Types:**
+- `If`
 
-- PriceOverUnder - Price over / under (value)
-- HappensBetween - Event occurs between (date) and (date)
-- HappensWithin - Event happens within X consecutive days
+### FlowThenElse node
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **1** valid incoming
+- Outgoing (source): **Unlimited** connections per handle, requires **1** valid outgoing
 
-## Action nodes: - ONE incoming node of type Flow(then part) and NO outcoming node
+**Allowed Connections:**
+- Incoming from: `Rule`, `Connector`
+- Outgoing to: `Action`, `FlowIf`
 
-- BuySellAmount - Buys / sells (value) amount(volume) of (instrument)
-- BuySellPercent - Buys / sells (percent) of owned (instrument)
-- SendNotification - Send notif of type (push/email)
+**Types:**
+- `ThenElse`
 
-# Summary:
+### FlowThen node
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **1** valid incoming
+- Outgoing (source): **Unlimited** connections per handle, requires **1** valid outgoing
 
-Trigger -> 1 -> Flow(IF) -> Rule and Connectors -> Flow(THEN) -> inf -> Action
+**Allowed Connections:**
+- Incoming from: `Trigger`
+- Outgoing to: `Action`
+
+**Types:**
+- `Then`
+
+## Trigger nodes
+**Max Connections:**
+- Incoming (target): **No** incoming connections allowed, requires **0** valid incoming
+- Outgoing (source): **1** connection per handle, requires **1** valid outgoing
+
+**Allowed Connections:**
+- Incoming from: None
+- Outgoing to: `FlowIf`, `FlowThen`
+
+**Types:**
+- `PriceChanges` - Price of (instrument) rises / falls
+- `InstrumentBoughtSold` - (instrument) bought / sold
+
+## Rule nodes
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **0** valid incoming
+- Outgoing (source): **1** connection per handle, requires **1** valid outgoing
+
+**Allowed Connections:**
+- Incoming from: `FlowIf`
+- Outgoing to: `Connector`, `FlowThenElse`
+
+**Types:**
+- `PriceOverUnder` - Price over / under (value)
+- `HappensBetween` - Event occurs between (date) and (date)
+- `HappensWithin` - Event happens within (number) consecutive days
+
+## Action nodes
+**Max Connections:**
+- Incoming (target): **1** connection per handle, requires **1** valid incoming
+- Outgoing (source): **No** outgoing connections allowed, requires **0** valid outgoing
+
+**Allowed Connections:**
+- Incoming from: `FlowThen`, `FlowThenElse`
+- Outgoing to: None
+
+**Types:**
+- `BuySellAmount` - [Buy / sell] (amount) of (instrument)
+- `BuySellPrice` - [Buy / sell] (instrument) for $(price)
+- `BuySellPercent` - [Buy / sell] (percent) of owned (instrument) stock
+- `SendNotification` - Send [email / push] notification
+
+# Valid Flow Patterns
+
+1. Simple Action Flow:
+   ```
+   Trigger -> FlowThen -> Action
+   ```
+
+2. Basic Conditional Flow:
+   ```
+   Trigger -> FlowIf -> Rule -> FlowThenElse ->(then path)-> Action, (else part)-> Another Action
+   ```
+
+3. Connected Rules Flow:
+   ```
+   Trigger -> FlowIf -> Rule -> Connector -> Rule -> FlowThenElse -> Action
+   ```
+
+4. Nested Conditional Flow:
+   ```
+   Trigger -> FlowIf -> Rule -> FlowThenElse ->(then part)-> Action, (else part)-> FlowIf -> Rule -> FlowThenElse ->(then part)-> Different Action
+   ```
+
+5. Multiple Actions Flow:
+   ```
+   Trigger -> FlowThen -> Action, Another Action, Yet Another Action
+   ```
