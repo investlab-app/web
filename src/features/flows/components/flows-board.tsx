@@ -8,6 +8,7 @@ import {
 import { useCallback, useState } from 'react';
 import { DnDProvider } from '../utils/dnd-context';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node';
+import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node';
 import { HappensBetweenNode } from '../nodes/rule/happens-between-node';
 import { PriceHigherLowerNode } from '../nodes/rule/price-higher-lower-node';
 import { AndNode } from '../nodes/connector/and-node';
@@ -38,6 +39,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.ThenElse]: ThenElseNode,
   [CustomNodeTypes.Then]: ThenNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
+  [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
   [CustomNodeTypes.HappensWithin]: HappensWithinNode,
   [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
   [CustomNodeTypes.PriceOverUnder]: PriceHigherLowerNode,

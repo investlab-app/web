@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDnD } from '../hooks/use-dnd';
 import { PriceChangesNodeUI } from '../nodes/trigger/price-changes-node';
+import { InstrumentBoughtSoldNodeUI } from '../nodes/trigger/instrument-bought-sold-node';
 import { CustomNodeTypes } from '../types/node-types';
 import { HappensBetweenNodeUI } from '../nodes/rule/happens-between-node';
 import { BuySellAmountNodeUI } from '../nodes/action/buy-sell-amount-node';
@@ -113,6 +114,25 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             nodeId="test"
             value="TICKER"
             direction="rises"
+          />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('instrumentBoughtSold');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.InstrumentBoughtSold, {
+                value: '',
+                action: 'bought',
+              })
+            );
+          }}
+        >
+          <InstrumentBoughtSoldNodeUI
+            preview={true}
+            nodeId="preview-instrument"
+            value="TICKER"
+            action="bought"
           />
         </div>
         <div>Prediates</div>
