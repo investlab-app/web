@@ -7,6 +7,7 @@ import { HappensBetweenNodeUI } from '../nodes/rule/happens-between-node';
 import { BuySellAmountNodeUI } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNodeUI } from '../nodes/action/buy-sell-price-node';
 import { BuySellPercentNodeUI } from '../nodes/action/buy-sell-percent-node';
+import { SendNotificationNodeUI } from '../nodes/action/send-notification-node';
 import { IfNodeUI } from '../nodes/flow/if-node';
 import { ThenNodeUI } from '../nodes/flow/then-node';
 import { PriceHigherLowerNodeUI } from '../nodes/rule/price-higher-lower-node';
@@ -251,6 +252,23 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             nodeId="preview-buysell-percent"
             percent={10}
             instrument="aapl"
+          />
+        </div>
+        <div
+          onPointerDown={(event) => {
+            setType('send notification');
+            onDragStart(
+              event,
+              createAddNewNode(CustomNodeTypes.SendNotification, {
+                type: 'email'
+              })
+            );
+          }}
+        >
+          <SendNotificationNodeUI
+            preview={true}
+            nodeId="preview-notification"
+            type="email"
           />
         </div>
       </div>

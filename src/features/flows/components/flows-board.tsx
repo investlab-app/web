@@ -18,6 +18,7 @@ import { useValidators } from '../hooks/use-validators';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node';
+import { SendNotificationNode } from '../nodes/action/send-notification-node';
 import { IfNode } from '../nodes/flow/if-node';
 import { ThenElseNode } from '../nodes/flow/then-else-node';
 import { ThenNode } from '../nodes/flow/then-node';
@@ -48,6 +49,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
   [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
   [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
+  [CustomNodeTypes.SendNotification]: SendNotificationNode,
 };
 
 export function FlowsBoard() {
