@@ -66,7 +66,7 @@ const AssetAllocationContainer = () => {
   }
 
   const assets: Array<[string, number]> = assetAllocation.allocations.map(
-    (item) => [item.asset_class_display_name, item.value]
+    (item) => [item.instrument_name, item.value]
   );
 
   return (

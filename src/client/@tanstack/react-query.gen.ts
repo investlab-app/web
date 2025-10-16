@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsList, investorsMeAccountValueRetrieve, investorsMeAssetAllocationRetrieve, investorsMeCurrentAccountValueRetrieve, investorsMeOwnedSharesRetrieve, investorsMeRetrieve, investorsMeStatisticsMostTradedRetrieve, investorsMeStatisticsProfileOverviewRetrieve, investorsMeStatisticsTradingOverviewRetrieve, investorsMeStatsRetrieve, investorsMeTransactionsHistoryList, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, type Options, pricesBars, pricesList, pricesRetrieve, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsListData, InvestorsListResponse, InvestorsMeAccountValueRetrieveData, InvestorsMeAssetAllocationRetrieveData, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeOwnedSharesRetrieveData, InvestorsMeRetrieveData, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatsRetrieveData, InvestorsMeTransactionsHistoryListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, PricesBarsData, PricesListData, PricesRetrieveData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsList, investorsMeAccountValueList, investorsMeAssetAllocationRetrieve, investorsMeCurrentAccountValueRetrieve, investorsMeOwnedSharesRetrieve, investorsMeRetrieve, investorsMeStatisticsMostTradedList, investorsMeStatisticsProfileOverviewRetrieve, investorsMeStatisticsTradingOverviewRetrieve, investorsMeStatsRetrieve, investorsMeTransactionsHistoryList, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesRetrieve, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsListData, InvestorsListResponse, InvestorsMeAccountValueListData, InvestorsMeAssetAllocationRetrieveData, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeOwnedSharesRetrieveData, InvestorsMeRetrieveData, InvestorsMeStatisticsMostTradedListData, InvestorsMeStatisticsMostTradedListResponse, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatsRetrieveData, InvestorsMeTransactionsHistoryListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesRetrieveData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -325,16 +325,16 @@ export const investorsMeRetrieveOptions = (options?: Options<InvestorsMeRetrieve
     });
 };
 
-export const investorsMeAccountValueRetrieveQueryKey = (options?: Options<InvestorsMeAccountValueRetrieveData>) => createQueryKey('investorsMeAccountValueRetrieve', options);
+export const investorsMeAccountValueListQueryKey = (options?: Options<InvestorsMeAccountValueListData>) => createQueryKey('investorsMeAccountValueList', options);
 
 /**
  * Get account value over time
  * Get account value over time data for the currently authenticated user.
  */
-export const investorsMeAccountValueRetrieveOptions = (options?: Options<InvestorsMeAccountValueRetrieveData>) => {
+export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMeAccountValueListData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeAccountValueRetrieve({
+            const { data } = await investorsMeAccountValueList({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -342,7 +342,7 @@ export const investorsMeAccountValueRetrieveOptions = (options?: Options<Investo
             });
             return data;
         },
-        queryKey: investorsMeAccountValueRetrieveQueryKey(options)
+        queryKey: investorsMeAccountValueListQueryKey(options)
     });
 };
 
@@ -409,16 +409,16 @@ export const investorsMeOwnedSharesRetrieveOptions = (options?: Options<Investor
     });
 };
 
-export const investorsMeStatisticsMostTradedRetrieveQueryKey = (options?: Options<InvestorsMeStatisticsMostTradedRetrieveData>) => createQueryKey('investorsMeStatisticsMostTradedRetrieve', options);
+export const investorsMeStatisticsMostTradedListQueryKey = (options?: Options<InvestorsMeStatisticsMostTradedListData>) => createQueryKey('investorsMeStatisticsMostTradedList', options);
 
 /**
  * Get overview about the most traded instruments
  * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
  */
-export const investorsMeStatisticsMostTradedRetrieveOptions = (options?: Options<InvestorsMeStatisticsMostTradedRetrieveData>) => {
+export const investorsMeStatisticsMostTradedListOptions = (options?: Options<InvestorsMeStatisticsMostTradedListData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeStatisticsMostTradedRetrieve({
+            const { data } = await investorsMeStatisticsMostTradedList({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -426,7 +426,37 @@ export const investorsMeStatisticsMostTradedRetrieveOptions = (options?: Options
             });
             return data;
         },
-        queryKey: investorsMeStatisticsMostTradedRetrieveQueryKey(options)
+        queryKey: investorsMeStatisticsMostTradedListQueryKey(options)
+    });
+};
+
+export const investorsMeStatisticsMostTradedListInfiniteQueryKey = (options?: Options<InvestorsMeStatisticsMostTradedListData>): QueryKey<Options<InvestorsMeStatisticsMostTradedListData>> => createQueryKey('investorsMeStatisticsMostTradedList', options, true);
+
+/**
+ * Get overview about the most traded instruments
+ * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
+ */
+export const investorsMeStatisticsMostTradedListInfiniteOptions = (options?: Options<InvestorsMeStatisticsMostTradedListData>) => {
+    return infiniteQueryOptions<InvestorsMeStatisticsMostTradedListResponse, DefaultError, InfiniteData<InvestorsMeStatisticsMostTradedListResponse>, QueryKey<Options<InvestorsMeStatisticsMostTradedListData>>, number | Pick<QueryKey<Options<InvestorsMeStatisticsMostTradedListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<InvestorsMeStatisticsMostTradedListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await investorsMeStatisticsMostTradedList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsMeStatisticsMostTradedListInfiniteQueryKey(options)
     });
 };
 
@@ -572,6 +602,77 @@ export const newsListOptions = (options?: Options<NewsListData>) => {
         },
         queryKey: newsListQueryKey(options)
     });
+};
+
+export const ordersListQueryKey = (options?: Options<OrdersListData>) => createQueryKey('ordersList', options);
+
+export const ordersListOptions = (options?: Options<OrdersListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await ordersList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: ordersListQueryKey(options)
+    });
+};
+
+export const ordersListInfiniteQueryKey = (options?: Options<OrdersListData>): QueryKey<Options<OrdersListData>> => createQueryKey('ordersList', options, true);
+
+export const ordersListInfiniteOptions = (options?: Options<OrdersListData>) => {
+    return infiniteQueryOptions<OrdersListResponse, DefaultError, InfiniteData<OrdersListResponse>, QueryKey<Options<OrdersListData>>, number | Pick<QueryKey<Options<OrdersListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<OrdersListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await ordersList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: ordersListInfiniteQueryKey(options)
+    });
+};
+
+export const ordersCancelDestroyMutation = (options?: Partial<Options<OrdersCancelDestroyData>>): UseMutationOptions<OrdersCancelDestroyResponse, DefaultError, Options<OrdersCancelDestroyData>> => {
+    const mutationOptions: UseMutationOptions<OrdersCancelDestroyResponse, DefaultError, Options<OrdersCancelDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await ordersCancelDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const ordersMarketCreateMutation = (options?: Partial<Options<OrdersMarketCreateData>>): UseMutationOptions<OrdersMarketCreateResponse, DefaultError, Options<OrdersMarketCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrdersMarketCreateResponse, DefaultError, Options<OrdersMarketCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await ordersMarketCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const pricesListQueryKey = (options: Options<PricesListData>) => createQueryKey('pricesList', options);

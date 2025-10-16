@@ -54,7 +54,7 @@ const AccountOverviewRibbon = () => {
       {tiles.map((tile, index) =>
         isPending ? (
           <StatTile.Skeleton key={`skeleton-${index}`} />
-        ) : isError || !tile.value ? (
+        ) : isError || tile.value === undefined ? (
           <ErrorCard key={`error-${index}`} />
         ) : (
           <StatTile

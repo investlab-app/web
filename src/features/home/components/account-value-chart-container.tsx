@@ -11,17 +11,17 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
-import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
   const { data, isPending, isError } = useQuery(
-    investorsMeAccountValueRetrieveOptions()
+    investorsMeAccountValueListOptions()
   );
 
   const chartData: Array<InstrumentPricePoint> =
-    data?.data.map((point) => ({
+    data?.map((point) => ({
       date: new Date(point.date).toISOString(),
       open: point.value,
       close: point.value,

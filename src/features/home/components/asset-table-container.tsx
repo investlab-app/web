@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import AssetTable from './asset-table';
-import type { OwnedShareItem } from '@/client';
 import {
   Card,
   CardContent,
@@ -11,6 +10,7 @@ import {
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Message } from '@/features/shared/components/error-message';
 import { investorsMeOwnedSharesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeOwnedSharesRetrieve } from '@/client';
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ const AssetTableContainer = () => {
     data: ownedSharesData,
     isPending,
     isError,
-  } = useQuery(investorsMeOwnedSharesRetrieveOptions());
+  } = useQuery(investorsMeOwnedSharesRetrieveOptions())
 
   if (isError) {
     return <AssetTableContainer.Error />;

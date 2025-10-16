@@ -11,7 +11,7 @@ import {
 } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
-import { investorsMeStatisticsMostTradedRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeStatisticsMostTradedListOptions } from '@/client/@tanstack/react-query.gen';
 
 const RenderSkeletonRows = ({ skeletonRowCount = 5 }) => {
   return Array.from({ length: skeletonRowCount }).map((_, idx) => (
@@ -41,7 +41,9 @@ const RenderSkeletonRows = ({ skeletonRowCount = 5 }) => {
 const MostTradedOverview = () => {
   const { t } = useTranslation();
 
-  const { data } = useQuery(investorsMeStatisticsMostTradedRetrieveOptions());
+  const { data: mostTraded } = useQuery(
+    investorsMeStatisticsMostTradedListOptions()
+  );
 
   return (
     <div className="overflow-x-auto">
@@ -67,9 +69,9 @@ const MostTradedOverview = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {!data
+          {!mostTraded
             ? RenderSkeletonRows({})
-            : data.instruments.map((instrumentOverview) => (
+            : mostTraded.results.map((instrumentOverview) => (
                 <TableRow key={instrumentOverview.symbol}>
                   <TableCell>{instrumentOverview.symbol}</TableCell>
                   <TableCell className="text-right">

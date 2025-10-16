@@ -3,22 +3,24 @@
 import { z } from 'zod';
 
 /**
- * Serializer for individual account value data point.
+ * Serializer for AccountValueSnapshot model.
  */
-export const zAccountValueData = z.object({
-    date: z.iso.date(),
+export const zAccountValueSnapshotDaily = z.object({
+    date: z.iso.date().readonly(),
     value: z.number()
 });
 
-/**
- * Serializer for account value over time data.
- */
-export const zAccountValueOverTime = z.object({
-    data: z.array(zAccountValueData)
-});
-
 export const zAssetAllocationItem = z.object({
-    asset_class_display_name: z.string().max(100),
+    instrument_name: z.string().max(255),
+    instrument_ticker: z.string().max(20),
+    instrument_logo: z.union([
+        z.url(),
+        z.null()
+    ]),
+    instrument_icon: z.union([
+        z.url(),
+        z.null()
+    ]),
     value: z.number(),
     percentage: z.number()
 });
@@ -41,6 +43,17 @@ export const zAuthTestResponse = z.object({
 export const zClerkLoginRequest = z.object({
     email: z.email().min(1),
     password: z.string().min(1)
+});
+
+export const zCreateMarketOrder = z.object({
+    id: z.uuid().readonly(),
+    investor: z.uuid().readonly()
+});
+
+export const zCreateMarketOrderRequest = z.object({
+    ticker: z.string().min(1),
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    is_buy: z.boolean()
 });
 
 export const zCurrentAccountValue = z.object({
@@ -118,6 +131,10 @@ export const zInstrumentList = z.object({
         z.url(),
         z.null()
     ]))
+});
+
+export const zInstrumentName = z.object({
+    ticker: z.string().max(20)
 });
 
 /**
@@ -440,21 +457,19 @@ export const zMostTradedItem = z.object({
     total_return: z.number()
 });
 
-export const zMostTradedOverview = z.object({
-    instruments: z.array(zMostTradedItem)
+export const zOrder = z.object({
+    id: z.uuid().readonly(),
+    ticker: zInstrumentName,
+    detail: z.record(z.string(), z.unknown()).readonly()
 });
 
-export const zOwnedShareItem = z.object({
+export const zOwnedShare = z.object({
     name: z.string().max(100),
     symbol: z.string().max(10),
     volume: z.number(),
     value: z.number(),
     profit: z.number(),
     profit_percentage: z.number()
-});
-
-export const zOwnedShares = z.object({
-    owned_shares: z.array(zOwnedShareItem)
 });
 
 export const zPaginatedInstrumentListList = z.object({
@@ -494,6 +509,32 @@ export const zPaginatedInvestorList = z.object({
         z.null()
     ])),
     results: z.array(zInvestor)
+});
+
+export const zPaginatedMostTradedItemList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zMostTradedItem)
+});
+
+export const zPaginatedOrderList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zOrder)
 });
 
 export const zPatchedInvestorUpdateRequest = z.object({
@@ -625,6 +666,13 @@ export const zTradingOverview = z.object({
     avg_gain: z.number(),
     avg_loss: z.number(),
     total_return: z.number()
+});
+
+/**
+ * Serializer for AccountValueSnapshot model.
+ */
+export const zAccountValueSnapshotDailyWritable = z.object({
+    value: z.number()
 });
 
 export const zInstrumentListWritable = z.object({
@@ -764,6 +812,10 @@ export const zInvestorWritable = z.object({
     watching_instruments: z.optional(z.array(z.uuid()))
 });
 
+export const zOrderWritable = z.object({
+    ticker: zInstrumentName
+});
+
 export const zAuthSignInCreateData = z.object({
     body: zClerkLoginRequest,
     path: z.optional(z.never()),
@@ -859,13 +911,13 @@ export const zInvestorsMeRetrieveData = z.object({
 
 export const zInvestorsMeRetrieveResponse = zInvestor;
 
-export const zInvestorsMeAccountValueRetrieveData = z.object({
+export const zInvestorsMeAccountValueListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeAccountValueRetrieveResponse = zAccountValueOverTime;
+export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
 
 export const zInvestorsMeAssetAllocationRetrieveData = z.object({
     body: z.optional(z.never()),
@@ -889,15 +941,18 @@ export const zInvestorsMeOwnedSharesRetrieveData = z.object({
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeOwnedSharesRetrieveResponse = zOwnedShares;
+export const zInvestorsMeOwnedSharesRetrieveResponse = zOwnedShare;
 
-export const zInvestorsMeStatisticsMostTradedRetrieveData = z.object({
+export const zInvestorsMeStatisticsMostTradedListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
-    query: z.optional(z.never())
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
 });
 
-export const zInvestorsMeStatisticsMostTradedRetrieveResponse = zMostTradedOverview;
+export const zInvestorsMeStatisticsMostTradedListResponse = zPaginatedMostTradedItemList;
 
 export const zInvestorsMeStatisticsProfileOverviewRetrieveData = z.object({
     body: z.optional(z.never()),
@@ -978,6 +1033,38 @@ export const zNewsListData = z.object({
 });
 
 export const zNewsListResponse = z.array(zTickerNews);
+
+export const zOrdersListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
+});
+
+export const zOrdersListResponse = zPaginatedOrderList;
+
+export const zOrdersCancelDestroyData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+/**
+ * No response body
+ */
+export const zOrdersCancelDestroyResponse = z.void();
+
+export const zOrdersMarketCreateData = z.object({
+    body: zCreateMarketOrderRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zOrdersMarketCreateResponse = zCreateMarketOrder;
 
 export const zPricesListData = z.object({
     body: z.optional(z.never()),

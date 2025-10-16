@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsListData, InvestorsListResponses, InvestorsMeAccountValueRetrieveData, InvestorsMeAccountValueRetrieveResponses, InvestorsMeAssetAllocationRetrieveData, InvestorsMeAssetAllocationRetrieveResponses, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeCurrentAccountValueRetrieveResponses, InvestorsMeOwnedSharesRetrieveData, InvestorsMeOwnedSharesRetrieveResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsMostTradedRetrieveResponses, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveResponses, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveResponses, InvestorsMeStatsRetrieveData, InvestorsMeStatsRetrieveResponses, InvestorsMeTransactionsHistoryListData, InvestorsMeTransactionsHistoryListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, InvestorsUpdateData, InvestorsUpdateResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesRetrieveData, PricesRetrieveResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
-import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsListData, zInvestorsListResponse, zInvestorsMeAccountValueRetrieveData, zInvestorsMeAccountValueRetrieveResponse, zInvestorsMeAssetAllocationRetrieveData, zInvestorsMeAssetAllocationRetrieveResponse, zInvestorsMeCurrentAccountValueRetrieveData, zInvestorsMeCurrentAccountValueRetrieveResponse, zInvestorsMeOwnedSharesRetrieveData, zInvestorsMeOwnedSharesRetrieveResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeStatisticsMostTradedRetrieveData, zInvestorsMeStatisticsMostTradedRetrieveResponse, zInvestorsMeStatisticsProfileOverviewRetrieveData, zInvestorsMeStatisticsProfileOverviewRetrieveResponse, zInvestorsMeStatisticsTradingOverviewRetrieveData, zInvestorsMeStatisticsTradingOverviewRetrieveResponse, zInvestorsMeStatsRetrieveData, zInvestorsMeStatsRetrieveResponse, zInvestorsMeTransactionsHistoryListData, zInvestorsMeTransactionsHistoryListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zInvestorsUpdateData, zInvestorsUpdateResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsListData, InvestorsListResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMeAssetAllocationRetrieveData, InvestorsMeAssetAllocationRetrieveResponses, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeCurrentAccountValueRetrieveResponses, InvestorsMeOwnedSharesRetrieveData, InvestorsMeOwnedSharesRetrieveResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeStatisticsMostTradedListData, InvestorsMeStatisticsMostTradedListResponses, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveResponses, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveResponses, InvestorsMeStatsRetrieveData, InvestorsMeStatsRetrieveResponses, InvestorsMeTransactionsHistoryListData, InvestorsMeTransactionsHistoryListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, InvestorsUpdateData, InvestorsUpdateResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesRetrieveData, PricesRetrieveResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
+import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsListData, zInvestorsListResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMeAssetAllocationRetrieveData, zInvestorsMeAssetAllocationRetrieveResponse, zInvestorsMeCurrentAccountValueRetrieveData, zInvestorsMeCurrentAccountValueRetrieveResponse, zInvestorsMeOwnedSharesRetrieveData, zInvestorsMeOwnedSharesRetrieveResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeStatisticsMostTradedListData, zInvestorsMeStatisticsMostTradedListResponse, zInvestorsMeStatisticsProfileOverviewRetrieveData, zInvestorsMeStatisticsProfileOverviewRetrieveResponse, zInvestorsMeStatisticsTradingOverviewRetrieveData, zInvestorsMeStatisticsTradingOverviewRetrieveResponse, zInvestorsMeStatsRetrieveData, zInvestorsMeStatsRetrieveResponse, zInvestorsMeTransactionsHistoryListData, zInvestorsMeTransactionsHistoryListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zInvestorsUpdateData, zInvestorsUpdateResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -230,13 +230,13 @@ export const investorsMeRetrieve = <ThrowOnError extends boolean = false>(option
  * Get account value over time
  * Get account value over time data for the currently authenticated user.
  */
-export const investorsMeAccountValueRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeAccountValueRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeAccountValueRetrieveResponses, unknown, ThrowOnError>({
+export const investorsMeAccountValueList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeAccountValueListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeAccountValueListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeAccountValueRetrieveData.parseAsync(data);
+            return await zInvestorsMeAccountValueListData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeAccountValueRetrieveResponse.parseAsync(data);
+            return await zInvestorsMeAccountValueListResponse.parseAsync(data);
         },
         security: [
             {
@@ -322,13 +322,13 @@ export const investorsMeOwnedSharesRetrieve = <ThrowOnError extends boolean = fa
  * Get overview about the most traded instruments
  * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
  */
-export const investorsMeStatisticsMostTradedRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatisticsMostTradedRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeStatisticsMostTradedRetrieveResponses, unknown, ThrowOnError>({
+export const investorsMeStatisticsMostTradedList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatisticsMostTradedListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeStatisticsMostTradedListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeStatisticsMostTradedRetrieveData.parseAsync(data);
+            return await zInvestorsMeStatisticsMostTradedListData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeStatisticsMostTradedRetrieveResponse.parseAsync(data);
+            return await zInvestorsMeStatisticsMostTradedListResponse.parseAsync(data);
         },
         security: [
             {
@@ -496,6 +496,67 @@ export const newsList = <ThrowOnError extends boolean = false>(options?: Options
         ],
         url: '/api/news/',
         ...options
+    });
+};
+
+export const ordersList = <ThrowOnError extends boolean = false>(options?: Options<OrdersListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<OrdersListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zOrdersListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zOrdersListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/orders/',
+        ...options
+    });
+};
+
+export const ordersCancelDestroy = <ThrowOnError extends boolean = false>(options: Options<OrdersCancelDestroyData, ThrowOnError>) => {
+    return (options.client ?? client).delete<OrdersCancelDestroyResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zOrdersCancelDestroyData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zOrdersCancelDestroyResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/orders/cancel/{id}',
+        ...options
+    });
+};
+
+export const ordersMarketCreate = <ThrowOnError extends boolean = false>(options: Options<OrdersMarketCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<OrdersMarketCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zOrdersMarketCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zOrdersMarketCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/orders/market/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
     });
 };
 

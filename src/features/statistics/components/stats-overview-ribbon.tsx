@@ -9,7 +9,7 @@ const StatsOverviewRibbon = () => {
 
   const {
     data: stats,
-    isLoading,
+    isPending,
     isError,
   } = useQuery(investorsMeStatisticsTradingOverviewRetrieveOptions());
 
@@ -53,11 +53,11 @@ const StatsOverviewRibbon = () => {
     index: number;
     tile: (typeof tiles)[number];
   }) {
-    if (isLoading) {
+    if (isPending) {
       return <StatTile.Skeleton />;
     }
 
-    if (isError || !tile.value) {
+    if (isError || tile.value === undefined) {
       return <ErrorCard />;
     }
 

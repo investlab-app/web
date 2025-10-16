@@ -5,27 +5,17 @@ export type ClientOptions = {
 };
 
 /**
- * Serializer for individual account value data point.
+ * Serializer for AccountValueSnapshot model.
  */
-export type AccountValueData = {
+export type AccountValueSnapshotDaily = {
     /**
      * Date of the value measurement
      */
-    date: string;
+    readonly date: string;
     /**
      * Account value on this date
      */
     value: number;
-};
-
-/**
- * Serializer for account value over time data.
- */
-export type AccountValueOverTime = {
-    /**
-     * List of account value data points
-     */
-    data: Array<AccountValueData>;
 };
 
 export type AssetAllocation = {
@@ -35,7 +25,10 @@ export type AssetAllocation = {
 };
 
 export type AssetAllocationItem = {
-    asset_class_display_name: string;
+    instrument_name: string;
+    instrument_ticker: string;
+    instrument_logo: string | null;
+    instrument_icon: string | null;
     value: number;
     percentage: number;
 };
@@ -61,6 +54,17 @@ export type AuthTestResponse = {
 export type ClerkLoginRequest = {
     email: string;
     password: string;
+};
+
+export type CreateMarketOrder = {
+    readonly id: string;
+    readonly investor: string;
+};
+
+export type CreateMarketOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
 };
 
 export type CurrentAccountValue = {
@@ -130,6 +134,13 @@ export type InstrumentList = {
     currency_name: string;
     icon?: string | null;
     logo?: string | null;
+};
+
+export type InstrumentName = {
+    /**
+     * Ticker Symbol
+     */
+    ticker: string;
 };
 
 export type InstrumentRetrieve = {
@@ -331,21 +342,21 @@ export type MostTradedItem = {
     total_return: number;
 };
 
-export type MostTradedOverview = {
-    instruments: Array<MostTradedItem>;
+export type Order = {
+    readonly id: string;
+    ticker: InstrumentName;
+    readonly detail: {
+        [key: string]: unknown;
+    };
 };
 
-export type OwnedShareItem = {
+export type OwnedShare = {
     name: string;
     symbol: string;
     volume: number;
     value: number;
     profit: number;
     profit_percentage: number;
-};
-
-export type OwnedShares = {
-    owned_shares: Array<OwnedShareItem>;
 };
 
 export type PaginatedInstrumentListList = {
@@ -367,6 +378,20 @@ export type PaginatedInvestorList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Investor>;
+};
+
+export type PaginatedMostTradedItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<MostTradedItem>;
+};
+
+export type PaginatedOrderList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Order>;
 };
 
 export type PatchedInvestorUpdateRequest = {
@@ -486,6 +511,16 @@ export type TradingOverview = {
     total_return: number;
 };
 
+/**
+ * Serializer for AccountValueSnapshot model.
+ */
+export type AccountValueSnapshotDailyWritable = {
+    /**
+     * Account value on this date
+     */
+    value: number;
+};
+
 export type InstrumentListWritable = {
     /**
      * Ticker Symbol
@@ -598,6 +633,10 @@ export type InstrumentWithPriceWritable = {
 
 export type InvestorWritable = {
     watching_instruments?: Array<string>;
+};
+
+export type OrderWritable = {
+    ticker: InstrumentName;
 };
 
 export type AuthSignInCreateData = {
@@ -803,18 +842,18 @@ export type InvestorsMeRetrieveResponses = {
 
 export type InvestorsMeRetrieveResponse = InvestorsMeRetrieveResponses[keyof InvestorsMeRetrieveResponses];
 
-export type InvestorsMeAccountValueRetrieveData = {
+export type InvestorsMeAccountValueListData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/api/investors/me/account-value/';
 };
 
-export type InvestorsMeAccountValueRetrieveResponses = {
-    200: AccountValueOverTime;
+export type InvestorsMeAccountValueListResponses = {
+    200: Array<AccountValueSnapshotDaily>;
 };
 
-export type InvestorsMeAccountValueRetrieveResponse = InvestorsMeAccountValueRetrieveResponses[keyof InvestorsMeAccountValueRetrieveResponses];
+export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
 
 export type InvestorsMeAssetAllocationRetrieveData = {
     body?: never;
@@ -850,23 +889,32 @@ export type InvestorsMeOwnedSharesRetrieveData = {
 };
 
 export type InvestorsMeOwnedSharesRetrieveResponses = {
-    200: OwnedShares;
+    200: OwnedShare;
 };
 
 export type InvestorsMeOwnedSharesRetrieveResponse = InvestorsMeOwnedSharesRetrieveResponses[keyof InvestorsMeOwnedSharesRetrieveResponses];
 
-export type InvestorsMeStatisticsMostTradedRetrieveData = {
+export type InvestorsMeStatisticsMostTradedListData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
     url: '/api/investors/me/statistics/most-traded/';
 };
 
-export type InvestorsMeStatisticsMostTradedRetrieveResponses = {
-    200: MostTradedOverview;
+export type InvestorsMeStatisticsMostTradedListResponses = {
+    200: PaginatedMostTradedItemList;
 };
 
-export type InvestorsMeStatisticsMostTradedRetrieveResponse = InvestorsMeStatisticsMostTradedRetrieveResponses[keyof InvestorsMeStatisticsMostTradedRetrieveResponses];
+export type InvestorsMeStatisticsMostTradedListResponse = InvestorsMeStatisticsMostTradedListResponses[keyof InvestorsMeStatisticsMostTradedListResponses];
 
 export type InvestorsMeStatisticsProfileOverviewRetrieveData = {
     body?: never;
@@ -983,6 +1031,59 @@ export type NewsListResponses = {
 };
 
 export type NewsListResponse = NewsListResponses[keyof NewsListResponses];
+
+export type OrdersListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/orders/';
+};
+
+export type OrdersListResponses = {
+    200: PaginatedOrderList;
+};
+
+export type OrdersListResponse = OrdersListResponses[keyof OrdersListResponses];
+
+export type OrdersCancelDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/orders/cancel/{id}';
+};
+
+export type OrdersCancelDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
+
+export type OrdersMarketCreateData = {
+    body: CreateMarketOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/orders/market/';
+};
+
+export type OrdersMarketCreateResponses = {
+    201: CreateMarketOrder;
+};
+
+export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
 
 export type PricesListData = {
     body?: never;
