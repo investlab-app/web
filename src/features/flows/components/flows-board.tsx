@@ -16,6 +16,7 @@ import { OrNode } from '../nodes/connector/or-node';
 import { CustomNodeTypes } from '../types/node-types';
 import { useValidators } from '../hooks/use-validators';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
+import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
 import { IfNode } from '../nodes/flow/if-node';
 import { ThenElseNode } from '../nodes/flow/then-else-node';
 import { ThenNode } from '../nodes/flow/then-node';
@@ -44,6 +45,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
   [CustomNodeTypes.PriceOverUnder]: PriceHigherLowerNode,
   [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
+  [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
 };
 
 export function FlowsBoard() {
