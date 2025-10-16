@@ -40,7 +40,7 @@ const enFlows = {
     email: 'email',
     push: 'push',
     of_owned: 'of owned',
-    send_notification: 'send notification via',
+    send_notification: 'notify via',
   },
 };
 
