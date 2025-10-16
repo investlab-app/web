@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ConnectorNodeUI } from './connector-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -13,9 +14,10 @@ export const AndNode = (props: NodeProps<AndNode>) => {
 };
 
 export function AndNodeUI({ nodeId, preview }: CustomNodeProps) {
+  const {t} = useTranslation();
   return (
     <ConnectorNodeUI nodeId={nodeId} preview={preview}>
-      AND
+      {t('flows.nodes.and').toUpperCase()}
     </ConnectorNodeUI>
   );
 }

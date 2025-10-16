@@ -53,29 +53,29 @@ export function PriceHigherLowerNodeUI({
 }: PriceHigherLowerNodeUIProps & CustomNodeProps) {
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm px-1">Price</div>
-      <select
+      <div className="text-sm">Price</div>
+     { onStateChange ? ( <select
         className="mx-2 px-2 py-1 border rounded text-xs"
         value={state}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onStateChange!(e.target.value as 'over' | 'under')
+          onStateChange(e.target.value as 'over' | 'under')
         }
       >
         <option value="over">over</option>
         <option value="under">under</option>
-      </select>
+      </select>) : (<div className="pl-1">reaches threshold</div>)}
       {onValueChange && (
         <NumberInput
           className="text-xs w-30"
           min={1}
-          stepper={50}
+          stepper={25}
           defaultValue={100.0}
           value={value}
           onValueChange={onValueChange}
+          fixedDecimalScale={true}
           decimalScale={2}
         />
       )}
-      {!onValueChange && <div className="px-1">X</div>}
     </RuleNodeUI>
   );
 }

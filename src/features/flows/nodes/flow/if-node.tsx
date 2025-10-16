@@ -21,7 +21,7 @@ export function IfNodeUI({ nodeId, preview }: CustomNodeProps) {
       nodeId={nodeId}
       className={`bg-[var(--background)]`}
     >
-      If
+      IF
       <CustomHandle
         nodeId={nodeId}
         type="source"

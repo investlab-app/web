@@ -66,22 +66,22 @@ export function HappensBetweenNodeUI({
 
   return (
     <RuleNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm px-1">Happens between</div>
+      <div className="text-sm">Happens between</div>
       {onStartChange && (
         <input
           type="date"
           value={formatDate(startDate)}
           onChange={handleStartChange}
-          className="border p-1 rounded mr-2"
+          className="border p-1 rounded mx-2 text-xs"
         />
       )}
-      {onEndChange && <div className="inline-block text-sm mx-2">and</div>}
+      {onEndChange && <div className="inline-block text-sm">and</div>}
       {onEndChange && (
         <input
           type="date"
           value={formatDate(endDate)}
           onChange={handleEndChange}
-          className="border p-1 rounded"
+          className="border p-1 rounded ml-2 text-xs"
         />
       )}
     </RuleNodeUI>

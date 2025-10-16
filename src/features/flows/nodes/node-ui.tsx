@@ -23,7 +23,7 @@ export function NodeUI({
   });
   return (
     <div
-      className={`p-2 border border-[#555] rounded min-w-[100px] flex items-center justify-center ${className ?? ''} ${!preview && !validateNode(nodeId, inConnections.length, outConnections.length) ? 'border-red-500' : ''}`}
+      className={`p-2 text-sm border border-[#555] rounded min-w-[100px] flex items-center justify-center ${className ?? ''} ${!preview && !validateNode(nodeId, inConnections.length, outConnections.length) ? 'border-red-500' : ''}`}
     >
       {children}
     </div>

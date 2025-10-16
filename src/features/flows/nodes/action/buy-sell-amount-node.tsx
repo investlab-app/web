@@ -73,31 +73,32 @@ export function BuySellAmountNodeUI({
           <option value="sell">sell</option>
         </select>
       )}
-      {!onActionChange && <div className="px-1">buy/sell</div>}
+      {!onActionChange && <div >buy/sell X</div>}
       {onAmountChange && (
         <NumberInput
-          className="w-30 mx-2"
+          className="w-40 mx-2"
           min={0}
           defaultValue={1}
-          stepper={0.5}
+          prefix='@'
+          stepper={0.1}
           value={amount}
           onValueChange={onAmountChange}
-          decimalScale={2}
+          decimalScale={5}
+          fixedDecimalScale={true}
         />
       )}
-      {!onAmountChange && <div className="px-1">X</div>}
-      <div className="text-sm">stock(s) of instrument</div>
       {onInstrumentChange && (
         <input
-          className="mx-2 px-2 py-1 border rounded text-xs"
-          type="text"
-          placeholder="AAPL"
-          value={instrument}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            onInstrumentChange(e.target.value)
-          }
+        className="px-2 py-1 border rounded text-xs"
+        type="text"
+        placeholder="AAPL"
+        value={instrument}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          onInstrumentChange(e.target.value)
+        }
         />
       )}
+      <div className="text-sm ml-2">shares</div>
     </ActionNodeUI>
   );
 }

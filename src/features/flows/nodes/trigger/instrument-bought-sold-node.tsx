@@ -50,28 +50,28 @@ export function InstrumentBoughtSoldNodeUI({
 }: InstrumentBoughtSoldNodeUIProps & CustomNodeProps) {
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
-      <div className="text-sm px-1">Instrument</div>
       {onValueChange && (
-        <input
-          className="mx-2 px-2 py-1 border rounded text-xs"
+          <input
+          className="px-2 py-1 border rounded text-xs"
           type="text"
           placeholder="AAPL"
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onValueChange(e.target.value)
-          }
+        }
         />
-      )}
-      <select
+    )}
+    <div className="text-sm mx-2">shares</div>
+     { onActionChange  ?( <select
         className="px-2 py-1 border rounded text-xs"
         value={action}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onActionChange!(e.target.value as 'bought' | 'sold')
+          onActionChange(e.target.value as 'bought' | 'sold')
         }
       >
         <option value="bought">bought</option>
         <option value="sold">sold</option>
-      </select>
+      </select>) :  (<div>bought/sold</div>)}
     </TriggerNodeUI>
   );
 }
