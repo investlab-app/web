@@ -24,7 +24,7 @@ import { ThenElseNode } from '../nodes/flow/then-else-node';
 import { ThenNode } from '../nodes/flow/then-node';
 import { HappensWithinNode } from '../nodes/rule/happens-within-node';
 import { DnDSidebar } from './dnd-sidebar';
-import { ExecuteButton } from './execute-button';
+import { SaveButton } from './execute-button';
 import type {
   Connection,
   Edge,
@@ -74,7 +74,7 @@ export function FlowsBoard() {
 
   return (
     <DnDProvider>
-      <div className="flex w-full h-[500px]">
+      <div className="flex w-full h-[700px]">
         <div className="flex-1">
           <ReactFlow
             colorMode={theme}
@@ -99,7 +99,8 @@ export function FlowsBoard() {
             <Background />
           </ReactFlow>
         </div>
-        <div className="w-64 bg-(var[--muted]) p-4">
+        <div className="w-70 bg-(var[--muted]) p-4">
+          <SaveButton onSave={onSave} />
           {rfInstance && (
             <DnDSidebar
               addNode={(node) => setNodes((nds) => nds.concat(node))}
@@ -107,7 +108,6 @@ export function FlowsBoard() {
             />
           )}
         </div>
-        <ExecuteButton onExecute={onSave} />
       </div>
     </DnDProvider>
   );

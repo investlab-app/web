@@ -54,7 +54,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
   );
 
   return (
-    <div className="p-2">
+    <div className="py-2">
       {isDragging && <DragGhost type={type} />}
       <div>
         <div>Logical Operators</div>
