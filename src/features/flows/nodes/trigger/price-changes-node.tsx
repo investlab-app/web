@@ -57,23 +57,29 @@ export function PriceChangesNodeUI({
         <input
           className="mx-2 px-2 py-1 border rounded"
           type="text"
-          placeholder='AAPL'
+          placeholder="AAPL"
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onValueChange(e.target.value)
           }
         />
-      ) : (<div className="px-1">{t('flows.placeholders.instrument')}</div>)}
-      {onDirectionChange ? (<select
-        className="px-2 py-1 border rounded"
-        value={direction}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onDirectionChange(e.target.value as 'rises' | 'falls')
-        }
-      >
-        <option value="rises">{t('flows.nodes.rises')}</option>
-        <option value="falls">{t('flows.nodes.falls')}</option>
-      </select>) : (<div >{t('flows.placeholders.rises_falls')}</div>)}
+      ) : (
+        <div className="px-1">{t('flows.placeholders.instrument')}</div>
+      )}
+      {onDirectionChange ? (
+        <select
+          className="px-2 py-1 border rounded"
+          value={direction}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            onDirectionChange(e.target.value as 'rises' | 'falls')
+          }
+        >
+          <option value="rises">{t('flows.nodes.rises')}</option>
+          <option value="falls">{t('flows.nodes.falls')}</option>
+        </select>
+      ) : (
+        <div>{t('flows.placeholders.rises_falls')}</div>
+      )}
     </TriggerNodeUI>
   );
 }

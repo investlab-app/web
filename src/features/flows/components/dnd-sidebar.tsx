@@ -260,7 +260,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             onDragStart(
               event,
               createAddNewNode(CustomNodeTypes.SendNotification, {
-                type: 'email'
+                type: 'email',
               })
             );
           }}

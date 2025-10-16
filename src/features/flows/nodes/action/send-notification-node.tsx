@@ -13,7 +13,9 @@ export type SendNotificationNode = Node<
   CustomNodeTypes.SendNotification
 >;
 
-export const SendNotificationNode = (props: NodeProps<SendNotificationNode>) => {
+export const SendNotificationNode = (
+  props: NodeProps<SendNotificationNode>
+) => {
   const updateNodeInternals = useUpdateNodeInternals();
 
   return (
@@ -55,7 +57,9 @@ export function SendNotificationNodeUI({
           <option value="push">{t('flows.nodes.push')}</option>
         </select>
       )}
-      {!onTypeChange && <div className="px-1">{t('flows.placeholders.email_push')}</div>}
+      {!onTypeChange && (
+        <div className="px-1">{t('flows.placeholders.email_push')}</div>
+      )}
     </ActionNodeUI>
   );
 }
