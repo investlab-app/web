@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authed/statistics/')({
 function RouteComponent() {
   return (
     <AppFrame>
-      <div className='space-y-4'>
+      <div className="space-y-4">
         <StatsOverviewRibbon />
         <MostTradedOverview />
       </div>

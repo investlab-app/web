@@ -36,11 +36,11 @@ const queryClient = new QueryClient({
       },
     },
   },
-  // queryCache: new QueryCache({ 
+  // queryCache: new QueryCache({
   //   onError: (error: Error) => { // cache-level queries error handler
   //     toast.error(`API Error: ${error.message}`);
   //   },
-  // }), 
+  // }),
 });
 
 export type RouterContext = {

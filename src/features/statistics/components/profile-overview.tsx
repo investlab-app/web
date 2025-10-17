@@ -58,7 +58,6 @@ const ProfileOverview = () => {
   const isSuccess =
     profileOverviewResult.isSuccess && currentAccountValueResult.isSuccess;
 
-
   return (
     <>
       <h2 className="text-2xl font-semibold mt-6 mb-4">
@@ -101,35 +100,39 @@ const ProfileOverview = () => {
             {isSuccess && (
               <TableRow>
                 <TableCell>{profileOverviewResult.data.level}</TableCell>
-                <TableCell className="text-right">{profileOverviewResult.data.exp_points}</TableCell>
+                <TableCell className="text-right">
+                  {profileOverviewResult.data.exp_points}
+                </TableCell>
                 <TableCell className="text-right">
                   {profileOverviewResult.data.left_to_next_level}
                 </TableCell>
                 <TableCell className="text-right">
-                  {currentAccountValueResult.data.total_account_value.toFixed(2)}
+                  {currentAccountValueResult.data.total_account_value.toFixed(
+                    2
+                  )}
                 </TableCell>
                 <TableCell
-                  // className={cn(
-                  //   'text-right',
-                  //   profileOverviewResult.data.gain < 0
-                  //     ? 'text-red-500'
-                  //     : profileOverviewResult.data.gain > 0
-                  //       ? 'text-green-500'
-                  //       : ''
-                  // )}
+                // className={cn(
+                //   'text-right',
+                //   profileOverviewResult.data.gain < 0
+                //     ? 'text-red-500'
+                //     : profileOverviewResult.data.gain > 0
+                //       ? 'text-green-500'
+                //       : ''
+                // )}
                 >
                   Not implemented
                   {/* {profileOverviewResult.data.gain.toFixed(2)} {t('common.currency')} */}
                 </TableCell>
                 <TableCell
-                  // className={cn(
-                  //   'text-right',
-                  //   profileOverviewResult.data.gain_percent < 0
-                  //     ? 'text-red-500'
-                  //     : profileOverviewResult.data.gain_percent > 0
-                  //       ? 'text-green-500'
-                  //       : ''
-                  // )}
+                // className={cn(
+                //   'text-right',
+                //   profileOverviewResult.data.gain_percent < 0
+                //     ? 'text-red-500'
+                //     : profileOverviewResult.data.gain_percent > 0
+                //       ? 'text-green-500'
+                //       : ''
+                // )}
                 >
                   {/* {data.gain_percent.toFixed(2)} */}
                   Not implemented

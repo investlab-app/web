@@ -65,7 +65,7 @@ export function TransactionsHistorySection({
       <CardHeader>
         <CardTitle>{t('transactions.tabs.open_positions')}</CardTitle>
       </CardHeader>
-      <CardContent className='h-full'>
+      <CardContent className="h-full">
         {isPending ? (
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (

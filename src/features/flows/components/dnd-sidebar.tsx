@@ -10,10 +10,10 @@ import { PriceHigherLowerNodeUI } from '../nodes/rule/price-higher-lower-node';
 import { AndNodeUI } from '../nodes/connector/and-node';
 import { HappensWithinNodeUI } from '../nodes/rule/happens-within-node';
 import { OrNodeUI } from '../nodes/connector/or-node';
+import { ThenElseNodeUI } from '../nodes/flow/then-else-node';
 import { DragGhost } from './drag-ghost';
 import type { OnDropAction } from '../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
-import { ThenElseNodeUI } from '../nodes/flow/then-else-node';
 
 let nodeid = 0;
 const getId = () => `node_${nodeid++}`;
