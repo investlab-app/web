@@ -76,6 +76,7 @@ export function TransactionsHistorySection({
           <>
             <BuySellContainer
               currentPrice={parseFloat(tickerPrice.current_price)}
+              ticker={instrumentId}
               onlySell={true}
             />
             <Table>

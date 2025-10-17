@@ -60,7 +60,10 @@ export function OrdersSection({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="market">
-              <BuySellContainer currentPrice={parseFloat(data.current_price)} />
+              <BuySellContainer
+                currentPrice={parseFloat(data.current_price)}
+                ticker={instrumentId}
+              />
             </TabsContent>
             <TabsContent value="limit">
               <StopLimitContainer

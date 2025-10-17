@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { ArrowUpDown } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
+import { ordersMarketCreateMutation } from '@/client/@tanstack/react-query.gen';
 
 interface BuySellSectionProps {
   mode: 'price' | 'volume';
@@ -10,6 +13,7 @@ interface BuySellSectionProps {
   derivedValue: number;
   onValueChange: (val: number) => void;
   onModeToggle: () => void;
+  ticker: string;
 }
 
 export const BuySellSection = ({
@@ -18,12 +22,43 @@ export const BuySellSection = ({
   derivedValue,
   onValueChange,
   onModeToggle,
+  ticker,
 }: BuySellSectionProps) => {
   const { t } = useTranslation();
+  const { mutate: createOrder, isPending } = useMutation({
+    ...ordersMarketCreateMutation(),
+    onSuccess: () => {
+      toast.success('Order placed successfully!');
+    },
+    onError: (error) => {
+      toast.error(`Failed to place order: ${error.message}`);
+    },
+  });
+
   const handleInputChange = (val: number | undefined) => {
     if (typeof val === 'number' && !isNaN(val)) {
       onValueChange(val);
     }
+  };
+
+  const handleBuy = () => {
+    createOrder({
+      body: {
+        ticker,
+        volume: derivedValue.toFixed(2),
+        is_buy: true,
+      },
+    });
+  };
+
+  const handleSell = () => {
+    createOrder({
+      body: {
+        ticker,
+        volume: derivedValue.toFixed(2),
+        is_buy: false,
+      },
+    });
   };
   const numberInput = (
     <NumberInput
@@ -73,10 +108,18 @@ export const BuySellSection = ({
         {bottomLabel}
 
         <div className="flex gap-2 mt-1">
-          <Button className="bg-green-600 hover:bg-green-700 flex-2">
+          <Button
+            className="bg-green-600 hover:bg-green-700 flex-2"
+            onClick={handleBuy}
+            disabled={isPending || value === 0}
+          >
             {t('instruments.buy')}
           </Button>
-          <Button className="bg-red-600 hover:bg-red-700 flex-2">
+          <Button
+            className="bg-red-600 hover:bg-red-700 flex-2"
+            onClick={handleSell}
+            disabled={isPending || value === 0}
+          >
             {t('instruments.sell')}
           </Button>
         </div>
@@ -86,7 +129,11 @@ export const BuySellSection = ({
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <Button className="bg-green-600 hover:bg-green-700 w-1/4">
+      <Button
+        className="bg-green-600 hover:bg-green-700 w-1/4"
+        onClick={handleBuy}
+        disabled={isPending || value === 0}
+      >
         {t('instruments.buy')}
       </Button>
       <div className="mt-1 w-full">
@@ -107,7 +154,11 @@ export const BuySellSection = ({
       >
         <ArrowUpDown />
       </Button>
-      <Button className="bg-red-600 hover:bg-red-700 w-1/4">
+      <Button
+        className="bg-red-600 hover:bg-red-700 w-1/4"
+        onClick={handleSell}
+        disabled={isPending || value === 0}
+      >
         {t('instruments.sell')}
       </Button>
     </div>

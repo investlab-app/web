@@ -37,11 +37,13 @@ export const useBuySellForm = (initialPrice: number, currentPrice: number) => {
 
 interface BuySellContainerProps {
   currentPrice: number;
+  ticker: string;
   onlySell?: boolean;
 }
 
 export const BuySellContainer = ({
   currentPrice,
+  ticker,
   onlySell = false,
 }: BuySellContainerProps) => {
   const {
@@ -68,6 +70,7 @@ export const BuySellContainer = ({
       derivedValue={mode === 'price' ? volume : price}
       onValueChange={mode === 'price' ? handlePriceChange : handleVolumeChange}
       onModeToggle={toggleMode}
+      ticker={ticker}
     />
   );
 };
