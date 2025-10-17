@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { useUpdateNodeInternals } from '@xyflow/react';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
+import { useNodeData } from '@/features/flows/hooks/use-node-data';
 
 export type HappensWithinNode = Node<
   {
@@ -14,16 +14,13 @@ export type HappensWithinNode = Node<
 >;
 
 export const HappensWithinNode = (props: NodeProps<HappensWithinNode>) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useNodeData(props.id);
 
   return (
     <HappensWithinNodeUI
       nodeId={props.id}
       value={props.data.value}
-      onValueChange={(val) => {
-        props.data.value = val!;
-        updateNodeInternals(props.id);
-      }}
+      onValueChange={(value) => updateNodeData({ value: value! })}
     />
   );
 };

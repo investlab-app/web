@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeData } from '../../hooks/use-node-data';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
@@ -16,15 +16,14 @@ export type SendNotificationNode = Node<
 export const SendNotificationNode = (
   props: NodeProps<SendNotificationNode>
 ) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useNodeData<SendNotificationNode['data']>(props.id);
 
   return (
     <SendNotificationNodeUI
       nodeId={props.id}
       type={props.data.type}
       onTypeChange={(val) => {
-        props.data.type = val;
-        updateNodeInternals(props.id);
+        updateNodeData({ type: val });
       }}
     />
   );
