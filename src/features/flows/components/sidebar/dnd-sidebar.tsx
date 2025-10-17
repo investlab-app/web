@@ -48,7 +48,6 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           position: flowPos,
           data: data,
         };
-        console.log('love you');
         addNode(newNode);
         setType(null);
       };

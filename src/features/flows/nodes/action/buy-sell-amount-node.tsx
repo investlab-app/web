@@ -1,4 +1,4 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
+import { useNodeData } from '../../hooks/use-node-data';
 import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
@@ -17,7 +17,7 @@ export type BuySellAmountNode = Node<
 >;
 
 export const BuySellAmountNode = (props: NodeProps<BuySellAmountNode>) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useNodeData<BuySellAmountNode['data']>(props.id);
 
   return (
     <BuySellAmountNodeUI
@@ -26,16 +26,13 @@ export const BuySellAmountNode = (props: NodeProps<BuySellAmountNode>) => {
       amount={props.data.amount}
       action={props.data.action}
       onInstrumentChange={(val) => {
-        props.data.instrument = val!;
-        updateNodeInternals(props.id);
+        updateNodeData({ instrument: val! });
       }}
       onAmountChange={(val) => {
-        props.data.amount = val!;
-        updateNodeInternals(props.id);
+        updateNodeData({ amount: val! });
       }}
       onActionChange={(val) => {
-        props.data.action = val!;
-        updateNodeInternals(props.id);
+        updateNodeData({ action: val });
       }}
     />
   );
