@@ -80,6 +80,12 @@ code {
   --green: theme('colors.green.500');
   --green-lighter: theme('colors.green.400');
   --green-darker: theme('colors.green.600');
+  --yellow: theme('colors.yellow.500');
+  --yellow-lighter: theme('colors.yellow.400');
+  --yellow-darker: theme('colors.yellow.600');
+  --blue: theme('colors.blue.500');
+  --blue-lighter: theme('colors.blue.400');
+  --blue-darker: theme('colors.blue.600');
   --red: theme('colors.red.500');
   --red-lighter: theme('colors.red.400');
   --red-darker: theme('colors.red.600');
@@ -93,6 +99,14 @@ code {
 
   --card-hex: rgb(255, 255, 255);
   --card-foreground-hex: rgb(15, 15, 15);
+
+  --node-predicate: oklch(74.366% 0.1009 241.416);
+  --node-trigger: oklch(86.096% 0.0881 99.427);
+  --node-action: oklch(83.744% 0.15703 144.26);
+
+  --color-triggers: rgba(255, 251, 0, 0.2);
+  --color-actions: rgba(0, 128, 0, 0.2);
+  --color-predicates: rgba(0, 0, 255, 0.2);
 }
 
 .dark {
@@ -164,6 +178,14 @@ code {
 
   --card-hex: rgb(25, 25, 25);
   --card-foreground-hex: rgb(255, 255, 255);
+
+  --node-predicate: oklch(38.736% 0.08462 244.406);
+  --node-trigger: oklch(55.492% 0.10378 105.284);
+  --node-action: oklch(41.121% 0.12896 143.034);
+
+  --color-triggers: rgba(255, 251, 0, 0.1);
+  --color-actions: rgba(0, 128, 0, 0.1);
+  --color-predicates: rgba(0, 0, 255, 0.1);
 }
 
 @theme inline {
