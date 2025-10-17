@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { useUpdateNodeInternals } from '@xyflow/react';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import { useNodeData } from '@/features/flows/hooks/use-node-data';
 
 export type PriceChangesNode = Node<
   {
@@ -15,20 +15,14 @@ export type PriceChangesNode = Node<
 >;
 
 export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useNodeData(props.id);
 
   return (
     <PriceChangesNodeUI
       value={props.data.value}
       direction={props.data.direction}
-      onValueChange={(val) => {
-        props.data.value = val;
-        updateNodeInternals(props.id);
-      }}
-      onDirectionChange={(dir) => {
-        props.data.direction = dir;
-        updateNodeInternals(props.id);
-      }}
+      onValueChange={(value) => updateNodeData({ value })}
+      onDirectionChange={(direction) => updateNodeData({ direction })}
       nodeId={props.id}
     />
   );

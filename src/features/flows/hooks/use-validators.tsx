@@ -52,7 +52,6 @@ export const useValidators = () => {
       }
       const sourceSupertype = TypesMapping[source.type as CustomNodeTypes];
       const tragetSupertype = TypesMapping[target.type as CustomNodeTypes];
-      console.log(sourceSupertype, tragetSupertype);
       if (
         !allowedConnections[sourceSupertype].find(
           (supertype) => supertype == tragetSupertype

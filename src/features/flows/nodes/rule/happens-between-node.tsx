@@ -1,9 +1,9 @@
-import { useUpdateNodeInternals } from '@xyflow/react';
 import { useTranslation } from 'react-i18next';
 import { RuleNodeUI } from './rule-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { CustomNodeProps } from '../../types/node-props';
+import { useNodeData } from '@/features/flows/hooks/use-node-data';
 
 export type HappensBetweenNode = Node<
   {
@@ -14,17 +14,15 @@ export type HappensBetweenNode = Node<
 >;
 
 export const HappensBetweenNode = (props: NodeProps<HappensBetweenNode>) => {
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useNodeData(props.id);
   const { startDate, endDate } = props.data;
 
   const handleStartChange = (date: Date | undefined) => {
-    props.data.startDate = date ? date.getTime() : 0;
-    updateNodeInternals(props.id);
+    updateNodeData({ startDate: date ? date.getTime() : 0 });
   };
 
   const handleEndChange = (date: Date | undefined) => {
-    props.data.endDate = date ? date.getTime() : 0;
-    updateNodeInternals(props.id);
+    updateNodeData({ endDate: date ? date.getTime() : 0 });
   };
 
   return (

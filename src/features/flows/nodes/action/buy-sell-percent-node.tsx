@@ -27,7 +27,6 @@ export const BuySellPercentNode = (props: NodeProps<BuySellPercentNode>) => {
       percent={props.data.percent}
       action={props.data.action}
       onInstrumentChange={(val) => {
-        console.log('instrument change', val, 'for node', props.id);
         updateNodeData({ instrument: val! });
       }}
       onPercentChange={(val) => {
