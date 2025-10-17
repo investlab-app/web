@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { type } from 'arktype';
 
 import { useTranslation } from 'react-i18next';
 import type { PushSubscriptionData } from '@/features/shared/hooks/use-push-notifications';
@@ -15,10 +14,9 @@ import {
 } from '@/features/shared/components/ui/select';
 import { Checkbox } from '@/features/shared/components/ui/checkbox';
 import { usePushNotifications } from '@/features/shared/hooks/use-push-notifications';
-import { httpRequest } from '@/features/shared/queries/http-request';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
-import { ErrorAlert } from '@/features/auth/components/error-alert';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
+import { pricesPriceAlertCreate } from '@/client';
 
 interface PriceAlertFormProps {
   ticker: string;
@@ -84,12 +82,8 @@ export function PriceAlertForm({ ticker, onSuccess }: PriceAlertFormProps) {
 
   const createSubscriptionMutation = useMutation({
     mutationFn: (data: CreateSubscriptionRequest) =>
-      httpRequest({
-        endpoint: '/api/prices/price-alert/',
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-        validator: type({}),
+      pricesPriceAlertCreate({
+        body: { ...data, threshold_value: data.threshold_value.toFixed(2) },
       }),
     onSuccess: () => {
       toast.success(
@@ -163,7 +157,6 @@ export function PriceAlertForm({ ticker, onSuccess }: PriceAlertFormProps) {
                 }}
                 className="w-full"
               />
-              <ErrorAlert errors={field.state.meta.errors} />
             </div>
           )}
         />

@@ -1,14 +1,14 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { type } from 'arktype';
 import { useEffect } from 'react';
+import { z } from 'zod';
 import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
 import { syncLanguage } from '@/features/shared/queries/update-language';
 
 export const Route = createFileRoute('/')({
-  validateSearch: type({
-    initial_session: 'boolean?',
+  validateSearch: z.object({
+    initial_session: z.boolean().optional(),
   }),
   loader: ({ context: { i18n } }) => {
     return {
