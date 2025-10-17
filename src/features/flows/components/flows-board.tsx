@@ -58,7 +58,7 @@ export function FlowsBoard() {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const { validateConnection } = useValidators();
-
+ 
   const onConnect = useCallback(
     (params: Connection) =>
       setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
