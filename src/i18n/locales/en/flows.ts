@@ -16,6 +16,13 @@ const enFlows = {
     actions: 'Actions',
     save_flow: 'Save Flow',
   },
+  ghosts: {
+    logical_node: 'Logical Node',
+    flow_node: 'Flow Node',
+    trigger_node: 'Trigger Node',
+    rule_node: 'Rule Node',
+    action_node: 'Action Node',
+  },
   nodes: {
     and: 'and',
     or: 'or',
