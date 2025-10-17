@@ -4,14 +4,10 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
-<<<<<<< HEAD
 /**
  * Serializer for AccountValueSnapshot model.
  */
 export type AccountValueSnapshotDaily = {
-=======
-export type AccountValueData = {
->>>>>>> feature/pwa
     /**
      * Date of the value measurement
      */
@@ -22,16 +18,6 @@ export type AccountValueData = {
     value: number;
 };
 
-<<<<<<< HEAD
-=======
-export type AccountValueOverTime = {
-    /**
-     * List of account value data points
-     */
-    data: Array<AccountValueData>;
-};
-
->>>>>>> feature/pwa
 export type AssetAllocation = {
     total_value: number;
     total_return_this_year: number;
@@ -259,8 +245,12 @@ export type InstrumentWithPrice = {
 export type Investor = {
     readonly id: string;
     readonly clerk_id: string;
+    watching_instruments?: Array<string>;
 };
 
+/**
+ * Serializer for investor statistics data.
+ */
 export type InvestorStats = {
     /**
      * Today's return in currency
@@ -287,6 +277,7 @@ export type InvestorUpdate = {
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
+    watching_instruments?: Array<string>;
 };
 
 export type InvestorUpdateRequest = {
@@ -294,6 +285,7 @@ export type InvestorUpdateRequest = {
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
+    watching_instruments?: Array<string>;
 };
 
 /**
@@ -396,17 +388,6 @@ export type MostTradedItem = {
     total_return: number;
 };
 
-export type Order = {
-    readonly id: string;
-    ticker: InstrumentName;
-    readonly detail: {
-        [key: string]: unknown;
-    };
-};
-
-<<<<<<< HEAD
-export type OwnedShare = {
-=======
 export type NotificationConfig = {
     readonly id: string;
     /**
@@ -459,8 +440,7 @@ export type Order = {
     detail: MarketOrder;
 };
 
-export type OwnedShareItem = {
->>>>>>> feature/pwa
+export type OwnedShare = {
     name: string;
     symbol: string;
     volume: number;
@@ -483,20 +463,6 @@ export type PaginatedInstrumentWithPriceList = {
     results: Array<InstrumentWithPrice>;
 };
 
-export type PaginatedOrderList = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: Array<Order>;
-};
-
-export type PaginatedPriceAlertList = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: Array<PriceAlert>;
-};
-
 export type PaginatedMostTradedItemList = {
     count: number;
     next?: string | null;
@@ -511,11 +477,19 @@ export type PaginatedOrderList = {
     results: Array<Order>;
 };
 
+export type PaginatedPriceAlertList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PriceAlert>;
+};
+
 export type PatchedInvestorUpdateRequest = {
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
+    watching_instruments?: Array<string>;
 };
 
 export type PatchedPriceAlertRequest = {
@@ -675,7 +649,10 @@ export type TradingOverview = {
     total_return: number;
 };
 
-<<<<<<< HEAD
+export type VapidPublicKey = {
+    public_key: string;
+};
+
 /**
  * Serializer for AccountValueSnapshot model.
  */
@@ -684,10 +661,6 @@ export type AccountValueSnapshotDailyWritable = {
      * Account value on this date
      */
     value: number;
-=======
-export type VapidPublicKey = {
-    public_key: string;
->>>>>>> feature/pwa
 };
 
 export type InstrumentListWritable = {
@@ -800,11 +773,16 @@ export type InstrumentWithPriceWritable = {
     logo?: string | null;
 };
 
+export type InvestorWritable = {
+    watching_instruments?: Array<string>;
+};
+
 export type InvestorUpdateWritable = {
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
+    watching_instruments?: Array<string>;
 };
 
 export type NotificationConfigWritable = {
@@ -845,10 +823,6 @@ export type PriceAlertCreateRequestWritable = {
     threshold_type: ThresholdTypeEnum;
     threshold_value: string;
     notification_config: NotificationConfigCreateRequestWritable;
-};
-
-export type OrderWritable = {
-    ticker: InstrumentName;
 };
 
 export type AuthSignInCreateData = {
@@ -1235,8 +1209,6 @@ export type NewsListResponses = {
 
 export type NewsListResponse = NewsListResponses[keyof NewsListResponses];
 
-<<<<<<< HEAD
-=======
 export type NotificationsVapidPublicKeyRetrieveData = {
     body?: never;
     path?: never;
@@ -1250,7 +1222,6 @@ export type NotificationsVapidPublicKeyRetrieveResponses = {
 
 export type NotificationsVapidPublicKeyRetrieveResponse = NotificationsVapidPublicKeyRetrieveResponses[keyof NotificationsVapidPublicKeyRetrieveResponses];
 
->>>>>>> feature/pwa
 export type OrdersListData = {
     body?: never;
     path?: never;

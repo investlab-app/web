@@ -54,6 +54,7 @@ const enInstruments = {
     volume: 'Number of shares traded today',
     load_more: 'Load more instruments from the list',
   },
+  browse_instruments: 'Browse Instruments',
 };
 
 export default enInstruments;

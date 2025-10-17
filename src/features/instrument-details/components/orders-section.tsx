@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BuySellContainer } from './buy-sell-action';
 import { StopLimitContainer } from './stop-limit-action';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 import {
   Card,
   CardContent,
@@ -43,7 +43,7 @@ export function OrdersSection({
       </CardHeader>
       <CardContent>
         {isError ? (
-          <Message message={t('orders.current_price_error')} />
+          <ErrorMessage message={t('orders.current_price_error')} />
         ) : isPending ? (
           <OrderSectionSkeleton />
         ) : (

@@ -8,8 +8,9 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
 import { newsListOptions } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 
 type NewsSectionProps = {
   ticker: string;
@@ -24,6 +25,7 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
   const {
     data: news,
     isPending,
+    isSuccess,
     isError,
   } = useQuery(
     newsListOptions({
@@ -33,11 +35,17 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
     })
   );
 
-  if (isPending) {
-    return (
-      <Card className={className}>
-        <NewsHeader />
-        <CardContent>
+  return (
+    <Card className={className}>
+      <NewsHeader />
+      <CardContent>
+        {isError && (
+          <ErrorMessage
+            className="text-muted-foreground"
+            message={t('instruments.errors.news_unavailable')}
+          />
+        )}
+        {isPending && (
           <div className="flex flex-col gap-4">
             {Array.from({ length: MAX_NEWS_ITEMS }).map((_, index) => (
               <div
@@ -56,69 +64,57 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (isError || news.length === 0) {
-    return (
-      <Card className={className}>
-        <NewsHeader />
-        <CardContent>
-          <Message
-            className="text-muted-foreground"
-            message={t('instruments.errors.news_unavailable')}
-          />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className={className}>
-      <NewsHeader />
-      <CardContent>
-        <div className="flex flex-col gap-4">
-          {news.slice(0, MAX_NEWS_ITEMS).map((newsItem, index) => {
-            return (
-              <div
-                key={index}
-                className="pb-4 border-b border-border last:border-b-0 last:pb-0"
-              >
-                <Link
-                  to={newsItem.article_url ?? undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex gap-4 hover:[&_h3]:underline"
-                >
-                  {newsItem.image_url && (
-                    <img
-                      src={newsItem.image_url}
-                      className="w-20 h-20 rounded object-cover flex-shrink-0"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  )}
-                  <div className="flex flex-col gap-2">
-                    <h3 className="font-bold line-clamp-2">{newsItem.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {newsItem.description}
-                    </p>
-                    <span className="text-xs text-muted-foreground block">
-                      {newsItem.published_utc
-                        ? formatTimeAgo(newsItem.published_utc)
-                        : 'Unknown date'}
-                      <span className="mx-2">|</span>
-                      {newsItem.author}
-                    </span>
+        )}
+        {isSuccess &&
+          (news.length === 0 ? (
+            <EmptyMessage
+              className="text-muted-foreground"
+              message={t('instruments.errors.news_unavailable')}
+            />
+          ) : (
+            <div className="flex flex-col gap-4">
+              {news.slice(0, MAX_NEWS_ITEMS).map((newsItem, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="pb-4 border-b border-border last:border-b-0 last:pb-0"
+                  >
+                    <Link
+                      to={newsItem.article_url ?? undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex gap-4 hover:[&_h3]:underline"
+                    >
+                      {newsItem.image_url && (
+                        <img
+                          src={newsItem.image_url}
+                          className="w-20 h-20 rounded object-cover flex-shrink-0"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <div className="flex flex-col gap-2">
+                        <h3 className="font-bold line-clamp-2">
+                          {newsItem.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {newsItem.description}
+                        </p>
+                        <span className="text-xs text-muted-foreground block">
+                          {newsItem.published_utc
+                            ? formatTimeAgo(newsItem.published_utc)
+                            : 'Unknown date'}
+                          <span className="mx-2">|</span>
+                          {newsItem.author}
+                        </span>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          ))}
       </CardContent>
     </Card>
   );

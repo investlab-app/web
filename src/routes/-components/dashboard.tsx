@@ -1,7 +1,7 @@
 import AccountOverviewRibbon from '@/features/home/components/account-overview-ribbon';
 import AssetAllocationContainer from '@/features/home/components/asset-allocation-container';
 import { AccountValueChartContainer } from '@/features/home/components/account-value-chart-container';
-import AssetTableContainer from '@/features/home/components/asset-table-container';
+import { AssetTableContainer } from '@/features/home/components/asset-table-container';
 import AppFrame from '@/features/shared/components/app-frame';
 
 export function Dashboard() {

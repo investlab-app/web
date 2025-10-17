@@ -2,11 +2,12 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { routeTree } from './routeTree.gen';
 import { WSProvider } from './features/shared/providers/ws-provider.tsx';
 import { Conditional } from './features/shared/components/conditional.tsx';
@@ -36,6 +37,11 @@ const queryClient = new QueryClient({
       },
     },
   },
+  queryCache: new QueryCache({ 
+    onError: (error: Error) => { // cache-level queries error handler
+      toast.error(`API Error: ${error.message}`);
+    },
+  }), 
 });
 
 export type RouterContext = {

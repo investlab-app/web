@@ -2,7 +2,6 @@
 
 import { z } from 'zod';
 
-<<<<<<< HEAD
 /**
  * Serializer for AccountValueSnapshot model.
  */
@@ -11,17 +10,6 @@ export const zAccountValueSnapshotDaily = z.object({
     value: z.number()
 });
 
-=======
-export const zAccountValueData = z.object({
-    date: z.iso.date(),
-    value: z.number()
-});
-
-export const zAccountValueOverTime = z.object({
-    data: z.array(zAccountValueData)
-});
-
->>>>>>> feature/pwa
 export const zAssetAllocationItem = z.object({
     instrument_name: z.string().max(255),
     instrument_ticker: z.string().max(20),
@@ -314,9 +302,13 @@ export const zInstrumentWithPrice = z.object({
 
 export const zInvestor = z.object({
     id: z.uuid().readonly(),
-    clerk_id: z.string().readonly()
+    clerk_id: z.string().readonly(),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
+/**
+ * Serializer for investor statistics data.
+ */
 export const zInvestorStats = z.object({
     todays_return: z.number(),
     total_return: z.number(),
@@ -327,11 +319,13 @@ export const zInvestorStats = z.object({
 export const zInvestorUpdate = z.object({
     id: z.uuid().readonly(),
     clerk_id: z.string().readonly(),
-    language: z.optional(z.string().max(10))
+    language: z.optional(z.string().max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 export const zInvestorUpdateRequest = z.object({
-    language: z.optional(z.string().min(1).max(10))
+    language: z.optional(z.string().min(1).max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 /**
@@ -494,15 +488,6 @@ export const zMostTradedItem = z.object({
     total_return: z.number()
 });
 
-export const zOrder = z.object({
-    id: z.uuid().readonly(),
-    ticker: zInstrumentName,
-    detail: z.record(z.string(), z.unknown()).readonly()
-});
-
-<<<<<<< HEAD
-export const zOwnedShare = z.object({
-=======
 export const zNotificationConfig = z.object({
     id: z.uuid().readonly(),
     is_email: z.optional(z.boolean()),
@@ -539,8 +524,7 @@ export const zOrder = z.object({
     detail: zMarketOrder
 });
 
-export const zOwnedShareItem = z.object({
->>>>>>> feature/pwa
+export const zOwnedShare = z.object({
     name: z.string().max(100),
     symbol: z.string().max(10),
     volume: z.number(),
@@ -573,6 +557,19 @@ export const zPaginatedInstrumentWithPriceList = z.object({
         z.null()
     ])),
     results: z.array(zInstrumentWithPrice)
+});
+
+export const zPaginatedMostTradedItemList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zMostTradedItem)
 });
 
 export const zPaginatedOrderList = z.object({
@@ -618,34 +615,9 @@ export const zPaginatedPriceAlertList = z.object({
     results: z.array(zPriceAlert)
 });
 
-export const zPaginatedMostTradedItemList = z.object({
-    count: z.int(),
-    next: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    previous: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    results: z.array(zMostTradedItem)
-});
-
-export const zPaginatedOrderList = z.object({
-    count: z.int(),
-    next: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    previous: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    results: z.array(zOrder)
-});
-
 export const zPatchedInvestorUpdateRequest = z.object({
-    language: z.optional(z.string().min(1).max(10))
+    language: z.optional(z.string().min(1).max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 export const zPatchedPriceAlertRequest = z.object({
@@ -805,16 +777,15 @@ export const zTradingOverview = z.object({
     total_return: z.number()
 });
 
-<<<<<<< HEAD
+export const zVapidPublicKey = z.object({
+    public_key: z.string()
+});
+
 /**
  * Serializer for AccountValueSnapshot model.
  */
 export const zAccountValueSnapshotDailyWritable = z.object({
     value: z.number()
-=======
-export const zVapidPublicKey = z.object({
-    public_key: z.string()
->>>>>>> feature/pwa
 });
 
 export const zInstrumentListWritable = z.object({
@@ -950,8 +921,13 @@ export const zInstrumentWithPriceWritable = z.object({
     ]))
 });
 
+export const zInvestorWritable = z.object({
+    watching_instruments: z.optional(z.array(z.uuid()))
+});
+
 export const zInvestorUpdateWritable = z.object({
-    language: z.optional(z.string().max(10))
+    language: z.optional(z.string().max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 export const zNotificationConfigWritable = z.object({
@@ -983,10 +959,6 @@ export const zPriceAlertCreateRequestWritable = z.object({
     threshold_type: zThresholdTypeEnum,
     threshold_value: z.string().regex(/^-?\d{0,8}(?:\.\d{0,2})?$/),
     notification_config: zNotificationConfigCreateRequestWritable
-});
-
-export const zOrderWritable = z.object({
-    ticker: zInstrumentName
 });
 
 export const zAuthSignInCreateData = z.object({
@@ -1204,8 +1176,6 @@ export const zNewsListData = z.object({
 
 export const zNewsListResponse = z.array(zTickerNews);
 
-<<<<<<< HEAD
-=======
 export const zNotificationsVapidPublicKeyRetrieveData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
@@ -1214,7 +1184,6 @@ export const zNotificationsVapidPublicKeyRetrieveData = z.object({
 
 export const zNotificationsVapidPublicKeyRetrieveResponse = zVapidPublicKey;
 
->>>>>>> feature/pwa
 export const zOrdersListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),

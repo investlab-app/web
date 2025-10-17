@@ -6,7 +6,7 @@ import {
   PositionsTableHeader,
 } from '@/features/transactions/components/positions-table';
 import { PositionRow } from '@/features/transactions/components/position-row';
-import { Message } from '@/features/shared/components/error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Table, TableBody } from '@/features/shared/components/ui/table';
 import {
@@ -19,6 +19,7 @@ import {
   investorsMeTransactionsHistoryListOptions,
   pricesRetrieveOptions,
 } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -68,9 +69,9 @@ export function TransactionsHistorySection({
         {isPending ? (
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (
-          <Message message={t('transactions.error_loading')} />
+          <ErrorMessage message={t('transactions.error_loading')} />
         ) : !tickerTransactions.length ? (
-          <Message message={t('transactions.no_open_positions')} />
+          <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
           <>
             <BuySellContainer
