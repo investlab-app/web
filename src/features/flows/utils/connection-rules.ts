@@ -8,6 +8,7 @@ export const allowedConnections = {
   [SuperNodeTypes.Connector]: [
     SuperNodeTypes.Connector,
     SuperNodeTypes.FlowThenElse,
+    SuperNodeTypes.FlowThen,
   ],
   [SuperNodeTypes.FlowIf]: [SuperNodeTypes.Rule],
   [SuperNodeTypes.FlowThenElse]: [SuperNodeTypes.Action, SuperNodeTypes.FlowIf],
