@@ -102,9 +102,9 @@ code {
   --card-foreground-hex: rgb(15, 15, 15);
   --primary-hex: #6d48bf;
 
-  --node-predicate: oklch(74.366% 0.1009 241.416);
-  --node-trigger: oklch(86.096% 0.0881 99.427);
-  --node-action: oklch(83.744% 0.15703 144.26);
+  --node-predicate: oklch(89.253% 0.05945 238.538);
+  --node-trigger: oklch(96.16% 0.07719 98.942);
+  --node-action: oklch(93.199% 0.12425 145.158);
 }
 
 .dark {
