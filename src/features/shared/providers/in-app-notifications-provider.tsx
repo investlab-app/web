@@ -1,6 +1,5 @@
 import { use, useEffect } from 'react';
 import { toast } from 'sonner';
-import { type } from 'arktype';
 import { inAppNotification } from '../types/in-app-notification';
 import { WSContext } from './ws-provider';
 
@@ -18,10 +17,12 @@ export function InAppNotificationsProvider({
   }
 
   useEffect(() => {
-    const notificationData = inAppNotification(wsContext.ws.lastJsonMessage);
-    if (notificationData instanceof type.errors) return;
+    const notificationData = inAppNotification.safeParse(
+      wsContext.ws.lastJsonMessage
+    );
+    if (notificationData.error) return;
 
-    const notification = notificationData.notification;
+    const notification = notificationData.data.notification;
 
     toast.info(notification.title, {
       description: notification.body,
