@@ -10,7 +10,7 @@
 **Allowed Connections:**
 
 - Incoming from: `Rule`, `Connector`
-- Outgoing to: `Connector`, `FlowThenElse`
+- Outgoing to: `Connector`, `FlowThenElse`, `FlowThen`
 
 **Types:**
 
