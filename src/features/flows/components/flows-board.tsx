@@ -23,7 +23,7 @@ import { IfNode } from '../nodes/flow/if-node';
 import { ThenElseNode } from '../nodes/flow/then-else-node';
 import { ThenNode } from '../nodes/flow/then-node';
 import { HappensWithinNode } from '../nodes/rule/happens-within-node';
-import { DnDSidebar } from './dnd-sidebar';
+import { DnDSidebar } from './sidebar/dnd-sidebar';
 import { SaveButton } from './execute-button';
 import type {
   Connection,
