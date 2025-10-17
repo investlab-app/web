@@ -1,5 +1,5 @@
-import { type } from 'arktype';
 import { useCallback } from 'react';
+import { z } from 'zod';
 import { formatChartDateByRange } from '../utils/chart-formatting';
 import { useChartOptions } from './use-chart-options';
 import type {
@@ -45,13 +45,15 @@ export function useLineChartOptions({
         tooltip: true,
         i18n,
       });
+      const valueSchema = z.number();
+      const parseResult = valueSchema.safeParse(data);
 
-      const value = type('number')(data);
-
-      if (value instanceof type.errors) {
-        console.error('Invalid line chart data format', value);
+      if (!parseResult.success) {
+        console.error('Invalid line chart data format', parseResult.error);
         return '';
       }
+
+      const value = parseResult.data;
 
       return `<div>
 <strong>${formattedDate}</strong>

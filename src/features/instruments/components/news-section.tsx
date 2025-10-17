@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import { newsQueryOptions } from '../queries/fetch-news';
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Message } from '@/features/shared/components/error-message';
+import { newsListOptions } from '@/client/@tanstack/react-query.gen';
 
 type NewsSectionProps = {
   ticker: string;
@@ -25,7 +25,13 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
     data: news,
     isPending,
     isError,
-  } = useQuery(newsQueryOptions({ ticker }));
+  } = useQuery(
+    newsListOptions({
+      query: {
+        ticker,
+      },
+    })
+  );
 
   if (isPending) {
     return (
@@ -81,7 +87,7 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
                 className="pb-4 border-b border-border last:border-b-0 last:pb-0"
               >
                 <Link
-                  to={newsItem.article_url}
+                  to={newsItem.article_url ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex gap-4 hover:[&_h3]:underline"
@@ -101,7 +107,9 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
                       {newsItem.description}
                     </p>
                     <span className="text-xs text-muted-foreground block">
-                      {formatTimeAgo(newsItem.published_utc)}
+                      {newsItem.published_utc
+                        ? formatTimeAgo(newsItem.published_utc)
+                        : 'Unknown date'}
                       <span className="mx-2">|</span>
                       {newsItem.author}
                     </span>

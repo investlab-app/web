@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type } from 'arktype';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
-import { instrumentHistoryQueryOptions } from '../queries/fetch-instrument-history';
 import { Message } from '../../shared/components/error-message';
 import { StockChart, StockChartSkeleton } from './stock-chart';
 import type { TimeInterval } from '../utils/time-ranges';
@@ -39,6 +37,9 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from '@/features/shared/components/ui/toggle-group';
+import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
+import { pricesBars } from '@/client';
+import { roundDateToMinute, serialize } from '@/features/shared/utils/date';
 
 interface StockChartProps {
   ticker: string;
@@ -63,29 +64,48 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const [isCandlestick, setIsCandlestick] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<InstrumentPricePoint>();
 
+  const query = {
+    ticker,
+    interval,
+    start_date: serialize(roundDateToMinute(startDate)),
+    end_date: serialize(roundDateToMinute(endDate)),
+  };
+
   const {
     data: priceHistory,
     isPending,
     isFetching,
     isSuccess,
     isError,
-  } = useQuery(
-    instrumentHistoryQueryOptions({
-      ticker,
-      startDate,
-      endDate,
-      interval,
-    })
-  );
+  } = useQuery({
+    queryKey: pricesBarsQueryKey({ query }),
+    queryFn: async () => {
+      const bars = await pricesBars({ query });
+
+      if (!bars.data) {
+        console.error(`Error fetching price bars: ${bars.error}`);
+        throw new Error(`Error fetching price bars: ${bars.error}`);
+      }
+
+      return bars.data.map((item) => ({
+        date: item.timestamp,
+        open: parseFloat(item.open),
+        close: parseFloat(item.close),
+        high: parseFloat(item.high),
+        low: parseFloat(item.low),
+      }));
+    },
+    gcTime: 60_000, // 1 minute
+  });
 
   const { lastJsonMessage } = useWS([ticker]);
 
   useEffect(() => {
     if (lastJsonMessage) {
-      const out = livePrice(lastJsonMessage);
-      if (out instanceof type.errors) return;
+      const out = livePrice.safeParse(lastJsonMessage);
+      if (!out.success) return;
 
-      const tickerData = out.prices.find((item) => item.symbol === ticker);
+      const tickerData = out.data.prices.find((item) => item.symbol === ticker);
       if (!tickerData) return;
 
       setCurrentPrice({
@@ -106,7 +126,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
   // happens with yearly interval for polygon since it's capped to past 5 years
-  const zoom = Math.max(0.1, 0.9 - (priceHistory ?? []).length / 100);
+  const zoom = Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100);
 
   return (
     <Card>
@@ -127,12 +147,41 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               variant="outline"
               aria-label="Toggle chart type"
             >
-              <ToggleGroupItem value="line" aria-label="Line chart">
-                <LineChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
-              <ToggleGroupItem value="candle" aria-label="Candlestick chart">
-                <CandlestickChartIcon strokeWidth={1.5} />
-              </ToggleGroupItem>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ToggleGroupItem value="line" aria-label="Line chart">
+                    <LineChartIcon strokeWidth={1.5} />
+                  </ToggleGroupItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.line_chart',
+                      'Display price data as a simple line chart'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <ToggleGroupItem
+                      value="candle"
+                      aria-label="Candlestick chart"
+                    >
+                      <CandlestickChartIcon strokeWidth={1.5} />
+                    </ToggleGroupItem>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.candlestick_chart',
+                      'Display detailed candlestick chart with open, high, low, close data'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </ToggleGroup>
             <Select
               value={interval}

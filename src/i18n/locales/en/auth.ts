@@ -50,6 +50,12 @@ const enAuth = {
     description:
       'Please wait while we sign you in securely with your provider.',
   },
+  acceptTermsPrivacy: {
+    byClickingContinueYouAgreeToOur: 'By clicking continue, you agree to our',
+    termsOfService: 'Terms of Service',
+    and: 'and',
+    privacyPolicy: 'Privacy Policy',
+  },
 };
 
 export default enAuth;

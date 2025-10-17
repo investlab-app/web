@@ -2,7 +2,7 @@ import { useSignIn } from '@clerk/clerk-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { ResultAsync, err, ok } from 'neverthrow';
-import { match, type } from 'arktype';
+import { z } from 'zod';
 import { ErrorAlert } from './error-alert';
 import { useAppForm } from '@/features/shared/hooks/use-app-form';
 import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google';
@@ -50,20 +50,26 @@ export function LoginForm({ pageError }: LoginFormProps) {
             ? t('auth.unknown_error', { cause: e.message })
             : t('auth.could_not_verify_email')
       )
-        .andThen((signInResource) =>
-          match({
-            "'complete'": () =>
-              signInResource.createdSessionId
+        .andThen((signInResource) => {
+          switch (signInResource.status) {
+            case 'complete':
+              return signInResource.createdSessionId
                 ? ok(signInResource.createdSessionId)
-                : err('No session created'),
-            "'needs_first_factor'": () => err(t('auth.needs_first_factor')),
-            "'needs_second_factor'": () => err(t('auth.needs_second_factor')),
-            "'needs_identifier'": () => err(t('auth.needs_identifier')),
-            "'needs_new_password'": () => err(t('auth.needs_new_password')),
-            null: () => err(t('auth.could_not_sign_in')),
-            default: 'never',
-          })(signInResource.status)
-        )
+                : err('No session created');
+            case 'needs_first_factor':
+              return err(t('auth.needs_first_factor'));
+            case 'needs_second_factor':
+              return err(t('auth.needs_second_factor'));
+            case 'needs_identifier':
+              return err(t('auth.needs_identifier'));
+            case 'needs_new_password':
+              return err(t('auth.needs_new_password'));
+            case null:
+              return err(t('auth.could_not_sign_in'));
+            default:
+              throw new Error('Unexpected status');
+          }
+        })
         .match(
           (sessionId) => {
             setActive({ session: sessionId });
@@ -87,18 +93,14 @@ export function LoginForm({ pageError }: LoginFormProps) {
         <CardDescription>{t('auth.login_form_desc')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <ErrorAlert errors={[pageError]} />
+        <ErrorAlert errors={pageError ? [pageError] : []} />
         <ContinueWithGoogle />
         <Divider text={t('auth.or_continue')} backgroundClass="bg-card" />
         <form className="flex flex-col gap-4">
           <form.AppField
             name="email"
             validators={{
-              onChange: type('string.email')
-                .configure({
-                  message: t('auth.invalid_email'),
-                })
-                .pipe(() => undefined),
+              onBlur: z.email(t('auth.invalid_email')),
             }}
             children={(field) => (
               <>
@@ -111,7 +113,11 @@ export function LoginForm({ pageError }: LoginFormProps) {
                   autoComplete="email"
                   required
                 />
-                <ErrorAlert errors={field.state.meta.errors} />
+                <ErrorAlert
+                  errors={field.state.meta.errors
+                    .filter((e) => e != null)
+                    .map((e) => e.message)}
+                />
               </>
             )}
           />
@@ -135,7 +141,9 @@ export function LoginForm({ pageError }: LoginFormProps) {
                   autoComplete="current-password"
                   required
                 />
-                <ErrorAlert errors={field.state.meta.errors} />
+                <ErrorAlert
+                  errors={field.state.meta.errors.filter((e) => e != undefined)}
+                />
               </>
             )}
           />

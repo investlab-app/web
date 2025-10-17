@@ -1,4 +1,4 @@
-import { IconSearch } from '@tabler/icons-react';
+import { Search } from 'lucide-react';
 import type { ChangeEvent } from 'react';
 
 type SearchInputProps = {
@@ -18,7 +18,7 @@ function SearchInput({
     <div
       className={`flex items-center gap-2 border border-input bg-background rounded-md px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${className}`}
     >
-      <IconSearch className="text-muted-foreground w-4 h-4" />
+      <Search className="text-muted-foreground w-4 h-4" />
       <input
         type="text"
         value={value}

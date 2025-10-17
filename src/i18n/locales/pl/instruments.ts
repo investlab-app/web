@@ -47,6 +47,14 @@ const plInstruments = {
       create_alert: 'Utwórz alert',
     },
   },
+  tooltips: {
+    symbol: 'Symbol giełdowy instrumentu do identyfikacji',
+    name: 'Pełna nazwa spółki lub instrumentu',
+    current_price: 'Aktualna cena rynkowa za akcję',
+    day_change: 'Procentowa zmiana ceny od poprzedniego dnia handlowego',
+    volume: 'Liczba akcji handlowanych dzisiaj',
+    load_more: 'Załaduj więcej instrumentów z listy',
+  },
 };
 
 export default plInstruments;

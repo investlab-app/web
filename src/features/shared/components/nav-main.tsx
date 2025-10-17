@@ -1,7 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { WalletSection } from './wallet-section';
 import type { LinkProps } from '@tanstack/react-router';
-import type { Icon } from '@tabler/icons-react';
+import type { LucideIcon } from 'lucide-react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,14 +13,15 @@ import {
 export interface NavItem {
   title: string;
   to: LinkProps['to'];
-  icon: Icon;
+  icon: LucideIcon;
   target?: string;
+  tooltip?: string;
 }
 
 export function NavMain({ items }: { items: Array<NavItem> }) {
   const { location } = useRouterState();
   return (
-    <SidebarGroup>
+    <SidebarGroup className="overflow-hidden">
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <WalletSection />
@@ -29,7 +30,7 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
-                  tooltip={item.title}
+                  tooltip={item.tooltip || item.title}
                   asChild
                   isActive={isActive}
                 >

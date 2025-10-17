@@ -41,16 +41,7 @@ i18n
     },
 
     interpolation: {
-      format: (value, _format, lng) => {
-        if (value instanceof Date) {
-          return new Intl.DateTimeFormat(lng, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }).format(value);
-        }
-        return value;
-      },
+      escapeValue: false, // react already safes from xss
     },
 
     resources: {

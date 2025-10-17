@@ -33,10 +33,10 @@ export function LanguageToggle() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="size-7">
-          <div className="font-semibold"> {currentLang.symbol} </div>
+          {currentLang.symbol}
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>

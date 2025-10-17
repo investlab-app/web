@@ -17,18 +17,18 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
-  IconChevronDown,
-  IconChevronLeft,
-  IconChevronRight,
-  IconChevronsLeft,
-  IconChevronsRight,
-  IconCircleCheckFilled,
-  IconDotsVertical,
-  IconGripVertical,
-  IconLayoutColumns,
-  IconLoader,
-  IconPlus,
-} from '@tabler/icons-react';
+  CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Columns,
+  GripVertical,
+  Loader,
+  MoreVertical,
+  Plus,
+} from 'lucide-react';
 import {
   flexRender,
   getCoreRowModel,
@@ -40,8 +40,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { toast } from 'sonner';
-import { type } from 'arktype';
 import ReactECharts from 'echarts-for-react';
+import { z } from 'zod';
 import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 import type {
   ColumnDef,
@@ -98,14 +98,14 @@ import {
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
 
-export const schema = type({
-  id: 'number',
-  header: 'string',
-  type: 'string',
-  status: 'string',
-  target: 'string',
-  limit: 'string',
-  reviewer: 'string',
+export const schema = z.object({
+  id: z.number(),
+  header: z.string(),
+  type: z.string(),
+  status: z.string(),
+  target: z.string(),
+  limit: z.string(),
+  reviewer: z.string(),
 });
 
 // Create a separate component for the drag handle
@@ -122,13 +122,13 @@ function DragHandle({ id }: { id: number }) {
       size="icon"
       className="text-muted-foreground size-7 hover:bg-transparent"
     >
-      <IconGripVertical className="text-muted-foreground size-3" />
+      <GripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
   );
 }
 
-const columns: Array<ColumnDef<typeof schema.infer>> = [
+const columns: Array<ColumnDef<z.infer<typeof schema>>> = [
   {
     id: 'drag',
     header: () => null,
@@ -183,11 +183,14 @@ const columns: Array<ColumnDef<typeof schema.infer>> = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
+      <Badge
+        variant="outline"
+        className="text-muted-foreground px-1.5 flex items-center gap-1"
+      >
         {row.original.status === 'Done' ? (
-          <IconCircleCheckFilled className="fill-[var(--green)] dark:fill-[var(--green)]" />
+          <CheckCircle2 className="text-green-500 size-4" />
         ) : (
-          <IconLoader />
+          <Loader className="animate-spin size-4" />
         )}
         {row.original.status}
       </Badge>
@@ -287,7 +290,7 @@ const columns: Array<ColumnDef<typeof schema.infer>> = [
             className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
             size="icon"
           >
-            <IconDotsVertical />
+            <MoreVertical />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -303,7 +306,7 @@ const columns: Array<ColumnDef<typeof schema.infer>> = [
   },
 ];
 
-function DraggableRow({ row }: { row: Row<typeof schema.infer> }) {
+function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -331,7 +334,7 @@ function DraggableRow({ row }: { row: Row<typeof schema.infer> }) {
 export function DataTable({
   data: initialData,
 }: {
-  data: Array<typeof schema.infer>;
+  data: Array<z.infer<typeof schema>>;
 }) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -431,10 +434,10 @@ export function DataTable({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
-                <IconLayoutColumns />
+                <Columns />
                 <span className="hidden lg:inline">Customize Columns</span>
                 <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
+                <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -462,7 +465,7 @@ export function DataTable({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button variant="outline" size="sm">
-            <IconPlus />
+            <Plus />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
         </div>
@@ -564,7 +567,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
-                <IconChevronsLeft />
+                <ChevronsLeft />
               </Button>
               <Button
                 variant="outline"
@@ -574,7 +577,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
-                <IconChevronLeft />
+                <ChevronLeft />
               </Button>
               <Button
                 variant="outline"
@@ -584,7 +587,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
-                <IconChevronRight />
+                <ChevronRight />
               </Button>
               <Button
                 variant="outline"
@@ -594,7 +597,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>
-                <IconChevronsRight />
+                <ChevronsRight />
               </Button>
             </div>
           </div>
@@ -628,7 +631,7 @@ const chartData = [
   { month: 'June', desktop: 214, mobile: 140 },
 ];
 
-function TableCellViewer({ item }: { item: typeof schema.infer }) {
+function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile();
 
   // Prepare data for ECharts

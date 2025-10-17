@@ -46,6 +46,14 @@ const enInstruments = {
       create_alert: 'Create Alert',
     },
   },
+  tooltips: {
+    symbol: 'Stock ticker symbol for identification',
+    name: 'Full company or instrument name',
+    current_price: 'Current market price per share',
+    day_change: 'Price change percentage from previous trading day',
+    volume: 'Number of shares traded today',
+    load_more: 'Load more instruments from the list',
+  },
 };
 
 export default enInstruments;

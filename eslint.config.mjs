@@ -5,10 +5,11 @@ import youMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-e
 import pluginRouter from '@tanstack/eslint-plugin-router';
 import pluginQuery from '@tanstack/eslint-plugin-query';
 import { tanstackConfig } from '@tanstack/eslint-config';
-import { globalIgnores } from 'eslint/config';
 
 export default [
-  globalIgnores(['dev-dist/registerSW.js']),
+  {
+    ignores: ['dev-dist/registerSW.js', '**/*.gen*'],
+  },
   ...tseslint.configs.recommended,
   ...tanstackConfig,
   ...pluginRouter.configs['flat/recommended'],

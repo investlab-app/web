@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { getProfabilityColor } from '../utils/colors';
-import type { HistoryEntry } from '../types/types';
+import { getProfabilityColor } from '../../shared/utils/colors';
+import type { HistoryEntry } from '@/client/types.gen';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { dateToLocale } from '@/features/shared/utils/date';
@@ -17,12 +17,12 @@ export function TransactionRow({ entry }: HistoryRowProps) {
     <TableRow className="bg-muted/5">
       <TableCell className={`text-muted-foreground flex items-center gap-2`}>
         <Badge
-          aria-label={dateToLocale(new Date(entry.date), i18n.language)}
+          aria-label={dateToLocale(entry.date, i18n.language)}
           title={entry.date}
           variant="secondary"
           className="min-w-24"
         >
-          {dateToLocale(new Date(entry.date), i18n.language)}
+          {dateToLocale(entry.date, i18n.language)}
         </Badge>
         <Badge variant="outline" className="min-w-20">
           {entry.type === 'BUY'

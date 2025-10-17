@@ -6,6 +6,8 @@ import {
 } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import { LanguageToggle } from '@/features/shared/components/language-toggle';
+import { ThemeToggle } from '@/features/shared/components/mode-toggle';
 
 export const Route = createFileRoute('/_auth')({
   component: RouteComponent,
@@ -22,6 +24,14 @@ function RouteComponent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-purple-800/15 dark:from-purple-900/30 dark:via-blue-900/20 dark:to-purple-800/25">
+      <div className="w-full">
+        <nav className="flex justify-end h-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
+        </nav>
+      </div>
       <div className="flex flex-col items-center justify-center py-8 px-4">
         <Link to="/" className="flex items-center gap-2 py-6">
           <InvestLabLogo className="size-8" width={32} height={32} />

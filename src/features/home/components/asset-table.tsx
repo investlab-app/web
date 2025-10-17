@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import type { OwnedShareItem } from '../types/types';
+import type { OwnedShareItem } from '@/client/types.gen';
 import {
   Table,
   TableBody,

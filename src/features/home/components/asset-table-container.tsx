@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { fetchOwnedShares } from '../queries/fetch-owned-shares';
+import { useQuery } from '@tanstack/react-query';
 import AssetTable from './asset-table';
-import type { OwnedShareItem as Asset } from '../types/types';
+import type { OwnedShareItem } from '@/client';
 import {
   Card,
   CardContent,
@@ -11,15 +10,11 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Message } from '@/features/shared/components/error-message';
-
-export const ownedSharesQueryOptions = queryOptions({
-  queryKey: ['owned-shares'],
-  queryFn: fetchOwnedShares,
-});
+import { investorsMeOwnedSharesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 const AssetTableContainer = () => {
   const { t } = useTranslation();
-  const handleAssetPressed = (asset: Asset) => {
+  const handleAssetPressed = (asset: OwnedShareItem) => {
     void asset;
     // noop
   };
@@ -28,7 +23,7 @@ const AssetTableContainer = () => {
     data: ownedSharesData,
     isPending,
     isError,
-  } = useQuery(ownedSharesQueryOptions);
+  } = useQuery(investorsMeOwnedSharesRetrieveOptions());
 
   if (isError) {
     return <AssetTableContainer.Error />;

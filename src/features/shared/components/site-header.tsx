@@ -2,22 +2,35 @@ import { cn } from '../utils/styles';
 import { LanguageToggle } from './language-toggle';
 import { BreadcrumbNav } from './breadcrumb-nav';
 import { Separator } from '@/features/shared/components/ui/separator';
-import { SidebarTrigger } from '@/features/shared/components/ui/sidebar';
+import {
+  SidebarTrigger,
+  useSidebar,
+} from '@/features/shared/components/ui/sidebar';
 import { ThemeToggle } from '@/features/shared/components/mode-toggle';
 
 interface SiteHeaderProps {
   className?: string;
 }
 export function SiteHeader({ className }: SiteHeaderProps) {
+  const { isMobile, open } = useSidebar();
+
   return (
     <header
-      className={cn(
-        'z-1 flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)',
-        className
-      )}
+      className={cn('fixed z-1 top-0 right-0 bg-background', className)}
+      style={{
+        transitionTimingFunction: 'var(--ease-out)',
+        transitionDuration: '200ms',
+        transitionProperty: 'left',
+        left: open ? 'var(--sidebar-width)' : 'var(--sidebar-width-icon)',
+      }}
     >
-      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6 ">
-        <SidebarTrigger className="-ml-1" />
+      <div
+        className="h-(--header-height) border-b flex shrink-0 items-center gap-2 px-4"
+        style={{
+          marginLeft: isMobile ? 'calc(-1 * var(--sidebar-width-icon))' : '0',
+        }}
+      >
+        <SidebarTrigger className="-ml-1 text-foreground" />
         <Separator
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
