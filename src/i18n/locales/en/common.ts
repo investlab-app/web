@@ -10,6 +10,7 @@ const enCommon = {
   dashboard: 'Dashboard',
   stocks: 'Stocks',
   statistics: 'Statistics',
+  flows: 'flows',
   wallet: 'Wallet',
   add: 'Add',
   help: 'Help',

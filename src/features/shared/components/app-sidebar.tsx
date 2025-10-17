@@ -2,7 +2,13 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
-import { History, LayoutDashboardIcon, List, PieChart } from 'lucide-react';
+import {
+  History,
+  LayoutDashboardIcon,
+  List,
+  Network,
+  PieChart,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -68,6 +74,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         tooltip: t(
           'common.tooltips.navigation.statistics',
           'Analyze your portfolio performance and trends'
+        ),
+      },
+      {
+        title: t('common.flows'),
+        to: '/flows',
+        icon: Network,
+        tooltip: t(
+          'common.tooltips.navigation.flows',
+          'Create and manage your trading flows'
         ),
       },
     ],
