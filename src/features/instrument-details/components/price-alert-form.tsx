@@ -26,13 +26,15 @@ interface PriceAlertFormProps {
 }
 
 interface CreateSubscriptionRequest {
-  is_email: boolean;
-  is_push: boolean;
-  is_websocket: boolean;
-  push_subscription?: PushSubscriptionData;
   instrument_ticker: string;
   threshold_type: 'above' | 'below';
   threshold_value: number;
+  notification_config: {
+    is_email: boolean;
+    is_push: boolean;
+    is_websocket: boolean;
+    push_subscription?: PushSubscriptionData;
+  };
 }
 
 export function PriceAlertForm({ ticker, onSuccess }: PriceAlertFormProps) {
@@ -70,10 +72,12 @@ export function PriceAlertForm({ ticker, onSuccess }: PriceAlertFormProps) {
         instrument_ticker: ticker,
         threshold_type: value.thresholdType,
         threshold_value: value.thresholdValue,
-        push_subscription: subscriptionData,
-        is_email: value.isEmail,
-        is_push: value.isPush,
-        is_websocket: value.isInApp,
+        notification_config: {
+          push_subscription: subscriptionData,
+          is_email: value.isEmail,
+          is_push: value.isPush,
+          is_websocket: value.isInApp,
+        },
       });
     },
   });
@@ -81,7 +85,7 @@ export function PriceAlertForm({ ticker, onSuccess }: PriceAlertFormProps) {
   const createSubscriptionMutation = useMutation({
     mutationFn: (data: CreateSubscriptionRequest) =>
       httpRequest({
-        endpoint: '/api/notifications/price-alert/',
+        endpoint: '/api/prices/price-alert/',
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
