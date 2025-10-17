@@ -24,6 +24,28 @@ const enInstruments = {
     info_loading: 'Sorry, the instrument information could not be loaded.',
     news_unavailable: 'News are currently unavailable for this instrument.',
   },
+  price_alert_invalid_threshold: 'Please enter a valid threshold value',
+  price_alert: {
+    set_alert: 'Set Alert',
+    set_price_alert_for: 'Set Price Alert for {{ticker}}',
+    alert_description: 'Get notified when the price crosses your threshold.',
+    form: {
+      select_notification_method:
+        'Please select at least one notification method',
+      push_subscription_failed: 'Failed to subscribe to push notifications',
+      alert_created_successfully: 'Price alert created successfully',
+      alert_type: 'Alert Type',
+      alert_when_above: 'Alert when price goes above',
+      alert_when_below: 'Alert when price goes below',
+      threshold_value: 'Threshold Value',
+      enter_price_threshold: 'Enter price threshold',
+      notification_methods: 'Notification Methods',
+      in_app_notification: 'In-App Notification',
+      push_notification: 'Push Notification',
+      email_notification: 'Email Notification',
+      create_alert: 'Create Alert',
+    },
+  },
   tooltips: {
     symbol: 'Stock ticker symbol for identification',
     name: 'Full company or instrument name',

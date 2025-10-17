@@ -102,6 +102,12 @@ jobs:
           POLYGON_SECRET_KEY: ${{ secrets.POLYGON_SECRET_KEY }}
           ALPACA_PUBLIC_KEY: ${{ secrets.ALPACA_PUBLIC_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          EMAIL_BACKEND: ${{ secrets.EMAIL_BACKEND }}
+          EMAIL_FILE_PATH: ${{ secrets.EMAIL_FILE_PATH }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
         ports:
           - 8000:8000
         options: >-

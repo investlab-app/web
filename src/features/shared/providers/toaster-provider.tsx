@@ -7,7 +7,7 @@ export function ToasterProvider({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <Toaster theme={appTheme} />
+      <Toaster theme={appTheme} toastOptions={{ className: 'font-sans' }} />
     </>
   );
 }

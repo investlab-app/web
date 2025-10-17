@@ -3,8 +3,13 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
+<<<<<<< HEAD
 import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsList, investorsMeAccountValueList, investorsMeAssetAllocationRetrieve, investorsMeCurrentAccountValueRetrieve, investorsMeOwnedSharesRetrieve, investorsMeRetrieve, investorsMeStatisticsMostTradedList, investorsMeStatisticsProfileOverviewRetrieve, investorsMeStatisticsTradingOverviewRetrieve, investorsMeStatsRetrieve, investorsMeTransactionsHistoryList, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesRetrieve, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
 import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsListData, InvestorsListResponse, InvestorsMeAccountValueListData, InvestorsMeAssetAllocationRetrieveData, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeOwnedSharesRetrieveData, InvestorsMeRetrieveData, InvestorsMeStatisticsMostTradedListData, InvestorsMeStatisticsMostTradedListResponse, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatsRetrieveData, InvestorsMeTransactionsHistoryListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesRetrieveData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+=======
+import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsMeAccountValueRetrieve, investorsMeAssetAllocationRetrieve, investorsMeCurrentAccountValueRetrieve, investorsMeLanguageCreate, investorsMeOwnedSharesRetrieve, investorsMeRetrieve, investorsMeStatisticsMostTradedRetrieve, investorsMeStatisticsProfileOverviewRetrieve, investorsMeStatisticsTradingOverviewRetrieve, investorsMeStatsRetrieve, investorsMeTransactionsHistoryList, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsMeAccountValueRetrieveData, InvestorsMeAssetAllocationRetrieveData, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeLanguageCreateData, InvestorsMeLanguageCreateResponse, InvestorsMeOwnedSharesRetrieveData, InvestorsMeRetrieveData, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatsRetrieveData, InvestorsMeTransactionsHistoryListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+>>>>>>> feature/pwa
 
 /**
  * Sign in a user with email and password via Clerk
@@ -196,63 +201,8 @@ export const instrumentsWithPricesListInfiniteOptions = (options?: Options<Instr
     });
 };
 
-export const investorsListQueryKey = (options?: Options<InvestorsListData>) => createQueryKey('investorsList', options);
-
-/**
- * List investors
- * Get a paginated list of investors with optional search filtering.
- */
-export const investorsListOptions = (options?: Options<InvestorsListData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsList({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsListQueryKey(options)
-    });
-};
-
-export const investorsListInfiniteQueryKey = (options?: Options<InvestorsListData>): QueryKey<Options<InvestorsListData>> => createQueryKey('investorsList', options, true);
-
-/**
- * List investors
- * Get a paginated list of investors with optional search filtering.
- */
-export const investorsListInfiniteOptions = (options?: Options<InvestorsListData>) => {
-    return infiniteQueryOptions<InvestorsListResponse, DefaultError, InfiniteData<InvestorsListResponse>, QueryKey<Options<InvestorsListData>>, number | Pick<QueryKey<Options<InvestorsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
-    // @ts-ignore
-    {
-        queryFn: async ({ pageParam, queryKey, signal }) => {
-            // @ts-ignore
-            const page: Pick<QueryKey<Options<InvestorsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
-                query: {
-                    page: pageParam
-                }
-            };
-            const params = createInfiniteParams(queryKey, page);
-            const { data } = await investorsList({
-                ...options,
-                ...params,
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsListInfiniteQueryKey(options)
-    });
-};
-
 export const investorsRetrieveQueryKey = (options: Options<InvestorsRetrieveData>) => createQueryKey('investorsRetrieve', options);
 
-/**
- * Get investor
- * Retrieve a specific investor by ID.
- */
 export const investorsRetrieveOptions = (options: Options<InvestorsRetrieveData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -268,10 +218,6 @@ export const investorsRetrieveOptions = (options: Options<InvestorsRetrieveData>
     });
 };
 
-/**
- * Partially update investor
- * Partially update an investor's information.
- */
 export const investorsPartialUpdateMutation = (options?: Partial<Options<InvestorsPartialUpdateData>>): UseMutationOptions<InvestorsPartialUpdateResponse, DefaultError, Options<InvestorsPartialUpdateData>> => {
     const mutationOptions: UseMutationOptions<InvestorsPartialUpdateResponse, DefaultError, Options<InvestorsPartialUpdateData>> = {
         mutationFn: async (fnOptions) => {
@@ -286,10 +232,6 @@ export const investorsPartialUpdateMutation = (options?: Partial<Options<Investo
     return mutationOptions;
 };
 
-/**
- * Update investor
- * Update an investor's information.
- */
 export const investorsUpdateMutation = (options?: Partial<Options<InvestorsUpdateData>>): UseMutationOptions<InvestorsUpdateResponse, DefaultError, Options<InvestorsUpdateData>> => {
     const mutationOptions: UseMutationOptions<InvestorsUpdateResponse, DefaultError, Options<InvestorsUpdateData>> = {
         mutationFn: async (fnOptions) => {
@@ -386,6 +328,20 @@ export const investorsMeCurrentAccountValueRetrieveOptions = (options?: Options<
         },
         queryKey: investorsMeCurrentAccountValueRetrieveQueryKey(options)
     });
+};
+
+export const investorsMeLanguageCreateMutation = (options?: Partial<Options<InvestorsMeLanguageCreateData>>): UseMutationOptions<InvestorsMeLanguageCreateResponse, DefaultError, Options<InvestorsMeLanguageCreateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsMeLanguageCreateResponse, DefaultError, Options<InvestorsMeLanguageCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await investorsMeLanguageCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const investorsMeOwnedSharesRetrieveQueryKey = (options?: Options<InvestorsMeOwnedSharesRetrieveData>) => createQueryKey('investorsMeOwnedSharesRetrieve', options);
@@ -604,6 +560,26 @@ export const newsListOptions = (options?: Options<NewsListData>) => {
     });
 };
 
+<<<<<<< HEAD
+=======
+export const notificationsVapidPublicKeyRetrieveQueryKey = (options?: Options<NotificationsVapidPublicKeyRetrieveData>) => createQueryKey('notificationsVapidPublicKeyRetrieve', options);
+
+export const notificationsVapidPublicKeyRetrieveOptions = (options?: Options<NotificationsVapidPublicKeyRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await notificationsVapidPublicKeyRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: notificationsVapidPublicKeyRetrieveQueryKey(options)
+    });
+};
+
+>>>>>>> feature/pwa
 export const ordersListQueryKey = (options?: Options<OrdersListData>) => createQueryKey('ordersList', options);
 
 export const ordersListOptions = (options?: Options<OrdersListData>) => {
@@ -724,6 +700,122 @@ export const pricesBarsOptions = (options: Options<PricesBarsData>) => {
         },
         queryKey: pricesBarsQueryKey(options)
     });
+};
+
+export const pricesPriceAlertListQueryKey = (options?: Options<PricesPriceAlertListData>) => createQueryKey('pricesPriceAlertList', options);
+
+export const pricesPriceAlertListOptions = (options?: Options<PricesPriceAlertListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await pricesPriceAlertList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: pricesPriceAlertListQueryKey(options)
+    });
+};
+
+export const pricesPriceAlertListInfiniteQueryKey = (options?: Options<PricesPriceAlertListData>): QueryKey<Options<PricesPriceAlertListData>> => createQueryKey('pricesPriceAlertList', options, true);
+
+export const pricesPriceAlertListInfiniteOptions = (options?: Options<PricesPriceAlertListData>) => {
+    return infiniteQueryOptions<PricesPriceAlertListResponse, DefaultError, InfiniteData<PricesPriceAlertListResponse>, QueryKey<Options<PricesPriceAlertListData>>, number | Pick<QueryKey<Options<PricesPriceAlertListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<PricesPriceAlertListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await pricesPriceAlertList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: pricesPriceAlertListInfiniteQueryKey(options)
+    });
+};
+
+export const pricesPriceAlertCreateMutation = (options?: Partial<Options<PricesPriceAlertCreateData>>): UseMutationOptions<PricesPriceAlertCreateResponse, DefaultError, Options<PricesPriceAlertCreateData>> => {
+    const mutationOptions: UseMutationOptions<PricesPriceAlertCreateResponse, DefaultError, Options<PricesPriceAlertCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pricesPriceAlertCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const pricesPriceAlertDestroyMutation = (options?: Partial<Options<PricesPriceAlertDestroyData>>): UseMutationOptions<PricesPriceAlertDestroyResponse, DefaultError, Options<PricesPriceAlertDestroyData>> => {
+    const mutationOptions: UseMutationOptions<PricesPriceAlertDestroyResponse, DefaultError, Options<PricesPriceAlertDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pricesPriceAlertDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const pricesPriceAlertRetrieveQueryKey = (options: Options<PricesPriceAlertRetrieveData>) => createQueryKey('pricesPriceAlertRetrieve', options);
+
+export const pricesPriceAlertRetrieveOptions = (options: Options<PricesPriceAlertRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await pricesPriceAlertRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: pricesPriceAlertRetrieveQueryKey(options)
+    });
+};
+
+export const pricesPriceAlertPartialUpdateMutation = (options?: Partial<Options<PricesPriceAlertPartialUpdateData>>): UseMutationOptions<PricesPriceAlertPartialUpdateResponse, DefaultError, Options<PricesPriceAlertPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<PricesPriceAlertPartialUpdateResponse, DefaultError, Options<PricesPriceAlertPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pricesPriceAlertPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const pricesPriceAlertUpdateMutation = (options?: Partial<Options<PricesPriceAlertUpdateData>>): UseMutationOptions<PricesPriceAlertUpdateResponse, DefaultError, Options<PricesPriceAlertUpdateData>> => {
+    const mutationOptions: UseMutationOptions<PricesPriceAlertUpdateResponse, DefaultError, Options<PricesPriceAlertUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pricesPriceAlertUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const statusRetrieveQueryKey = (options?: Options<StatusRetrieveData>) => createQueryKey('statusRetrieve', options);

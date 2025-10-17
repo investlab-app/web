@@ -8,7 +8,7 @@ import { tanstackConfig } from '@tanstack/eslint-config';
 
 export default [
   {
-    ignores: ['**/*.gen*'],
+    ignores: ['dev-dist/registerSW.js', '**/*.gen*'],
   },
   ...tseslint.configs.recommended,
   ...tanstackConfig,

@@ -2,8 +2,13 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
+<<<<<<< HEAD
 import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsListData, InvestorsListResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMeAssetAllocationRetrieveData, InvestorsMeAssetAllocationRetrieveResponses, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeCurrentAccountValueRetrieveResponses, InvestorsMeOwnedSharesRetrieveData, InvestorsMeOwnedSharesRetrieveResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeStatisticsMostTradedListData, InvestorsMeStatisticsMostTradedListResponses, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveResponses, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveResponses, InvestorsMeStatsRetrieveData, InvestorsMeStatsRetrieveResponses, InvestorsMeTransactionsHistoryListData, InvestorsMeTransactionsHistoryListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, InvestorsUpdateData, InvestorsUpdateResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesRetrieveData, PricesRetrieveResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
 import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsListData, zInvestorsListResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMeAssetAllocationRetrieveData, zInvestorsMeAssetAllocationRetrieveResponse, zInvestorsMeCurrentAccountValueRetrieveData, zInvestorsMeCurrentAccountValueRetrieveResponse, zInvestorsMeOwnedSharesRetrieveData, zInvestorsMeOwnedSharesRetrieveResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeStatisticsMostTradedListData, zInvestorsMeStatisticsMostTradedListResponse, zInvestorsMeStatisticsProfileOverviewRetrieveData, zInvestorsMeStatisticsProfileOverviewRetrieveResponse, zInvestorsMeStatisticsTradingOverviewRetrieveData, zInvestorsMeStatisticsTradingOverviewRetrieveResponse, zInvestorsMeStatsRetrieveData, zInvestorsMeStatsRetrieveResponse, zInvestorsMeTransactionsHistoryListData, zInvestorsMeTransactionsHistoryListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zInvestorsUpdateData, zInvestorsUpdateResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+=======
+import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsMeAccountValueRetrieveData, InvestorsMeAccountValueRetrieveResponses, InvestorsMeAssetAllocationRetrieveData, InvestorsMeAssetAllocationRetrieveResponses, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeCurrentAccountValueRetrieveResponses, InvestorsMeLanguageCreateData, InvestorsMeLanguageCreateResponses, InvestorsMeOwnedSharesRetrieveData, InvestorsMeOwnedSharesRetrieveResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsMostTradedRetrieveResponses, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveResponses, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveResponses, InvestorsMeStatsRetrieveData, InvestorsMeStatsRetrieveResponses, InvestorsMeTransactionsHistoryListData, InvestorsMeTransactionsHistoryListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, InvestorsUpdateData, InvestorsUpdateResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
+import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsMeAccountValueRetrieveData, zInvestorsMeAccountValueRetrieveResponse, zInvestorsMeAssetAllocationRetrieveData, zInvestorsMeAssetAllocationRetrieveResponse, zInvestorsMeCurrentAccountValueRetrieveData, zInvestorsMeCurrentAccountValueRetrieveResponse, zInvestorsMeLanguageCreateData, zInvestorsMeLanguageCreateResponse, zInvestorsMeOwnedSharesRetrieveData, zInvestorsMeOwnedSharesRetrieveResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeStatisticsMostTradedRetrieveData, zInvestorsMeStatisticsMostTradedRetrieveResponse, zInvestorsMeStatisticsProfileOverviewRetrieveData, zInvestorsMeStatisticsProfileOverviewRetrieveResponse, zInvestorsMeStatisticsTradingOverviewRetrieveData, zInvestorsMeStatisticsTradingOverviewRetrieveResponse, zInvestorsMeStatsRetrieveData, zInvestorsMeStatsRetrieveResponse, zInvestorsMeTransactionsHistoryListData, zInvestorsMeTransactionsHistoryListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zInvestorsUpdateData, zInvestorsUpdateResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+>>>>>>> feature/pwa
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -103,33 +108,6 @@ export const instrumentsWithPricesList = <ThrowOnError extends boolean = false>(
     });
 };
 
-/**
- * List investors
- * Get a paginated list of investors with optional search filtering.
- */
-export const investorsList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsListData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsListResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsListData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsListResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/',
-        ...options
-    });
-};
-
-/**
- * Get investor
- * Retrieve a specific investor by ID.
- */
 export const investorsRetrieve = <ThrowOnError extends boolean = false>(options: Options<InvestorsRetrieveData, ThrowOnError>) => {
     return (options.client ?? client).get<InvestorsRetrieveResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
@@ -149,10 +127,6 @@ export const investorsRetrieve = <ThrowOnError extends boolean = false>(options:
     });
 };
 
-/**
- * Partially update investor
- * Partially update an investor's information.
- */
 export const investorsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<InvestorsPartialUpdateData, ThrowOnError>) => {
     return (options.client ?? client).patch<InvestorsPartialUpdateResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
@@ -176,10 +150,6 @@ export const investorsPartialUpdate = <ThrowOnError extends boolean = false>(opt
     });
 };
 
-/**
- * Update investor
- * Update an investor's information.
- */
 export const investorsUpdate = <ThrowOnError extends boolean = false>(options: Options<InvestorsUpdateData, ThrowOnError>) => {
     return (options.client ?? client).put<InvestorsUpdateResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
@@ -292,6 +262,29 @@ export const investorsMeCurrentAccountValueRetrieve = <ThrowOnError extends bool
         ],
         url: '/api/investors/me/current-account-value/',
         ...options
+    });
+};
+
+export const investorsMeLanguageCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeLanguageCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<InvestorsMeLanguageCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMeLanguageCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMeLanguageCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/language/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
     });
 };
 
@@ -499,6 +492,28 @@ export const newsList = <ThrowOnError extends boolean = false>(options?: Options
     });
 };
 
+<<<<<<< HEAD
+=======
+export const notificationsVapidPublicKeyRetrieve = <ThrowOnError extends boolean = false>(options?: Options<NotificationsVapidPublicKeyRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<NotificationsVapidPublicKeyRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsVapidPublicKeyRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsVapidPublicKeyRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/vapid-public-key/',
+        ...options
+    });
+};
+
+>>>>>>> feature/pwa
 export const ordersList = <ThrowOnError extends boolean = false>(options?: Options<OrdersListData, ThrowOnError>) => {
     return (options?.client ?? client).get<OrdersListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
@@ -614,6 +629,132 @@ export const pricesBars = <ThrowOnError extends boolean = false>(options: Option
         ],
         url: '/api/prices/bars/',
         ...options
+    });
+};
+
+export const pricesPriceAlertList = <ThrowOnError extends boolean = false>(options?: Options<PricesPriceAlertListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<PricesPriceAlertListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/',
+        ...options
+    });
+};
+
+export const pricesPriceAlertCreate = <ThrowOnError extends boolean = false>(options: Options<PricesPriceAlertCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<PricesPriceAlertCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+export const pricesPriceAlertDestroy = <ThrowOnError extends boolean = false>(options: Options<PricesPriceAlertDestroyData, ThrowOnError>) => {
+    return (options.client ?? client).delete<PricesPriceAlertDestroyResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertDestroyData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertDestroyResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/{id}/',
+        ...options
+    });
+};
+
+export const pricesPriceAlertRetrieve = <ThrowOnError extends boolean = false>(options: Options<PricesPriceAlertRetrieveData, ThrowOnError>) => {
+    return (options.client ?? client).get<PricesPriceAlertRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/{id}/',
+        ...options
+    });
+};
+
+export const pricesPriceAlertPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<PricesPriceAlertPartialUpdateData, ThrowOnError>) => {
+    return (options.client ?? client).patch<PricesPriceAlertPartialUpdateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertPartialUpdateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertPartialUpdateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/{id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+export const pricesPriceAlertUpdate = <ThrowOnError extends boolean = false>(options: Options<PricesPriceAlertUpdateData, ThrowOnError>) => {
+    return (options.client ?? client).put<PricesPriceAlertUpdateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zPricesPriceAlertUpdateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zPricesPriceAlertUpdateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/prices/price-alert/{id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
     });
 };
 

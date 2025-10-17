@@ -1,9 +1,10 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
-import viteReact from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
+import { VitePWA } from 'vite-plugin-pwa';
+import tailwindcss from '@tailwindcss/vite';
+import viteReact from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [
@@ -17,6 +18,41 @@ export default defineConfig({
       },
     }),
     tailwindcss(),
+    VitePWA({
+      srcDir: 'src',
+      filename: 'sw.ts',
+      strategies: 'injectManifest',
+      injectRegister: 'auto',
+      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
+      manifest: {
+        name: 'InvestLab',
+        short_name: 'InvestLab',
+        description: 'Paper trading',
+        theme_color: '#8640ef',
+        background_color: '#0a0a0a',
+        display: 'standalone',
+        icons: [
+          {
+            src: 'icons/logo192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'icons/logo512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+      injectManifest: {
+        globDirectory: 'dist',
+        globPatterns: ['**/*.{js,css,ico,png,svg,woff2}'],
+      },
+    }),
   ],
   build: {
     rollupOptions: {

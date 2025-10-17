@@ -1,13 +1,15 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode } from 'react';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { QueryClient } from '@tanstack/react-query';
+import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { ClerkLoaded, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
+import { useAuth, useClerk } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { routeTree } from './routeTree.gen';
 import { WSProvider } from './features/shared/providers/ws-provider.tsx';
-import { ConditionalProvider } from './features/shared/providers/conditional-provider.tsx';
+import { Conditional } from './features/shared/components/conditional.tsx';
 import {
   CLERK_PUBLIC_KEY,
   IS_PROD,
@@ -16,6 +18,8 @@ import {
 } from './features/shared/utils/constants.ts';
 import { ErrorComponent } from './features/shared/components/error-component.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
+import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
+import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
@@ -36,6 +40,7 @@ const queryClient = new QueryClient({
 
 export type RouterContext = {
   auth: ReturnType<typeof useAuth>;
+  isLoggedInBefore: boolean;
   i18n: ReturnType<typeof useTranslation>;
   queryClient: QueryClient;
 };
@@ -45,6 +50,7 @@ export const router = createRouter({
   context: {
     queryClient,
     auth: undefined!,
+    isLoggedInBefore: undefined!,
     i18n: undefined!,
   },
   defaultErrorComponent: ({ error }) => {
@@ -53,11 +59,38 @@ export const router = createRouter({
 });
 
 function App() {
-  const auth = useAuth();
+  const isOnline = useOnlineStatus();
   const i18n = useTranslation();
+  const auth = useAuth();
+  const clerk = useClerk();
+  const isSessionCookie = document.cookie.includes('__session=');
+  const isLoggedInBefore = isSessionCookie || auth.isSignedIn;
+
+  useEffect(() => {
+    // ensure session is fresh when back online
+    if (isOnline && !clerk.loaded) {
+      clerk.session?.reload();
+    }
+  }, [isOnline, clerk]);
+
+  useEffect(() => {
+    // sign out explicitly if signed out but session cookie exists
+    if (auth.isLoaded && !auth.isSignedIn && isSessionCookie) {
+      auth.signOut();
+    }
+  }, [auth, isSessionCookie]);
 
   return (
-    <RouterProvider context={{ queryClient, auth, i18n }} router={router} />
+    <WSProvider>
+      <ToasterProvider>
+        <InAppNotificationsProvider>
+          <RouterProvider
+            context={{ queryClient, auth, isLoggedInBefore, i18n }}
+            router={router}
+          />
+        </InAppNotificationsProvider>
+      </ToasterProvider>
+    </WSProvider>
   );
 }
 
@@ -68,10 +101,10 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <ThemeProvider>
         <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
-          <ConditionalProvider
+          <Conditional
             condition={IS_PROD}
-            provider={PostHogProvider}
-            providerProps={{
+            component={PostHogProvider}
+            props={{
               apiKey: POSTHOG_KEY,
               options: {
                 api_host: POSTHOG_HOST,
@@ -79,31 +112,20 @@ if (rootElement && !rootElement.innerHTML) {
               },
             }}
           >
-            <QueryClientProvider
+            <PersistQueryClientProvider
               client={queryClient}
-              // persistOptions={{
-              //   persister: createAsyncStoragePersister({
-              //     storage: window.localStorage,
-              //   }),
-              //   dehydrateOptions: {
-              //     shouldDehydrateQuery: (query) => query.meta?.persist === true,
-              //   },
-              // }}
+              persistOptions={{
+                persister: createAsyncStoragePersister({
+                  storage: window.localStorage,
+                }),
+                dehydrateOptions: {
+                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
+                },
+              }}
             >
-              <ClerkLoaded>
-                <SignedIn>
-                  <WSProvider>
-                    <ToasterProvider>
-                      <App />
-                    </ToasterProvider>
-                  </WSProvider>
-                </SignedIn>
-                <SignedOut>
-                  <App />
-                </SignedOut>
-              </ClerkLoaded>
-            </QueryClientProvider>
-          </ConditionalProvider>
+              <App />
+            </PersistQueryClientProvider>
+          </Conditional>
         </ClerkThemedProvider>
       </ThemeProvider>
     </StrictMode>

@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { InstrumentIconCircle } from './instrument-image-circle';
+import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
@@ -35,6 +36,7 @@ export function InstrumentHeader({
         <h1 className="text-2xl font-bold">
           {instrumentInfo.name || instrumentId}
         </h1>
+        <PriceAlertButton ticker={instrumentId} />
         <div className="flex flex-col gap-2">
           <div className="flex flex-row flex-wrap gap-2 items-center">
             {instrumentInfo.primary_exchange && (
@@ -59,11 +61,11 @@ export function InstrumentHeader({
               </Badge>
             )}
           </div>
-          <p className="text-sm text-muted-foreground">
-            {instrumentInfo.description}
-          </p>
         </div>
       </div>
+      <p className="text-sm text-muted-foreground">
+        {instrumentInfo.description}
+      </p>
     </div>
   );
 }

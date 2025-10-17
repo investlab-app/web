@@ -1,14 +1,16 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useEffect } from 'react';
+import { z } from 'zod';
 import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
+import { syncLanguage } from '@/features/shared/queries/update-language';
 
 export const Route = createFileRoute('/')({
-  loader: ({ context: { auth, i18n } }) => {
-    if (!auth.isSignedIn) {
-      return;
-    }
-
+  validateSearch: z.object({
+    initial_session: z.boolean().optional(),
+  }),
+  loader: ({ context: { i18n } }) => {
     return {
       crumb: i18n.t('common.dashboard'),
     };
@@ -17,6 +19,19 @@ export const Route = createFileRoute('/')({
 });
 
 function Index() {
+  const { auth, isLoggedInBefore } = Route.useRouteContext();
+
+  const { initial_session } = Route.useSearch();
+
+  useEffect(() => {
+    if (!initial_session) return;
+    void syncLanguage();
+  }, [initial_session]);
+
+  if (!auth.isLoaded && isLoggedInBefore) {
+    return <Dashboard />;
+  }
+
   return (
     <>
       <SignedOut>
