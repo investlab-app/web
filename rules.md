@@ -30,7 +30,7 @@ Each of the flow nodes has different validation rules, so they have been defined
 
 **Allowed Connections:**
 
-- Incoming from: `Trigger`
+- Incoming from: `Trigger`, `FlowThen`, `FlowThenElse`
 - Outgoing to: `Rule`
 
 **Types:**
@@ -62,8 +62,8 @@ Each of the flow nodes has different validation rules, so they have been defined
 
 **Allowed Connections:**
 
-- Incoming from: `Trigger`
-- Outgoing to: `Action`
+- Incoming from: `Trigger`, `Rule`
+- Outgoing to: `Action`, `FlowIf`
 
 **Types:**
 
@@ -134,22 +134,33 @@ Each of the flow nodes has different validation rules, so they have been defined
 2. Basic Conditional Flow:
 
    ```
+   Trigger -> FlowIf -> Rule -> FlowThen -> Action
+   ```
+
+3. Basic Conditional Flow with Else:
+
+   ```
    Trigger -> FlowIf -> Rule -> FlowThenElse ->(then path)-> Action, (else part)-> Another Action
    ```
 
-3. Connected Rules Flow:
+4. Connected Rules Flow:
 
    ```
-   Trigger -> FlowIf -> Rule -> Connector -> Rule -> FlowThenElse -> Action
+   Trigger -> FlowIf -> Rule, Rule -> Connector -> FlowThen -> Action
    ```
 
-4. Nested Conditional Flow:
+5. Nested Conditional Flow:
 
    ```
-   Trigger -> FlowIf -> Rule -> FlowThenElse ->(then part)-> Action, (else part)-> FlowIf -> Rule -> FlowThenElse ->(then part)-> Different Action
+   Trigger -> FlowIf -> Rule -> FlowThenElse ->(then part)-> Action, (else part)-> FlowIf -> Rule -> FlowThenElse ->(then part)-> Different Action (else part can be null)
    ```
 
-5. Multiple Actions Flow:
+6. Multiple Actions Flow:
    ```
    Trigger -> FlowThen -> Action, Another Action, Yet Another Action
    ```
+
+7. Negation Flow: (At the moment no NOT node):
+    ```
+    Trigger -> FlowIf -> Rule -> FlowThenElse ->(else part)-> Action
+    ```

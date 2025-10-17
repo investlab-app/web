@@ -11,12 +11,13 @@ export const allowedConnections = {
   ],
   [SuperNodeTypes.FlowIf]: [SuperNodeTypes.Rule],
   [SuperNodeTypes.FlowThenElse]: [SuperNodeTypes.Action, SuperNodeTypes.FlowIf],
-  [SuperNodeTypes.FlowThen]: [SuperNodeTypes.Action],
+  [SuperNodeTypes.FlowThen]: [SuperNodeTypes.Action, SuperNodeTypes.FlowIf],
   [SuperNodeTypes.Trigger]: [SuperNodeTypes.FlowIf, SuperNodeTypes.FlowThen],
   [SuperNodeTypes.Action]: [],
   [SuperNodeTypes.Rule]: [
     SuperNodeTypes.Connector,
     SuperNodeTypes.FlowThenElse,
+    SuperNodeTypes.FlowThen,
   ],
 };
 
