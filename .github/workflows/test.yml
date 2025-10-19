@@ -108,6 +108,7 @@ jobs:
           EMAIL_FILE_PATH: ${{ secrets.EMAIL_FILE_PATH }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
         ports:
           - 8000:8000
         options: >-
