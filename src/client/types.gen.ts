@@ -4,9 +4,6 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
-/**
- * Serializer for individual account value data point.
- */
 export type AccountValueData = {
     /**
      * Date of the value measurement
@@ -18,9 +15,6 @@ export type AccountValueData = {
     value: number;
 };
 
-/**
- * Serializer for account value over time data.
- */
 export type AccountValueOverTime = {
     /**
      * List of account value data points
@@ -61,6 +55,17 @@ export type AuthTestResponse = {
 export type ClerkLoginRequest = {
     email: string;
     password: string;
+};
+
+export type CreateMarketOrder = {
+    readonly id: string;
+    readonly investor: string;
+};
+
+export type CreateMarketOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
 };
 
 export type CurrentAccountValue = {
@@ -130,6 +135,13 @@ export type InstrumentList = {
     currency_name: string;
     icon?: string | null;
     logo?: string | null;
+};
+
+export type InstrumentName = {
+    /**
+     * Ticker Symbol
+     */
+    ticker: string;
 };
 
 export type InstrumentRetrieve = {
@@ -232,14 +244,11 @@ export type InstrumentWithPrice = {
 };
 
 export type Investor = {
+    readonly id: string;
     readonly clerk_id: string;
     watching_instruments?: Array<string>;
-    readonly watching_instruments_count: number;
 };
 
-/**
- * Serializer for investor statistics data.
- */
 export type InvestorStats = {
     /**
      * Today's return in currency
@@ -259,8 +268,48 @@ export type InvestorStats = {
     total_value: number;
 };
 
-export type InvestorUpdateRequest = {
+export type InvestorUpdate = {
+    readonly id: string;
+    readonly clerk_id: string;
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
     watching_instruments?: Array<string>;
+};
+
+export type InvestorUpdateRequest = {
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
+    watching_instruments?: Array<string>;
+};
+
+/**
+ * * `en` - English
+ * * `pl` - Polski
+ */
+export type LanguageEnum = 'en' | 'pl';
+
+export type LanguageUpdate = {
+    /**
+     * Language code (e.g., 'en', 'pl')
+     *
+     * * `en` - English
+     * * `pl` - Polski
+     */
+    language: LanguageEnum;
+};
+
+export type LanguageUpdateRequest = {
+    /**
+     * Language code (e.g., 'en', 'pl')
+     *
+     * * `en` - English
+     * * `pl` - Polski
+     */
+    language: LanguageEnum;
 };
 
 /**
@@ -311,6 +360,12 @@ export type MarketIndices = {
     dow_jones?: string | null;
 };
 
+export type MarketOrder = {
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+};
+
 export type MarketStatus = {
     after_hours?: boolean | null;
     currencies?: MarketCurrencies | null;
@@ -333,6 +388,58 @@ export type MostTradedItem = {
 
 export type MostTradedOverview = {
     instruments: Array<MostTradedItem>;
+};
+
+export type NotificationConfig = {
+    readonly id: string;
+    /**
+     * Send Email
+     */
+    is_email?: boolean;
+    /**
+     * Send Push
+     */
+    is_push?: boolean;
+    /**
+     * Send WebSocket
+     */
+    is_websocket?: boolean;
+    is_active?: boolean;
+    readonly created_at: string;
+};
+
+export type NotificationConfigCreate = {
+    is_email: boolean;
+    is_push: boolean;
+    is_websocket: boolean;
+};
+
+export type NotificationConfigCreateRequest = {
+    is_email: boolean;
+    is_push: boolean;
+    is_websocket: boolean;
+};
+
+export type NotificationConfigRequest = {
+    /**
+     * Send Email
+     */
+    is_email?: boolean;
+    /**
+     * Send Push
+     */
+    is_push?: boolean;
+    /**
+     * Send WebSocket
+     */
+    is_websocket?: boolean;
+    is_active?: boolean;
+};
+
+export type Order = {
+    readonly id: string;
+    ticker: InstrumentName;
+    detail: MarketOrder;
 };
 
 export type OwnedShareItem = {
@@ -362,15 +469,32 @@ export type PaginatedInstrumentWithPriceList = {
     results: Array<InstrumentWithPrice>;
 };
 
-export type PaginatedInvestorList = {
+export type PaginatedOrderList = {
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<Investor>;
+    results: Array<Order>;
+};
+
+export type PaginatedPriceAlertList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PriceAlert>;
 };
 
 export type PatchedInvestorUpdateRequest = {
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
     watching_instruments?: Array<string>;
+};
+
+export type PatchedPriceAlertRequest = {
+    threshold_type?: ThresholdTypeEnum;
+    threshold_value?: string;
+    notification_config?: NotificationConfigRequest;
 };
 
 export type Position = {
@@ -398,6 +522,34 @@ export type Position = {
      * Transaction history
      */
     history: Array<HistoryEntry>;
+};
+
+export type PriceAlert = {
+    readonly id: string;
+    readonly instrument_name: string;
+    readonly instrument_ticker: string;
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfig;
+};
+
+export type PriceAlertCreate = {
+    readonly id: string;
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigCreate;
+};
+
+export type PriceAlertCreateRequest = {
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigCreateRequest;
+};
+
+export type PriceAlertRequest = {
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigRequest;
 };
 
 export type PriceBar = {
@@ -442,6 +594,12 @@ export type Publisher = {
     name?: string | null;
 };
 
+export type PushNotificationRequest = {
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+};
+
 /**
  * Serializer for simple OK response
  */
@@ -461,6 +619,12 @@ export type StatusResponse = {
      */
     message: string;
 };
+
+/**
+ * * `above` - Above
+ * * `below` - Below
+ */
+export type ThresholdTypeEnum = 'above' | 'below';
 
 export type TickerNews = {
     amp_url?: string | null;
@@ -484,6 +648,10 @@ export type TradingOverview = {
     avg_gain: number;
     avg_loss: number;
     total_return: number;
+};
+
+export type VapidPublicKey = {
+    public_key: string;
 };
 
 export type InstrumentListWritable = {
@@ -598,6 +766,60 @@ export type InstrumentWithPriceWritable = {
 
 export type InvestorWritable = {
     watching_instruments?: Array<string>;
+};
+
+export type InvestorUpdateWritable = {
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
+    watching_instruments?: Array<string>;
+};
+
+export type NotificationConfigWritable = {
+    /**
+     * Send Email
+     */
+    is_email?: boolean;
+    /**
+     * Send Push
+     */
+    is_push?: boolean;
+    /**
+     * Send WebSocket
+     */
+    is_websocket?: boolean;
+    is_active?: boolean;
+};
+
+export type NotificationConfigCreateRequestWritable = {
+    is_email: boolean;
+    is_push: boolean;
+    is_websocket: boolean;
+    push_subscription?: PushNotificationRequest;
+};
+
+export type OrderWritable = {
+    ticker: InstrumentName;
+};
+
+export type PriceAlertWritable = {
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigWritable;
+};
+
+export type PriceAlertCreateWritable = {
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigCreate;
+};
+
+export type PriceAlertCreateRequestWritable = {
+    instrument_ticker: string;
+    threshold_type: ThresholdTypeEnum;
+    threshold_value: string;
+    notification_config: NotificationConfigCreateRequestWritable;
 };
 
 export type AuthSignInCreateData = {
@@ -723,28 +945,6 @@ export type InstrumentsWithPricesListResponses = {
 
 export type InstrumentsWithPricesListResponse = InstrumentsWithPricesListResponses[keyof InstrumentsWithPricesListResponses];
 
-export type InvestorsListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * Page number for pagination.
-         */
-        page?: number;
-        /**
-         * Number of items per page (max 100).
-         */
-        page_size?: number;
-    };
-    url: '/api/investors/';
-};
-
-export type InvestorsListResponses = {
-    200: PaginatedInvestorList;
-};
-
-export type InvestorsListResponse = InvestorsListResponses[keyof InvestorsListResponses];
-
 export type InvestorsRetrieveData = {
     body?: never;
     path: {
@@ -770,7 +970,7 @@ export type InvestorsPartialUpdateData = {
 };
 
 export type InvestorsPartialUpdateResponses = {
-    200: Investor;
+    200: InvestorUpdate;
 };
 
 export type InvestorsPartialUpdateResponse = InvestorsPartialUpdateResponses[keyof InvestorsPartialUpdateResponses];
@@ -785,7 +985,7 @@ export type InvestorsUpdateData = {
 };
 
 export type InvestorsUpdateResponses = {
-    200: Investor;
+    200: InvestorUpdate;
 };
 
 export type InvestorsUpdateResponse = InvestorsUpdateResponses[keyof InvestorsUpdateResponses];
@@ -841,6 +1041,19 @@ export type InvestorsMeCurrentAccountValueRetrieveResponses = {
 };
 
 export type InvestorsMeCurrentAccountValueRetrieveResponse = InvestorsMeCurrentAccountValueRetrieveResponses[keyof InvestorsMeCurrentAccountValueRetrieveResponses];
+
+export type InvestorsMeLanguageCreateData = {
+    body: LanguageUpdateRequest;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/language/';
+};
+
+export type InvestorsMeLanguageCreateResponses = {
+    201: LanguageUpdate;
+};
+
+export type InvestorsMeLanguageCreateResponse = InvestorsMeLanguageCreateResponses[keyof InvestorsMeLanguageCreateResponses];
 
 export type InvestorsMeOwnedSharesRetrieveData = {
     body?: never;
@@ -984,6 +1197,72 @@ export type NewsListResponses = {
 
 export type NewsListResponse = NewsListResponses[keyof NewsListResponses];
 
+export type NotificationsVapidPublicKeyRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/vapid-public-key/';
+};
+
+export type NotificationsVapidPublicKeyRetrieveResponses = {
+    200: VapidPublicKey;
+};
+
+export type NotificationsVapidPublicKeyRetrieveResponse = NotificationsVapidPublicKeyRetrieveResponses[keyof NotificationsVapidPublicKeyRetrieveResponses];
+
+export type OrdersListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/orders/';
+};
+
+export type OrdersListResponses = {
+    200: PaginatedOrderList;
+};
+
+export type OrdersListResponse = OrdersListResponses[keyof OrdersListResponses];
+
+export type OrdersCancelDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/orders/cancel/{id}';
+};
+
+export type OrdersCancelDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
+
+export type OrdersMarketCreateData = {
+    body: CreateMarketOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/orders/market/';
+};
+
+export type OrdersMarketCreateResponses = {
+    201: CreateMarketOrder;
+};
+
+export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
+
 export type PricesListData = {
     body?: never;
     path?: never;
@@ -1045,6 +1324,104 @@ export type PricesBarsResponses = {
 };
 
 export type PricesBarsResponse = PricesBarsResponses[keyof PricesBarsResponses];
+
+export type PricesPriceAlertListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/prices/price-alert/';
+};
+
+export type PricesPriceAlertListResponses = {
+    200: PaginatedPriceAlertList;
+};
+
+export type PricesPriceAlertListResponse = PricesPriceAlertListResponses[keyof PricesPriceAlertListResponses];
+
+export type PricesPriceAlertCreateData = {
+    body: PriceAlertCreateRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/api/prices/price-alert/';
+};
+
+export type PricesPriceAlertCreateResponses = {
+    201: PriceAlertCreate;
+};
+
+export type PricesPriceAlertCreateResponse = PricesPriceAlertCreateResponses[keyof PricesPriceAlertCreateResponses];
+
+export type PricesPriceAlertDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/prices/price-alert/{id}/';
+};
+
+export type PricesPriceAlertDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type PricesPriceAlertDestroyResponse = PricesPriceAlertDestroyResponses[keyof PricesPriceAlertDestroyResponses];
+
+export type PricesPriceAlertRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/prices/price-alert/{id}/';
+};
+
+export type PricesPriceAlertRetrieveResponses = {
+    200: PriceAlert;
+};
+
+export type PricesPriceAlertRetrieveResponse = PricesPriceAlertRetrieveResponses[keyof PricesPriceAlertRetrieveResponses];
+
+export type PricesPriceAlertPartialUpdateData = {
+    body?: PatchedPriceAlertRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/prices/price-alert/{id}/';
+};
+
+export type PricesPriceAlertPartialUpdateResponses = {
+    200: PriceAlert;
+};
+
+export type PricesPriceAlertPartialUpdateResponse = PricesPriceAlertPartialUpdateResponses[keyof PricesPriceAlertPartialUpdateResponses];
+
+export type PricesPriceAlertUpdateData = {
+    body: PriceAlertRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/prices/price-alert/{id}/';
+};
+
+export type PricesPriceAlertUpdateResponses = {
+    200: PriceAlert;
+};
+
+export type PricesPriceAlertUpdateResponse = PricesPriceAlertUpdateResponses[keyof PricesPriceAlertUpdateResponses];
 
 export type StatusRetrieveData = {
     body?: never;

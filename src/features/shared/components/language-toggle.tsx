@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import { syncLanguage } from '../queries/update-language';
 import { Button } from '@/features/shared/components/ui/button';
 import {
   DropdownMenu,
@@ -20,9 +21,14 @@ export function LanguageToggle() {
   const currentLang =
     LANGUAGES.find((lang) => lang.code === language) || LANGUAGES[0];
 
-  const handleChangeLanguage = (lang: string) => {
+  const handleChangeLanguage = async (lang: string) => {
     if (lang !== currentLang.code) {
-      i18n.changeLanguage(lang);
+      try {
+        await i18n.changeLanguage(lang);
+        await syncLanguage();
+      } catch (error) {
+        console.error('Error updating language preference:', error);
+      }
     }
   };
 

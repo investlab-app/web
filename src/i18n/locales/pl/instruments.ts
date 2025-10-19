@@ -25,6 +25,28 @@ const plInstruments = {
       'Przepraszamy, informacje o instrumencie nie mogły zostać załadowane.',
     news_unavailable: 'Wiadomości są obecnie niedostępne dla tego instrumentu.',
   },
+  price_alert_invalid_threshold: 'Proszę wprowadzić prawidłową wartość progową',
+  price_alert: {
+    set_alert: 'Ustaw alert',
+    set_price_alert_for: 'Ustaw alert cenowy dla {{ticker}}',
+    alert_description: 'Otrzymuj powiadomienia, gdy cena przekroczy Twój próg.',
+    form: {
+      select_notification_method:
+        'Wybierz co najmniej jedną metodę powiadomień',
+      push_subscription_failed: 'Nie udało się zapisać do powiadomień push',
+      alert_created_successfully: 'Alert cenowy został utworzony pomyślnie',
+      alert_type: 'Typ alertu',
+      alert_when_above: 'Alert gdy cena wzrośnie powyżej',
+      alert_when_below: 'Alert gdy cena spadnie poniżej',
+      threshold_value: 'Wartość progowa',
+      enter_price_threshold: 'Wprowadź próg cenowy',
+      notification_methods: 'Metody powiadomień',
+      in_app_notification: 'Powiadomienie w aplikacji',
+      push_notification: 'Powiadomienie push',
+      email_notification: 'Powiadomienie e-mail',
+      create_alert: 'Utwórz alert',
+    },
+  },
   tooltips: {
     symbol: 'Symbol giełdowy instrumentu do identyfikacji',
     name: 'Pełna nazwa spółki lub instrumentu',

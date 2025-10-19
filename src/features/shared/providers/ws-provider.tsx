@@ -30,7 +30,7 @@ interface WSProviderParams {
 
 export function WSProvider({ children }: WSProviderParams) {
   const loc = window.location;
-  const url = `ws://${loc.host}/ws/prices/`;
+  const url = `ws://${loc.host}/ws/`;
   const ws = useWebSocket(url, {
     onError: (event) => {
       console.error('WebSocket error observed:', event);
