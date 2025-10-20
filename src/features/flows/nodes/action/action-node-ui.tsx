@@ -15,7 +15,7 @@ export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
         nodeId={nodeId}
         type="target"
         position={Position.Left}
-        id="left"
+        id={0}
       />
     </NodeUI>
   );

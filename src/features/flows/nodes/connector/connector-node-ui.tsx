@@ -18,23 +18,23 @@ export function ConnectorNodeUI({
 
       <CustomHandle
         nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="right"
+        type="target"
+        position={Position.Left}
+        id={0}
       />
       <CustomHandle
         nodeId={nodeId}
-        type="target"
-        position={Position.Left}
-        id="top-left"
+        type="source"
+        position={Position.Right}
+        id={0}
         style={{ top: '30%' }}
       />
       <CustomHandle
         nodeId={nodeId}
-        type="target"
-        position={Position.Left}
+        type="source"
+        position={Position.Right}
         style={{ top: '70%' }}
-        id="bottom-left"
+        id={1}
       />
     </NodeUI>
   );

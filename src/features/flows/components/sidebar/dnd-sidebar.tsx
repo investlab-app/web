@@ -9,13 +9,11 @@ import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node';
 import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node';
 import { SendNotificationNodeUI } from '../../nodes/action/send-notification-node';
-import { IfNodeUI } from '../../nodes/flow/if-node';
-import { ThenNodeUI } from '../../nodes/flow/then-node';
 import { PriceHigherLowerNodeUI } from '../../nodes/rule/price-higher-lower-node';
 import { AndNodeUI } from '../../nodes/connector/and-node';
 import { HappensWithinNodeUI } from '../../nodes/rule/happens-within-node';
+import { FlowNodeUI } from '../../nodes/flow/flow-node';
 import { OrNodeUI } from '../../nodes/connector/or-node';
-import { ThenElseNodeUI } from '../../nodes/flow/then-else-node';
 import { DragGhost } from '../drag-ghost';
 import { SidebarSection } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -82,16 +80,8 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           onDragStart={onDragStart}
           setGhostType={() => setType(t('flows.ghosts.flow_node'))}
           children={{
-            [CustomNodeTypes.If]: {
-              component: IfNodeUI,
-              props: {},
-            },
-            [CustomNodeTypes.Then]: {
-              component: ThenNodeUI,
-              props: {},
-            },
-            [CustomNodeTypes.ThenElse]: {
-              component: ThenElseNodeUI,
+            [CustomNodeTypes.IfThenElse]: {
+              component: FlowNodeUI,
               props: {},
             },
           }}

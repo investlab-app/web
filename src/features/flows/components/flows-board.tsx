@@ -17,11 +17,9 @@ import { CustomNodeTypes } from '../types/node-types';
 import { useValidators } from '../hooks/use-validators';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
+import { FlowNode } from '../nodes/flow/flow-node';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node';
 import { SendNotificationNode } from '../nodes/action/send-notification-node';
-import { IfNode } from '../nodes/flow/if-node';
-import { ThenElseNode } from '../nodes/flow/then-else-node';
-import { ThenNode } from '../nodes/flow/then-node';
 import { HappensWithinNode } from '../nodes/rule/happens-within-node';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
 import { SaveButton } from './execute-button';
@@ -38,9 +36,7 @@ import '@xyflow/react/dist/style.css';
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.And]: AndNode,
   [CustomNodeTypes.Or]: OrNode,
-  [CustomNodeTypes.If]: IfNode,
-  [CustomNodeTypes.ThenElse]: ThenElseNode,
-  [CustomNodeTypes.Then]: ThenNode,
+  [CustomNodeTypes.IfThenElse]: FlowNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
   [CustomNodeTypes.HappensWithin]: HappensWithinNode,
