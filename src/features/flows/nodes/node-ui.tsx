@@ -31,7 +31,7 @@ export function NodeUI({
         p-2 text-sm border rounded min-w-[100px] border-[#555] flex items-center justify-center 
         transition-shadow duration-200
         ${className ?? ''} 
-        ${!preview && !isSelected && !validateNode(nodeId, inConnections.length, outConnections.length) ? 'shadow-[0_0_5px_#ff0000]' : ''}
+        ${!preview && !isSelected && !validateNode(nodeId, inConnections, outConnections) ? 'shadow-[0_0_5px_#ff0000]' : ''}
         ${isSelected && !preview ? 'shadow-[0_0_5px_#000,0_0_5px_#fff]' : ''}
       `}
     >
