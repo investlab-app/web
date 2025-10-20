@@ -4,10 +4,11 @@ import type { HandleType, Position } from '@xyflow/react';
 
 export interface CustomHandleProps {
   nodeId: string;
-  id: string;
+  id: number;
   type: HandleType;
   position: Position;
   style?: Record<string, string>;
+  overrideAllowedConnections?: number;
 }
 
 export const CustomHandle = ({
@@ -16,21 +17,22 @@ export const CustomHandle = ({
   type,
   position,
   style,
+  overrideAllowedConnections,
 }: CustomHandleProps) => {
   const { getAllowedConnections, isConnectionValid } = useValidators();
   const connections = useNodeConnections({
     id: nodeId,
     handleType: type,
-    handleId: id,
+    handleId: id.toString(),
   });
   return (
     <Handle
-      id={id}
+      id={id.toString()}
       type={type}
       position={position}
       isConnectable={isConnectionValid(
         connections.length,
-        getAllowedConnections(nodeId, type)
+        overrideAllowedConnections ?? getAllowedConnections(nodeId, type, id)
       )}
       style={style}
     />

@@ -6,16 +6,16 @@ import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types';
 import type { CustomNodeProps } from '../../types/node-props';
 
-export type ThenElseNode = Node<
+export type FlowNode = Node<
   {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-  CustomNodeTypes.ThenElse
+  CustomNodeTypes.IfThenElse
 >;
 
-export const ThenElseNode = (props: NodeProps<ThenElseNode>) => {
-  return <ThenElseNodeUI nodeId={props.id} />;
+export const FlowNode = (props: NodeProps<FlowNode>) => {
+  return <FlowNodeUI nodeId={props.id} />;
 };
 
-export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
+export function FlowNodeUI({ nodeId, preview }: CustomNodeProps) {
   const { t } = useTranslation();
   return (
     <NodeUI
@@ -24,6 +24,7 @@ export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
       className={`bg-[var(--background)]`}
     >
       <div className="flex flex-col gap-2 text-center">
+        <div>{t('flows.nodes.if').toUpperCase()}</div>
         <div>{t('flows.nodes.then').toUpperCase()}</div>
         <div>{t('flows.nodes.else').toUpperCase()}</div>
       </div>
@@ -32,21 +33,30 @@ export function ThenElseNodeUI({ nodeId, preview }: CustomNodeProps) {
         nodeId={nodeId}
         type="source"
         position={Position.Right}
-        id="top-right"
-        style={{ top: '30%' }}
+        id={0}
+        style={{ top: '20%' }}
+        overrideAllowedConnections={1}
       />
       <CustomHandle
         nodeId={nodeId}
         type="source"
         position={Position.Right}
-        id="bottom-right"
-        style={{ top: '70%' }}
+        id={1}
+        style={{ top: '50%' }}
+      />
+      <CustomHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        id={2}
+        style={{ top: '80%' }}
       />
       <CustomHandle
         nodeId={nodeId}
         type="target"
         position={Position.Left}
-        id="left"
+        id={0}
+        style={{ top: '20%' }}
       />
     </NodeUI>
   );

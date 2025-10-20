@@ -14,15 +14,9 @@ export function RuleNodeUI({ children, nodeId, preview }: CustomNodeProps) {
       {children}
       <CustomHandle
         nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="right"
-      />
-      <CustomHandle
-        nodeId={nodeId}
         type="target"
         position={Position.Left}
-        id="left"
+        id={0}
       />
     </NodeUI>
   );

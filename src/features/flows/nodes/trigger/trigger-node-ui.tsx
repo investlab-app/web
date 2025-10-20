@@ -19,7 +19,7 @@ export function TriggerNodeUI({
         nodeId={nodeId}
         type="source"
         position={Position.Right}
-        id="right"
+        id={0}
       />
     </NodeUI>
   );
