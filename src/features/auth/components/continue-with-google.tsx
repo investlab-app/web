@@ -33,10 +33,7 @@ export const ContinueWithGoogle = () => {
         redirectUrlComplete: '/',
         redirectUrl: '/sso-callback',
       }),
-      (e) =>
-        e instanceof Error
-          ? t('auth.unknown_error', { cause: e.message })
-          : t('auth.could_not_verify_email')
+      (e) => (e instanceof Error ? e.message : t('auth.could_not_verify_email'))
     );
 
     if (result.isErr()) {

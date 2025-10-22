@@ -45,9 +45,7 @@ export function EmailVerificationForm({
           code: value.code,
         }),
         (e) =>
-          e instanceof Error
-            ? t('auth.unknown_error', { cause: e.message })
-            : t('auth.could_not_verify_email')
+          e instanceof Error ? e.message : t('auth.could_not_verify_email')
       )
         .andThen((signUpResource) => {
           switch (signUpResource.status) {
@@ -91,9 +89,10 @@ export function EmailVerificationForm({
           <form.AppField
             name="code"
             validators={{
-              onBlur: z.string().length(6, {
+              onBlurAsync: z.string().length(6, {
                 message: t('auth.code_must_be_digits', { digits: 6 }),
               }),
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>

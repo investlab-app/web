@@ -56,6 +56,8 @@ const enAuth = {
     and: 'and',
     privacyPolicy: 'Privacy Policy',
   },
+  password_min_length: 'Password must be at least {{min}} characters long',
+  account_not_found: 'Account not found. Please check your credentials.',
 };
 
 export default enAuth;

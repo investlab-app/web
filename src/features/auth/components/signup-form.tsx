@@ -49,10 +49,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           firstName: value.firstName,
           lastName: value.lastName,
         }),
-        (e) =>
-          e instanceof Error
-            ? t('auth.unknown_error', { cause: e.message })
-            : t('auth.could_not_sign_up')
+        (e) => (e instanceof Error ? e.message : t('auth.could_not_sign_up'))
       ).andThen((result) => {
         switch (result.status) {
           case 'complete':
@@ -82,7 +79,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           signUp.prepareEmailAddressVerification({ strategy: 'email_code' }),
           (e) =>
             e instanceof Error
-              ? t('auth.unknown_error', { cause: e.message })
+              ? e.message
               : t('auth.could_not_prepare_email_address_verification')
         ).andThen((result) => {
           switch (result.status) {
@@ -132,7 +129,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="firstName"
             validators={{
-              onBlur: z.string().min(1, t('auth.first_name_required')),
+              onBlurAsync: z.string().min(1, t('auth.first_name_required')),
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -156,7 +154,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="lastName"
             validators={{
-              onBlur: z.string().min(1, t('auth.last_name_required')),
+              onBlurAsync: z.string().min(1, t('auth.last_name_required')),
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -180,7 +179,8 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlur: z.email(t('auth.invalid_email')),
+              onBlurAsync: z.email(t('auth.invalid_email')),
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -205,11 +205,15 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlur: ({ value }) => {
+              onBlurAsync: ({ value }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
+                if (value.length < 8) {
+                  return t('auth.password_min_length', { min: 8 });
+                }
               },
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -232,7 +236,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="confirmPassword"
             validators={{
-              onBlur: ({ value, fieldApi }) => {
+              onBlurAsync: ({ value, fieldApi }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
@@ -240,6 +244,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   return t('auth.passwords_do_not_match');
                 }
               },
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
