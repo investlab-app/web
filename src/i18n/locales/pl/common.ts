@@ -60,6 +60,10 @@ const plCommon = {
       candlestick_chart: 'Wykres świecowy (OHLC)',
     },
   },
+  quantity: 'Ilość',
+  market_value: 'Wartość rynkowa',
+  gain: 'Zysk',
+  gain_percentage: 'Zysk (%)',
 };
 
 export default plCommon;

@@ -60,6 +60,10 @@ const enCommon = {
       candlestick_chart: 'Candlestick chart (OHLC)',
     },
   },
+  quantity: 'Quantity',
+  market_value: 'Market Value',
+  gain: 'Gain',
+  gain_percentage: 'Gain (%)',
 };
 
 export default enCommon;

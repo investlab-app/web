@@ -21,6 +21,14 @@ const enTransactions = {
   actions: {
     instrument_details: 'Instrument details',
   },
+  position: {
+    summary: {
+      transactions_count_one: '1 trade recorded',
+      transactions_count_other: '{{count}} trades recorded',
+      last_transaction: 'Last {{action}} on {{date}}',
+      no_transactions: 'No trades recorded yet',
+    },
+  },
   error_loading: 'Sorry, the transaction history could not be loaded.',
   no_open_positions: 'You have no open positions for this instrument.',
   tooltips: {

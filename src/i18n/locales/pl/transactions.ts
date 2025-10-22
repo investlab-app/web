@@ -21,6 +21,16 @@ const plTransactions = {
   actions: {
     instrument_details: 'Szczegóły instrumentu',
   },
+  position: {
+    summary: {
+      transactions_count_one: '1 transakcja',
+      transactions_count_few: '{{count}} transakcje',
+      transactions_count_many: '{{count}} transakcji',
+      transactions_count_other: '{{count}} transakcji',
+      last_transaction: 'Ostatnia transakcja: {{action}} {{date}}',
+      no_transactions: 'Brak zarejestrowanych transakcji',
+    },
+  },
   error_loading:
     'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
   no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',

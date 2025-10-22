@@ -619,7 +619,12 @@ export const zPatchedPriceAlertRequest = z.object({
 });
 
 export const zPosition = z.object({
-    name: z.string().max(10),
+    symbol: z.string().max(10),
+    name: z.string().max(255),
+    logo: z.union([
+        z.url(),
+        z.null()
+    ]),
     quantity: z.int(),
     market_value: z.number(),
     gain: z.number(),

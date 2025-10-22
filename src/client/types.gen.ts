@@ -484,7 +484,12 @@ export type Position = {
     /**
      * Ticker symbol
      */
+    symbol: string;
+    /**
+     * Instrument name
+     */
     name: string;
+    logo: string | null;
     /**
      * Total quantity of shares
      */
