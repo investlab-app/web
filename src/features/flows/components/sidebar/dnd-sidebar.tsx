@@ -11,6 +11,7 @@ import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node';
 import { SendNotificationNodeUI } from '../../nodes/action/send-notification-node';
 import { PriceHigherLowerNodeUI } from '../../nodes/rule/price-higher-lower-node';
 import { AndNodeUI } from '../../nodes/connector/and-node';
+import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node';
 import { HappensWithinNodeUI } from '../../nodes/rule/happens-within-node';
 import { FlowNodeUI } from '../../nodes/flow/flow-node';
 import { OrNodeUI } from '../../nodes/connector/or-node';
@@ -97,7 +98,8 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
               component: PriceChangesNodeUI,
               props: {
                 value: '',
-                direction: 'rises',
+                direction: 'over',
+                price: 100,
               },
             },
             [CustomNodeTypes.InstrumentBoughtSold]: {
@@ -105,6 +107,13 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
               props: {
                 value: '',
                 action: 'bought',
+              },
+            },
+            [CustomNodeTypes.CheckEvery]: {
+              component: CheckEveryNodeUI,
+              props: {
+                interval: 1,
+                unit: 'day',
               },
             },
           }}
