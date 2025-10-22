@@ -229,6 +229,7 @@ export type Investor = {
     readonly id: string;
     readonly clerk_id: string;
     watching_instruments?: Array<string>;
+    readonly balance: string;
 };
 
 /**
@@ -499,7 +500,7 @@ export type Position = {
     /**
      * Total gain or loss percentage
      */
-    gain_percentage: number;
+    gain_percentage: number | null;
     /**
      * Transaction history
      */

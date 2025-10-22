@@ -298,7 +298,8 @@ export const zInstrumentWithPrice = z.object({
 export const zInvestor = z.object({
     id: z.uuid().readonly(),
     clerk_id: z.string().readonly(),
-    watching_instruments: z.optional(z.array(z.uuid()))
+    watching_instruments: z.optional(z.array(z.uuid())),
+    balance: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly()
 });
 
 /**
@@ -622,7 +623,10 @@ export const zPosition = z.object({
     quantity: z.int(),
     market_value: z.number(),
     gain: z.number(),
-    gain_percentage: z.number(),
+    gain_percentage: z.union([
+        z.number(),
+        z.null()
+    ]),
     history: z.array(zHistoryEntry)
 });
 

@@ -21,7 +21,7 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-muted'>
           <TableRow>
             <TableHead className="hidden sm:table-cell">
               {t('instruments.name')}

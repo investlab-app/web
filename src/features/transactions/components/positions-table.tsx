@@ -4,8 +4,6 @@ import { ChevronDown, Info } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { PositionRow } from './position-row';
 import {
-  Table,
-  TableBody,
   TableCell,
   TableHead,
   TableHeader,
@@ -28,7 +26,7 @@ type PositionsTableProps = {
 
 export function PositionsTable({ type }: PositionsTableProps) {
   const { t } = useTranslation();
-  const { data, isPending, isError, isSuccess } = useQuery(
+  const { data, isPending, isError } = useQuery(
     statisticsTransactionsHistoryListOptions({ query: { type } })
   );
 
@@ -38,35 +36,29 @@ export function PositionsTable({ type }: PositionsTableProps) {
     );
   }
 
-  return (
-    <Table className="rounded-md border">
-      <PositionsTableHeader />
-      <TableBody>
-        {isPending && <PositionsTableBodySkeleton length={5} />}
-        {isSuccess && data.length === 0 && (
-          <TableRow>
-            <TableCell colSpan={5} className="h-24 p-0 border-0">
-              <EmptyMessage
-                message={t('transactions.no_open_positions')}
-                cta={{
-                  to: '/instruments',
-                  label: t('instruments.browse_instruments'),
-                }}
-              />
-            </TableCell>
-          </TableRow>
-        )}
-        {isSuccess &&
-          data.map((pos) => <PositionRow key={pos.name} position={pos} />)}
-      </TableBody>
-    </Table>
-  );
+  if (isPending) {
+    return <PositionsTableBodySkeleton length={5} />;
+  }
+
+  if (data.length === 0) {
+    return (
+      <EmptyMessage
+        message={t('transactions.no_open_positions')}
+        cta={{
+          to: '/instruments',
+          label: t('instruments.browse_instruments'),
+        }}
+      />
+    );
+  }
+
+  return data.map((pos) => <PositionRow key={pos.name} position={pos} />);
 }
 
 export function PositionsTableHeader() {
   const { t } = useTranslation();
   return (
-    <TableHeader>
+    <TableHeader className="bg-muted">
       <TableRow>
         <TableHead>
           <div className="flex items-center gap-1">
@@ -116,32 +108,6 @@ export function PositionsTableHeader() {
               </TooltipTrigger>
               <TooltipContent>
                 <p>{t('transactions.tooltips.acquisition_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.gain_loss')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.gain_loss')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.gain_loss_pct')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.gain_loss_pct')}</p>
               </TooltipContent>
             </Tooltip>
           </div>

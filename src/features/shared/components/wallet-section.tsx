@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
-import { statisticsCurrentAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export function WalletSection() {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export function WalletSection() {
     isPending,
     isError,
     isSuccess,
-  } = useQuery(statisticsCurrentAccountValueRetrieveOptions());
+  } = useQuery(investorsMeRetrieveOptions());
 
   return (
     <SidebarMenuItem className="flex items-center gap-1">
@@ -31,7 +31,7 @@ export function WalletSection() {
             new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: t('common.currency'),
-            }).format(accountValue.total_account_value)}
+            }).format(parseFloat(accountValue.balance))}
           <Button
             size="icon"
             className="ml-auto size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"

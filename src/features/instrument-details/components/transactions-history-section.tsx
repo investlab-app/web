@@ -79,18 +79,13 @@ export function TransactionsHistorySection({
               ticker={instrumentId}
               onlySell={true}
             />
-            <Table>
-              <PositionsTableHeader />
-              <TableBody>
-                {tickerTransactions.map((position) => (
-                  <PositionRow
-                    key={position.name}
-                    position={position}
-                    isNavigable={false}
-                  />
-                ))}
-              </TableBody>
-            </Table>
+            {tickerTransactions.map((position) => (
+              <PositionRow
+                key={position.name}
+                position={position}
+                isNavigable={false}
+              />
+            ))}
           </>
         )}
       </CardContent>

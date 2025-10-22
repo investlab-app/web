@@ -74,7 +74,7 @@ const MostTradedOverview = () => {
         ) : (
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader>
+              <TableHeader className='bg-muted'>
                 <TableRow>
                   <TableHead>{t('instruments.symbol')}</TableHead>
                   <TableHead className="text-right">
