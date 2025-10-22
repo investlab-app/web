@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsMeAccountValueRetrieve, investorsMeAssetAllocationRetrieve, investorsMeCurrentAccountValueRetrieve, investorsMeLanguageCreate, investorsMeOwnedSharesRetrieve, investorsMeRetrieve, investorsMeStatisticsMostTradedRetrieve, investorsMeStatisticsProfileOverviewRetrieve, investorsMeStatisticsTradingOverviewRetrieve, investorsMeStatsRetrieve, investorsMeTransactionsHistoryList, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsMeAccountValueRetrieveData, InvestorsMeAssetAllocationRetrieveData, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeLanguageCreateData, InvestorsMeLanguageCreateResponse, InvestorsMeOwnedSharesRetrieveData, InvestorsMeRetrieveData, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatsRetrieveData, InvestorsMeTransactionsHistoryListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsMeAccountValueList, investorsMeRetrieve, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsMeAccountValueListData, InvestorsMeRetrieveData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -262,16 +262,16 @@ export const investorsMeRetrieveOptions = (options?: Options<InvestorsMeRetrieve
     });
 };
 
-export const investorsMeAccountValueRetrieveQueryKey = (options?: Options<InvestorsMeAccountValueRetrieveData>) => createQueryKey('investorsMeAccountValueRetrieve', options);
+export const investorsMeAccountValueListQueryKey = (options?: Options<InvestorsMeAccountValueListData>) => createQueryKey('investorsMeAccountValueList', options);
 
 /**
  * Get account value over time
  * Get account value over time data for the currently authenticated user.
  */
-export const investorsMeAccountValueRetrieveOptions = (options?: Options<InvestorsMeAccountValueRetrieveData>) => {
+export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMeAccountValueListData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeAccountValueRetrieve({
+            const { data } = await investorsMeAccountValueList({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -279,189 +279,7 @@ export const investorsMeAccountValueRetrieveOptions = (options?: Options<Investo
             });
             return data;
         },
-        queryKey: investorsMeAccountValueRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeAssetAllocationRetrieveQueryKey = (options?: Options<InvestorsMeAssetAllocationRetrieveData>) => createQueryKey('investorsMeAssetAllocationRetrieve', options);
-
-/**
- * Get asset allocation
- * Get asset allocation data for the currently authenticated user.
- */
-export const investorsMeAssetAllocationRetrieveOptions = (options?: Options<InvestorsMeAssetAllocationRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeAssetAllocationRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeAssetAllocationRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeCurrentAccountValueRetrieveQueryKey = (options?: Options<InvestorsMeCurrentAccountValueRetrieveData>) => createQueryKey('investorsMeCurrentAccountValueRetrieve', options);
-
-/**
- * Get current account value
- * Get the current account value as well as gain and percent gain for the authenticated user.
- */
-export const investorsMeCurrentAccountValueRetrieveOptions = (options?: Options<InvestorsMeCurrentAccountValueRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeCurrentAccountValueRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeCurrentAccountValueRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeLanguageCreateMutation = (options?: Partial<Options<InvestorsMeLanguageCreateData>>): UseMutationOptions<InvestorsMeLanguageCreateResponse, DefaultError, Options<InvestorsMeLanguageCreateData>> => {
-    const mutationOptions: UseMutationOptions<InvestorsMeLanguageCreateResponse, DefaultError, Options<InvestorsMeLanguageCreateData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await investorsMeLanguageCreate({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-export const investorsMeOwnedSharesRetrieveQueryKey = (options?: Options<InvestorsMeOwnedSharesRetrieveData>) => createQueryKey('investorsMeOwnedSharesRetrieve', options);
-
-/**
- * Get owned shares
- * Get owned shares data for the currently authenticated user.
- */
-export const investorsMeOwnedSharesRetrieveOptions = (options?: Options<InvestorsMeOwnedSharesRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeOwnedSharesRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeOwnedSharesRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeStatisticsMostTradedRetrieveQueryKey = (options?: Options<InvestorsMeStatisticsMostTradedRetrieveData>) => createQueryKey('investorsMeStatisticsMostTradedRetrieve', options);
-
-/**
- * Get overview about the most traded instruments
- * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
- */
-export const investorsMeStatisticsMostTradedRetrieveOptions = (options?: Options<InvestorsMeStatisticsMostTradedRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeStatisticsMostTradedRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeStatisticsMostTradedRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeStatisticsProfileOverviewRetrieveQueryKey = (options?: Options<InvestorsMeStatisticsProfileOverviewRetrieveData>) => createQueryKey('investorsMeStatisticsProfileOverviewRetrieve', options);
-
-/**
- * Get info about investor's level
- * Get the information about the level, exp points and points left to next level for the current investor
- */
-export const investorsMeStatisticsProfileOverviewRetrieveOptions = (options?: Options<InvestorsMeStatisticsProfileOverviewRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeStatisticsProfileOverviewRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeStatisticsProfileOverviewRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeStatisticsTradingOverviewRetrieveQueryKey = (options?: Options<InvestorsMeStatisticsTradingOverviewRetrieveData>) => createQueryKey('investorsMeStatisticsTradingOverviewRetrieve', options);
-
-/**
- * Get trading performance overview
- * Returns total trades, number of buys/sells, average gain/loss, and total return for the current investor.
- */
-export const investorsMeStatisticsTradingOverviewRetrieveOptions = (options?: Options<InvestorsMeStatisticsTradingOverviewRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeStatisticsTradingOverviewRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeStatisticsTradingOverviewRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeStatsRetrieveQueryKey = (options?: Options<InvestorsMeStatsRetrieveData>) => createQueryKey('investorsMeStatsRetrieve', options);
-
-/**
- * Get investor stats
- * Get investor statistics for the currently authenticated user.
- */
-export const investorsMeStatsRetrieveOptions = (options?: Options<InvestorsMeStatsRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeStatsRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeStatsRetrieveQueryKey(options)
-    });
-};
-
-export const investorsMeTransactionsHistoryListQueryKey = (options?: Options<InvestorsMeTransactionsHistoryListData>) => createQueryKey('investorsMeTransactionsHistoryList', options);
-
-/**
- * Get transaction history
- * Get transaction history for the currently authenticated user. Can filter by position type (open/closed/both) and ticker symbol.
- */
-export const investorsMeTransactionsHistoryListOptions = (options?: Options<InvestorsMeTransactionsHistoryListData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeTransactionsHistoryList({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: investorsMeTransactionsHistoryListQueryKey(options)
+        queryKey: investorsMeAccountValueListQueryKey(options)
     });
 };
 
@@ -778,6 +596,153 @@ export const pricesPriceAlertUpdateMutation = (options?: Partial<Options<PricesP
         }
     };
     return mutationOptions;
+};
+
+export const statisticsAssetAllocationRetrieveQueryKey = (options?: Options<StatisticsAssetAllocationRetrieveData>) => createQueryKey('statisticsAssetAllocationRetrieve', options);
+
+/**
+ * Get asset allocation
+ * Get asset allocation data for the currently authenticated user.
+ */
+export const statisticsAssetAllocationRetrieveOptions = (options?: Options<StatisticsAssetAllocationRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsAssetAllocationRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsAssetAllocationRetrieveQueryKey(options)
+    });
+};
+
+export const statisticsCurrentAccountValueRetrieveQueryKey = (options?: Options<StatisticsCurrentAccountValueRetrieveData>) => createQueryKey('statisticsCurrentAccountValueRetrieve', options);
+
+/**
+ * Get current account value
+ * Get the current account value as well as gain and percent gain for the authenticated user.
+ */
+export const statisticsCurrentAccountValueRetrieveOptions = (options?: Options<StatisticsCurrentAccountValueRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsCurrentAccountValueRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsCurrentAccountValueRetrieveQueryKey(options)
+    });
+};
+
+export const statisticsOwnedSharesListQueryKey = (options?: Options<StatisticsOwnedSharesListData>) => createQueryKey('statisticsOwnedSharesList', options);
+
+/**
+ * Get owned shares
+ * Get owned shares data for the currently authenticated user.
+ */
+export const statisticsOwnedSharesListOptions = (options?: Options<StatisticsOwnedSharesListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsOwnedSharesList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsOwnedSharesListQueryKey(options)
+    });
+};
+
+export const statisticsStatisticsMostTradedListQueryKey = (options?: Options<StatisticsStatisticsMostTradedListData>) => createQueryKey('statisticsStatisticsMostTradedList', options);
+
+/**
+ * Get overview about the most traded instruments
+ * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
+ */
+export const statisticsStatisticsMostTradedListOptions = (options?: Options<StatisticsStatisticsMostTradedListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsStatisticsMostTradedList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsStatisticsMostTradedListQueryKey(options)
+    });
+};
+
+export const statisticsStatisticsTradingOverviewRetrieveQueryKey = (options?: Options<StatisticsStatisticsTradingOverviewRetrieveData>) => createQueryKey('statisticsStatisticsTradingOverviewRetrieve', options);
+
+/**
+ * Get trading performance overview
+ * Returns total trades, number of buys/sells, average gain/loss, and total return for the current investor.
+ */
+export const statisticsStatisticsTradingOverviewRetrieveOptions = (options?: Options<StatisticsStatisticsTradingOverviewRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsStatisticsTradingOverviewRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsStatisticsTradingOverviewRetrieveQueryKey(options)
+    });
+};
+
+export const statisticsStatsRetrieveQueryKey = (options?: Options<StatisticsStatsRetrieveData>) => createQueryKey('statisticsStatsRetrieve', options);
+
+/**
+ * Get investor stats
+ * Get investor statistics for the currently authenticated user.
+ */
+export const statisticsStatsRetrieveOptions = (options?: Options<StatisticsStatsRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsStatsRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsStatsRetrieveQueryKey(options)
+    });
+};
+
+export const statisticsTransactionsHistoryListQueryKey = (options?: Options<StatisticsTransactionsHistoryListData>) => createQueryKey('statisticsTransactionsHistoryList', options);
+
+/**
+ * Get transaction history
+ * Get transaction history for the currently authenticated user. Can filter by position type (open/closed/both) and ticker symbol.
+ */
+export const statisticsTransactionsHistoryListOptions = (options?: Options<StatisticsTransactionsHistoryListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await statisticsTransactionsHistoryList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: statisticsTransactionsHistoryListQueryKey(options)
+    });
 };
 
 export const statusRetrieveQueryKey = (options?: Options<StatusRetrieveData>) => createQueryKey('statusRetrieve', options);
