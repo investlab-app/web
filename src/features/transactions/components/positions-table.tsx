@@ -55,64 +55,62 @@ export function PositionsTable({ type }: PositionsTableProps) {
   return data.map((pos) => <PositionRow key={pos.name} position={pos} />);
 }
 
-export function PositionsTableHeader() {
+export function PositionsTableHeader({ className }: { className?: string }) {
   const { t } = useTranslation();
   return (
-    <TableHeader className="bg-muted">
-      <TableRow>
-        <TableHead>
-          <div className="flex items-center gap-1">
-            <span>{t('transactions.table.headers.name')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.name')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead>
-          <div className="flex items-center gap-1">
-            <span>{t('transactions.table.headers.quantity')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.quantity')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.share_price')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.share_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="hidden xl:table-cell text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.acquisition_price')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.acquisition_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-      </TableRow>
+    <TableHeader className={`bg-muted ${className}`}>
+      <TableHead>
+        <div className="flex items-center gap-1">
+          <span>{t('transactions.table.headers.name')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.name')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TableHead>
+      <TableHead>
+        <div className="flex items-center gap-1">
+          <span>{t('transactions.table.headers.quantity')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.quantity')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TableHead>
+      <TableHead className="text-right">
+        <div className="flex items-center gap-1 justify-end">
+          <span>{t('transactions.table.headers.share_price')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.share_price')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TableHead>
+      <TableHead className="hidden xl:table-cell text-right">
+        <div className="flex items-center gap-1 justify-end">
+          <span>{t('transactions.table.headers.acquisition_price')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.acquisition_price')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TableHead>
     </TableHeader>
   );
 }

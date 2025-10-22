@@ -43,7 +43,7 @@ export function TransactionRow({ entry }: HistoryRowProps) {
             {t('common.currency')}
           </>
         ) : (
-          '-'
+          'N/A'
         )}
       </TableCell>
     </TableRow>
