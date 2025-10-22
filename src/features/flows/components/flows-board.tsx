@@ -19,6 +19,7 @@ import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
 import { FlowNode } from '../nodes/flow/flow-node';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node';
+import { CheckEveryNode } from '../nodes/trigger/check-every-node';
 import { SendNotificationNode } from '../nodes/action/send-notification-node';
 import { HappensWithinNode } from '../nodes/rule/happens-within-node';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
@@ -38,6 +39,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Or]: OrNode,
   [CustomNodeTypes.IfThenElse]: FlowNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
+  [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
   [CustomNodeTypes.HappensWithin]: HappensWithinNode,
   [CustomNodeTypes.HappensBetween]: HappensBetweenNode,

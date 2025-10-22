@@ -17,6 +17,7 @@ export enum CustomNodeTypes {
   // Trigger
   PriceChanges = 'priceChanges',
   InstrumentBoughtSold = 'instrumentBoughtSold',
+  CheckEvery = 'checkEvery',
 
   // Rule
   PriceOverUnder = 'priceOverUnder',
@@ -39,6 +40,7 @@ export const TypesMapping = {
   [CustomNodeTypes.HappensWithin]: SuperNodeTypes.Rule,
   [CustomNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.InstrumentBoughtSold]: SuperNodeTypes.Trigger,
+  [CustomNodeTypes.CheckEvery]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.BuySellAmount]: SuperNodeTypes.Action,
   [CustomNodeTypes.BuySellPrice]: SuperNodeTypes.Action,
   [CustomNodeTypes.BuySellPercent]: SuperNodeTypes.Action,

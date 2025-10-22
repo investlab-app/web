@@ -1,7 +1,7 @@
 const plFlows = {
   placeholders: {
     buy_sell: 'kup/sprzedaj',
-    rises_falls: 'rośnie/spada',
+    check_periodically: 'sprawdzaj okresowo',
     bought_sold: 'kupiono/sprzedano',
     reaches_threshold: 'osiąga próg',
     email_push: 'email/push',
@@ -48,6 +48,10 @@ const plFlows = {
     push: 'powiadomienie push',
     of_owned: 'z posiadanych',
     send_notification: 'powiadom przez',
+    hour: 'godzin',
+    day: 'dni',
+    week: 'tygodni',
+    check_every: 'sprawdzaj co',
   },
 };
 

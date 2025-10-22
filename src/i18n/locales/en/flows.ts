@@ -1,7 +1,7 @@
 const enFlows = {
   placeholders: {
     buy_sell: 'buy/sell',
-    rises_falls: 'rises/falls',
+    check_periodically: 'check periodically',
     bought_sold: 'bought/sold',
     reaches_threshold: 'reaches threshold',
     email_push: 'email/push',
@@ -48,6 +48,10 @@ const enFlows = {
     push: 'push',
     of_owned: 'of owned',
     send_notification: 'notify via',
+     hour: 'hours',
+    day: 'days',
+    week: 'weeks',
+    check_every: 'check every',
   },
 };
 

@@ -5,11 +5,13 @@ import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 import { useNodeData } from '@/features/flows/hooks/use-node-data';
+import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 export type PriceChangesNode = Node<
   {
     value: string;
-    direction: 'rises' | 'falls';
+    direction: 'over' | 'under';
+    price: number;
   },
   CustomNodeTypes.PriceChanges
 >;
@@ -21,8 +23,10 @@ export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
     <PriceChangesNodeUI
       value={props.data.value}
       direction={props.data.direction}
+      price={props.data.price}
       onValueChange={(value) => updateNodeData({ value })}
       onDirectionChange={(direction) => updateNodeData({ direction })}
+      onPriceChange={(price) => updateNodeData({ price: price! })}
       nodeId={props.id}
     />
   );
@@ -30,24 +34,28 @@ export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
 
 interface PriceChangesNodeUIProps {
   value: string;
-  direction: 'rises' | 'falls';
+  direction: 'over' | 'under';
+  price: number;
   onValueChange?: (value: string) => void;
-  onDirectionChange?: (direction: 'rises' | 'falls') => void;
+  onDirectionChange?: (direction: 'over' | 'under') => void;
+  onPriceChange?: (price: number | undefined) => void;
 }
 
 export function PriceChangesNodeUI({
   value,
   direction,
+  price,
   onValueChange,
   onDirectionChange,
+  onPriceChange,
   nodeId,
   preview,
 }: PriceChangesNodeUIProps & CustomNodeProps) {
   const { t } = useTranslation();
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
-      <div>{t('flows.nodes.price_of')}</div>
-      {onValueChange ? (
+      <div>{t('flows.nodes.price')}</div>
+      {onValueChange && (
         <input
           className="mx-2 px-2 py-1 border rounded"
           type="text"
@@ -57,23 +65,34 @@ export function PriceChangesNodeUI({
             onValueChange(e.target.value)
           }
         />
-      ) : (
-        <div className="px-1">{t('flows.placeholders.instrument')}</div>
       )}
       {onDirectionChange ? (
         <select
           className="px-2 py-1 border rounded"
           value={direction}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'rises' | 'falls')
+            onDirectionChange(e.target.value as 'over' | 'under')
           }
         >
-          <option value="rises">{t('flows.nodes.rises')}</option>
-          <option value="falls">{t('flows.nodes.falls')}</option>
+          <option value="over">{t('flows.nodes.over')}</option>
+          <option value="under">{t('flows.nodes.under')}</option>
         </select>
       ) : (
-        <div>{t('flows.placeholders.rises_falls')}</div>
+        <div className='pl-1'>{t('flows.placeholders.reaches_threshold')}</div>
       )}
+      {onValueChange && (
+              <NumberInput
+                className="w-30 ml-2"
+                min={1}
+                stepper={25}
+                defaultValue={100.0}
+                prefix='$'
+                value={price}
+                onValueChange={onPriceChange}
+                fixedDecimalScale={true}
+                decimalScale={2}
+              />
+            )}
     </TriggerNodeUI>
   );
 }
