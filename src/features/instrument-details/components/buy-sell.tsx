@@ -26,18 +26,17 @@ export const BuySell = ({ ticker }: BuySellProps) => {
   const [volume, setVolume] = useState(
     currentPrice && price ? price / currentPrice : undefined
   );
-  const value = mode === 'price' ? price : volume;
 
   const handlePriceChange = (newPrice: number | undefined) => {
-    if (newPrice === undefined) return;
+    if (newPrice === undefined || !currentPrice) return;
     setPrice(newPrice);
-    setVolume(newPrice / currentPrice!);
+    setVolume(newPrice / currentPrice);
   };
 
   const handleVolumeChange = (newVolume: number | undefined) => {
-    if (newVolume === undefined) return;
+    if (newVolume === undefined || !currentPrice) return;
     setVolume(newVolume);
-    setPrice(newVolume * currentPrice!);
+    setPrice(newVolume * currentPrice);
   };
 
   const { mutate: createOrder, isPending } = useMutation({
@@ -50,8 +49,8 @@ export const BuySell = ({ ticker }: BuySellProps) => {
     },
   });
 
-  const order = (type: 'buy' | 'sell') => {
-    if (!price || !volume) return;
+  const handleOrder = (type: 'buy' | 'sell') => {
+    if (price === undefined || volume === undefined) return;
     createOrder({
       body: {
         ticker,
@@ -61,80 +60,99 @@ export const BuySell = ({ ticker }: BuySellProps) => {
     });
   };
 
+  if (
+    price === undefined ||
+    volume === undefined ||
+    currentPrice === undefined
+  ) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <div className="flex items-center gap-2 mt-2">
-        <div className="mt-1 w-full">
-          <p className="text-sm font-medium">
+    <div className="space-y-2">
+      <div className="flex gap-2 items-center">
+        <label className="font-medium">
+          {mode === 'price' ? t('instruments.price') : t('instruments.volume')}
+          {': '}
+        </label>
+        {mode === 'price' ? (
+          <NumberInput
+            value={price}
+            onValueChange={handlePriceChange}
+            prefix={'$'}
+            fixedDecimalScale
+            stepper={price > 100 ? 100 : 10}
+            decimalScale={2}
+            className="w-full"
+            placeholder="0.00"
+          />
+        ) : (
+          <NumberInput
+            value={volume}
+            onValueChange={handleVolumeChange}
+            fixedDecimalScale
+            stepper={0.25}
+            decimalScale={5}
+            className="w-full"
+            placeholder="0.00000"
+          />
+        )}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onModeToggle}
+          className="h-9"
+          title={
+            mode === 'price'
+              ? t('orders.switch_to_volume')
+              : t('orders.switch_to_price')
+          }
+        >
+          <ArrowUpDown className="h-full w-3" />
+        </Button>
+      </div>
+      <div className="bg-muted rounded-lg p-3 space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="text-muted-foreground">
             {mode === 'price'
-              ? t('instruments.price')
-              : t('instruments.volume')}
-          </p>
-          {price === undefined ||
-          volume === undefined ||
-          currentPrice === undefined ? (
-            <>
-              <Skeleton className="h-10 w-full mb-2" />
-              <Skeleton className="h-5 w-24" />
-            </>
-          ) : (
-            <>
-              <div className="flex gap-2 mb-1">
-                {mode === 'price' ? (
-                  <NumberInput
-                    value={price}
-                    onValueChange={handlePriceChange}
-                    prefix={'$'}
-                    fixedDecimalScale
-                    stepper={price > 100 ? 100 : 10}
-                    decimalScale={2}
-                    className="w-full"
-                  />
-                ) : (
-                  <NumberInput
-                    value={volume}
-                    onValueChange={handleVolumeChange}
-                    fixedDecimalScale
-                    stepper={0.25}
-                    decimalScale={5}
-                    className="w-full"
-                  />
-                )}
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-9 w-9"
-                  onClick={onModeToggle}
-                  title={
-                    mode === 'price'
-                      ? t('orders.switch_to_volume')
-                      : t('orders.switch_to_price')
-                  }
-                >
-                  <ArrowUpDown />
-                </Button>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                {mode === 'price'
-                  ? `${t('instruments.volume')}: ${(price / currentPrice).toFixed(5)}`
-                  : `${t('instruments.price')}: $${(volume * currentPrice).toFixed(2)}`}
-              </p>
-            </>
-          )}
+              ? t('instruments.volume')
+              : t('instruments.price')}
+          </span>
+          <span className="font-medium">
+            {mode === 'price'
+              ? (price / currentPrice).toFixed(5)
+              : `$${(volume * currentPrice).toFixed(2)}`}
+          </span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-muted-foreground">
+            {t('instruments.current_price')}
+          </span>
+          <span className="font-medium">
+            ${Number(currentPrice).toFixed(2)}
+          </span>
         </div>
       </div>
-      <div className='flex gap-2'>
+      <div className="flex gap-2">
         <Button
-          className="bg-green-600 hover:bg-green-700 flex-1"
-          onClick={() => order('buy')}
-          disabled={isPending || value === 0}
+          size="lg"
+          className={'flex-1 font-semibold bg-green-600 hover:bg-green-700'}
+          onClick={() => handleOrder('buy')}
+          disabled={isPending || volume === 0}
         >
           {t('instruments.buy')}
         </Button>
         <Button
-          className="bg-red-600 hover:bg-red-700 flex-1"
-          onClick={() => order('sell')}
-          disabled={isPending || value === 0}
+          size="lg"
+          className={'flex-1 font-semibold bg-red-600 hover:bg-red-700'}
+          onClick={() => handleOrder('sell')}
+          disabled={isPending || volume === 0}
         >
           {t('instruments.sell')}
         </Button>

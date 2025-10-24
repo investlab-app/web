@@ -1,8 +1,8 @@
 const plOrders = {
   place_order: 'Złóż zlecenie',
   tabs: {
-    market_order: 'Zlecenie rynkowe',
-    stop_limit_order: 'Zlecenie Stop / Limit',
+    market_order: 'Rynkowe',
+    stop_limit_order: 'Stop / Limit',
     stop_loss_take_profit: 'Stop Loss / Take Profit',
   },
   switch_to_price: 'Przełącz na cenę',
