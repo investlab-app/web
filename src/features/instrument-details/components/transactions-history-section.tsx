@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { BuySellContainer } from './buy-sell-action';
 import {
   PositionsTableBodySkeleton,
   PositionsTableHeader,
@@ -73,20 +72,13 @@ export function TransactionsHistorySection({
         ) : !tickerTransactions.length ? (
           <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
-          <>
-            <BuySellContainer
-              currentPrice={parseFloat(tickerPrice.current_price)}
-              ticker={instrumentId}
-              onlySell={true}
+          tickerTransactions.map((position) => (
+            <PositionRow
+              key={position.name}
+              position={position}
+              isNavigable={false}
             />
-            {tickerTransactions.map((position) => (
-              <PositionRow
-                key={position.name}
-                position={position}
-                isNavigable={false}
-              />
-            ))}
-          </>
+          ))
         )}
       </CardContent>
     </Card>
