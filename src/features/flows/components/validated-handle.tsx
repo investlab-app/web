@@ -38,3 +38,42 @@ export const CustomHandle = ({
     />
   );
 };
+
+
+
+export interface ValidatedHandleProps {
+  nodeId: string;
+  id: string;
+  type: HandleType;
+  position: Position;
+  style?: Record<string, string>;
+  overrideAllowedConnections?: number;
+}
+
+export const ValidatedHandle = ({
+  nodeId,
+  id,
+  type,
+  position,
+  style,
+  overrideAllowedConnections,
+}: ValidatedHandleProps) => {
+  const { getAllowedConnectionsNew, isConnectionValid } = useValidators();
+  const connections = useNodeConnections({
+    id: nodeId,
+    handleType: type,
+    handleId: id.toString(),
+  });
+  return (
+    <Handle
+      id={id.toString()}
+      type={type}
+      position={position}
+      isConnectable={isConnectionValid(
+        connections.length,
+        overrideAllowedConnections ?? getAllowedConnectionsNew(nodeId, type, id)
+      )}
+      style={style}
+    />
+  );
+};

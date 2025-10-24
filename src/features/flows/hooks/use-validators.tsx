@@ -7,26 +7,19 @@ import {
 import { TypesMapping } from '../types/node-types';
 import type { CustomNodeTypes } from '../types/node-types';
 import type { Connection, Edge, HandleType, Node, NodeConnection } from '@xyflow/react';
+import type { PriceOfNodeProps } from '../utils/price-of-node';
 
 export const useValidators = () => {
   const { getNodes, getEdges, getNode } = useReactFlow();
 
 function _getConnectionCountsPerHandle(connections: Array<NodeConnection>, source: boolean) {
-const counts: Array<number> = [];
+const counts: Record<string, number> = {};
   
   for (const conn of connections) {
     const key = source ? conn.sourceHandle : conn.targetHandle;
     if (key == null) continue;
 
-    const id = parseInt(key, 10);
-    if (isNaN(id)) continue;
-
-    counts[id] = (counts[id] ?? 0) + 1;
-  }
-
-  const maxId = counts.length;
-  for (let i = 0; i < maxId; i++) {
-    counts[i] = counts[i] ?? 0;
+    counts[key] = (counts[key] ?? 0) + 1;
   }
 
   return counts;
@@ -98,6 +91,12 @@ const counts: Array<number> = [];
     const supertype = TypesMapping[node.type as CustomNodeTypes];
     return connectionCounts[supertype][type][handleId];
   };
+  const getAllowedConnectionsNew = (nodeId: string, type: HandleType, handleId: string) => {
+    const node = getNode(nodeId);
+    if (!node) return 0;
+    const obj = (node.data.settings as PriceOfNodeProps) ;
+    return obj.getAllowedConnections(type, handleId);
+  };
 
   const validateNode = (
     nodeId: string,
@@ -105,28 +104,23 @@ const counts: Array<number> = [];
     connectionsOut:  Array<NodeConnection>,
   ) => {
     const node = getNode(nodeId);
-    if (!node || !_validateNonEmptyStrings(node.data)) return false;
-    const supertype = TypesMapping[node.type as CustomNodeTypes];
+    
+    if (!node) return false;
 
     const connectionsInCounts = _getConnectionCountsPerHandle(connectionsIn, false);
     const connectionsOutCounts = _getConnectionCountsPerHandle(connectionsOut, true);
 
-    for( let i = 0; i < connectionCounts[supertype]['validIn'].length; i++) {
-      const minAllowed = connectionCounts[supertype]['validIn'][i];
-      const count = connectionsInCounts[i] || 0;
-      if (count < minAllowed) return false;
-    }
-    for( let i = 0; i < connectionCounts[supertype]['validOut'].length; i++) {
-      const minAllowed = connectionCounts[supertype]['validOut'][i];
-      const count = connectionsOutCounts[i] || 0;
-      if (count < minAllowed) return false;
-    }
-   return true;
+    const obj = node.data.settings as PriceOfNodeProps;
+
+    return obj.isValid(connectionsInCounts, connectionsOutCounts);
+
   };
 
   return {
     validateConnection,
     getAllowedConnections,
+
+    getAllowedConnectionsNew,
     validateNode,
     isConnectionValid,
   };
