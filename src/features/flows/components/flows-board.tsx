@@ -13,7 +13,7 @@ import { HappensBetweenNode } from '../nodes/rule/happens-between-node';
 import { PriceHigherLowerNode } from '../nodes/rule/price-higher-lower-node';
 import { AndNode } from '../nodes/connector/and-node';
 import { OrNode } from '../nodes/connector/or-node';
-import { CustomNodeTypes } from '../types/node-types';
+import { CustomNodeTypes } from '../types/node-types-2';
 import { useValidators } from '../hooks/use-validators';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
@@ -33,17 +33,16 @@ import type {
 } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
+import { PriceOfNode } from '../nodes/number/priceOf';
+import { PriceOfNodeProps } from '../utils/price-of-node';
 
 const nodeTypes: NodeTypes = {
+  [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.And]: AndNode,
   [CustomNodeTypes.Or]: OrNode,
-  [CustomNodeTypes.IfThenElse]: FlowNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
-  [CustomNodeTypes.HappensWithin]: HappensWithinNode,
-  [CustomNodeTypes.HappensBetween]: HappensBetweenNode,
-  [CustomNodeTypes.PriceOverUnder]: PriceHigherLowerNode,
   [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
   [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
   [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
@@ -51,7 +50,14 @@ const nodeTypes: NodeTypes = {
 };
 
 export function FlowsBoard() {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([
+    {
+    id: 'n1',
+    position: { x: 0, y: 0 },
+    data: { settings: new PriceOfNodeProps()},
+    type: CustomNodeTypes.PriceOf,
+  },
+  ]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
