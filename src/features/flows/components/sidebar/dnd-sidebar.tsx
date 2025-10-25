@@ -1,24 +1,15 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
-import { PriceChangesNodeUI } from '../../nodes/trigger/price-changes-node';
-import { InstrumentBoughtSoldNodeUI } from '../../nodes/trigger/instrument-bought-sold-node';
-import { CustomNodeTypes } from '../../types/node-types';
-import { HappensBetweenNodeUI } from '../../nodes/rule/happens-between-node';
-import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node';
-import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node';
-import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node';
-import { SendNotificationNodeUI } from '../../nodes/action/send-notification-node';
-import { PriceHigherLowerNodeUI } from '../../nodes/rule/price-higher-lower-node';
-import { AndNodeUI } from '../../nodes/connector/and-node';
-import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node';
-import { HappensWithinNodeUI } from '../../nodes/rule/happens-within-node';
-import { FlowNodeUI } from '../../nodes/flow/flow-node';
-import { OrNodeUI } from '../../nodes/connector/or-node';
+import { CustomNodeTypes } from '../../types/node-types-2';
 import { DragGhost } from '../drag-ghost';
-import { SidebarSection } from './section';
+import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
+import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
+import { SidebarSection,  } from './section';
+import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
+import type { NodeSettings } from '../../nodes/node-settings';
 
 let nodeid = 0;
 const getId = () => `node_${nodeid++}`;
@@ -36,8 +27,8 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
   const createAddNewNode = useCallback(
     (
       nodeType: string,
-      data: Record<string, boolean | string | number>
-    ): OnDropAction => {
+      settingsType: Constructor<NodeSettings>
+        ): OnDropAction => {
       return ({ position }: { position: XYPosition }) => {
         const flowPos = screenToFlowPosition(position);
 
@@ -45,7 +36,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           id: getId(),
           type: nodeType,
           position: flowPos,
-          data: data,
+          data: {settings: new settingsType()},
         };
         addNode(newNode);
         setType(null);
@@ -58,7 +49,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
     <div className="py-2">
       {isDragging && <DragGhost type={type} />}
       <div>
-        <SidebarSection
+        {/* <SidebarSection
           title={t('flows.sidebar.logical')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
@@ -183,6 +174,18 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
                 amount: 1,
                 instrument: '',
               },
+            },
+          }}
+        /> */}
+         <SidebarSection
+          title={t('flows.sidebar.rules')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.rule_node'))}
+          children={{
+            [CustomNodeTypes.PriceOf]: {
+              component: PriceOfNodeUI,
+              settingsType:  PriceOfNodeSettings
             },
           }}
         />

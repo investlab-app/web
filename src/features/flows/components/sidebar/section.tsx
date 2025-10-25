@@ -1,12 +1,16 @@
-import type { CustomNodeTypes } from '../../types/node-types';
+
+import type { NodeSettings } from '../../nodes/node-settings';
+import type { CustomNodeTypes } from '../../types/node-types-2';
 import type { OnDropAction } from '../../utils/dnd-context';
+
+export type Constructor<T> = new () => T;
 
 type SidebarSectionChildren = {
   [K in CustomNodeTypes]?: {
     // Using ComponentType<any> here because the components have their own specific prop types
     // that we want to preserve while still allowing them to be used in this generic context
     component: React.ComponentType<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-    props: Record<string, boolean | string | number>;
+    settingsType: Constructor<NodeSettings>;
   };
 };
 
@@ -15,7 +19,7 @@ interface SidebarSectionProps {
   children: SidebarSectionChildren;
   createNodeFunc: (
     nodeType: string,
-    data: Record<string, boolean | string | number>
+    settings:  Constructor<NodeSettings>,
   ) => OnDropAction;
   onDragStart: (
     event: React.PointerEvent<HTMLDivElement>,
@@ -36,17 +40,16 @@ export function SidebarSection({
       <div className="font-medium mb-2">{title}</div>
       <div className="space-y-2">
         {Object.entries(children).map(
-          ([type, { component: Component, props }]) => (
+          ([type, { component: Component, settingsType}]) => (
             <div
               key={type}
               className="cursor-grab hover:bg-gray-50 rounded transition-colors"
               onPointerDown={(event) => {
                 setGhostType();
-                onDragStart(event, createNodeFunc(type, props));
+                onDragStart(event, createNodeFunc(type, settingsType ));
               }}
             >
               <Component
-                {...props}
                 nodeId={`preview-${type.toLowerCase()}`}
                 preview={true}
               />

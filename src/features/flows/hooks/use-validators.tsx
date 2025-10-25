@@ -7,7 +7,7 @@ import {
 import { TypesMapping } from '../types/node-types';
 import type { CustomNodeTypes } from '../types/node-types';
 import type { Connection, Edge, HandleType, Node, NodeConnection } from '@xyflow/react';
-import type { PriceOfNodeProps } from '../utils/price-of-node';
+import type { NodeSettings } from '../nodes/node-settings';
 
 export const useValidators = () => {
   const { getNodes, getEdges, getNode } = useReactFlow();
@@ -45,16 +45,6 @@ const counts: Record<string, number> = {};
     []
   );
 
-  function _validateNonEmptyStrings(obj: Record<string, unknown>): boolean {
-    for (const key in obj) {
-      const value = obj[key];
-      if (typeof value === 'string' && value.trim() === '') {
-        return false;
-      }
-    }
-    return true;
-  }
-
   const validateConnection = useCallback(
     (connection: Connection | Edge) => {
       const nodes = getNodes();
@@ -81,6 +71,26 @@ const counts: Record<string, number> = {};
     [getEdges, getNodes, _hasCycle]
   );
 
+  const validateConnectionNew = useCallback(
+    (connection: Connection | Edge) => {
+      const nodes = getNodes();
+      const edges = getEdges();
+      const target = nodes.find((node) => node.id === connection.target);
+      const source = nodes.find((node) => node.id === connection.source);
+      if (!target || !source) {
+        return false;
+      }
+      const sourceObj = (source.data.settings as NodeSettings) ;
+      const targetObj = (target.data.settings as NodeSettings) ;
+      const allowedSupertypes = sourceObj.getAllowedSupertypes(connection.sourceHandle!);
+      if ( !allowedSupertypes.includes( targetObj.getSupertype() )) return false;
+
+      if (_hasCycle(target, nodes, edges, connection.source)) return false;
+      return true;
+    },
+    [getEdges, getNodes, _hasCycle]
+  );
+
   const isConnectionValid = (connectionsLen: number, allowed: number) => {
     return allowed >= 0 ? connectionsLen < allowed : true;
   };
@@ -94,7 +104,7 @@ const counts: Record<string, number> = {};
   const getAllowedConnectionsNew = (nodeId: string, type: HandleType, handleId: string) => {
     const node = getNode(nodeId);
     if (!node) return 0;
-    const obj = (node.data.settings as PriceOfNodeProps) ;
+    const obj = (node.data.settings as NodeSettings) ;
     return obj.getAllowedConnections(type, handleId);
   };
 
@@ -110,7 +120,7 @@ const counts: Record<string, number> = {};
     const connectionsInCounts = _getConnectionCountsPerHandle(connectionsIn, false);
     const connectionsOutCounts = _getConnectionCountsPerHandle(connectionsOut, true);
 
-    const obj = node.data.settings as PriceOfNodeProps;
+    const obj = node.data.settings as NodeSettings;
 
     return obj.isValid(connectionsInCounts, connectionsOutCounts);
 
@@ -119,7 +129,7 @@ const counts: Record<string, number> = {};
   return {
     validateConnection,
     getAllowedConnections,
-
+      validateConnectionNew,
     getAllowedConnectionsNew,
     validateNode,
     isConnectionValid,
