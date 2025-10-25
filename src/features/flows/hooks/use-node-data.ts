@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useReactFlow, useUpdateNodeInternals } from '@xyflow/react';
 import type { Node } from '@xyflow/react';
-import type { PriceOfNodeProps } from '../utils/price-of-node';
+import type { PriceOfNodeSettings } from '../nodes/number/price-of-node-settings';
 
-export function useNodeData<TData extends Record<string, boolean | string | number | PriceOfNodeProps>>(nodeId: string) {
+export function useNodeData<TData extends Record<string, boolean | string | number | PriceOfNodeSettings>>(nodeId: string) {
   const { setNodes } = useReactFlow();
   const updateNodeInternals = useUpdateNodeInternals();
 

@@ -6,22 +6,10 @@ import {
   useNodesState,
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
-import { DnDProvider } from '../utils/dnd-context';
-import { PriceChangesNode } from '../nodes/trigger/price-changes-node';
-import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node';
-import { HappensBetweenNode } from '../nodes/rule/happens-between-node';
-import { PriceHigherLowerNode } from '../nodes/rule/price-higher-lower-node';
-import { AndNode } from '../nodes/connector/and-node';
-import { OrNode } from '../nodes/connector/or-node';
+import { PriceOfNode, PriceOfNodeSettings,  } from '../nodes/number/price-of-node-settings';
 import { CustomNodeTypes } from '../types/node-types-2';
+import { DnDProvider } from '../utils/dnd-context';
 import { useValidators } from '../hooks/use-validators';
-import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node';
-import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node';
-import { FlowNode } from '../nodes/flow/flow-node';
-import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node';
-import { CheckEveryNode } from '../nodes/trigger/check-every-node';
-import { SendNotificationNode } from '../nodes/action/send-notification-node';
-import { HappensWithinNode } from '../nodes/rule/happens-within-node';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
 import { SaveButton } from './execute-button';
 import type {
@@ -33,20 +21,18 @@ import type {
 } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
-import { PriceOfNode } from '../nodes/number/priceOf';
-import { PriceOfNodeProps } from '../utils/price-of-node';
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.PriceOf]: PriceOfNode,
-  [CustomNodeTypes.And]: AndNode,
-  [CustomNodeTypes.Or]: OrNode,
-  [CustomNodeTypes.PriceChanges]: PriceChangesNode,
-  [CustomNodeTypes.CheckEvery]: CheckEveryNode,
-  [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
-  [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
-  [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
-  [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
-  [CustomNodeTypes.SendNotification]: SendNotificationNode,
+  // [CustomNodeTypes.And]: AndNode,
+  // [CustomNodeTypes.Or]: OrNode,
+  // [CustomNodeTypes.PriceChanges]: PriceChangesNode,
+  // [CustomNodeTypes.CheckEvery]: CheckEveryNode,
+  // [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
+  // [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
+  // [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
+  // [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
+  // [CustomNodeTypes.SendNotification]: SendNotificationNode,
 };
 
 export function FlowsBoard() {
@@ -54,14 +40,14 @@ export function FlowsBoard() {
     {
     id: 'n1',
     position: { x: 0, y: 0 },
-    data: { settings: new PriceOfNodeProps()},
+    data: { settings: new PriceOfNodeSettings()},
     type: CustomNodeTypes.PriceOf,
   },
   ]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
-  const { validateConnection } = useValidators();
+  const { validateConnectionNew } = useValidators();
  
   const onConnect = useCallback(
     (params: Connection) =>
@@ -97,7 +83,7 @@ export function FlowsBoard() {
             onConnect={onConnect}
             nodeTypes={nodeTypes}
             onInit={setRfInstance}
-            isValidConnection={validateConnection}
+            isValidConnection={validateConnectionNew}
             zoomOnScroll={false}
           >
             <Background />
