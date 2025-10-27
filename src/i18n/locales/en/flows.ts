@@ -10,7 +10,7 @@ const enFlows = {
   },
   sidebar: {
     logical: 'Logical operators',
-    flow: 'Flow nodes',
+    conditionals: 'Conditional nodes',
     triggers: 'Triggers',
     rules: 'Rules',
     actions: 'Actions',
@@ -18,7 +18,7 @@ const enFlows = {
   },
   ghosts: {
     logical_node: 'Logical Node',
-    flow_node: 'Flow Node',
+    conditional_node: 'Conditional Node',
     trigger_node: 'Trigger Node',
     rule_node: 'Rule Node',
     action_node: 'Action Node',
@@ -28,6 +28,8 @@ const enFlows = {
     not: 'not',
     or: 'or',
     if: 'if',
+    do: 'do',
+    number: 'number',
     then: 'then',
     else: 'else',
     price_of: 'price of',

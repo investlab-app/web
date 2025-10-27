@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
+import { NumericFlowIfNodeUI } from './numeric-flow-if-node-ui';
+import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class NumericFlowIfNodeSettings extends NodeSettings {
   override isValid(
@@ -9,7 +12,7 @@ export class NumericFlowIfNodeSettings extends NodeSettings {
   ): boolean {
     return (
       'out' in inConnections &&
-      outConnections.length >= 2 &&
+      Object.keys(outConnections).length >= 2 &&
       'inIf' in outConnections &&
       'inThen' in outConnections
     );
@@ -36,3 +39,12 @@ export class NumericFlowIfNodeSettings extends NodeSettings {
     return SuperNodeTypes.NumericFlow;
   }
 }
+
+export type NumericFlowNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  CustomNodeTypes.NumbericFlowIf
+>;
+
+export const NumericFlowNode = (props: NodeProps<NumericFlowNode>) => {
+  return <NumericFlowIfNodeUI nodeId={props.id} />;
+};

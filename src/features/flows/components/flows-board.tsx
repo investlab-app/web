@@ -15,6 +15,8 @@ import { AndNode } from '../nodes/logic-operator/and-node-settings';
 import { NotNode } from '../nodes/logic-operator/not-node-settings';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node-settings';
 import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node-settings';
+import { FlowNode } from '../nodes/flow/flow-if-node-settings';
+import { NumericFlowNode } from '../nodes/flow/numeric-flow-if-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
@@ -32,10 +34,14 @@ import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
 
 const nodeTypes: NodeTypes = {
-  [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.Not]: NotNode,
   [CustomNodeTypes.And]: AndNode,
   [CustomNodeTypes.Or]: OrNode,
+
+  [CustomNodeTypes.FlowIf]: FlowNode,
+  [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,
+
+  [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
