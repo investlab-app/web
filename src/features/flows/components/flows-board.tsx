@@ -10,6 +10,9 @@ import { PriceOfNode } from '../nodes/number/price-of-node-settings';
 import { CustomNodeTypes } from '../types/node-types-2';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node-settings';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node-settings';
+import { OrNode } from '../nodes/logic-operator/or-node-settings';
+import { AndNode } from '../nodes/logic-operator/and-node-settings';
+import { NotNode } from '../nodes/logic-operator/not-node-settings';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node-settings';
 import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
@@ -30,8 +33,9 @@ import '@xyflow/react/dist/style.css';
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.PriceOf]: PriceOfNode,
-  // [CustomNodeTypes.And]: AndNode,
-  // [CustomNodeTypes.Or]: OrNode,
+  [CustomNodeTypes.Not]: NotNode,
+  [CustomNodeTypes.And]: AndNode,
+  [CustomNodeTypes.Or]: OrNode,
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,

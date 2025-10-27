@@ -1,23 +1,39 @@
 import { useTranslation } from 'react-i18next';
-import { ConnectorNodeUI } from './connector-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '../../types/node-types';
+import { Position } from '@xyflow/react';
+import { NodeUI } from '../node-ui';
+import { ValidatedHandle } from '../../components/validated-handle';
 import type { CustomNodeProps } from '../../types/node-props';
-
-export type AndNode = Node<
-  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-  CustomNodeTypes.And
->;
-
-export const AndNode = (props: NodeProps<AndNode>) => {
-  return <AndNodeUI nodeId={props.id} />;
-};
 
 export function AndNodeUI({ nodeId, preview }: CustomNodeProps) {
   const { t } = useTranslation();
   return (
-    <ConnectorNodeUI nodeId={nodeId} preview={preview}>
+    <NodeUI
+      preview={preview}
+      nodeId={nodeId}
+      className={`bg-[var(--background)]`}
+    >
       {t('flows.nodes.and').toUpperCase()}
-    </ConnectorNodeUI>
+
+      <ValidatedHandle
+        nodeId={nodeId}
+        type="target"
+        position={Position.Left}
+        id="out"
+      />
+      <ValidatedHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        id="inA"
+        style={{ top: '30%' }}
+      />
+      <ValidatedHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        style={{ top: '70%' }}
+        id="inB"
+      />
+    </NodeUI>
   );
 }

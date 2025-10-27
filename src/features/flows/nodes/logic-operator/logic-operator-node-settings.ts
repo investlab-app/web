@@ -20,14 +20,14 @@ export class LogicOperatorNodeSettings extends NodeSettings {
   }
 
   override getAllowedConnections(
-    handleType: 'source' | 'target',
-    handleId: string
+    _handleType: 'source' | 'target',
+    _handleId: string
   ): number {
-    return handleType == 'target' ? 1 : 0;
+    return 1;
   }
 
-  override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
-    return [];
+  override getAllowedSupertypes(_handleId: string): Array<SuperNodeTypes> {
+    return [SuperNodeTypes.LogicOperator, SuperNodeTypes.Predicate];
   }
 
   override getSupertype(): SuperNodeTypes {

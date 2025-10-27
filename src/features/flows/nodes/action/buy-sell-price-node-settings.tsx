@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { BuySellPriceNodeUI } from './buy-sell-price-node';
+import { BuySellPriceNodeUI } from './buy-sell-price-node-ui';
 import { ActionNodeSettings } from './action-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
