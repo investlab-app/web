@@ -1,5 +1,8 @@
 import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
+import { FlowIfNodeUI } from './flow-if-node-ui';
+import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class FlowIfNodeSettings extends NodeSettings {
   override isValid(
@@ -8,8 +11,7 @@ export class FlowIfNodeSettings extends NodeSettings {
   ): boolean {
     return (
       'out' in inConnections &&
-      inConnections['out'] == 1 &&
-      outConnections.length >= 2 &&
+      Object.keys(outConnections).length >= 2 &&
       'inIf' in outConnections &&
       'inThen' in outConnections &&
       outConnections['inIf'] == 1 &&
@@ -36,3 +38,12 @@ export class FlowIfNodeSettings extends NodeSettings {
     return SuperNodeTypes.Flow;
   }
 }
+
+export type FlowNode = Node<
+  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  CustomNodeTypes.FlowIf
+>;
+
+export const FlowNode = (props: NodeProps<FlowNode>) => {
+  return <FlowIfNodeUI nodeId={props.id} />;
+};

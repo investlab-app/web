@@ -18,6 +18,10 @@ import { InstrumentBoughtSoldNodeSettings } from '../../nodes/trigger/instrument
 import { PriceChangesNodeUI } from '../../nodes/trigger/price-changes-node';
 import { PriceChangesNodeSettings } from '../../nodes/trigger/price-changes-node-settings';
 import { AndNodeUI } from '../../nodes/logic-operator/and-node';
+import { FlowIfNodeUI } from '../../nodes/flow/flow-if-node-ui';
+import { NumericFlowIfNodeUI } from '../../nodes/flow/numeric-flow-if-node-ui';
+import { FlowIfNodeSettings } from '../../nodes/flow/flow-if-node-settings';
+import { NumericFlowIfNodeSettings } from '../../nodes/flow/numeric-flow-if-node-settings';
 import { AndNodeSettings } from '../../nodes/logic-operator/and-node-settings';
 import { OrNodeUI } from '../../nodes/logic-operator/or-node';
 import { OrNodeSettings } from '../../nodes/logic-operator/or-node-settings';
@@ -264,6 +268,22 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.PriceOf]: {
               component: PriceOfNodeUI,
               settingsType: PriceOfNodeSettings,
+            },
+          }}
+        />
+        <SidebarSection
+          title={t('flows.sidebar.conditionals')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.conditional_node'))}
+          children={{
+            [CustomNodeTypes.FlowIf]: {
+              component: FlowIfNodeUI,
+              settingsType: FlowIfNodeSettings,
+            },
+            [CustomNodeTypes.NumbericFlowIf]: {
+              component: NumericFlowIfNodeUI,
+              settingsType: NumericFlowIfNodeSettings,
             },
           }}
         />

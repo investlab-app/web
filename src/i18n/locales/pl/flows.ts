@@ -10,7 +10,7 @@ const plFlows = {
   },
   sidebar: {
     logical: 'Operatory logiczne',
-    flow: 'Węzły przepływu',
+    conditionals: 'Węzły warunkowe',
     triggers: 'Wyzwalacze',
     rules: 'Reguły',
     actions: 'Akcje',
@@ -18,7 +18,7 @@ const plFlows = {
   },
   ghosts: {
     logical_node: 'Węzeł logiczny',
-    flow_node: 'Węzeł przepływu',
+    conditional_node: 'Węzeł przepływu',
     trigger_node: 'Węzeł wyzwalacza',
     rule_node: 'Węzeł reguły',
     action_node: 'Węzeł akcji',
@@ -27,6 +27,8 @@ const plFlows = {
     and: 'i',
     not: 'nie',
     or: 'lub',
+    do: 'wykonaj',
+    number: 'liczba',
     if: 'jeśli',
     then: 'wtedy',
     else: 'w przeciwnym razie',

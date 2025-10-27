@@ -8,7 +8,6 @@ export class ActionNodeSettings extends NodeSettings {
     _outConnections: Record<string, number>
   ): boolean {
     for (const key in inConnections) {
-      console.log('check key', key, inConnections[key]);
       if (inConnections[key] != 1) return false;
     }
     return Object.keys(inConnections).length == 1;
