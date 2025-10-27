@@ -25,6 +25,7 @@ const plFlows = {
   },
   nodes: {
     and: 'i',
+    not: 'nie',
     or: 'lub',
     if: 'jeśli',
     then: 'wtedy',

@@ -1,23 +1,39 @@
 import { useTranslation } from 'react-i18next';
-import { ConnectorNodeUI } from './connector-node-ui';
-import type { CustomNodeTypes } from '../../types/node-types';
-import type { Node, NodeProps } from '@xyflow/react';
+import { Position } from '@xyflow/react';
+import { NodeUI } from '../node-ui';
+import { CustomHandle } from '../../components/validated-handle';
 import type { CustomNodeProps } from '../../types/node-props';
-
-export type OrNode = Node<
-  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-  CustomNodeTypes.Or
->;
-
-export const OrNode = (props: NodeProps<OrNode>) => {
-  return <OrNodeUI nodeId={props.id} />;
-};
 
 export function OrNodeUI({ nodeId, preview }: CustomNodeProps) {
   const { t } = useTranslation();
   return (
-    <ConnectorNodeUI nodeId={nodeId} preview={preview}>
+    <NodeUI
+      preview={preview}
+      nodeId={nodeId}
+      className={`bg-[var(--background)]`}
+    >
       {t('flows.nodes.or').toUpperCase()}
-    </ConnectorNodeUI>
+
+      <CustomHandle
+        nodeId={nodeId}
+        type="target"
+        position={Position.Left}
+        id={0}
+      />
+      <CustomHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        id={0}
+        style={{ top: '30%' }}
+      />
+      <CustomHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        style={{ top: '70%' }}
+        id={1}
+      />
+    </NodeUI>
   );
 }

@@ -15,12 +15,12 @@ export class TriggerNodeSettings extends NodeSettings {
 
   override getAllowedConnections(
     handleType: 'source' | 'target',
-    handleId: string
+    _handleId: string
   ): number {
     return handleType == 'source' ? 1 : 0;
   }
 
-  override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
+  override getAllowedSupertypes(_handleId: string): Array<SuperNodeTypes> {
     return [SuperNodeTypes.Flow, SuperNodeTypes.Action];
   }
 

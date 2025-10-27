@@ -16,8 +16,8 @@ export class NumericFlowIfNodeSettings extends NodeSettings {
   }
 
   override getAllowedConnections(
-    handleType: 'source' | 'target',
-    handleId: string
+    _handleType: 'source' | 'target',
+    _handleId: string
   ): number {
     return 1;
   }

@@ -5,10 +5,10 @@ import { CustomNodeTypes } from '../../types/node-types-2';
 import { DragGhost } from '../drag-ghost';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
-import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node';
+import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node-ui';
 import { BuySellPriceNodeSettings } from '../../nodes/action/buy-sell-price-node-settings';
 import { BuySellPercentNodeSettings } from '../../nodes/action/buy-sell-percent-node-settings';
-import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node';
+import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node-ui';
 import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node-ui';
 import { BuySellAmountNodeSettings } from '../../nodes/action/buy-sell-amount-node-settings';
 import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node';
@@ -17,6 +17,12 @@ import { InstrumentBoughtSoldNodeUI } from '../../nodes/trigger/instrument-bough
 import { InstrumentBoughtSoldNodeSettings } from '../../nodes/trigger/instrument-bought-sold-node-settings';
 import { PriceChangesNodeUI } from '../../nodes/trigger/price-changes-node';
 import { PriceChangesNodeSettings } from '../../nodes/trigger/price-changes-node-settings';
+import { AndNodeUI } from '../../nodes/logic-operator/and-node';
+import { AndNodeSettings } from '../../nodes/logic-operator/and-node-settings';
+import { OrNodeUI } from '../../nodes/logic-operator/or-node';
+import { OrNodeSettings } from '../../nodes/logic-operator/or-node-settings';
+import { NotNodeSettings } from '../../nodes/logic-operator/not-node-settings';
+import { NotNodeUI } from '../../nodes/logic-operator/not-node';
 import { SidebarSection } from './section';
 import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -186,9 +192,29 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
                 amount: 1,
                 instrument: '',
               },
+              },
+              }}
+              /> */}
+        <SidebarSection
+          title={t('flows.sidebar.logical')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.logical_node'))}
+          children={{
+            [CustomNodeTypes.And]: {
+              component: AndNodeUI,
+              settingsType: AndNodeSettings,
+            },
+            [CustomNodeTypes.Or]: {
+              component: OrNodeUI,
+              settingsType: OrNodeSettings,
+            },
+            [CustomNodeTypes.Not]: {
+              component: NotNodeUI,
+              settingsType: NotNodeSettings,
             },
           }}
-        /> */}
+        />
         <SidebarSection
           title={t('flows.sidebar.triggers')}
           createNodeFunc={createAddNewNode}

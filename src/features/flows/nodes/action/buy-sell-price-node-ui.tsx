@@ -44,9 +44,9 @@ export function BuySellPriceNodeUI({
         <NumberInput
           className="w-35 ml-2"
           min={0}
-          defaultValue={1}
+          defaultValue={100}
           prefix="$"
-          stepper={0.5}
+          stepper={50}
           value={price}
           onValueChange={onPriceChange}
           decimalScale={2}

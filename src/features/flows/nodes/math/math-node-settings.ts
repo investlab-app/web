@@ -15,13 +15,13 @@ export class NumberNodeSettings extends NodeSettings {
   }
 
   override getAllowedConnections(
-    handleType: 'source' | 'target',
-    handleId: string
+    _handleType: 'source' | 'target',
+    _handleId: string
   ): number {
     return 1;
   }
 
-  override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
+  override getAllowedSupertypes(_handleId: string): Array<SuperNodeTypes> {
     return [
       SuperNodeTypes.Math,
       SuperNodeTypes.Number,

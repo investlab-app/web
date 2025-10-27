@@ -5,7 +5,7 @@ import { SuperNodeTypes } from '../../types/node-types-2';
 export class ActionNodeSettings extends NodeSettings {
   override isValid(
     inConnections: Record<string, number>,
-    outConnections: Record<string, number>
+    _outConnections: Record<string, number>
   ): boolean {
     for (const key in inConnections) {
       console.log('check key', key, inConnections[key]);
@@ -16,12 +16,12 @@ export class ActionNodeSettings extends NodeSettings {
 
   override getAllowedConnections(
     handleType: 'source' | 'target',
-    handleId: string
+    _handleId: string
   ): number {
     return handleType == 'target' ? 1 : 0;
   }
 
-  override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
+  override getAllowedSupertypes(_handleId: string): Array<SuperNodeTypes> {
     return [];
   }
 

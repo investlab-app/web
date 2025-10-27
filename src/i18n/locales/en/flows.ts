@@ -25,6 +25,7 @@ const enFlows = {
   },
   nodes: {
     and: 'and',
+    not: 'not',
     or: 'or',
     if: 'if',
     then: 'then',
