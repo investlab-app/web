@@ -1,19 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import { Position,  } from '@xyflow/react';
-import {  ValidatedHandle } from '../../components/validated-handle';
+import { Position } from '@xyflow/react';
+import { ValidatedHandle } from '../../components/validated-handle';
 import { NodeUI } from '../node-ui';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 
-
-
 interface PriceOfNodeUIProps {
-  value: string;
+  value?: string;
   onValueChange?: (value: string | undefined) => void;
 }
 
 export function PriceOfNodeUI({
-  value = "",
+  value,
   onValueChange,
   nodeId,
   preview,
@@ -35,7 +33,12 @@ export function PriceOfNodeUI({
         />
       )}
 
-      <ValidatedHandle type="target" id="out" nodeId={nodeId} position={Position.Left} />
+      <ValidatedHandle
+        type="target"
+        id="out"
+        nodeId={nodeId}
+        position={Position.Left}
+      />
     </NodeUI>
   );
 }

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
 
 interface BuySellSelectProps {
-  action: string;
+  action?: string;
   onActionChange?: (value: string) => void;
 }
 

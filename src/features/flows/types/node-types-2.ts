@@ -60,7 +60,7 @@ export const TypesMapping = {
   [CustomNodeTypes.BuySellPrice]: SuperNodeTypes.Action,
   [CustomNodeTypes.BuySellPercent]: SuperNodeTypes.Action,
   [CustomNodeTypes.SendNotification]: SuperNodeTypes.Action,
-  
+
   [CustomNodeTypes.FlowIf]: SuperNodeTypes.Flow,
 
   [CustomNodeTypes.And]: SuperNodeTypes.LogicOperator,
@@ -87,7 +87,7 @@ export const TypesMapping = {
   [CustomNodeTypes.StaysTheSame]: SuperNodeTypes.Predicate,
   [CustomNodeTypes.StaysAboveBelow]: SuperNodeTypes.Predicate,
   [CustomNodeTypes.HasRisenFallen]: SuperNodeTypes.Predicate,
-  
+
   [CustomNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.InstrumentBoughtSold]: SuperNodeTypes.Trigger,
   [CustomNodeTypes.CheckEvery]: SuperNodeTypes.Trigger,

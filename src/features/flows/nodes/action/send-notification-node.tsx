@@ -16,7 +16,9 @@ export type SendNotificationNode = Node<
 export const SendNotificationNode = (
   props: NodeProps<SendNotificationNode>
 ) => {
-  const { updateNodeData } = useNodeData<SendNotificationNode['data']>(props.id);
+  const { updateNodeData } = useNodeData<SendNotificationNode['data']>(
+    props.id
+  );
 
   return (
     <SendNotificationNodeUI

@@ -1,27 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NodeSettings } from "../node-settings";
-import type { SuperNodeTypes } from "../../types/node-types-2";
+import { NodeSettings } from '../node-settings';
+import { SuperNodeTypes } from '../../types/node-types-2';
 
 export class NumberNodeSettings extends NodeSettings {
-
-
-    override isValid(inConnections: Record<string, number>, outConnections: Record<string, number>): boolean {
-        for (const key in inConnections) {
-            if (inConnections[key] != 1) return false;
-        }
-        return inConnections.length == 1;
+  override isValid(
+    inConnections: Record<string, number>,
+    outConnections: Record<string, number>
+  ): boolean {
+    for (const key in inConnections) {
+      if (inConnections[key] != 1) return false;
     }
+    return inConnections.length == 1;
+  }
 
-    override getAllowedConnections(handleType: 'source' | 'target', handleId: string):  number {
-        return handleType == "target" ? 1 : 0;
-    }
+  override getAllowedConnections(
+    handleType: 'source' | 'target',
+    handleId: string
+  ): number {
+    return handleType == 'target' ? 1 : 0;
+  }
 
+  override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
+    return [];
+  }
 
-    override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
-        return [];
-    }
-
-     override getSupertype(): SuperNodeTypes {
-        return SuperNodeTypes.Number;
-    }
+  override getSupertype(): SuperNodeTypes {
+    return SuperNodeTypes.Number;
+  }
 }

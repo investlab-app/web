@@ -48,7 +48,7 @@ const enFlows = {
     push: 'push',
     of_owned: 'of owned',
     send_notification: 'notify via',
-     hour: 'hours',
+    hour: 'hours',
     day: 'days',
     week: 'weeks',
     check_every: 'check every',

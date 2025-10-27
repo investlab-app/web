@@ -1,4 +1,3 @@
-
 import type { NodeSettings } from '../../nodes/node-settings';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -19,7 +18,7 @@ interface SidebarSectionProps {
   children: SidebarSectionChildren;
   createNodeFunc: (
     nodeType: string,
-    settings:  Constructor<NodeSettings>,
+    settings: Constructor<NodeSettings>
   ) => OnDropAction;
   onDragStart: (
     event: React.PointerEvent<HTMLDivElement>,
@@ -40,13 +39,13 @@ export function SidebarSection({
       <div className="font-medium mb-2">{title}</div>
       <div className="space-y-2">
         {Object.entries(children).map(
-          ([type, { component: Component, settingsType}]) => (
+          ([type, { component: Component, settingsType }]) => (
             <div
               key={type}
               className="cursor-grab hover:bg-gray-50 rounded transition-colors"
               onPointerDown={(event) => {
                 setGhostType();
-                onDragStart(event, createNodeFunc(type, settingsType ));
+                onDragStart(event, createNodeFunc(type, settingsType));
               }}
             >
               <Component

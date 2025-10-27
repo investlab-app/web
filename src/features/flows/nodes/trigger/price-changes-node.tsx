@@ -78,21 +78,21 @@ export function PriceChangesNodeUI({
           <option value="under">{t('flows.nodes.under')}</option>
         </select>
       ) : (
-        <div className='pl-1'>{t('flows.placeholders.reaches_threshold')}</div>
+        <div className="pl-1">{t('flows.placeholders.reaches_threshold')}</div>
       )}
       {onValueChange && (
-              <NumberInput
-                className="w-30 ml-2"
-                min={1}
-                stepper={25}
-                defaultValue={100.0}
-                prefix='$'
-                value={price}
-                onValueChange={onPriceChange}
-                fixedDecimalScale={true}
-                decimalScale={2}
-              />
-            )}
+        <NumberInput
+          className="w-30 ml-2"
+          min={1}
+          stepper={25}
+          defaultValue={100.0}
+          prefix="$"
+          value={price}
+          onValueChange={onPriceChange}
+          fixedDecimalScale={true}
+          decimalScale={2}
+        />
+      )}
     </TriggerNodeUI>
   );
 }
