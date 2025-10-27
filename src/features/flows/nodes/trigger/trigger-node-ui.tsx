@@ -1,7 +1,7 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import { CustomHandle } from '@/features/flows/components/validated-handle';
+import { ValidatedHandle } from '@/features/flows/components/validated-handle';
 
 export function TriggerNodeUI({
   children,
@@ -15,11 +15,11 @@ export function TriggerNodeUI({
       preview={preview}
     >
       {children}
-      <CustomHandle
+      <ValidatedHandle
         nodeId={nodeId}
         type="source"
         position={Position.Right}
-        id={0}
+        id="in"
       />
     </NodeUI>
   );

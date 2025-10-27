@@ -1,41 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
-import { useNodeData } from '@/features/flows/hooks/use-node-data';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
-export type PriceChangesNode = Node<
-  {
-    value: string;
-    direction: 'over' | 'under';
-    price: number;
-  },
-  CustomNodeTypes.PriceChanges
->;
-
-export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {
-  const { updateNodeData } = useNodeData(props.id);
-
-  return (
-    <PriceChangesNodeUI
-      value={props.data.value}
-      direction={props.data.direction}
-      price={props.data.price}
-      onValueChange={(value) => updateNodeData({ value })}
-      onDirectionChange={(direction) => updateNodeData({ direction })}
-      onPriceChange={(price) => updateNodeData({ price: price! })}
-      nodeId={props.id}
-    />
-  );
-};
-
 interface PriceChangesNodeUIProps {
-  value: string;
-  direction: 'over' | 'under';
-  price: number;
+  value?: string;
+  direction?: 'over' | 'under';
+  price?: number;
   onValueChange?: (value: string) => void;
   onDirectionChange?: (direction: 'over' | 'under') => void;
   onPriceChange?: (price: number | undefined) => void;

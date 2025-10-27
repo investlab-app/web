@@ -10,7 +10,7 @@ export class NumberNodeSettings extends NodeSettings {
     for (const key in inConnections) {
       if (inConnections[key] != 1) return false;
     }
-    return inConnections.length == 1;
+    return Object.keys(inConnections).length == 1;
   }
 
   override getAllowedConnections(

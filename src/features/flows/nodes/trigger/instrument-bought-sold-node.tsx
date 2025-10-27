@@ -1,38 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
-import { useNodeData } from '@/features/flows/hooks/use-node-data';
-
-export type InstrumentBoughtSoldNode = Node<
-  {
-    value: string;
-    action: 'bought' | 'sold';
-  },
-  CustomNodeTypes.InstrumentBoughtSold
->;
-
-export const InstrumentBoughtSoldNode = (
-  props: NodeProps<InstrumentBoughtSoldNode>
-) => {
-  const { updateNodeData } = useNodeData(props.id);
-
-  return (
-    <InstrumentBoughtSoldNodeUI
-      value={props.data.value}
-      action={props.data.action}
-      onValueChange={(value) => updateNodeData({ value })}
-      onActionChange={(action) => updateNodeData({ action })}
-      nodeId={props.id}
-    />
-  );
-};
 
 interface InstrumentBoughtSoldNodeUIProps {
-  value: string;
-  action: 'bought' | 'sold';
+  value?: string;
+  action?: 'bought' | 'sold';
   onValueChange?: (value: string) => void;
   onActionChange?: (action: 'bought' | 'sold') => void;
 }

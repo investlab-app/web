@@ -1,7 +1,7 @@
 import { Position } from '@xyflow/react';
 import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import { CustomHandle } from '@/features/flows/components/validated-handle';
+import { ValidatedHandle } from '@/features/flows/components/validated-handle';
 
 export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
   return (
@@ -11,11 +11,11 @@ export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
       className={`bg-[var(--node-action)]`}
     >
       {children}
-      <CustomHandle
+      <ValidatedHandle
         nodeId={nodeId}
         type="target"
         position={Position.Left}
-        id={0}
+        id="out"
       />
     </NodeUI>
   );
