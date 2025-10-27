@@ -6,24 +6,33 @@ import {
 } from '../utils/connection-rules';
 import { TypesMapping } from '../types/node-types';
 import type { CustomNodeTypes } from '../types/node-types';
-import type { Connection, Edge, HandleType, Node, NodeConnection } from '@xyflow/react';
+import type {
+  Connection,
+  Edge,
+  HandleType,
+  Node,
+  NodeConnection,
+} from '@xyflow/react';
 import type { NodeSettings } from '../nodes/node-settings';
 
 export const useValidators = () => {
   const { getNodes, getEdges, getNode } = useReactFlow();
 
-function _getConnectionCountsPerHandle(connections: Array<NodeConnection>, source: boolean) {
-const counts: Record<string, number> = {};
-  
-  for (const conn of connections) {
-    const key = source ? conn.sourceHandle : conn.targetHandle;
-    if (key == null) continue;
+  function _getConnectionCountsPerHandle(
+    connections: Array<NodeConnection>,
+    source: boolean
+  ) {
+    const counts: Record<string, number> = {};
 
-    counts[key] = (counts[key] ?? 0) + 1;
+    for (const conn of connections) {
+      const key = source ? conn.sourceHandle : conn.targetHandle;
+      if (key == null) continue;
+
+      counts[key] = (counts[key] ?? 0) + 1;
+    }
+
+    return counts;
   }
-
-  return counts;
-}
 
   const _hasCycle = useCallback(
     (
@@ -80,10 +89,12 @@ const counts: Record<string, number> = {};
       if (!target || !source) {
         return false;
       }
-      const sourceObj = (source.data.settings as NodeSettings) ;
-      const targetObj = (target.data.settings as NodeSettings) ;
-      const allowedSupertypes = sourceObj.getAllowedSupertypes(connection.sourceHandle!);
-      if ( !allowedSupertypes.includes( targetObj.getSupertype() )) return false;
+      const sourceObj = source.data.settings as NodeSettings;
+      const targetObj = target.data.settings as NodeSettings;
+      const allowedSupertypes = sourceObj.getAllowedSupertypes(
+        connection.sourceHandle!
+      );
+      if (!allowedSupertypes.includes(targetObj.getSupertype())) return false;
 
       if (_hasCycle(target, nodes, edges, connection.source)) return false;
       return true;
@@ -95,41 +106,54 @@ const counts: Record<string, number> = {};
     return allowed >= 0 ? connectionsLen < allowed : true;
   };
 
-  const getAllowedConnections = (nodeId: string, type: HandleType, handleId: number) => {
+  const getAllowedConnections = (
+    nodeId: string,
+    type: HandleType,
+    handleId: number
+  ) => {
     const node = getNode(nodeId);
     if (!node) return 0;
     const supertype = TypesMapping[node.type as CustomNodeTypes];
     return connectionCounts[supertype][type][handleId];
   };
-  const getAllowedConnectionsNew = (nodeId: string, type: HandleType, handleId: string) => {
+  const getAllowedConnectionsNew = (
+    nodeId: string,
+    type: HandleType,
+    handleId: string
+  ) => {
     const node = getNode(nodeId);
     if (!node) return 0;
-    const obj = (node.data.settings as NodeSettings) ;
+    const obj = node.data.settings as NodeSettings;
     return obj.getAllowedConnections(type, handleId);
   };
 
   const validateNode = (
     nodeId: string,
     connectionsIn: Array<NodeConnection>,
-    connectionsOut:  Array<NodeConnection>,
+    connectionsOut: Array<NodeConnection>
   ) => {
     const node = getNode(nodeId);
-    
+
     if (!node) return false;
 
-    const connectionsInCounts = _getConnectionCountsPerHandle(connectionsIn, false);
-    const connectionsOutCounts = _getConnectionCountsPerHandle(connectionsOut, true);
+    const connectionsInCounts = _getConnectionCountsPerHandle(
+      connectionsIn,
+      false
+    );
+    const connectionsOutCounts = _getConnectionCountsPerHandle(
+      connectionsOut,
+      true
+    );
 
     const obj = node.data.settings as NodeSettings;
 
     return obj.isValid(connectionsInCounts, connectionsOutCounts);
-
   };
 
   return {
     validateConnection,
     getAllowedConnections,
-      validateConnectionNew,
+    validateConnectionNew,
     getAllowedConnectionsNew,
     validateNode,
     isConnectionValid,

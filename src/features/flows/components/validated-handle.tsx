@@ -39,8 +39,6 @@ export const CustomHandle = ({
   );
 };
 
-
-
 export interface ValidatedHandleProps {
   nodeId: string;
   id: string;

@@ -58,7 +58,7 @@ export function CheckEveryNodeUI({
   preview,
 }: CheckEveryNodeUIProps & CustomNodeProps) {
   const { t } = useTranslation();
-  
+
   // Determine max value based on unit
   const getMaxValue = () => {
     switch (unit) {
@@ -75,7 +75,11 @@ export function CheckEveryNodeUI({
 
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
-      {!preview ? (<div>{t('flows.nodes.check_every')}</div>) :(<div>{t('flows.placeholders.check_periodically')}</div>) }
+      {!preview ? (
+        <div>{t('flows.nodes.check_every')}</div>
+      ) : (
+        <div>{t('flows.placeholders.check_periodically')}</div>
+      )}
 
       {onIntervalChange && (
         <NumberInput

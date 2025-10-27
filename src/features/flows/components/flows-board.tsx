@@ -6,8 +6,12 @@ import {
   useNodesState,
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
-import { PriceOfNode, PriceOfNodeSettings,  } from '../nodes/number/price-of-node-settings';
+import {
+  PriceOfNode,
+  PriceOfNodeSettings,
+} from '../nodes/number/price-of-node-settings';
 import { CustomNodeTypes } from '../types/node-types-2';
+import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
 import { useValidators } from '../hooks/use-validators';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
@@ -29,7 +33,7 @@ const nodeTypes: NodeTypes = {
   // [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   // [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   // [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
-  // [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
+  [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
   // [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
   // [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
   // [CustomNodeTypes.SendNotification]: SendNotificationNode,
@@ -38,17 +42,17 @@ const nodeTypes: NodeTypes = {
 export function FlowsBoard() {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([
     {
-    id: 'n1',
-    position: { x: 0, y: 0 },
-    data: { settings: new PriceOfNodeSettings()},
-    type: CustomNodeTypes.PriceOf,
-  },
+      id: 'n1',
+      position: { x: 0, y: 0 },
+      data: { settings: new PriceOfNodeSettings() },
+      type: CustomNodeTypes.PriceOf,
+    },
   ]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const { validateConnectionNew } = useValidators();
- 
+
   const onConnect = useCallback(
     (params: Connection) =>
       setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),

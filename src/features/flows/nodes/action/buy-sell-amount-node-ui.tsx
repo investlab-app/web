@@ -1,49 +1,15 @@
-import { useNodeData } from '../../hooks/use-node-data';
 import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
-export type BuySellAmountNode = Node<
-  {
-    instrument: string;
-    amount: number;
-    action: string;
-  },
-  CustomNodeTypes.BuySellAmount
->;
-
-export const BuySellAmountNode = (props: NodeProps<BuySellAmountNode>) => {
-  const { updateNodeData } = useNodeData<BuySellAmountNode['data']>(props.id);
-
-  return (
-    <BuySellAmountNodeUI
-      nodeId={props.id}
-      instrument={props.data.instrument}
-      amount={props.data.amount}
-      action={props.data.action}
-      onInstrumentChange={(val) => {
-        updateNodeData({ instrument: val! });
-      }}
-      onAmountChange={(val) => {
-        updateNodeData({ amount: val! });
-      }}
-      onActionChange={(val) => {
-        updateNodeData({ action: val });
-      }}
-    />
-  );
-};
-
 interface BuySellAmountNodeUIProps {
-  instrument: string;
+  instrument?: string;
   onInstrumentChange?: (value: string | undefined) => void;
-  amount: number;
+  amount?: number;
   onAmountChange?: (value: number | undefined) => void;
-  action: string;
+  action?: string;
   onActionChange?: (value: string) => void;
 }
 

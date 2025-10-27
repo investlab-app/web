@@ -5,7 +5,9 @@ import { CustomNodeTypes } from '../../types/node-types-2';
 import { DragGhost } from '../drag-ghost';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
-import { SidebarSection,  } from './section';
+import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node-ui';
+import { BuySellAmountNodeSettings } from '../../nodes/action/buy-sell-amount-node-settings';
+import { SidebarSection } from './section';
 import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
@@ -28,7 +30,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
     (
       nodeType: string,
       settingsType: Constructor<NodeSettings>
-        ): OnDropAction => {
+    ): OnDropAction => {
       return ({ position }: { position: XYPosition }) => {
         const flowPos = screenToFlowPosition(position);
 
@@ -36,7 +38,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           id: getId(),
           type: nodeType,
           position: flowPos,
-          data: {settings: new settingsType()},
+          data: { settings: new settingsType() },
         };
         addNode(newNode);
         setType(null);
@@ -177,7 +179,19 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             },
           }}
         /> */}
-         <SidebarSection
+        <SidebarSection
+          title={t('flows.sidebar.actions')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.action_node'))}
+          children={{
+            [CustomNodeTypes.BuySellAmount]: {
+              component: BuySellAmountNodeUI,
+              settingsType: BuySellAmountNodeSettings,
+            },
+          }}
+        />
+        <SidebarSection
           title={t('flows.sidebar.rules')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
@@ -185,7 +199,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           children={{
             [CustomNodeTypes.PriceOf]: {
               component: PriceOfNodeUI,
-              settingsType:  PriceOfNodeSettings
+              settingsType: PriceOfNodeSettings,
             },
           }}
         />

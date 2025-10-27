@@ -13,9 +13,9 @@ export function NodeUI({
   nodeId,
 }: NodeUIProps & CustomNodeProps) {
   const { validateNode } = useValidators();
-  const selectedNodes = useNodes().filter(node => node.selected);
-  const isSelected = selectedNodes.some(node => node.id === nodeId);
-  
+  const selectedNodes = useNodes().filter((node) => node.selected);
+  const isSelected = selectedNodes.some((node) => node.id === nodeId);
+
   const inConnections = useNodeConnections({
     id: nodeId,
     handleType: 'target',

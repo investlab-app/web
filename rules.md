@@ -90,4 +90,3 @@ Each of the flow nodes has different validation rules, so they have been defined
 - `BuySellPrice` - [Buy / sell] (instrument) for $(price)
 - `BuySellPercent` - [Buy / sell] (percent) of owned (instrument) stock
 - `SendNotification` - Send [email / push] notification
-
