@@ -50,7 +50,7 @@ export enum CustomNodeTypes {
   HasRisenFallen = 'hasRisenFallen',
 
   // Trigger
-  PriceChanges = 'priceChanges',
+  PriceChanges = 'priceOverUnder',
   InstrumentBoughtSold = 'boughtSold',
   CheckEvery = 'checkEvery',
 }

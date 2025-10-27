@@ -10,7 +10,7 @@ export class TriggerNodeSettings extends NodeSettings {
     for (const key in inConnections) {
       if (outConnections[key] != 1) return false;
     }
-    return outConnections.length == 1;
+    return Object.keys(outConnections).length == 1;
   }
 
   override getAllowedConnections(
@@ -21,7 +21,7 @@ export class TriggerNodeSettings extends NodeSettings {
   }
 
   override getAllowedSupertypes(handleId: string): Array<SuperNodeTypes> {
-    return [SuperNodeTypes.Flow];
+    return [SuperNodeTypes.Flow, SuperNodeTypes.Action];
   }
 
   override getSupertype(): SuperNodeTypes {

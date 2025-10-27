@@ -1,52 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { useNodeData } from '../../hooks/use-node-data';
 import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
-export type BuySellPercentNode = Node<
-  {
-    instrument: string;
-    percent: number;
-    action: string;
-  },
-  CustomNodeTypes.BuySellPercent
->;
-
-export const BuySellPercentNode = (props: NodeProps<BuySellPercentNode>) => {
-  const { updateNodeData } = useNodeData<BuySellPercentNode['data']>(props.id);
-
-  return (
-    <BuySellPercentNodeUI
-      nodeId={props.id}
-      instrument={props.data.instrument}
-      percent={props.data.percent}
-      action={props.data.action}
-      onInstrumentChange={(val) => {
-        updateNodeData({ instrument: val! });
-      }}
-      onPercentChange={(val) => {
-        updateNodeData({ percent: val! });
-      }}
-      onActionChange={(val) => {
-        const updates: Partial<BuySellPercentNode['data']> = { action: val };
-        if (val === 'sell' && props.data.percent > 100) {
-          updates.percent = 100;
-        }
-        updateNodeData(updates);
-      }}
-    />
-  );
-};
-
 interface BuySellPercentNodeUIProps {
   instrument: string;
   onInstrumentChange?: (value: string | undefined) => void;
-  percent: number;
+  percent?: number;
   onPercentChange?: (value: number | undefined) => void;
   action: string;
   onActionChange?: (value: string) => void;

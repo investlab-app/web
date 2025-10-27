@@ -5,8 +5,18 @@ import { CustomNodeTypes } from '../../types/node-types-2';
 import { DragGhost } from '../drag-ghost';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
+import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node';
+import { BuySellPriceNodeSettings } from '../../nodes/action/buy-sell-price-node-settings';
+import { BuySellPercentNodeSettings } from '../../nodes/action/buy-sell-percent-node-settings';
+import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node';
 import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node-ui';
 import { BuySellAmountNodeSettings } from '../../nodes/action/buy-sell-amount-node-settings';
+import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node';
+import { CheckEveryNodeSettings } from '../../nodes/trigger/check-every-node-settings';
+import { InstrumentBoughtSoldNodeUI } from '../../nodes/trigger/instrument-bought-sold-node';
+import { InstrumentBoughtSoldNodeSettings } from '../../nodes/trigger/instrument-bought-sold-node-settings';
+import { PriceChangesNodeUI } from '../../nodes/trigger/price-changes-node';
+import { PriceChangesNodeSettings } from '../../nodes/trigger/price-changes-node-settings';
 import { SidebarSection } from './section';
 import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -180,6 +190,26 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           }}
         /> */}
         <SidebarSection
+          title={t('flows.sidebar.triggers')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.trigger_node'))}
+          children={{
+            [CustomNodeTypes.CheckEvery]: {
+              component: CheckEveryNodeUI,
+              settingsType: CheckEveryNodeSettings,
+            },
+            [CustomNodeTypes.InstrumentBoughtSold]: {
+              component: InstrumentBoughtSoldNodeUI,
+              settingsType: InstrumentBoughtSoldNodeSettings,
+            },
+            [CustomNodeTypes.PriceChanges]: {
+              component: PriceChangesNodeUI,
+              settingsType: PriceChangesNodeSettings,
+            },
+          }}
+        />
+        <SidebarSection
           title={t('flows.sidebar.actions')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
@@ -188,6 +218,14 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.BuySellAmount]: {
               component: BuySellAmountNodeUI,
               settingsType: BuySellAmountNodeSettings,
+            },
+            [CustomNodeTypes.BuySellPercent]: {
+              component: BuySellPercentNodeUI,
+              settingsType: BuySellPercentNodeSettings,
+            },
+            [CustomNodeTypes.BuySellPrice]: {
+              component: BuySellPriceNodeUI,
+              settingsType: BuySellPriceNodeSettings,
             },
           }}
         />

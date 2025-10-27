@@ -13,7 +13,10 @@ export class LogicOperatorNodeSettings extends NodeSettings {
     for (const key in outConnections) {
       if (outConnections[key] != 1) return false;
     }
-    return inConnections.length == 1 && outConnections.length == 2;
+    return (
+      Object.keys(inConnections).length == 1 &&
+      Object.keys(outConnections).length == 2
+    );
   }
 
   override getAllowedConnections(
