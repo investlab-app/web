@@ -3,9 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { ErrorCard } from '@/features/shared/components/error-card';
 import { statisticsStatisticsTradingOverviewRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 const StatsOverviewRibbon = () => {
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const {
     data: stats,
@@ -24,7 +25,9 @@ const StatsOverviewRibbon = () => {
     },
     {
       title: t('statistics.total_return'),
-      value: `${stats?.total_gain} ${t('common.currency')}`,
+      value: stats?.total_gain
+        ? toFixedLocalized(stats.total_gain, i18n.language, 2)
+        : undefined,
       coloring: stats
         ? stats.total_gain > 0
           ? StatTile.Coloring.POSITIVE

@@ -33,15 +33,11 @@ export function TransactionRow({ entry }: HistoryRowProps) {
         {toFixedLocalized(entry.quantity, i18n.language, 2)}
       </TableCell>
       <TableCell className="text-right text-muted-foreground">
-        {toFixedLocalized(entry.share_price, i18n.language, 2)}{' '}
-        {t('common.currency')}
+        {toFixedLocalized(entry.share_price, i18n.language, 2)}
       </TableCell>
       <TableCell className="hidden xl:table-cell text-right text-muted-foreground">
         {entry.acquisition_price ? (
-          <>
-            {toFixedLocalized(entry.acquisition_price, i18n.language, 2)}{' '}
-            {t('common.currency')}
-          </>
+          <>{toFixedLocalized(entry.acquisition_price, i18n.language, 2)}</>
         ) : (
           'N/A'
         )}

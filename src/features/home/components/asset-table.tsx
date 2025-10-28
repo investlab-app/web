@@ -54,7 +54,6 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
               </TableCell>
               <TableCell className="text-right">
                 {toFixedLocalized(asset.value, i18n.language, 2)}{' '}
-                {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
@@ -63,7 +62,6 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
                 )}
               >
                 {toFixedLocalized(asset.gain, i18n.language, 2)}{' '}
-                {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(

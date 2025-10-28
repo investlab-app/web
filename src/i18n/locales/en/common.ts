@@ -64,6 +64,12 @@ const enCommon = {
   market_value: 'Market Value',
   gain: 'Gain',
   gain_percentage: 'Gain (%)',
+  theme: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+    toggle_theme: 'Toggle theme',
+  },
 };
 
 export default enCommon;

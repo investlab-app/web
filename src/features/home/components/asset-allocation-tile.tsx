@@ -6,20 +6,23 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface AssetAllocationProps {
   totalValue: number;
   yearlyGain: number;
-  currency?: string;
   assets: Array<AssetAllocationItem>;
 }
 
 export const AssetAllocationTile = ({
   totalValue,
   yearlyGain,
-  currency = 'USD',
   assets,
 }: AssetAllocationProps) => {
   const totalAssetValue = assets.reduce((sum, { value }) => sum + value, 0);
@@ -36,11 +39,11 @@ export const AssetAllocationTile = ({
           {t('investor.asset_allocation')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {toFixedLocalized(totalValue, i18n.language)} {currency}
+          {toFixedLocalized(totalValue, i18n.language)}
         </div>
 
         <span className="text-gray-400 text-sm">
-          {toFixedLocalized(yearlyGain, i18n.language)} {currency}{' '}
+          {toFixedLocalized(yearlyGain, i18n.language)}
           {t('investor.this_year')}
         </span>
       </CardHeader>
@@ -60,19 +63,28 @@ export const AssetAllocationTile = ({
             </h3>
 
             <div className="flex w-full gap-2 h-8 rounded-lg">
-              {assets.map(({ instrument_ticker, value }, index) => {
-                const percentage = (value / totalAssetValue) * 100;
-                return (
-                  <div
-                    key={instrument_ticker}
-                    className="rounded-md h-4"
-                    style={{
-                      width: `${percentage}%`,
-                      backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
-                    }}
-                  />
-                );
-              })}
+              {assets.map(
+                ({ instrument_ticker, instrument_name, value }, index) => {
+                  const percentage = (value / totalAssetValue) * 100;
+                  return (
+                    <Tooltip key={instrument_ticker}>
+                      <TooltipTrigger asChild>
+                        <div
+                          className="rounded-md h-4 cursor-pointer"
+                          style={{
+                            width: `${percentage}%`,
+                            backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
+                          }}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {instrument_ticker} - {instrument_name}:{' '}
+                        {formatPercentage(value)}%
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                }
+              )}
             </div>
 
             <div className="space-y-4">

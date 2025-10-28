@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Plus, Wallet } from 'lucide-react';
+import { toFixedLocalized } from '../utils/numbers';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
@@ -11,7 +12,7 @@ import {
 import { investorsMeRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export function WalletSection() {
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const {
     data: accountValue,
@@ -22,16 +23,24 @@ export function WalletSection() {
 
   return (
     <SidebarMenuItem className="flex items-center gap-1">
-      <SidebarMenuButton tooltip={t('common.wallet')} asChild>
+      <SidebarMenuButton
+        tooltip={
+          isSuccess
+            ? `${t('common.wallet')}: ${toFixedLocalized(parseFloat(accountValue.balance), i18n.language, 2)}`
+            : t('common.wallet')
+        }
+        asChild
+      >
         <div className="flex items-center justify-between">
           <Wallet />
           {isPending && <Skeleton className="h-6 w-24" />}
           {isError && <Skeleton className="h-6 w-24" />}
           {isSuccess &&
-            new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: t('common.currency'),
-            }).format(parseFloat(accountValue.balance))}
+            toFixedLocalized(
+              parseFloat(accountValue.balance),
+              i18n.language,
+              2
+            )}
           <Button
             size="icon"
             className="ml-auto size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"

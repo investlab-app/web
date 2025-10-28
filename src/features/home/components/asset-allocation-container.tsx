@@ -58,7 +58,6 @@ const AssetAllocationContainer = () => {
     <AssetAllocationTile
       totalValue={assetAllocation.total_value}
       yearlyGain={assetAllocation.total_gain_this_year}
-      currency={t('common.currency')}
       assets={assetAllocation.allocations}
     />
   );

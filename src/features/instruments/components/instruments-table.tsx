@@ -144,7 +144,6 @@ export const InstrumentTable = ({
             ) : (
               <div className="text-right">
                 {toFixedLocalized(currentPrice, i18n.language, 2)}{' '}
-                {t('common.currency')}
               </div>
             )}
           </div>

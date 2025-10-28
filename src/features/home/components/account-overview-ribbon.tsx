@@ -76,7 +76,7 @@ const AccountOverviewRibbon = () => {
         <StatTile
           key={index}
           title={tile.title}
-          value={`${toFixedLocalized(tile.value, i18n.language, 2)} ${t('common.currency')}`}
+          value={toFixedLocalized(tile.value, i18n.language, 2)}
           isProgress={tile.isProgress}
           coloring={
             tile.isProgress

@@ -55,7 +55,7 @@ export const AccountValueChartContainer = () => {
           {t('investor.account_value_over_time')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {toFixedLocalized(currentValue, i18n.language)} {t('common.currency')}
+          {toFixedLocalized(currentValue, i18n.language)}
         </div>
       </CardHeader>
       <CardContent className="h-96">

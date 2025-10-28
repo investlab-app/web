@@ -110,12 +110,12 @@ export const PositionRow = ({
           />
           <SummaryMetric
             label={t('common.market_value')}
-            value={`${toFixedLocalized(position.market_value, i18n.language, 2)} ${t('common.currency')}`}
+            value={`${toFixedLocalized(position.market_value, i18n.language, 2)}`}
             containerClassName="min-w-[160px]"
           />
           <SummaryMetric
             label={t('common.gain')}
-            value={`${toFixedLocalized(position.gain, i18n.language, 2)} ${t('common.currency')}`}
+            value={toFixedLocalized(position.gain, i18n.language, 2)}
             valueClassName={getProfabilityColor(position.gain)}
             containerClassName="min-w-[160px]"
           />

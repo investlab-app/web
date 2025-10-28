@@ -64,6 +64,12 @@ const plCommon = {
   market_value: 'Wartość rynkowa',
   gain: 'Zysk',
   gain_percentage: 'Zysk (%)',
+  theme: {
+    light: 'Jasny',
+    dark: 'Ciemny',
+    system: 'Systemowy',
+    toggle_theme: 'Przełącz motyw',
+  },
 };
 
 export default plCommon;
