@@ -33,9 +33,9 @@ const enTransactions = {
   no_open_positions: 'You have no open positions for this instrument.',
   tooltips: {
     name: 'Name of the financial instrument',
-    quantity: 'Number of shares owned',
-    share_price: 'Current price per share',
-    acquisition_price: 'Average price paid per share',
+    quantity: 'Number of shares held in the position',
+    share_price: 'Price per share at the time of the transaction',
+    acquisition_price: 'Price of acquisition (quantity × share price + fees)',
     market_value: 'Total current value of the position',
     gain_loss: 'Absolute profit or loss amount',
     gain_loss_pct: 'Percentage profit or loss',

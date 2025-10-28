@@ -36,9 +36,9 @@ const plTransactions = {
   no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
   tooltips: {
     name: 'Nazwa instrumentu finansowego',
-    quantity: 'Liczba posiadanych akcji',
-    share_price: 'Aktualna cena za akcję',
-    acquisition_price: 'Średnia cena zapłacona za akcję',
+    quantity: 'Ilość akcji w pozycji',
+    share_price: 'Cena za akcję w czasie transakcji',
+    acquisition_price: 'Cena nabycia pozycji (ilość × cena za akcję + prowizje)',
     market_value: 'Łączna aktualna wartość pozycji',
     gain_loss: 'Bezwzględna kwota zysku lub straty',
     gain_loss_pct: 'Procentowy zysk lub strata',

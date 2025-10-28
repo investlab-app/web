@@ -7,7 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
-import { PositionsTable } from '@/features/transactions/components/positions-table';
+import { Positions } from '@/features/transactions/components/positions-table';
 import AppFrame from '@/features/shared/components/app-frame';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 
@@ -33,12 +33,12 @@ function RouteComponent() {
         </TabsList>
         <TabsContent value="open">
           <ScrollableHorizontally>
-            <PositionsTable type="open" />
+            <Positions type="open" />
           </ScrollableHorizontally>
         </TabsContent>
         <TabsContent value="closed">
           <ScrollableHorizontally>
-            <PositionsTable type="closed" />
+            <Positions type="closed" />
           </ScrollableHorizontally>
         </TabsContent>
       </Tabs>
