@@ -13,6 +13,7 @@ const plFlows = {
     conditionals: 'Węzły warunkowe',
     triggers: 'Wyzwalacze',
     rules: 'Reguły',
+    math: 'Matematyka',
     actions: 'Akcje',
     save_flow: 'Zapisz przepływ',
   },
@@ -22,16 +23,24 @@ const plFlows = {
     trigger_node: 'Węzeł wyzwalacza',
     rule_node: 'Węzeł reguły',
     action_node: 'Węzeł akcji',
+    math_node: 'Węzeł matematyczny',
   },
   nodes: {
     and: 'i',
     not: 'nie',
     or: 'lub',
+
     do: 'wykonaj',
-    number: 'liczba',
     if: 'jeśli',
     then: 'wtedy',
     else: 'w przeciwnym razie',
+
+    add: 'dodaj',
+    subtract: 'odejmij',
+    multiply: 'pomnóż',
+    divide: 'podziel',
+
+    number: 'liczba',
     price_of: 'cena',
     price: 'cena',
     shares: 'akcje',

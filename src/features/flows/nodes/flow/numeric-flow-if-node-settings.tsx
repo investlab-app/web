@@ -41,7 +41,7 @@ export class NumericFlowIfNodeSettings extends NodeSettings {
 }
 
 export type NumericFlowNode = Node<
-  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  { settings: NumericFlowIfNodeSettings },
   CustomNodeTypes.NumbericFlowIf
 >;
 

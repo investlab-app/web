@@ -15,6 +15,7 @@ const enFlows = {
     rules: 'Rules',
     actions: 'Actions',
     save_flow: 'Save Flow',
+    math: 'Math',
   },
   ghosts: {
     logical_node: 'Logical Node',
@@ -22,17 +23,25 @@ const enFlows = {
     trigger_node: 'Trigger Node',
     rule_node: 'Rule Node',
     action_node: 'Action Node',
+    math_node: 'Math Node',
   },
   nodes: {
     and: 'and',
     not: 'not',
     or: 'or',
+
     if: 'if',
     do: 'do',
-    number: 'number',
     then: 'then',
     else: 'else',
+
+    add: 'add',
+    subtract: 'subtract',
+    multiply: 'multiply',
+    divide: 'divide',
+
     price_of: 'price of',
+    number: 'number',
     price: 'price',
     shares: 'shares',
     happens_within: 'happens within',

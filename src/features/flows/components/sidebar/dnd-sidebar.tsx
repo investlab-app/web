@@ -22,6 +22,14 @@ import { FlowIfNodeUI } from '../../nodes/flow/flow-if-node-ui';
 import { NumericFlowIfNodeUI } from '../../nodes/flow/numeric-flow-if-node-ui';
 import { FlowIfNodeSettings } from '../../nodes/flow/flow-if-node-settings';
 import { NumericFlowIfNodeSettings } from '../../nodes/flow/numeric-flow-if-node-settings';
+import { AddNodeUI } from '../../nodes/math/add-node-ui';
+import { AddNodeSettings } from '../../nodes/math/add-node-settings';
+import { SubtractNodeUI } from '../../nodes/math/subtract-node-ui';
+import { SubtractNodeSettings } from '../../nodes/math/subtract-node-settings';
+import { MultiplyNodeUI } from '../../nodes/math/multiply-node-ui';
+import { MultiplyNodeSettings } from '../../nodes/math/multiply-node-settings';
+import { DivideNodeUI } from '../../nodes/math/divide-node-ui';
+import { DivideNodeSettings } from '../../nodes/math/divide-node-settings';
 import { AndNodeSettings } from '../../nodes/logic-operator/and-node-settings';
 import { OrNodeUI } from '../../nodes/logic-operator/or-node';
 import { OrNodeSettings } from '../../nodes/logic-operator/or-node-settings';
@@ -71,134 +79,6 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
     <div className="py-2">
       {isDragging && <DragGhost type={type} />}
       <div>
-        {/* <SidebarSection
-          title={t('flows.sidebar.logical')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.logical_node'))}
-          children={{
-            [CustomNodeTypes.And]: {
-              component: AndNodeUI,
-              props: {},
-            },
-            [CustomNodeTypes.Or]: {
-              component: OrNodeUI,
-              props: {},
-            },
-          }}
-        />
-
-        <SidebarSection
-          title={t('flows.sidebar.flow')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.flow_node'))}
-          children={{
-            [CustomNodeTypes.IfThenElse]: {
-              component: FlowNodeUI,
-              props: {},
-            },
-          }}
-        />
-
-        <SidebarSection
-          title={t('flows.sidebar.triggers')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.trigger_node'))}
-          children={{
-            [CustomNodeTypes.PriceChanges]: {
-              component: PriceChangesNodeUI,
-              props: {
-                value: '',
-                direction: 'over',
-                price: 100,
-              },
-            },
-            [CustomNodeTypes.InstrumentBoughtSold]: {
-              component: InstrumentBoughtSoldNodeUI,
-              props: {
-                value: '',
-                action: 'bought',
-              },
-            },
-            [CustomNodeTypes.CheckEvery]: {
-              component: CheckEveryNodeUI,
-              props: {
-                interval: 1,
-                unit: 'day',
-              },
-            },
-          }}
-        />
-
-        <SidebarSection
-          title={t('flows.sidebar.rules')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.rule_node'))}
-          children={{
-            [CustomNodeTypes.HappensWithin]: {
-              component: HappensWithinNodeUI,
-              props: {
-                value: 1,
-              },
-            },
-            [CustomNodeTypes.HappensBetween]: {
-              component: HappensBetweenNodeUI,
-              props: {
-                startDate: Date.now(),
-                endDate: Date.now() + 7 * 24 * 60 * 60 * 1000,
-              },
-            },
-            [CustomNodeTypes.PriceOverUnder]: {
-              component: PriceHigherLowerNodeUI,
-              props: {
-                value: 100,
-                state: 'over',
-              },
-            },
-          }}
-        />
-
-        <SidebarSection
-          title={t('flows.sidebar.actions')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.action_node'))}
-          children={{
-            [CustomNodeTypes.SendNotification]: {
-              component: SendNotificationNodeUI,
-              props: {
-                type: 'email',
-              },
-            },
-            [CustomNodeTypes.BuySellPercent]: {
-              component: BuySellPercentNodeUI,
-              props: {
-                action: 'buy',
-                percent: 10,
-                instrument: '',
-              },
-            },
-            [CustomNodeTypes.BuySellPrice]: {
-              component: BuySellPriceNodeUI,
-              props: {
-                action: 'buy',
-                price: 100,
-                instrument: '',
-              },
-            },
-            [CustomNodeTypes.BuySellAmount]: {
-              component: BuySellAmountNodeUI,
-              props: {
-                action: 'buy',
-                amount: 1,
-                instrument: '',
-              },
-              },
-              }}
-              /> */}
         <SidebarSection
           title={t('flows.sidebar.logical')}
           createNodeFunc={createAddNewNode}
@@ -284,6 +164,30 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.NumbericFlowIf]: {
               component: NumericFlowIfNodeUI,
               settingsType: NumericFlowIfNodeSettings,
+            },
+          }}
+        />
+        <SidebarSection
+          title={t('flows.sidebar.math')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.math_node'))}
+          children={{
+            [CustomNodeTypes.Add]: {
+              component: AddNodeUI,
+              settingsType: AddNodeSettings,
+            },
+            [CustomNodeTypes.Subtract]: {
+              component: SubtractNodeUI,
+              settingsType: SubtractNodeSettings,
+            },
+            [CustomNodeTypes.Multiply]: {
+              component: MultiplyNodeUI,
+              settingsType: MultiplyNodeSettings,
+            },
+            [CustomNodeTypes.Divide]: {
+              component: DivideNodeUI,
+              settingsType: DivideNodeSettings,
             },
           }}
         />
