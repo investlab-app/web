@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpDown } from 'lucide-react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
-import { ordersMarketCreateMutation } from '@/client/@tanstack/react-query.gen';
+import {
+  investorsMeRetrieveOptions,
+  ordersMarketCreateMutation,
+  statisticsTransactionsHistoryListOptions,
+} from '@/client/@tanstack/react-query.gen';
 import { useLivePrice } from '@/features/shared/hooks/use-live-price';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
@@ -16,6 +20,7 @@ interface BuySellProps {
 
 export const BuySell = ({ ticker }: BuySellProps) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const [mode, setMode] = useState<'price' | 'volume'>('price');
   const onModeToggle = () =>
@@ -43,6 +48,17 @@ export const BuySell = ({ ticker }: BuySellProps) => {
     ...ordersMarketCreateMutation(),
     onSuccess: () => {
       toast.success('Order placed successfully!');
+      queryClient.invalidateQueries({
+        queryKey: statisticsTransactionsHistoryListOptions({
+          query: {
+            type: 'open',
+            tickers: [ticker],
+          },
+        }).queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: investorsMeRetrieveOptions().queryKey,
+      });
     },
     onError: (error) => {
       toast.error(`Failed to place order: ${error.message}`);

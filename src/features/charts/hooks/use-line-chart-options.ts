@@ -79,13 +79,13 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
           x2: 0,
           y2: 1,
           colorStops: [
-            { offset: 0, color: useCssVar('--color-card-foreground-hex') },
+            { offset: 0, color: useCssVar('--color-primary-hex') },
             { offset: 1, color: useCssVar('--color-card-hex') },
           ],
         },
       },
       lineStyle: {
-        color: useCssVar('--color-card-foreground-hex'),
+        color: useCssVar('--color-primary-hex'),
         width: 1,
       },
     },

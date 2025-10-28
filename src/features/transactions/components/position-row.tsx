@@ -15,11 +15,13 @@ import { InstrumentIconCircle } from '@/features/instruments/components/instrume
 
 interface PositionRowProps {
   position: Position;
+  className?: string;
   isNavigable?: boolean;
 }
 
 export const PositionRow = ({
   position,
+  className,
   isNavigable = true,
 }: PositionRowProps) => {
   const { t, i18n } = useTranslation();
@@ -50,8 +52,8 @@ export const PositionRow = ({
   );
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted/70">
+    <div className={className}>
+      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-[#343434] border border-[#525252]">
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button
             variant="ghost"
@@ -62,7 +64,7 @@ export const PositionRow = ({
               event.stopPropagation();
               handleToggle();
             }}
-            className="h-full w-9 border-r border-background"
+            className="h-full w-9 border-r border-[#525252]"
           >
             <ChevronDown
               className={cn(
@@ -73,7 +75,7 @@ export const PositionRow = ({
           </Button>
           <div className="flex flex-row items-center gap-4">
             <InstrumentIconCircle
-              icon={position.logo}
+              icon={position.icon}
               symbol={position.symbol}
               name={position.name}
               size="md"
@@ -88,6 +90,7 @@ export const PositionRow = ({
                   aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
                   title={t('transactions.actions.instrument_details')}
                   to={`/instruments/${position.symbol}`}
+                  className="break-words"
                 >
                   {position.name}
                 </Link>
@@ -103,15 +106,18 @@ export const PositionRow = ({
           <SummaryMetric
             label={t('common.quantity')}
             value={toFixedLocalized(position.quantity, i18n.language, 2)}
+            containerClassName="min-w-[160px]"
           />
           <SummaryMetric
             label={t('common.market_value')}
             value={`${toFixedLocalized(position.market_value, i18n.language, 2)} ${t('common.currency')}`}
+            containerClassName="min-w-[160px]"
           />
           <SummaryMetric
             label={t('common.gain')}
             value={`${toFixedLocalized(position.gain, i18n.language, 2)} ${t('common.currency')}`}
             valueClassName={getProfabilityColor(position.gain)}
+            containerClassName="min-w-[160px]"
           />
           <SummaryMetric
             label={t('common.gain_percentage')}
@@ -121,12 +127,13 @@ export const PositionRow = ({
                 : `${toFixedLocalized(position.gain_percentage, i18n.language, 2)}%`
             }
             valueClassName={getProfabilityColor(position.gain_percentage)}
+            containerClassName="min-w-[140px]"
           />
         </div>
       </div>
 
       {!collapsed && (
-        <Table className='border'>
+        <Table className="border border-muted">
           <PositionsTableHeader className="" />
           <TableBody>
             {position.history.map((h, i) => (
@@ -135,7 +142,7 @@ export const PositionRow = ({
           </TableBody>
         </Table>
       )}
-    </>
+    </div>
   );
 };
 
@@ -143,14 +150,16 @@ interface SummaryMetricProps {
   label: string;
   value: string;
   valueClassName?: string;
+  containerClassName?: string;
 }
 
 const SummaryMetric = ({
   label,
   value,
   valueClassName,
+  containerClassName,
 }: SummaryMetricProps) => (
-  <div className="border-background border-l p-3">
+  <div className={cn('border-[#525252] border-l p-3', containerClassName)}>
     <p className="text-[0.7rem] uppercase tracking-wide text-muted-foreground/80">
       {label}
     </p>

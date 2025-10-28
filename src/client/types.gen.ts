@@ -110,11 +110,11 @@ export type InstrumentList = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };
@@ -139,7 +139,7 @@ export type InstrumentRetrieve = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     /**
      * Central Index Key assigned by the SEC.
@@ -151,7 +151,7 @@ export type InstrumentRetrieve = {
      * Composite Financial Instrument Global Identifier.
      */
     composite_figi?: string | null;
-    currency_name: string;
+    currency_name?: string;
     /**
      * Locale where the ticker is traded, e.g. 'US'.
      *
@@ -215,11 +215,11 @@ export type InstrumentWithPrice = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
     price_info: PriceDailySummary;
@@ -489,7 +489,7 @@ export type Position = {
      * Instrument name
      */
     name: string;
-    logo: string | null;
+    icon: string | null;
     /**
      * Total quantity of shares
      */
@@ -656,11 +656,11 @@ export type InstrumentListWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };
@@ -677,7 +677,7 @@ export type InstrumentRetrieveWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     /**
      * Central Index Key assigned by the SEC.
@@ -689,7 +689,7 @@ export type InstrumentRetrieveWritable = {
      * Composite Financial Instrument Global Identifier.
      */
     composite_figi?: string | null;
-    currency_name: string;
+    currency_name?: string;
     /**
      * Locale where the ticker is traded, e.g. 'US'.
      *
@@ -745,11 +745,11 @@ export type InstrumentWithPriceWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };

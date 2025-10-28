@@ -39,7 +39,7 @@ const AccountOverviewRibbon = () => {
 
   if (isPending) {
     return (
-      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <StatTile.Skeleton key={`skeleton-${index}`} />
         ))}
@@ -71,7 +71,7 @@ const AccountOverviewRibbon = () => {
   ];
 
   return (
-    <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {tiles.map((tile, index) => (
         <StatTile
           key={index}

@@ -52,7 +52,13 @@ export function PositionsTable({ type }: PositionsTableProps) {
     );
   }
 
-  return data.map((pos) => <PositionRow key={pos.name} position={pos} />);
+  return (
+    <div className="space-y-4">
+      {data.map((pos) => (
+        <PositionRow key={pos.name} position={pos} />
+      ))}
+    </div>
+  );
 }
 
 export function PositionsTableHeader({ className }: { className?: string }) {

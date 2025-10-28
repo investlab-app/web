@@ -110,14 +110,14 @@ export const zInstrumentList = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -148,7 +148,7 @@ export const zInstrumentRetrieve = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     cik: z.optional(z.union([
         z.string().max(20),
@@ -163,7 +163,7 @@ export const zInstrumentRetrieve = z.object({
         z.string().max(20),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     locale: zLocaleEnum,
     primary_exchange: z.optional(z.union([
         z.string().max(50),
@@ -276,14 +276,14 @@ export const zInstrumentWithPrice = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -621,7 +621,7 @@ export const zPatchedPriceAlertRequest = z.object({
 export const zPosition = z.object({
     symbol: z.string().max(10),
     name: z.string().max(255),
-    logo: z.union([
+    icon: z.union([
         z.url(),
         z.null()
     ]),
@@ -787,14 +787,14 @@ export const zInstrumentListWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -811,7 +811,7 @@ export const zInstrumentRetrieveWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     cik: z.optional(z.union([
         z.string().max(20),
@@ -826,7 +826,7 @@ export const zInstrumentRetrieveWritable = z.object({
         z.string().max(20),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     locale: zLocaleEnum,
     primary_exchange: z.optional(z.union([
         z.string().max(50),
@@ -896,14 +896,14 @@ export const zInstrumentWithPriceWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()

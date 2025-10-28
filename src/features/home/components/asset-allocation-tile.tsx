@@ -60,15 +60,15 @@ export const AssetAllocationTile = ({
             </h3>
 
             <div className="flex w-full gap-2 h-8 rounded-lg">
-              {assets.map(({ instrument_name, value }, index) => {
+              {assets.map(({ instrument_ticker, value }, index) => {
                 const percentage = (value / totalAssetValue) * 100;
                 return (
                   <div
-                    key={instrument_name}
+                    key={instrument_ticker}
                     className="rounded-md h-4"
                     style={{
                       width: `${percentage}%`,
-                      backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
+                      backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
                     }}
                   />
                 );
@@ -76,33 +76,39 @@ export const AssetAllocationTile = ({
             </div>
 
             <div className="space-y-4">
-              {assets.map(({ instrument_name, value }, index) => (
-                <div
-                  key={instrument_name}
-                  className="flex items-center justify-between"
-                >
+              {assets.map(
+                ({ instrument_name, instrument_ticker, value }, index) => (
                   <div
                     key={instrument_name}
-                    className="flex items-center gap-3"
+                    className="flex items-center justify-between"
                   >
                     <div
-                      className="size-4 rounded-full"
-                      style={{
-                        backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 100}%, var(--primary))`,
-                      }}
-                    />
-                    <div className="space-y-1">
-                      <div className="font-medium">{instrument_name}</div>
-                      <div className="text-gray-400 text-sm">
-                        {formatPercentage(value)}%
+                      key={instrument_name}
+                      className="flex items-center gap-3"
+                    >
+                      <div
+                        className="size-4 rounded-full"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
+                        }}
+                      />
+                      <div className="space-y-1">
+                        <div className="font-medium">
+                          {instrument_ticker}
+                          <span className="text-muted-foreground font-normal">
+                            {`  (${instrument_name})`}
+                          </span>
+                        </div>
+                        <div className="text-muted-foreground text-sm">
+                          {formatPercentage(value)}
+                          {'% — $'}
+                          {toFixedLocalized(value, i18n.language)}
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="font-semibold tabular-nums">
-                    {toFixedLocalized(value, i18n.language)} {currency}
-                  </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </div>
         )}

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Info } from 'lucide-react';
+import { ArrowDown, ArrowUp, Heart, Info } from 'lucide-react';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -7,7 +7,7 @@ import type {
   SortingState,
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
-import { cn } from '@/features/shared/utils/styles';
+import { cn, cssVar } from '@/features/shared/utils/styles';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
@@ -72,6 +72,13 @@ export const InstrumentTable = ({
       ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
+          <Heart
+            fill={
+              row.original.symbol === 'AMZN'
+                ? cssVar('--foreground')
+                : undefined
+            }
+          />
           <InstrumentIconCircle
             symbol={row.original.symbol}
             name={row.original.name}

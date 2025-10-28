@@ -4,7 +4,6 @@ import {
   PositionsTableBodySkeleton,
   PositionsTableHeader,
 } from '@/features/transactions/components/positions-table';
-import { PositionRow } from '@/features/transactions/components/position-row';
 import { ErrorMessage } from '@/features/shared/components/error-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Table, TableBody } from '@/features/shared/components/ui/table';
@@ -15,10 +14,10 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
-  pricesRetrieveOptions,
   statisticsTransactionsHistoryListOptions,
 } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { TransactionRow } from '@/features/transactions/components/transaction-row';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -30,18 +29,6 @@ export function TransactionsHistorySection({
   className,
 }: TransactionsHistorySectionProps) {
   const { t } = useTranslation();
-
-  const {
-    data: tickerPrice,
-    isError: tickerPriceIsError,
-    isPending: tickerPriceIsPending,
-  } = useQuery(
-    pricesRetrieveOptions({
-      path: {
-        ticker: instrumentId,
-      },
-    })
-  );
 
   const {
     data: tickerTransactions,
@@ -56,8 +43,8 @@ export function TransactionsHistorySection({
     })
   );
 
-  const isPending = tickerPriceIsPending || tickerTransactionsIsPending;
-  const isError = tickerPriceIsError || tickerTransactionsIsError;
+  const isPending = tickerTransactionsIsPending;
+  const isError = tickerTransactionsIsError;
 
   return (
     <Card className={className}>
@@ -72,13 +59,14 @@ export function TransactionsHistorySection({
         ) : !tickerTransactions.length ? (
           <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
-          tickerTransactions.map((position) => (
-            <PositionRow
-              key={position.name}
-              position={position}
-              isNavigable={false}
-            />
-          ))
+          <Table className="border border-muted">
+            <PositionsTableHeader className="" />
+            <TableBody>
+              {tickerTransactions[0].history.map((entry, index) => (
+                <TransactionRow key={index} entry={entry} />
+              ))}
+            </TableBody>
+          </Table>
         )}
       </CardContent>
     </Card>
@@ -89,7 +77,7 @@ function TransactionsHistorySectionSkeleton() {
   return (
     <div>
       <Skeleton className="h-20 mb-4" />
-      <Table>
+      <Table className="border border-muted">
         <PositionsTableHeader />
         <TableBody>
           <PositionsTableBodySkeleton length={1} />

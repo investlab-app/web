@@ -93,32 +93,33 @@ code {
 
   --card-hex: rgb(255, 255, 255);
   --card-foreground-hex: rgb(15, 15, 15);
+  --primary-hex: #8640ef;
 }
 
 .dark {
-  --background: oklch(0.1297 0.005 285.67);
-  --foreground: oklch(0.9851 0 0);
-  --card: oklch(0.21 0 0);
+  --background: #000000;
+  --foreground: #efefef;
+  --card: #0d0d0d;
   --card-foreground: oklch(0.9851 0 0);
-  --card-positive: oklch(0.21 0.0852 142.5);
-  --card-positive-foreground: oklch(0.96 0.0757 140.41);
-  --card-positive-border: oklch(0.35 0.1852 142.5);
-  --card-negative: oklch(0.18 0.0755 29.23);
-  --card-negative-foreground: oklch(0.89 0.0592 18.33);
-  --card-negative-border: oklch(0.28 0.1755 29.23);
+  --card-positive: #0B2615;
+  --card-positive-foreground: #00C94D;
+  --card-positive-border: #093B1B;
+  --card-negative: #300c14;
+  --card-negative-foreground: #fe505c;
+  --card-negative-border: #4d0b1a;
   --popover: oklch(0.2686 0 0);
   --popover-foreground: oklch(0.9851 0 0);
-  --primary: oklch(0.5555 0 0);
+  --primary: #562482;
   --primary-foreground: oklch(0.9851 0 0);
   --secondary: oklch(0.2686 0 0);
   --secondary-foreground: oklch(0.9851 0 0);
-  --muted: oklch(0.2686 0 0);
+  --muted: #181818;
   --muted-foreground: oklch(0.709 0 0);
   --accent: oklch(0.3715 0 0);
   --accent-foreground: oklch(0.9851 0 0);
   --destructive: oklch(0.7022 0.1892 22.2279);
   --destructive-foreground: oklch(0.2686 0 0);
-  --border: oklch(0.2611 0.0037 286.14);
+  --border: #151515;
   --input: oklch(0.4386 0 0);
   --ring: oklch(0.5555 0 0);
   --chart-1: oklch(0.5555 0 0);
@@ -132,7 +133,7 @@ code {
   --sidebar-primary-foreground: oklch(0.2046 0 0);
   --sidebar-accent: oklch(0.2686 0 0);
   --sidebar-accent-foreground: oklch(0.9851 0 0);
-  --sidebar-border: oklch(0.2611 0.0037 286.14);
+  --sidebar-border: var(--border);
   --sidebar-ring: oklch(0.4386 0 0);
   --radius: 0rem;
   --shadow-2xs: 0px 1px 0px 0px hsl(0 0% 0% / 0);
@@ -148,10 +149,10 @@ code {
     0px 1px 0px 0px hsl(0 0% 0% / 0), 0px 8px 10px -1px hsl(0 0% 0% / 0);
   --shadow-2xl: 0px 1px 0px 0px hsl(0 0% 0% / 0);
 
-  --green: theme('colors.green.500');
+  --green: #00C94D;
   --green-lighter: theme('colors.green.400');
   --green-darker: theme('colors.green.600');
-  --red: theme('colors.red.500');
+  --red: #F94E5A;
   --red-lighter: theme('colors.red.400');
   --red-darker: theme('colors.red.600');
 
@@ -162,8 +163,9 @@ code {
   --red-lighter-hex: rgb(255, 100, 103);
   --red-darker-hex: rgb(231, 0, 11);
 
-  --card-hex: rgb(25, 25, 25);
+  --card-hex: #0d0d0d;
   --card-foreground-hex: rgb(255, 255, 255);
+  --primary-hex: #562482;
 }
 
 @theme inline {
@@ -251,6 +253,7 @@ code {
 
   --color-card-hex: var(--card-hex);
   --color-card-foreground-hex: var(--card-foreground-hex);
+  --color-primary-hex: var(--primary-hex);
 }
 
 /* Clerk component focus styles override using stable selectors */

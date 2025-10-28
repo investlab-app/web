@@ -14,14 +14,15 @@ import { toFixedLocalized } from '@/features/shared/utils/numbers';
 type AssetTableProps = {
   data: Array<OwnedShare>;
   onAssetPressed: (asset: OwnedShare) => void;
+  className?: string;
 };
 
-const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
+const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
   const { t, i18n } = useTranslation();
   return (
-    <div className="overflow-x-auto">
+    <div className={cn('overflow-x-auto', className)}>
       <Table>
-        <TableHeader className='bg-muted'>
+        <TableHeader className="bg-muted">
           <TableRow>
             <TableHead className="hidden sm:table-cell">
               {t('instruments.name')}

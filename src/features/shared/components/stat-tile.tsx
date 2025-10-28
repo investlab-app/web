@@ -44,13 +44,13 @@ export const StatTile = ({
       )}
     >
       <CardHeader>
-        <CardDescription className={cn('text-sm font-medium')}>
+        <CardDescription className={cn('text-sm font-medium text-foreground/70')}>
           {title}
         </CardDescription>
 
         <CardTitle
           className={cn(
-            'text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'
+            'text-2xl font-semibold tabular-nums'
           )}
         >
           {value}

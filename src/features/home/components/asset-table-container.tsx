@@ -49,6 +49,7 @@ export const AssetTableContainer = () => {
           <AssetTable
             data={ownedSharesData}
             onAssetPressed={handleAssetPressed}
+            className='border border-muted'
           />
         )}
       </CardContent>

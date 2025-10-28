@@ -16,18 +16,24 @@ export function SiteHeader({ className }: SiteHeaderProps) {
 
   return (
     <header
-      className={cn('fixed z-1 top-0 right-0 bg-background', className)}
+      className={cn('fixed z-1 top-0 right-0 bg-background/50 backdrop-blur-md', className)}
       style={{
-        transitionTimingFunction: 'var(--ease-out)',
-        transitionDuration: '200ms',
-        transitionProperty: 'left',
-        left: open ? 'var(--sidebar-width)' : 'var(--sidebar-width-icon)',
+        left: isMobile
+          ? open
+            ? 'calc(-1 * var(--sidebar-width))'
+            : 'calc(-1 * var(--sidebar-width-icon))'
+          : '0px',
       }}
     >
       <div
         className="h-(--header-height) border-b flex shrink-0 items-center gap-2 px-4"
         style={{
-          marginLeft: isMobile ? 'calc(-1 * var(--sidebar-width-icon))' : '0',
+          marginLeft: open
+            ? 'var(--sidebar-width)'
+            : 'var(--sidebar-width-icon)',
+          transitionTimingFunction: 'var(--ease-out)',
+          transitionDuration: '200ms',
+          transitionProperty: 'margin',
         }}
       >
         <SidebarTrigger className="-ml-1 text-foreground" />
