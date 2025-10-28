@@ -8,6 +8,7 @@ const plFlows = {
     instrument: 'instrument',
     time: '',
     shares: 'akcje',
+    above_below_threshold: 'powyżej/poniżej progu',
   },
   sidebar: {
     logical: 'Operatory logiczne',
@@ -17,6 +18,7 @@ const plFlows = {
     math: 'Matematyka',
     actions: 'Akcje',
     save_flow: 'Zapisz przepływ',
+    predicates: 'Predykaty',
   },
   ghosts: {
     logical_node: 'Węzeł logiczny',
@@ -25,6 +27,7 @@ const plFlows = {
     number_node: 'Węzeł wartości',
     action_node: 'Węzeł akcji',
     math_node: 'Węzeł matematyczny',
+    predicate_node: 'Węzeł predykatu',
   },
   nodes: {
     and: 'i',
@@ -57,6 +60,8 @@ const plFlows = {
     of: '',
     over_duration: 'w czasie',
     price_change: 'zmiana ceny',
+    value_stays: 'wartość utrzymuje się',
+    threshold: 'próg',
     days: 'dni',
     over: 'powyżej',
     under: 'poniżej',
@@ -64,6 +69,7 @@ const plFlows = {
     sell: 'sprzedaj',
     rises: 'rośnie',
     for: 'za',
+    for_duration: 'przez',
     falls: 'spada',
     bought: 'kupiono',
     sold: 'sprzedano',
@@ -74,6 +80,7 @@ const plFlows = {
     hour: 'godzin',
     day: 'dni',
     week: 'tygodni',
+    month: 'miesięcy',
     check_every: 'sprawdzaj co',
   },
 };

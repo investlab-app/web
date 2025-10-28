@@ -18,6 +18,7 @@ import { AddNode } from '../nodes/math/add-node-settings';
 import { SubtractNode } from '../nodes/math/subtract-node-settings';
 import { MultiplyNode } from '../nodes/math/multiply-node-settings';
 import { DivideNode } from '../nodes/math/divide-node-settings';
+import { StaysAboveBelowNode } from '../nodes/predicate/stays-above-below-node-settings';
 import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node-settings';
 import { FlowNode } from '../nodes/flow/flow-if-node-settings';
 import { IndicatorNode } from '../nodes/number/indicator-node-settings';
@@ -54,6 +55,8 @@ const nodeTypes: NodeTypes = {
 
   [CustomNodeTypes.FlowIf]: FlowNode,
   [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,
+
+  [CustomNodeTypes.StaysAboveBelow]: StaysAboveBelowNode,
 
   [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.MoneyAvailable]: MoneyAvailableNode,

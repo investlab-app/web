@@ -8,6 +8,7 @@ const enFlows = {
     instrument: 'ticker',
     time: 'time',
     shares: 'shares',
+    above_below_threshold: 'above/below threshold',
   },
   sidebar: {
     logical: 'Logical operators',
@@ -17,6 +18,7 @@ const enFlows = {
     actions: 'Actions',
     save_flow: 'Save Flow',
     math: 'Math',
+    predicates: 'Predicates',
   },
   ghosts: {
     logical_node: 'Logical Node',
@@ -25,6 +27,7 @@ const enFlows = {
     number_node: 'Value Node',
     action_node: 'Action Node',
     math_node: 'Math Node',
+    predicate_node: 'Predicate Node',
   },
   nodes: {
     and: 'and',
@@ -56,6 +59,9 @@ const enFlows = {
     over_duration: 'over',
     over: 'over',
     price_change: 'price change',
+    for_duration: 'for',
+    value_stays: 'value stays',
+    threshold: 'threshold',
     happens_within: 'happens within',
     happens_between: 'happens between',
     days: 'days',
@@ -74,6 +80,7 @@ const enFlows = {
     hour: 'hours',
     day: 'days',
     week: 'weeks',
+    month: 'months',
     check_every: 'check every',
   },
 };
