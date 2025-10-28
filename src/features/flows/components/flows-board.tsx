@@ -27,6 +27,8 @@ import { MoneyAvailableNode } from '../nodes/number/money-available-node-setting
 import { ValueOfAssetsNode } from '../nodes/number/value-of-assets-node-settings';
 import { PriceChangeNode } from '../nodes/number/price-change-node-settings';
 import { NumericFlowNode } from '../nodes/flow/numeric-flow-if-node-settings';
+import { IsGreaterLessNode } from '../nodes/predicate/is-greater-less-node-settings';
+import { HasRisenFallenNode } from '../nodes/predicate/has-risen-fallen-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
@@ -57,6 +59,8 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,
 
   [CustomNodeTypes.StaysAboveBelow]: StaysAboveBelowNode,
+  [CustomNodeTypes.HasRisenFallen]: HasRisenFallenNode,
+  [CustomNodeTypes.IsGreaterLesser]: IsGreaterLessNode,
 
   [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.MoneyAvailable]: MoneyAvailableNode,

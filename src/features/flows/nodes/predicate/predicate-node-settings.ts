@@ -3,8 +3,7 @@ import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
 
 export class PredicateNodeSettings extends NodeSettings {
-
-     value?: number;
+  value?: number;
 
   constructor() {
     super();
@@ -19,10 +18,11 @@ export class PredicateNodeSettings extends NodeSettings {
     inConnections: Record<string, number>,
     outConnections: Record<string, number>
   ): boolean {
-    return Object.keys(inConnections).length == 1 && (Object.keys(outConnections).length == 2 ||
-        ('inValue' in outConnections &&
-          this.value != undefined 
-     ) );
+    return (
+      Object.keys(inConnections).length == 1 &&
+      (Object.keys(outConnections).length == 2 ||
+        ('inValue' in outConnections && this.value != undefined))
+    );
   }
 
   override getAllowedConnections(
@@ -33,7 +33,11 @@ export class PredicateNodeSettings extends NodeSettings {
   }
 
   override getAllowedSupertypes(_handleId: string): Array<SuperNodeTypes> {
-    return [SuperNodeTypes.Number, SuperNodeTypes.NumericFlow, SuperNodeTypes.Math];
+    return [
+      SuperNodeTypes.Number,
+      SuperNodeTypes.NumericFlow,
+      SuperNodeTypes.Math,
+    ];
   }
 
   override getSupertype(): SuperNodeTypes {
