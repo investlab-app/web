@@ -35,10 +35,10 @@ export enum CustomNodeTypes {
   // Number
   PriceOf = 'priceOf',
   Indicator = 'indicator',
-  priceChange = 'priceChange',
-  moneyAvailable = 'moneyAvailable',
-  numberOfAssets = 'numberOfAssets',
-  valueOfAssets = 'valueOfAsset',
+  PriceChange = 'priceChange',
+  MoneyAvailable = 'moneyAvailable',
+  NumberOfAssets = 'numberOfAssets',
+  ValueOfAssets = 'valueOfAsset',
 
   // Numeric Flow
   NumbericFlowIf = 'numbericFlowIf',
@@ -76,10 +76,10 @@ export const TypesMapping = {
 
   [CustomNodeTypes.PriceOf]: SuperNodeTypes.Number,
   [CustomNodeTypes.Indicator]: SuperNodeTypes.Number,
-  [CustomNodeTypes.priceChange]: SuperNodeTypes.Number,
-  [CustomNodeTypes.moneyAvailable]: SuperNodeTypes.Number,
-  [CustomNodeTypes.numberOfAssets]: SuperNodeTypes.Number,
-  [CustomNodeTypes.valueOfAssets]: SuperNodeTypes.Number,
+  [CustomNodeTypes.PriceChange]: SuperNodeTypes.Number,
+  [CustomNodeTypes.MoneyAvailable]: SuperNodeTypes.Number,
+  [CustomNodeTypes.NumberOfAssets]: SuperNodeTypes.Number,
+  [CustomNodeTypes.ValueOfAssets]: SuperNodeTypes.Number,
 
   [CustomNodeTypes.NumbericFlowIf]: SuperNodeTypes.NumericFlow,
 
