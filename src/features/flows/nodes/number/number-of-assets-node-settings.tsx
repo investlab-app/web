@@ -1,10 +1,10 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { PriceOfNodeUI } from './price-of-node-ui';
+import { NumberOfAssetsNodeUI } from './number-of-assets-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
-export class PriceOfNodeSettings extends NumberNodeSettings {
+export class NumberOfAssetsNodeSettings extends NumberNodeSettings {
   ticker: string;
 
   constructor() {
@@ -12,12 +12,12 @@ export class PriceOfNodeSettings extends NumberNodeSettings {
     this.ticker = '';
   }
 
-  getUpdated(ticker: string): PriceOfNodeSettings {
+  getUpdated(ticker: string): NumberOfAssetsNodeSettings {
     this.ticker = ticker;
     return this;
   }
 
-  isValid(
+  override isValid(
     inConnections: Record<string, number>,
     outConnections: Record<string, number>
   ): boolean {
@@ -28,21 +28,21 @@ export class PriceOfNodeSettings extends NumberNodeSettings {
   }
 }
 
-export type PriceOfNode = Node<
+export type NumberOfAssetsNode = Node<
   {
-    settings: PriceOfNodeSettings;
+    settings: NumberOfAssetsNodeSettings;
   },
-  CustomNodeTypes.PriceOf
+  CustomNodeTypes.NumberOfAssets
 >;
 
-export const PriceOfNode = (props: NodeProps<PriceOfNode>) => {
+export const NumberOfAssetsNode = (props: NodeProps<NumberOfAssetsNode>) => {
   const { updateNodeData } = useNodeData(props.id);
 
   return (
-    <PriceOfNodeUI
+    <NumberOfAssetsNodeUI
       value={props.data.settings.ticker}
-      onValueChange={(value) =>
-        updateNodeData({ settings: props.data.settings.getUpdated(value ?? "") })
+      onValueChange={(value: string | undefined) =>
+        updateNodeData({ settings: props.data.settings.getUpdated(value ?? '') })
       }
       nodeId={props.id}
     />

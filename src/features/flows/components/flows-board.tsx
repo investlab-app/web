@@ -20,6 +20,9 @@ import { MultiplyNode } from '../nodes/math/multiply-node-settings';
 import { DivideNode } from '../nodes/math/divide-node-settings';
 import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node-settings';
 import { FlowNode } from '../nodes/flow/flow-if-node-settings';
+import { NumberOfAssetsNode } from '../nodes/number/number-of-assets-node-settings';
+import { MoneyAvailableNode } from '../nodes/number/money-available-node-settings';
+import { ValueOfAssetsNode } from '../nodes/number/value-of-assets-node-settings';
 import { NumericFlowNode } from '../nodes/flow/numeric-flow-if-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
@@ -51,6 +54,10 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,
 
   [CustomNodeTypes.PriceOf]: PriceOfNode,
+  [CustomNodeTypes.MoneyAvailable]: MoneyAvailableNode,
+  [CustomNodeTypes.NumberOfAssets]: NumberOfAssetsNode,
+  [CustomNodeTypes.ValueOfAssets]: ValueOfAssetsNode,
+
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,

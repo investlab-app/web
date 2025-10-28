@@ -5,6 +5,12 @@ import { CustomNodeTypes } from '../../types/node-types-2';
 import { DragGhost } from '../drag-ghost';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
+import { MoneyAvailableNodeUI } from '../../nodes/number/money-available-node-ui';
+import { MoneyAvailableNodeSettings } from '../../nodes/number/money-available-node-settings';
+import { NumberOfAssetsNodeUI } from '../../nodes/number/number-of-assets-node-ui';
+import { NumberOfAssetsNodeSettings } from '../../nodes/number/number-of-assets-node-settings';
+import { ValueOfAssetsNodeUI } from '../../nodes/number/value-of-assets-node-ui';
+import { ValueOfAssetsNodeSettings } from '../../nodes/number/value-of-assets-node-settings';
 import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node-ui';
 import { BuySellPriceNodeSettings } from '../../nodes/action/buy-sell-price-node-settings';
 import { BuySellPercentNodeSettings } from '../../nodes/action/buy-sell-percent-node-settings';
@@ -148,6 +154,18 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.PriceOf]: {
               component: PriceOfNodeUI,
               settingsType: PriceOfNodeSettings,
+            },
+            [CustomNodeTypes.MoneyAvailable]: {
+              component: MoneyAvailableNodeUI,
+              settingsType: MoneyAvailableNodeSettings,
+            },
+            [CustomNodeTypes.NumberOfAssets]: {
+              component: NumberOfAssetsNodeUI,
+              settingsType: NumberOfAssetsNodeSettings,
+            },
+            [CustomNodeTypes.ValueOfAssets]: {
+              component: ValueOfAssetsNodeUI,
+              settingsType: ValueOfAssetsNodeSettings,
             },
           }}
         />

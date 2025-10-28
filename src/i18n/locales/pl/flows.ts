@@ -42,6 +42,10 @@ const plFlows = {
 
     number: 'liczba',
     price_of: 'cena',
+    money_available: 'dostępne środki',
+    number_of: 'ilość akcji',
+    value_of: 'wartość akcji',
+    assets_suffix: '',
     price: 'cena',
     shares: 'akcje',
     happens_within: 'występuje w ciągu',
