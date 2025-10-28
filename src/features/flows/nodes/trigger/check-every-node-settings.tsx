@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { CheckEveryNodeUI } from './check-every-node';
+import { CheckEveryNodeUI } from './check-every-node-ui';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
@@ -54,7 +54,6 @@ export const CheckEveryNode = (props: NodeProps<CheckEveryNode>) => {
       }}
       onUnitChange={(val) => {
         let newSettings = props.data.settings.getUpdatedUnit(val);
-        // Adjust interval if it exceeds the max for the new unit
         if (val === 'hour' && props.data.settings.interval > 24) {
           newSettings = newSettings.getUpdatedInterval(24);
         } else if (val === 'day' && props.data.settings.interval > 7) {

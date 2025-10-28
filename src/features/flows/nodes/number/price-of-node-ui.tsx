@@ -30,7 +30,6 @@ export function PriceOfNodeUI({
           }
         />
       )}
-
     </NumberNodeUI>
   );
 }

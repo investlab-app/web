@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
@@ -21,19 +22,6 @@ export function CheckEveryNodeUI({
 }: CheckEveryNodeUIProps & CustomNodeProps) {
   const { t } = useTranslation();
 
-  const getMaxValue = () => {
-    switch (unit) {
-      case 'hour':
-        return 24;
-      case 'day':
-        return 7;
-      case 'week':
-        return 10;
-      default:
-        return 24;
-    }
-  };
-
   return (
     <TriggerNodeUI nodeId={nodeId} preview={preview}>
       {!preview ? (
@@ -44,14 +32,14 @@ export function CheckEveryNodeUI({
 
       {onIntervalChange && (
         <NumberInput
-          className="w-20 mx-2"
+          className="w-22 mx-2"
           min={1}
-          max={getMaxValue()}
+          max={getMaxValue(unit!)}
           defaultValue={1}
           stepper={1}
           value={interval}
           onValueChange={(val) => {
-            const maxValue = getMaxValue();
+            const maxValue = getMaxValue(unit!);
             if (val && val > maxValue) {
               onIntervalChange(maxValue);
             } else {
