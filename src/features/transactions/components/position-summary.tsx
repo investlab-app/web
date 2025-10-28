@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
-import { SummaryMetric } from './summary-metric';
+import { SummaryMetric, SummaryMetricSkeleton } from './summary-metric';
 import type { Position } from '@/client';
 import { InstrumentIconCircle } from '@/features/instruments/components/instrument-image-circle';
 import { Button } from '@/features/shared/components/ui/button';
@@ -130,5 +130,27 @@ export function PositionSummary({
 }
 
 export function PositionSummarySkeleton() {
-  return <Skeleton />;
+  return (
+    <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted border-b border-muted-foreground/10">
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-full w-9 border-r border-muted-foreground/10"
+        >
+          <ChevronDown className={cn('h-4 w-4 transition-transform')} />
+        </Button>
+        <div className="flex flex-row items-center gap-4">
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-6 w-32" />
+        </div>
+      </div>
+      <div className="grid w-full sm:grid-cols-2 lg:w-auto lg:grid-cols-4 items-center">
+        <SummaryMetricSkeleton />
+        <SummaryMetricSkeleton />
+        <SummaryMetricSkeleton />
+        <SummaryMetricSkeleton />
+      </div>
+    </div>
+  );
 }

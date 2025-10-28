@@ -1,3 +1,4 @@
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { cn } from '@/features/shared/utils/styles';
 
 interface SummaryMetricProps {
@@ -26,6 +27,15 @@ export function SummaryMetric({
       <p className={cn('mt-1 text-base font-semibold', valueClassName)}>
         {value}
       </p>
+    </div>
+  );
+}
+
+export function SummaryMetricSkeleton() {
+  return (
+    <div className="border-muted-foreground/10 border-l p-3 min-w-[140px]">
+      <Skeleton className="h-3 w-20 mb-1" />
+      <Skeleton className="h-6 w-24" />
     </div>
   );
 }

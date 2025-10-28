@@ -7,9 +7,9 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
-import { Positions } from '@/features/transactions/components/positions-table';
 import AppFrame from '@/features/shared/components/app-frame';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
+import { Positions } from '@/features/transactions/components/positions';
 
 export const Route = createFileRoute('/_authed/transactions/')({
   component: RouteComponent,

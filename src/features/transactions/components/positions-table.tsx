@@ -10,11 +10,10 @@ import {
 import { dateToLocale } from '@/features/shared/utils/date';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { DataTable } from '@/features/shared/components/ui/data-table';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
-export function PositionsTable({ position }: { position: Position }) {
+function usePositionsColumns() {
   const { t, i18n } = useTranslation();
-  const columns: Array<ColumnDef<HistoryEntry>> = [
+  return new Array<ColumnDef<HistoryEntry>>(
     {
       accessorKey: 'name',
       header: () => (
@@ -99,8 +98,12 @@ export function PositionsTable({ position }: { position: Position }) {
       ),
       cell: ({ row }) => row.original.acquisition_price || 'N/A',
       enableHiding: true,
-    },
-  ];
+    }
+  );
+}
+
+export function PositionsTable({ position }: { position: Position }) {
+  const columns = usePositionsColumns();
 
   return (
     <DataTable
@@ -112,5 +115,14 @@ export function PositionsTable({ position }: { position: Position }) {
 }
 
 export function PositionsTableSkeleton() {
-  return <Skeleton />;
+  const columns = usePositionsColumns();
+
+  return (
+    <DataTable
+      data={[]}
+      columns={columns}
+      FetchingRowsSkeleton={<PositionsTableSkeleton />}
+      isPending={true}
+    />
+  );
 }

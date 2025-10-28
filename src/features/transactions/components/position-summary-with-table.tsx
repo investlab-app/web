@@ -1,19 +1,12 @@
 import { useState } from 'react';
-import { PositionSummary } from './position-summary';
-import { PositionsTable } from './positions-table';
+import { PositionSummary, PositionSummarySkeleton } from './position-summary';
+import { PositionsTable, PositionsTableSkeleton } from './positions-table';
 import type { Position } from '@/client';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
-export function PositionSummaryWithTable({
-  position,
-  className,
-}: {
-  position: Position;
-  className?: string;
-}) {
+export function PositionSummaryWithTable({ position }: { position: Position }) {
   const [collapsed, setCollapsed] = useState(false);
   return (
-    <div className={className}>
+    <div>
       <PositionSummary
         key={position.symbol}
         position={position}
@@ -26,5 +19,10 @@ export function PositionSummaryWithTable({
 }
 
 export function PositionSummaryWithTableSkeleton() {
-  return <Skeleton />;
+  return (
+    <div>
+      <PositionSummarySkeleton />
+      <PositionsTableSkeleton />
+    </div>
+  );
 }

@@ -25,9 +25,13 @@ export function Positions({ type }: PositionsTableProps) {
   }
 
   if (isPending) {
-    return Array.from({ length: 3 }).map((_, index) => (
-      <PositionSummaryWithTableSkeleton key={index} />
-    ));
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <PositionSummaryWithTableSkeleton key={index} />
+        ))}
+      </div>
+    );
   }
 
   if (data.length === 0) {
