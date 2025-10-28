@@ -5,39 +5,63 @@ import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
-interface StaysAboveBelowNodeUIProps {
-  direction?: 'above' | 'below';
-  threshold?: number;
+interface HasRisenFallenNodeUIProps {
+  direction?: 'risen' | 'fell';
+  value?: number;
   period?: number;
   unit?: 'hour' | 'day' | 'week' | 'month';
-  onDirectionChange?: (value: 'above' | 'below') => void;
-  onThresholdChange?: (value: number | undefined) => void;
+  onDirectionChange?: (value: 'risen' | 'fell') => void;
+  onValueChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
   onUnitChange?: (value: 'hour' | 'day' | 'week' | 'month') => void;
 }
 
-export function StaysAboveBelowNodeUI({
+export function HasRisenFallenNodeUI({
   direction,
-  threshold,
+  value,
   period,
   unit,
   onDirectionChange,
-  onThresholdChange,
+  onValueChange,
   onPeriodChange,
   onUnitChange,
   nodeId,
   preview,
-}: StaysAboveBelowNodeUIProps & CustomNodeProps) {
+}: HasRisenFallenNodeUIProps & CustomNodeProps) {
   const { t } = useTranslation();
 
   return (
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
-      onValueChange={onThresholdChange}
-      value={threshold}
+      onValueChange={onValueChange}
+      value={value}
     >
-      {!preview && <div>{t('flows.nodes.for_duration')}</div>}
+      {!preview && (
+        <div>
+          {t('flows.nodes.value')} {t('flows.nodes.has')}
+        </div>
+      )}
+
+      {onDirectionChange ? (
+        <select
+          className="px-2 py-1 mx-2 border rounded"
+          value={direction}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            onDirectionChange(e.target.value as 'risen' | 'fell')
+          }
+        >
+          <option value="risen">{t('flows.nodes.risen')}</option>
+          <option value="fell">{t('flows.nodes.fell')}</option>
+        </select>
+      ) : (
+        <div>
+          {t('flows.nodes.has')} {t('flows.placeholders.risen_fallen')}{' '}
+          {t('flows.nodes.by')}
+        </div>
+      )}
+
+      {!preview && <div>{t('flows.nodes.over_duration')}</div>}
 
       {onPeriodChange && (
         <NumberInput
@@ -73,30 +97,7 @@ export function StaysAboveBelowNodeUI({
           <option value="month">{t('flows.nodes.month')}</option>
         </select>
       )}
-
-      {!preview ? (
-        <div className="mx-2">
-          {t('flows.nodes.value')} {t('flows.nodes.stays')}
-        </div>
-      ) : (
-        <div>
-          {t('flows.nodes.stays')}{' '}
-          {t('flows.placeholders.above_below_threshold')}
-        </div>
-      )}
-
-      {onDirectionChange && (
-        <select
-          className="px-2 py-1 mx-1 border rounded"
-          value={direction}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'above' | 'below')
-          }
-        >
-          <option value="above">{t('flows.nodes.over')}</option>
-          <option value="below">{t('flows.nodes.under')}</option>
-        </select>
-      )}
+      {!preview && <div className="ml-2">{t('flows.nodes.by')}</div>}
     </PredicateNodeUI>
   );
 }

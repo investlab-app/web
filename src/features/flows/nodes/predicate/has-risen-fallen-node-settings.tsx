@@ -1,17 +1,17 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { StaysAboveBelowNodeUI } from './stays-above-below-node-ui';
+import { HasRisenFallenNodeUI } from './has-risen-fallen-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
-export class StaysAboveBelowNodeSettings extends PredicateNodeSettings {
-  direction: 'above' | 'below';
+export class HasRisenFallenNodeSettings extends PredicateNodeSettings {
+  direction: 'risen' | 'fell';
   period: number;
   unit: 'hour' | 'day' | 'week' | 'month';
 
   constructor() {
     super();
-    this.direction = 'above';
+    this.direction = 'risen';
     this.period = 1;
     this.unit = 'day';
   }
@@ -23,49 +23,47 @@ export class StaysAboveBelowNodeSettings extends PredicateNodeSettings {
     return super.isValid(inConnections, outConnections) && this.period > 0;
   }
 
-  getUpdatedDirection(
-    direction: 'above' | 'below'
-  ): StaysAboveBelowNodeSettings {
+  getUpdatedDirection(direction: 'risen' | 'fell'): HasRisenFallenNodeSettings {
     this.direction = direction;
     return this;
   }
 
-  getUpdatedPeriod(period: number): StaysAboveBelowNodeSettings {
+  getUpdatedPeriod(period: number): HasRisenFallenNodeSettings {
     this.period = period;
     return this;
   }
 
   getUpdatedUnit(
     unit: 'hour' | 'day' | 'week' | 'month'
-  ): StaysAboveBelowNodeSettings {
+  ): HasRisenFallenNodeSettings {
     this.unit = unit;
     return this;
   }
 }
 
-export type StaysAboveBelowNode = Node<
+export type HasRisenFallenNode = Node<
   {
-    settings: StaysAboveBelowNodeSettings;
+    settings: HasRisenFallenNodeSettings;
   },
-  CustomNodeTypes.StaysAboveBelow
+  CustomNodeTypes.HasRisenFallen
 >;
 
-export const StaysAboveBelowNode = (props: NodeProps<StaysAboveBelowNode>) => {
+export const HasRisenFallenNode = (props: NodeProps<HasRisenFallenNode>) => {
   const { updateNodeData } = useNodeData(props.id);
 
   return (
-    <StaysAboveBelowNodeUI
+    <HasRisenFallenNodeUI
       nodeId={props.id}
       direction={props.data.settings.direction}
-      threshold={props.data.settings.value}
+      value={props.data.settings.value}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
-      onDirectionChange={(val: 'above' | 'below') => {
+      onDirectionChange={(val: 'risen' | 'fell') => {
         updateNodeData({
           settings: props.data.settings.getUpdatedDirection(val),
         });
       }}
-      onThresholdChange={(val: number | undefined) => {
+      onValueChange={(val: number | undefined) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedValue(val),
         });

@@ -47,6 +47,10 @@ import { NotNodeSettings } from '../../nodes/logic-operator/not-node-settings';
 import { NotNodeUI } from '../../nodes/logic-operator/not-node';
 import { StaysAboveBelowNodeUI } from '../../nodes/predicate/stays-above-below-node-ui';
 import { StaysAboveBelowNodeSettings } from '../../nodes/predicate/stays-above-below-node-settings';
+import { IsGreaterLessNodeUI } from '../../nodes/predicate/is-greater-less-node-ui';
+import { IsGreaterLessNodeSettings } from '../../nodes/predicate/is-greater-less-node-settings';
+import { HasRisenFallenNodeUI } from '../../nodes/predicate/has-risen-fallen-node-ui';
+import { HasRisenFallenNodeSettings } from '../../nodes/predicate/has-risen-fallen-node-settings';
 import { SidebarSection } from './section';
 import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -232,6 +236,14 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.StaysAboveBelow]: {
               component: StaysAboveBelowNodeUI,
               settingsType: StaysAboveBelowNodeSettings,
+            },
+            [CustomNodeTypes.IsGreaterLesser]: {
+              component: IsGreaterLessNodeUI,
+              settingsType: IsGreaterLessNodeSettings,
+            },
+            [CustomNodeTypes.HasRisenFallen]: {
+              component: HasRisenFallenNodeUI,
+              settingsType: HasRisenFallenNodeSettings,
             },
           }}
         />
