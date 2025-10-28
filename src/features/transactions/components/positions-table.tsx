@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { HistoryEntry, Position } from '@/client';
+import type { HistoryEntry } from '@/client';
 import {
   Tooltip,
   TooltipContent,
@@ -102,12 +102,12 @@ function usePositionsColumns() {
   );
 }
 
-export function PositionsTable({ position }: { position: Position }) {
+export function PositionsTable({ history }: { history: Array<HistoryEntry> }) {
   const columns = usePositionsColumns();
 
   return (
     <DataTable
-      data={position.history}
+      data={history}
       columns={columns}
       FetchingRowsSkeleton={<PositionsTableSkeleton />}
     />

@@ -13,7 +13,7 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
         setCollapsed={() => setCollapsed(!collapsed)}
         isCollapsed={collapsed}
       />
-      {!collapsed && <PositionsTable position={position} />}
+      {!collapsed && <PositionsTable history={position.history} />}
     </div>
   );
 }

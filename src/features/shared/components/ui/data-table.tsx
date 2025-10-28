@@ -59,21 +59,23 @@ export function DataTable<TData, TValue>({
 
   return (
     <Table className="rounded-md border border-muted">
-      <TableHeader className='bg-muted'>
-        {table.getHeaderGroups().map((headerGroup) =>
-          headerGroup.headers.map((header) => {
-            return (
-              <TableHead key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </TableHead>
-            );
-          })
-        )}
+      <TableHeader className="bg-muted">
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              return (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              );
+            })}
+          </TableRow>
+        ))}
       </TableHeader>
       <TableBody>
         {!table.getRowModel().rows.length
