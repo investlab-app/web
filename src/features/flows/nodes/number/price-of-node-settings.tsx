@@ -42,7 +42,9 @@ export const PriceOfNode = (props: NodeProps<PriceOfNode>) => {
     <PriceOfNodeUI
       value={props.data.settings.ticker}
       onValueChange={(value) =>
-        updateNodeData({ settings: props.data.settings.getUpdated(value ?? "") })
+        updateNodeData({
+          settings: props.data.settings.getUpdated(value ?? ''),
+        })
       }
       nodeId={props.id}
     />

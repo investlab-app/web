@@ -42,7 +42,9 @@ export const NumberOfAssetsNode = (props: NodeProps<NumberOfAssetsNode>) => {
     <NumberOfAssetsNodeUI
       value={props.data.settings.ticker}
       onValueChange={(value: string | undefined) =>
-        updateNodeData({ settings: props.data.settings.getUpdated(value ?? '') })
+        updateNodeData({
+          settings: props.data.settings.getUpdated(value ?? ''),
+        })
       }
       nodeId={props.id}
     />

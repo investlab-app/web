@@ -11,13 +11,17 @@ import { NumberOfAssetsNodeUI } from '../../nodes/number/number-of-assets-node-u
 import { NumberOfAssetsNodeSettings } from '../../nodes/number/number-of-assets-node-settings';
 import { ValueOfAssetsNodeUI } from '../../nodes/number/value-of-assets-node-ui';
 import { ValueOfAssetsNodeSettings } from '../../nodes/number/value-of-assets-node-settings';
+import { IndicatorNodeUI } from '../../nodes/number/indicator-node-ui';
+import { IndicatorNodeSettings } from '../../nodes/number/indicator-node-settings';
+import { PriceChangeNodeUI } from '../../nodes/number/price-change-node-ui';
+import { PriceChangeNodeSettings } from '../../nodes/number/price-change-node-settings';
 import { BuySellPriceNodeUI } from '../../nodes/action/buy-sell-price-node-ui';
 import { BuySellPriceNodeSettings } from '../../nodes/action/buy-sell-price-node-settings';
 import { BuySellPercentNodeSettings } from '../../nodes/action/buy-sell-percent-node-settings';
 import { BuySellPercentNodeUI } from '../../nodes/action/buy-sell-percent-node-ui';
 import { BuySellAmountNodeUI } from '../../nodes/action/buy-sell-amount-node-ui';
 import { BuySellAmountNodeSettings } from '../../nodes/action/buy-sell-amount-node-settings';
-import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node';
+import { CheckEveryNodeUI } from '../../nodes/trigger/check-every-node-ui';
 import { CheckEveryNodeSettings } from '../../nodes/trigger/check-every-node-settings';
 import { InstrumentBoughtSoldNodeUI } from '../../nodes/trigger/instrument-bought-sold-node';
 import { InstrumentBoughtSoldNodeSettings } from '../../nodes/trigger/instrument-bought-sold-node-settings';
@@ -146,10 +150,10 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           }}
         />
         <SidebarSection
-          title={t('flows.sidebar.rules')}
+          title={t('flows.sidebar.numbers')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.rule_node'))}
+          setGhostType={() => setType(t('flows.ghosts.number_node'))}
           children={{
             [CustomNodeTypes.PriceOf]: {
               component: PriceOfNodeUI,
@@ -166,6 +170,14 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.ValueOfAssets]: {
               component: ValueOfAssetsNodeUI,
               settingsType: ValueOfAssetsNodeSettings,
+            },
+            [CustomNodeTypes.Indicator]: {
+              component: IndicatorNodeUI,
+              settingsType: IndicatorNodeSettings,
+            },
+            [CustomNodeTypes.PriceChange]: {
+              component: PriceChangeNodeUI,
+              settingsType: PriceChangeNodeSettings,
             },
           }}
         />

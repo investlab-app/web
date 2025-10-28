@@ -29,10 +29,11 @@ export function ValueOfAssetsNodeUI({
             onValueChange(e.target.value)
           }
         />
-      ) : <div className='ml-1'/>}
+      ) : (
+        <div className="ml-1" />
+      )}
 
       <div>{t('flows.nodes.assets_suffix')}</div>
-
     </NumberNodeUI>
   );
 }

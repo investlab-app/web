@@ -2,10 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { NumberNodeUI } from './number-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
 
-export function MoneyAvailableNodeUI({
-  nodeId,
-  preview,
-}: CustomNodeProps) {
+export function MoneyAvailableNodeUI({ nodeId, preview }: CustomNodeProps) {
   const { t } = useTranslation();
   return (
     <NumberNodeUI nodeId={nodeId} preview={preview}>
