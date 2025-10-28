@@ -45,6 +45,8 @@ import { OrNodeUI } from '../../nodes/logic-operator/or-node';
 import { OrNodeSettings } from '../../nodes/logic-operator/or-node-settings';
 import { NotNodeSettings } from '../../nodes/logic-operator/not-node-settings';
 import { NotNodeUI } from '../../nodes/logic-operator/not-node';
+import { StaysAboveBelowNodeUI } from '../../nodes/predicate/stays-above-below-node-ui';
+import { StaysAboveBelowNodeSettings } from '../../nodes/predicate/stays-above-below-node-settings';
 import { SidebarSection } from './section';
 import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
@@ -218,6 +220,18 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.Divide]: {
               component: DivideNodeUI,
               settingsType: DivideNodeSettings,
+            },
+          }}
+        />
+        <SidebarSection
+          title={t('flows.sidebar.predicates')}
+          createNodeFunc={createAddNewNode}
+          onDragStart={onDragStart}
+          setGhostType={() => setType(t('flows.ghosts.predicate_node'))}
+          children={{
+            [CustomNodeTypes.StaysAboveBelow]: {
+              component: StaysAboveBelowNodeUI,
+              settingsType: StaysAboveBelowNodeSettings,
             },
           }}
         />
