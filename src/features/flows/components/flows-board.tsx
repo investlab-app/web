@@ -14,6 +14,10 @@ import { OrNode } from '../nodes/logic-operator/or-node-settings';
 import { AndNode } from '../nodes/logic-operator/and-node-settings';
 import { NotNode } from '../nodes/logic-operator/not-node-settings';
 import { BuySellPercentNode } from '../nodes/action/buy-sell-percent-node-settings';
+import { AddNode } from '../nodes/math/add-node-settings';
+import { SubtractNode } from '../nodes/math/subtract-node-settings';
+import { MultiplyNode } from '../nodes/math/multiply-node-settings';
+import { DivideNode } from '../nodes/math/divide-node-settings';
 import { InstrumentBoughtSoldNode } from '../nodes/trigger/instrument-bought-sold-node-settings';
 import { FlowNode } from '../nodes/flow/flow-if-node-settings';
 import { NumericFlowNode } from '../nodes/flow/numeric-flow-if-node-settings';
@@ -37,6 +41,11 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
   [CustomNodeTypes.And]: AndNode,
   [CustomNodeTypes.Or]: OrNode,
+
+  [CustomNodeTypes.Add]: AddNode,
+  [CustomNodeTypes.Subtract]: SubtractNode,
+  [CustomNodeTypes.Multiply]: MultiplyNode,
+  [CustomNodeTypes.Divide]: DivideNode,
 
   [CustomNodeTypes.FlowIf]: FlowNode,
   [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,

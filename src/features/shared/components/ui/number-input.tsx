@@ -39,6 +39,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       prefix,
       value: controlledValue,
       className,
+      disabled,
       ...props
     },
     ref
@@ -133,6 +134,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           placeholder={placeholder}
           className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none rounded-r-none relative"
           getInputRef={ref}
+          disabled={disabled}
           {...props}
         />
 
@@ -142,7 +144,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className="px-2 h-1/2 rounded-l-none rounded-br-none border-input border-l-0 focus-visible:relative"
             variant="ghost"
             onClick={handleIncrement}
-            disabled={displayValue !== undefined && displayValue >= max}
+            disabled={
+              disabled || (displayValue !== undefined && displayValue >= max)
+            }
           >
             <ChevronUp size={15} />
           </Button>
@@ -151,7 +155,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className="px-2 h-1/2 rounded-l-none rounded-tr-none border-input border-l-0 focus-visible:relative "
             variant="ghost"
             onClick={handleDecrement}
-            disabled={displayValue !== undefined && displayValue <= min}
+            disabled={
+              disabled || (displayValue !== undefined && displayValue <= min)
+            }
           >
             <ChevronDown size={15} />
           </Button>

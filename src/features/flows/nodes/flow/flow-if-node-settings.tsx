@@ -40,7 +40,7 @@ export class FlowIfNodeSettings extends NodeSettings {
 }
 
 export type FlowNode = Node<
-  {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
+  { settings: FlowIfNodeSettings },
   CustomNodeTypes.FlowIf
 >;
 

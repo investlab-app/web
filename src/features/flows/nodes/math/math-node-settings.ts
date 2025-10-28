@@ -2,7 +2,18 @@
 import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
 
-export class NumberNodeSettings extends NodeSettings {
+export class MathNodeSettings extends NodeSettings {
+  value?: number;
+
+  constructor() {
+    super();
+  }
+
+  getUpdatedValue(value?: number): MathNodeSettings {
+    this.value = value;
+    return this;
+  }
+
   override isValid(
     inConnections: Record<string, number>,
     outConnections: Record<string, number>
@@ -10,7 +21,10 @@ export class NumberNodeSettings extends NodeSettings {
     return (
       'out' in inConnections &&
       inConnections['out'] == 1 &&
-      outConnections.length == 2
+      (Object.keys(outConnections).length == 2 ||
+        ('inA' in outConnections &&
+          this.value != undefined &&
+          this.value !== 0))
     );
   }
 
