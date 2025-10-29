@@ -20,6 +20,8 @@ import enStatistics from './locales/en/statistics';
 import plStatistics from './locales/pl/statistics';
 import enOrders from './locales/en/orders';
 import plOrders from './locales/pl/orders';
+import enWallet from './locales/en/wallet';
+import plWallet from './locales/pl/wallet';
 import enFaq from './locales/en/legal/faq';
 import plFaq from './locales/pl/legal/faq';
 import plPrivacyPolicy from './locales/pl/legal/privacy-policy';
@@ -58,6 +60,7 @@ i18n
           settings: enSettings,
           statistics: enStatistics,
           transactions: enTransactions,
+          wallet: enWallet,
           legal: {
             faq: enFaq,
             privacyPolicy: enPrivacyPolicy,
@@ -77,6 +80,7 @@ i18n
           settings: plSettings,
           statistics: plStatistics,
           transactions: plTransactions,
+          wallet: plWallet,
           legal: {
             faq: plFaq,
             privacyPolicy: plPrivacyPolicy,
