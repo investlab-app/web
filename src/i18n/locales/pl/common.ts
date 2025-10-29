@@ -12,6 +12,7 @@ const plCommon = {
   flows: 'Strategie',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
+  watched: 'Obserwowane',
   add: 'Dodaj',
   help: 'Pomoc',
   settings: 'Ustawienia',

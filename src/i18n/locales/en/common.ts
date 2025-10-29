@@ -12,6 +12,7 @@ const enCommon = {
   statistics: 'Statistics',
   flows: 'flows',
   wallet: 'Wallet',
+  watched: 'Watched',
   add: 'Add',
   help: 'Help',
   settings: 'Settings',

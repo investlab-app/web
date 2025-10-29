@@ -80,6 +80,7 @@ export function InstrumentHeader({
                   <Link
                     href={instrumentInfo.homepage_url}
                     to={instrumentInfo.homepage_url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="font-bold underline hover:text-primary"
                   >

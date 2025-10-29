@@ -27,6 +27,7 @@ import {
   NavUserSkeleton,
 } from '@/features/shared/components/nav-user';
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
+import { NavWatchedTickers } from '@/features/shared/components/nav-watched-tickers';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
@@ -113,6 +114,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavWatchedTickers />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter className="px-0">
