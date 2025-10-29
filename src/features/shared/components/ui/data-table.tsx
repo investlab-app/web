@@ -151,7 +151,7 @@ function DataTablePagination<TData>({
   showSelectedRows = false,
 }: {
   table: ReturnType<typeof useReactTable<TData>>;
-  paginationTypes: Array<number>;
+  paginationTypes?: Array<number>;
   showSelectedRows?: boolean;
 }) {
   'use no memo';
