@@ -1,9 +1,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
+import { Button } from '@/features/shared/components/ui/button';
 import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
@@ -22,6 +24,7 @@ export function InstrumentHeader({
   );
 
   const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
@@ -92,9 +95,30 @@ export function InstrumentHeader({
           </div>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground w-[50%]">
-        {instrumentInfo.description}
-      </p>
+      {instrumentInfo.description && (
+        <div className="flex flex-col gap-2">
+          <div
+            className={`relative w-[50%] ${
+              !isExpanded ? 'max-h-14 overflow-hidden' : ''
+            }`}
+          >
+            <p className="text-sm text-muted-foreground">
+              {instrumentInfo.description}
+            </p>
+            {!isExpanded && (
+              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-fit h-auto p-0 text-primary hover:text-primary hover:bg-transparent"
+          >
+            {isExpanded ? t('common.show_less') : t('common.show_more')}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
