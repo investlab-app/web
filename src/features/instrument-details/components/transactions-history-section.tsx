@@ -55,7 +55,10 @@ export function TransactionsHistorySection({
         ) : !tickerTransactions.length ? (
           <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
-          <PositionsTable history={tickerTransactions[0].history} />
+          <PositionsTable
+            history={tickerTransactions[0].history}
+            enablePagination
+          />
         )}
       </CardContent>
     </Card>

@@ -26,6 +26,8 @@ import plPrivacyPolicy from './locales/pl/legal/privacy-policy';
 import plTermsOfService from './locales/pl/legal/terms-of-service';
 import enPrivacyPolicy from './locales/en/legal/privacy-policy';
 import enTermsOfService from './locales/en/legal/terms-of-service';
+import enTable from './locales/en/table';
+import plTable from './locales/pl/table';
 
 i18n
   .use(LanguageDetector)
@@ -61,6 +63,7 @@ i18n
             privacyPolicy: enPrivacyPolicy,
             termsOfService: enTermsOfService,
           },
+          table: enTable,
         },
       },
       pl: {
@@ -79,6 +82,7 @@ i18n
             privacyPolicy: plPrivacyPolicy,
             termsOfService: plTermsOfService,
           },
+          table: plTable,
         },
       },
     },

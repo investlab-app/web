@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
-import type { ColumnDef } from '@tanstack/react-table';
+import { useState } from 'react';
+import type { ColumnDef, PaginationState } from '@tanstack/react-table';
 import type { HistoryEntry } from '@/client';
 import {
   Tooltip,
@@ -108,25 +109,49 @@ function usePositionsColumns() {
   );
 }
 
-export function PositionsTable({ history }: { history: Array<HistoryEntry> }) {
+export function PositionsTable({
+  history,
+  enablePagination = false,
+}: {
+  history: Array<HistoryEntry>;
+  enablePagination?: boolean;
+}) {
   const columns = usePositionsColumns();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   return (
     <DataTable
       data={history}
       columns={columns}
+      pagination={pagination}
+      onPaginationChange={setPagination}
+      enablePagination={enablePagination}
       FetchingRowsSkeleton={<PositionsTableSkeleton />}
     />
   );
 }
 
-export function PositionsTableSkeleton() {
+export function PositionsTableSkeleton({
+  enablePagination = false,
+}: {
+  enablePagination?: boolean;
+}) {
   const columns = usePositionsColumns();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
   return (
     <DataTable
       data={[]}
       columns={columns}
+      pagination={pagination}
+      onPaginationChange={setPagination}
+      enablePagination={enablePagination}
       FetchingRowsSkeleton={<PositionsRowsSkeleton />}
       isPending={true}
     />
