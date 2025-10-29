@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { Link } from '@tanstack/react-router';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
@@ -63,11 +64,34 @@ export function InstrumentHeader({
                   </span>
                 </Badge>
               )}
+              {instrumentInfo.cik && (
+                <Badge variant="secondary">
+                  <span className="text-muted-foreground">
+                    {t('instruments.cik')}:
+                  </span>
+                  <span className="font-bold">{instrumentInfo.cik}</span>
+                </Badge>
+              )}
+              {instrumentInfo.homepage_url && (
+                <Badge variant="secondary">
+                  <span className="text-muted-foreground">
+                    {t('instruments.website')}:
+                  </span>
+                  <Link
+                    href={instrumentInfo.homepage_url}
+                    to={instrumentInfo.homepage_url}
+                    rel="noopener noreferrer"
+                    className="font-bold underline hover:text-primary"
+                  >
+                    {instrumentInfo.homepage_url}
+                  </Link>
+                </Badge>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-muted-foreground w-[50%]">
         {instrumentInfo.description}
       </p>
     </div>

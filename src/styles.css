@@ -109,8 +109,8 @@ code {
   --card-negative-border: #4d0b1a;
   --popover: oklch(0.2686 0 0);
   --popover-foreground: oklch(0.9851 0 0);
-  --primary: #673492;
-  --primary-foreground: oklch(0.9851 0 0);
+  --primary: #231b2b;
+  --primary-foreground: #9030db;
   --secondary: oklch(0.2686 0 0);
   --secondary-foreground: oklch(0.7851 0 0);
   --muted: #181818;
@@ -270,5 +270,18 @@ code {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Custom selection styles using primary color with enhanced styling */
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  ::-moz-selection {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hex));
+    color: var(--primary-foreground);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 }

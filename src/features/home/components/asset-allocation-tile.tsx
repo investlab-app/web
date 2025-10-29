@@ -73,7 +73,7 @@ export const AssetAllocationTile = ({
                           className="rounded-md h-4 cursor-pointer"
                           style={{
                             width: `${percentage}%`,
-                            backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
+                            backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
                           }}
                         />
                       </TooltipTrigger>
@@ -101,7 +101,7 @@ export const AssetAllocationTile = ({
                       <div
                         className="size-4 rounded-full"
                         style={{
-                          backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary))`,
+                          backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
                         }}
                       />
                       <div className="space-y-1">
