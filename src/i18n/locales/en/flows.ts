@@ -53,6 +53,8 @@ const enFlows = {
     money_available: 'money available',
     number_of: 'number of',
     value_of: 'value of',
+    with_tolerance: 'with tolerance',
+    the_same: 'the same',
     assets_suffix: 'assets',
     indicator: 'indicator',
     rolling_avg: 'rolling average',

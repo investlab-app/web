@@ -44,6 +44,8 @@ import { AndNodeSettings } from '../../nodes/logic-operator/and-node-settings';
 import { OrNodeUI } from '../../nodes/logic-operator/or-node';
 import { OrNodeSettings } from '../../nodes/logic-operator/or-node-settings';
 import { NotNodeSettings } from '../../nodes/logic-operator/not-node-settings';
+import { StaysTheSameNodeUI } from '../../nodes/predicate/stays-the-same-ui';
+import { StaysTheSameNodeSettings } from '../../nodes/predicate/stays-the-same-node-settings';
 import { NotNodeUI } from '../../nodes/logic-operator/not-node';
 import { StaysAboveBelowNodeUI } from '../../nodes/predicate/stays-above-below-node-ui';
 import { StaysAboveBelowNodeSettings } from '../../nodes/predicate/stays-above-below-node-settings';
@@ -244,6 +246,10 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.HasRisenFallen]: {
               component: HasRisenFallenNodeUI,
               settingsType: HasRisenFallenNodeSettings,
+            },
+            [CustomNodeTypes.StaysTheSame]: {
+              component: StaysTheSameNodeUI,
+              settingsType: StaysTheSameNodeSettings,
             },
           }}
         />
