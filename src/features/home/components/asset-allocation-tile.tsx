@@ -113,7 +113,7 @@ export const AssetAllocationTile = ({
                         </div>
                         <div className="text-muted-foreground text-sm">
                           {formatPercentage(value)}
-                          {'% — $'}
+                          {'% — '}
                           {toFixedLocalized(value, i18n.language)}
                         </div>
                       </div>

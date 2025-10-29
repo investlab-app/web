@@ -369,7 +369,7 @@ export type MostTradedItem = {
     buys: number;
     sells: number;
     gain: number;
-    gain_percentage: number;
+    gain_percentage: number | null;
 };
 
 export type NotificationConfig = {

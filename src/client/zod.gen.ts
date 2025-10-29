@@ -481,7 +481,10 @@ export const zMostTradedItem = z.object({
     buys: z.int(),
     sells: z.int(),
     gain: z.number(),
-    gain_percentage: z.number()
+    gain_percentage: z.union([
+        z.number(),
+        z.null()
+    ])
 });
 
 export const zNotificationConfig = z.object({

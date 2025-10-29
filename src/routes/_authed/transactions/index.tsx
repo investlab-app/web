@@ -21,7 +21,7 @@ function RouteComponent() {
   return (
     <AppFrame>
       <Tabs defaultValue="open">
-        <TabsList className='mb-2'>
+        <TabsList className="mb-2">
           <TabsTrigger value="open" className="cursor-pointer text-xs">
             <CircleDot className="opacity-80" />
             {t('transactions.tabs.open_positions')}

@@ -79,7 +79,9 @@ function usePositionsColumns() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => row.original.share_price,
+      cell: ({ row }) => (
+        <div className="text-end">{row.original.share_price}</div>
+      ),
     },
     {
       accessorKey: 'acquisition_price',
@@ -96,7 +98,11 @@ function usePositionsColumns() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => row.original.acquisition_price || 'N/A',
+      cell: ({ row }) => (
+        <div className="text-end">
+          {row.original.acquisition_price || 'N/A'}
+        </div>
+      ),
       enableHiding: true,
     }
   );
@@ -121,8 +127,22 @@ export function PositionsTableSkeleton() {
     <DataTable
       data={[]}
       columns={columns}
-      FetchingRowsSkeleton={<PositionsTableSkeleton />}
+      FetchingRowsSkeleton={<PositionsRowsSkeleton />}
       isPending={true}
     />
+  );
+}
+
+function PositionsRowsSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div key={index} className="animate-pulse grid grid-cols-4 gap-4 py-2">
+          <div className="h-4 bg-muted rounded col-span-2 w-3/4" />
+          <div className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+          <div className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+        </div>
+      ))}
+    </>
   );
 }

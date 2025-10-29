@@ -18,6 +18,16 @@ export function Positions({ type }: PositionsTableProps) {
     statisticsTransactionsHistoryListOptions({ query: { type } })
   );
 
+  // Debug: log the data to understand its structure
+  console.log(
+    'Positions data:',
+    data,
+    'Type:',
+    typeof data,
+    'Is array:',
+    Array.isArray(data)
+  );
+
   if (isError) {
     return (
       <ErrorMessage message="Error loading positions. Please try again later." />
@@ -31,6 +41,14 @@ export function Positions({ type }: PositionsTableProps) {
           <PositionSummaryWithTableSkeleton key={index} />
         ))}
       </div>
+    );
+  }
+
+  // Safety check: ensure data is an array
+  if (!Array.isArray(data)) {
+    console.error('Expected array but got:', typeof data, data);
+    return (
+      <ErrorMessage message="Invalid data format received from server. Please try again later." />
     );
   }
 

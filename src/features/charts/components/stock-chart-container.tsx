@@ -79,7 +79,14 @@ export function StockChartContainer({ ticker }: StockChartProps) {
     isSuccess,
     isError,
   } = useQuery({
-    queryKey: pricesBarsQueryKey({ query }),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: pricesBarsQueryKey({
+      query: {
+        ticker,
+        interval,
+        start_date: '',
+      },
+    }),
     queryFn: async () => {
       const bars = await pricesBars({ query });
 
@@ -96,7 +103,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         low: parseFloat(item.low),
       }));
     },
-    gcTime: 60_000, // 1 minute
+    staleTime: 60_000, // 1 minute
   });
 
   const { lastJsonMessage } = useWS([ticker]);

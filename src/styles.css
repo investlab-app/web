@@ -93,7 +93,7 @@ code {
 
   --card-hex: rgb(255, 255, 255);
   --card-foreground-hex: rgb(15, 15, 15);
-  --primary-hex: #8640ef;
+  --primary-hex: #6d48bf;
 }
 
 .dark {
@@ -101,18 +101,18 @@ code {
   --foreground: #efefef;
   --card: #0d0d0d;
   --card-foreground: oklch(0.9851 0 0);
-  --card-positive: #0B2615;
-  --card-positive-foreground: #00C94D;
-  --card-positive-border: #093B1B;
+  --card-positive: #0b2615;
+  --card-positive-foreground: #00c94d;
+  --card-positive-border: #093b1b;
   --card-negative: #300c14;
   --card-negative-foreground: #fe505c;
   --card-negative-border: #4d0b1a;
   --popover: oklch(0.2686 0 0);
   --popover-foreground: oklch(0.9851 0 0);
-  --primary: #562482;
+  --primary: #673492;
   --primary-foreground: oklch(0.9851 0 0);
   --secondary: oklch(0.2686 0 0);
-  --secondary-foreground: oklch(0.9851 0 0);
+  --secondary-foreground: oklch(0.7851 0 0);
   --muted: #181818;
   --muted-foreground: oklch(0.709 0 0);
   --accent: oklch(0.3715 0 0);
@@ -149,10 +149,10 @@ code {
     0px 1px 0px 0px hsl(0 0% 0% / 0), 0px 8px 10px -1px hsl(0 0% 0% / 0);
   --shadow-2xl: 0px 1px 0px 0px hsl(0 0% 0% / 0);
 
-  --green: #00C94D;
+  --green: #00c94d;
   --green-lighter: theme('colors.green.400');
   --green-darker: theme('colors.green.600');
-  --red: #F94E5A;
+  --red: #f94e5a;
   --red-lighter: theme('colors.red.400');
   --red-darker: theme('colors.red.600');
 
@@ -165,7 +165,7 @@ code {
 
   --card-hex: #0d0d0d;
   --card-foreground-hex: rgb(255, 255, 255);
-  --primary-hex: #562482;
+  --primary-hex: #673492;
 }
 
 @theme inline {

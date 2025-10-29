@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpDown } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -31,6 +31,24 @@ export const BuySell = ({ ticker }: BuySellProps) => {
   const [volume, setVolume] = useState(
     currentPrice && price ? price / currentPrice : undefined
   );
+
+  useEffect(() => {
+    if (currentPrice === undefined) return;
+    switch (mode) {
+      case 'price':
+        if (price === undefined) {
+          setPrice(currentPrice);
+        }
+        setVolume(price !== undefined ? price / currentPrice : 1);
+        break;
+      case 'volume':
+        if (volume === undefined) {
+          setVolume(1);
+        }
+        setPrice(volume !== undefined ? volume * currentPrice : 1);
+        break;
+    }
+  }, [currentPrice]);
 
   const handlePriceChange = (newPrice: number | undefined) => {
     if (newPrice === undefined || !currentPrice) return;
