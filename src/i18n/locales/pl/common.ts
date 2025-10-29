@@ -29,6 +29,8 @@ const plCommon = {
   cancel: 'Anuluj',
   expand: 'Rozwiń',
   collapse: 'Zwiń',
+  show_more: 'Pokaż więcej',
+  show_less: 'Pokaż mniej',
   intervals: {
     second: 'Sekunda',
     minute: 'Minuta',

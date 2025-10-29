@@ -15,6 +15,8 @@ const enInstruments = {
   instrument_details: 'Instrument details',
   see_details: 'See details',
   general_info: 'General info',
+  website: 'Website',
+  cik: 'CIK',
   no_description_available: 'No description available',
   history_empty:
     "History couldn't be found for ticker {{ticker}} for interval {{interval}}",

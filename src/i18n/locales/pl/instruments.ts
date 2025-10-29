@@ -8,6 +8,8 @@ const plInstruments = {
   market_capital: 'Kapitał rynkowy',
   exchange: 'Giełda',
   sector: 'Sektor',
+  cik: 'CIK',
+  website: 'Strona internetowa',
   symbol: 'Symbol',
   day_change: 'Dzienna zmiana',
   news: 'Wiadomości',

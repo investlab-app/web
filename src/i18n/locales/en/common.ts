@@ -29,6 +29,8 @@ const enCommon = {
   cancel: 'Cancel',
   expand: 'Expand',
   collapse: 'Collapse',
+  show_more: 'Show more',
+  show_less: 'Show less',
   intervals: {
     second: 'Second',
     minute: 'Minute',

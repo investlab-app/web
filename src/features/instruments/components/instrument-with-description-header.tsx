@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
-import { Button } from '@/features/shared/components/ui/button';
 import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
@@ -97,26 +96,34 @@ export function InstrumentHeader({
       </div>
       {instrumentInfo.description && (
         <div className="flex flex-col gap-2">
-          <div
-            className={`relative w-[50%] ${
-              !isExpanded ? 'max-h-14 overflow-hidden' : ''
-            }`}
-          >
-            <p className="text-sm text-muted-foreground">
-              {instrumentInfo.description}
-            </p>
-            {!isExpanded && (
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+          <div className="relative">
+            {isExpanded ? (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {instrumentInfo.description}
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  className="text-foreground hover:underline font-medium cursor-pointer ml-2"
+                >
+                  {t('common.show_less')}
+                </button>
+              </p>
+            ) : (
+              <div className="relative">
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                  {instrumentInfo.description}
+                </p>
+                <div className="absolute bottom-0 right-0 w-full h-6 flex justify-end items-center pointer-events-none">
+                  <div className="w-30 h-6 bg-gradient-to-r from-transparent to-background pointer-events-none" />
+                  <button
+                    onClick={() => setIsExpanded(true)}
+                    className="text-foreground hover:underline font-medium cursor-pointer text-sm bg-background px-1 pointer-events-auto py-0.5"
+                  >
+                    {t('common.show_more')}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="w-fit h-auto p-0 text-primary hover:text-primary hover:bg-transparent"
-          >
-            {isExpanded ? t('common.show_less') : t('common.show_more')}
-          </Button>
         </div>
       )}
     </div>
