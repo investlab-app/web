@@ -31,6 +31,7 @@ import { IsGreaterLessNode } from '../nodes/predicate/is-greater-less-node-setti
 import { HasRisenFallenNode } from '../nodes/predicate/has-risen-fallen-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
+import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
 import { useValidators } from '../hooks/use-validators';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
@@ -61,6 +62,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.StaysAboveBelow]: StaysAboveBelowNode,
   [CustomNodeTypes.HasRisenFallen]: HasRisenFallenNode,
   [CustomNodeTypes.IsGreaterLesser]: IsGreaterLessNode,
+  [CustomNodeTypes.StaysTheSame]: StaysTheSameNode,
 
   [CustomNodeTypes.PriceOf]: PriceOfNode,
   [CustomNodeTypes.MoneyAvailable]: MoneyAvailableNode,

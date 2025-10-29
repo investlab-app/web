@@ -61,6 +61,8 @@ const plFlows = {
     other: 'inny',
     of: '',
     over_duration: 'w czasie',
+    with_tolerance: 'z tolerancją',
+    the_same: 'na tym samym poziomie',
     price_change: 'zmiana ceny',
     stays: 'utrzymuje się',
     value: 'wartość',
