@@ -46,6 +46,7 @@ const enFlows = {
     multiply: 'multiply',
     divide: 'divide',
 
+    change_of_value: 'change of value',
     price_of: 'price of',
     number: 'number',
     price: 'price',
