@@ -49,6 +49,8 @@ import { StaysTheSameNodeSettings } from '../../nodes/predicate/stays-the-same-n
 import { NotNodeUI } from '../../nodes/logic-operator/not-node';
 import { StaysAboveBelowNodeUI } from '../../nodes/predicate/stays-above-below-node-ui';
 import { StaysAboveBelowNodeSettings } from '../../nodes/predicate/stays-above-below-node-settings';
+import { ChangeOverTimeNodeUI } from '../../nodes/math/change-over-time-node-ui';
+import { ChangeOverTimeNodeSettings } from '../../nodes/math/change-over-time-node-settings';
 import { IsGreaterLessNodeUI } from '../../nodes/predicate/is-greater-less-node-ui';
 import { IsGreaterLessNodeSettings } from '../../nodes/predicate/is-greater-less-node-settings';
 import { HasRisenFallenNodeUI } from '../../nodes/predicate/has-risen-fallen-node-ui';
@@ -97,7 +99,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
     <div className="py-2">
       {isDragging && <DragGhost type={type} />}
       <div>
-        <SidebarSection
+        {/* <SidebarSection
           title={t('flows.sidebar.logical')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
@@ -116,7 +118,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
               settingsType: NotNodeSettings,
             },
           }}
-        />
+        /> */}
         <SidebarSection
           title={t('flows.sidebar.triggers')}
           createNodeFunc={createAddNewNode}
@@ -226,6 +228,10 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
             [CustomNodeTypes.Divide]: {
               component: DivideNodeUI,
               settingsType: DivideNodeSettings,
+            },
+            [CustomNodeTypes.ChangeOverTime]: {
+              component: ChangeOverTimeNodeUI,
+              settingsType: ChangeOverTimeNodeSettings,
             },
           }}
         />

@@ -33,6 +33,7 @@ import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
 import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
+import { ChangeOverTime } from '../nodes/math/change-over-time-node-settings';
 import { useValidators } from '../hooks/use-validators';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
 import { SaveButton } from './execute-button';
@@ -55,6 +56,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Subtract]: SubtractNode,
   [CustomNodeTypes.Multiply]: MultiplyNode,
   [CustomNodeTypes.Divide]: DivideNode,
+  [CustomNodeTypes.ChangeOverTime]: ChangeOverTime,
 
   [CustomNodeTypes.FlowIf]: FlowNode,
   [CustomNodeTypes.NumbericFlowIf]: NumericFlowNode,
