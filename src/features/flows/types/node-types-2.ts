@@ -22,7 +22,7 @@ export enum CustomNodeTypes {
   // Logic Operator
   And = 'and',
   Not = 'not',
-  OccuredXTimes = 'occuredXTimes',
+  OccurredXTimes = 'occurredXTimes',
   Or = 'or',
 
   // Math
@@ -65,7 +65,7 @@ export const TypesMapping = {
 
   [CustomNodeTypes.And]: SuperNodeTypes.LogicOperator,
   [CustomNodeTypes.Not]: SuperNodeTypes.LogicOperator,
-  [CustomNodeTypes.OccuredXTimes]: SuperNodeTypes.LogicOperator,
+  [CustomNodeTypes.OccurredXTimes]: SuperNodeTypes.LogicOperator,
   [CustomNodeTypes.Or]: SuperNodeTypes.LogicOperator,
 
   [CustomNodeTypes.Add]: SuperNodeTypes.Math,

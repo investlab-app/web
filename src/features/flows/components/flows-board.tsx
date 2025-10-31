@@ -31,9 +31,11 @@ import { IsGreaterLessNode } from '../nodes/predicate/is-greater-less-node-setti
 import { HasRisenFallenNode } from '../nodes/predicate/has-risen-fallen-node-settings';
 import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
+import { SendNotificationNode } from '../nodes/action/send-notification-node-settings';
 import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-settings';
 import { DnDProvider } from '../utils/dnd-context';
 import { ChangeOverTime } from '../nodes/math/change-over-time-node-settings';
+import { OccurredXTimesNode } from '../nodes/logic-operator/occurred-x-times-node-settings';
 import { useValidators } from '../hooks/use-validators';
 import { DnDSidebar } from './sidebar/dnd-sidebar';
 import { SaveButton } from './execute-button';
@@ -51,6 +53,7 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
   [CustomNodeTypes.And]: AndNode,
   [CustomNodeTypes.Or]: OrNode,
+  [CustomNodeTypes.OccurredXTimes]: OccurredXTimesNode,
 
   [CustomNodeTypes.Add]: AddNode,
   [CustomNodeTypes.Subtract]: SubtractNode,
@@ -76,10 +79,12 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.PriceChanges]: PriceChangesNode,
   [CustomNodeTypes.CheckEvery]: CheckEveryNode,
   [CustomNodeTypes.InstrumentBoughtSold]: InstrumentBoughtSoldNode,
+
+  [CustomNodeTypes.SendNotification]: SendNotificationNode,
   [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
   [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
   [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
-  // [CustomNodeTypes.SendNotification]: SendNotificationNode,
+
 };
 
 export function FlowsBoard() {

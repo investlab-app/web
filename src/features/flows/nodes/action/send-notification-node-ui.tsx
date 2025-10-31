@@ -1,38 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { useNodeData } from '../../hooks/use-node-data';
 import { ActionNodeUI } from './action-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 
-export type SendNotificationNode = Node<
-  {
-    type: 'email' | 'push';
-  },
-  CustomNodeTypes.SendNotification
->;
-
-export const SendNotificationNode = (
-  props: NodeProps<SendNotificationNode>
-) => {
-  const { updateNodeData } = useNodeData<SendNotificationNode['data']>(
-    props.id
-  );
-
-  return (
-    <SendNotificationNodeUI
-      nodeId={props.id}
-      type={props.data.type}
-      onTypeChange={(val) => {
-        updateNodeData({ type: val });
-      }}
-    />
-  );
-};
 
 interface SendNotificationNodeUIProps {
-  type: 'email' | 'push';
+  type?: 'email' | 'push';
   onTypeChange?: (value: 'email' | 'push') => void;
 }
 
