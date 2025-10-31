@@ -46,6 +46,9 @@ const enFlows = {
     multiply: 'multiply',
     divide: 'divide',
 
+    occured: 'occurred',
+    times: 'times',
+    with_events: 'with events every',
     change_of_value: 'change of value',
     price_of: 'price of',
     number: 'number',

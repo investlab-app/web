@@ -46,6 +46,9 @@ const plFlows = {
     multiply: 'pomnóż',
     divide: 'podziel',
 
+    occured: 'wystąpiło',
+    times: 'razy',
+    with_events: 'z wydarzeniami co',
     change_of_value: 'zmiana wartości',
     number: 'liczba',
     price_of: 'cena',
