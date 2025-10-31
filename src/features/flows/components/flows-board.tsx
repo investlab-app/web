@@ -84,7 +84,6 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.BuySellAmount]: BuySellAmountNode,
   [CustomNodeTypes.BuySellPrice]: BuySellPriceNode,
   [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
-
 };
 
 export function FlowsBoard() {

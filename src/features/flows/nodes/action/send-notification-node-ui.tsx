@@ -3,7 +3,6 @@ import { ActionNodeUI } from './action-node-ui';
 import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 
-
 interface SendNotificationNodeUIProps {
   type?: 'email' | 'push';
   onTypeChange?: (value: 'email' | 'push') => void;
