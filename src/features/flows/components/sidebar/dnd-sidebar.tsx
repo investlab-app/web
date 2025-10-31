@@ -100,9 +100,9 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
   );
 
   return (
-    <div className="py-2">
+    <div className="h-full flex flex-col">
       {isDragging && <DragGhost type={type} />}
-      <div>
+      <div className="overflow-y-auto mb-5">
         <SidebarSection
           title={t('flows.sidebar.logical')}
           createNodeFunc={createAddNewNode}

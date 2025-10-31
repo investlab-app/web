@@ -9,6 +9,7 @@ const plCommon = {
   search: 'Wyszukaj...',
   dashboard: 'Strona główna',
   statistics: 'Statystyki',
+  strategies: 'Strategie',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   add: 'Dodaj',
@@ -53,6 +54,7 @@ const plCommon = {
       instruments: 'Przeglądaj instrumenty',
       transactions: 'Historia transakcji',
       statistics: 'Analiza wyników portfela',
+      strategies: 'Zautomatyzowane strategie inwestycyjne',
     },
     charts: {
       line_chart: 'Wykres liniowy',

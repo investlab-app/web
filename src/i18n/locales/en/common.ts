@@ -10,6 +10,7 @@ const enCommon = {
   dashboard: 'Dashboard',
   stocks: 'Stocks',
   statistics: 'Statistics',
+  strategies: 'Strategies',
   wallet: 'Wallet',
   add: 'Add',
   help: 'Help',
@@ -53,6 +54,7 @@ const enCommon = {
       instruments: 'Browse instruments',
       transactions: 'Trading history',
       statistics: 'Portfolio performance analysis',
+      strategies: 'Automated trading strategies',
     },
     charts: {
       line_chart: 'Line chart',
