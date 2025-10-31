@@ -20,7 +20,7 @@ export class SendNotificationNodeSettings extends ActionNodeSettings {
 
 export type SendNotificationNode = Node<
   {
-    settings: SendNotificationNodeSettings
+    settings: SendNotificationNodeSettings;
   },
   CustomNodeTypes.SendNotification
 >;
@@ -28,16 +28,14 @@ export type SendNotificationNode = Node<
 export const SendNotificationNode = (
   props: NodeProps<SendNotificationNode>
 ) => {
-  const { updateNodeData } = useNodeData(
-    props.id
-  );
+  const { updateNodeData } = useNodeData(props.id);
 
   return (
     <SendNotificationNodeUI
       nodeId={props.id}
       type={props.data.settings.type}
       onTypeChange={(val) => {
-       updateNodeData({
+        updateNodeData({
           settings: props.data.settings.getUpdated(val),
         });
       }}

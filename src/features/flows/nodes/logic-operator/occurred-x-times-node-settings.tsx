@@ -1,4 +1,3 @@
-
 import { useNodeData } from '../../hooks/use-node-data';
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { OccurredXTimesNodeUI } from './occurred-x-times-node-ui';
@@ -50,7 +49,7 @@ export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
   }
 
   getUpdatedTimeUnit(
-    timeUnit:  'hour' | 'day' | 'week' | 'month'
+    timeUnit: 'hour' | 'day' | 'week' | 'month'
   ): OccurredXTimesNodeSettings {
     this.timeUnit = timeUnit;
     return this;
@@ -62,7 +61,6 @@ export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
     this.intervalUnit = intervalUnit;
     return this;
   }
-
 }
 
 export type OccurredXTimesNode = Node<
@@ -73,24 +71,38 @@ export type OccurredXTimesNode = Node<
 >;
 
 export const OccurredXTimesNode = (props: NodeProps<OccurredXTimesNode>) => {
-   const { updateNodeData } = useNodeData(props.id);
-  return <OccurredXTimesNodeUI nodeId={props.id} 
-  times={props.data.settings.times}
-    interval={props.data.settings.interval}
-    period={props.data.settings.period}
-    timeUnit={props.data.settings.timeUnit}
-    intervalUnit={props.data.settings.intervalUnit}
-    onTimesChange={(val) => {
-     updateNodeData({ settings: props.data.settings.getUpdatedTimes(val!) });
-    }}
-    onIntervalChange={(val) => {
-      updateNodeData({ settings: props.data.settings.getUpdatedInterval(val!) });}}
-    onPeriodChange={(val) => {
-      updateNodeData({ settings: props.data.settings.getUpdatedPeriod(val!) });}}
-    onTimeUnitChange={(val) => {
-      updateNodeData({ settings: props.data.settings.getUpdatedTimeUnit(val) });}}
-    onIntervalUnitChange={(val) => {
-      updateNodeData({ settings: props.data.settings.getUpdatedIntervalUnit(val) });  
-    }}
-  />;
+  const { updateNodeData } = useNodeData(props.id);
+  return (
+    <OccurredXTimesNodeUI
+      nodeId={props.id}
+      times={props.data.settings.times}
+      interval={props.data.settings.interval}
+      period={props.data.settings.period}
+      timeUnit={props.data.settings.timeUnit}
+      intervalUnit={props.data.settings.intervalUnit}
+      onTimesChange={(val) => {
+        updateNodeData({ settings: props.data.settings.getUpdatedTimes(val!) });
+      }}
+      onIntervalChange={(val) => {
+        updateNodeData({
+          settings: props.data.settings.getUpdatedInterval(val!),
+        });
+      }}
+      onPeriodChange={(val) => {
+        updateNodeData({
+          settings: props.data.settings.getUpdatedPeriod(val!),
+        });
+      }}
+      onTimeUnitChange={(val) => {
+        updateNodeData({
+          settings: props.data.settings.getUpdatedTimeUnit(val),
+        });
+      }}
+      onIntervalUnitChange={(val) => {
+        updateNodeData({
+          settings: props.data.settings.getUpdatedIntervalUnit(val),
+        });
+      }}
+    />
+  );
 };

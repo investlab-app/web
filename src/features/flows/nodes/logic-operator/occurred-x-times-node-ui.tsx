@@ -12,7 +12,7 @@ interface OccurredXTimesNodeUIProps {
   interval?: number;
   period?: number;
   timeUnit?: 'hour' | 'day' | 'week' | 'month';
-  intervalUnit?: 'hour' | 'day' ;
+  intervalUnit?: 'hour' | 'day';
   onTimesChange?: (value: number | undefined) => void;
   onIntervalChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
@@ -25,12 +25,12 @@ export function OccurredXTimesNodeUI({
   interval,
   period,
   intervalUnit,
-    timeUnit,
-    onTimesChange,
+  timeUnit,
+  onTimesChange,
   onIntervalChange,
-    onPeriodChange,
-    onIntervalUnitChange,
-    onTimeUnitChange,
+  onPeriodChange,
+  onIntervalUnitChange,
+  onTimeUnitChange,
   nodeId,
   preview,
 }: OccurredXTimesNodeUIProps & CustomNodeProps) {
@@ -42,57 +42,59 @@ export function OccurredXTimesNodeUI({
 
       {onTimesChange ? (
         <NumberInput
-        className="w-25 mx-2"
-        min={0}
-        defaultValue={1}
-        stepper={1}
-        value={times}
-        onValueChange={(val) => {
-          
+          className="w-25 mx-2"
+          min={0}
+          defaultValue={1}
+          stepper={1}
+          value={times}
+          onValueChange={(val) => {
             onTimesChange(val);
-
-        }}
-        decimalScale={0}
+          }}
+          decimalScale={0}
         />
-      ) : <div className="mx-1">X</div>}
-      <div>{t('flows.nodes.times')} {t('flows.nodes.over_duration')}</div>
+      ) : (
+        <div className="mx-1">X</div>
+      )}
+      <div>
+        {t('flows.nodes.times')} {t('flows.nodes.over_duration')}
+      </div>
 
       {onPeriodChange && (
         <NumberInput
-        className="w-25 mx-2"
-        min={1}
-        max={getMaxValue(timeUnit!)}
-        defaultValue={1}
-        stepper={1}
-        value={period}
-        onValueChange={(val) => {
-          const maxValue = getMaxValue(timeUnit!);
-          if (val && val > maxValue) {
-            onPeriodChange(maxValue);
-          } else {
-            onPeriodChange(val);
-          }
-        }}
-        decimalScale={0}
+          className="w-25 mx-2"
+          min={1}
+          max={getMaxValue(timeUnit!)}
+          defaultValue={1}
+          stepper={1}
+          value={period}
+          onValueChange={(val) => {
+            const maxValue = getMaxValue(timeUnit!);
+            if (val && val > maxValue) {
+              onPeriodChange(maxValue);
+            } else {
+              onPeriodChange(val);
+            }
+          }}
+          decimalScale={0}
         />
       )}
       {onTimeUnitChange && (
         <select
-        className="px-2 py-1 border rounded"
-        value={timeUnit}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          onTimeUnitChange(e.target.value as 'hour' | 'day' | 'week' | 'month')
-        }
+          className="px-2 py-1 border rounded"
+          value={timeUnit}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            onTimeUnitChange(
+              e.target.value as 'hour' | 'day' | 'week' | 'month'
+            )
+          }
         >
           <option value="hour">{t('flows.nodes.hour')}</option>
           <option value="day">{t('flows.nodes.day')}</option>
           <option value="week">{t('flows.nodes.week')}</option>
-            <option value="month">{t('flows.nodes.month')}</option>
+          <option value="month">{t('flows.nodes.month')}</option>
         </select>
       )}
-     {!preview && (
-        <div className="mx-2">{t('flows.nodes.with_events')}</div>
-     )}
+      {!preview && <div className="mx-2">{t('flows.nodes.with_events')}</div>}
       {onIntervalChange && (
         <NumberInput
           className="w-25"
@@ -117,7 +119,7 @@ export function OccurredXTimesNodeUI({
           className="px-2 py-1 ml-2 border rounded"
           value={intervalUnit}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onIntervalUnitChange(e.target.value as 'hour' | 'day'  )
+            onIntervalUnitChange(e.target.value as 'hour' | 'day')
           }
         >
           <option value="hour">{t('flows.nodes.hour')}</option>
@@ -125,18 +127,18 @@ export function OccurredXTimesNodeUI({
         </select>
       )}
 
-        <ValidatedHandle
-              nodeId={nodeId}
-              type="target"
-              position={Position.Left}
-              id="out"
-            />
-            <ValidatedHandle
-              nodeId={nodeId}
-              type="source"
-              position={Position.Right}
-              id="in"
-            />
+      <ValidatedHandle
+        nodeId={nodeId}
+        type="target"
+        position={Position.Left}
+        id="out"
+      />
+      <ValidatedHandle
+        nodeId={nodeId}
+        type="source"
+        position={Position.Right}
+        id="in"
+      />
     </NodeUI>
   );
 }
