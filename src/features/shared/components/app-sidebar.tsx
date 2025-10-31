@@ -6,8 +6,8 @@ import {
   History,
   LayoutDashboardIcon,
   List,
-  Network,
   PieChart,
+  Flower,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -48,12 +48,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         tooltip: t('common.tooltips.navigation.dashboard'),
       },
       {
-        title: t('common.flows'),
-        to: '/flows',
-        icon: Network,
-        tooltip: t('common.tooltips.navigation.flows'),
-      },
-      {
         title: t('common.stocks'),
         to: '/instruments',
         icon: List,
@@ -70,6 +64,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         to: '/statistics',
         icon: PieChart,
         tooltip: t('common.tooltips.navigation.statistics'),
+      },
+      {
+        title: t('common.strategies'),
+        to: '/strategies',
+        icon: Flower,
+        tooltip: t(
+          'common.tooltips.navigation.strategies',
+          'See and edit your saved automated strategies'
+        ),
       },
     ],
     navSecondary: [

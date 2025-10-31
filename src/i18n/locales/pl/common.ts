@@ -10,7 +10,7 @@ const plCommon = {
   search: 'Wyszukaj...',
   dashboard: 'Strona główna',
   statistics: 'Statystyki',
-  flows: 'Strategie',
+  strategies: 'Strategie',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   watch: 'Obserwuj',
@@ -62,11 +62,19 @@ const plCommon = {
   faq: 'FAQ',
   tooltips: {
     navigation: {
+<<<<<<< HEAD
       dashboard: 'Strona główna',
       flows: 'Strategie',
       instruments: 'Instrumenty',
       transactions: 'Transakcje',
       statistics: 'Statystyki',
+=======
+      dashboard: 'Przegląd portfela i konta',
+      instruments: 'Przeglądaj instrumenty',
+      transactions: 'Historia transakcji',
+      statistics: 'Analiza wyników portfela',
+      strategies: 'Zautomatyzowane strategie inwestycyjne',
+>>>>>>> 4d7a061 (feat: add route in ui)
     },
     charts: {
       line_chart: 'Wykres liniowy',

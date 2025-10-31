@@ -108,7 +108,7 @@ export function FlowsBoard() {
 
   return (
     <DnDProvider>
-      <div className="flex w-full h-[700px]">
+      <div className="flex w-full h-full">
         <div className="flex-1">
           <ReactFlow
             colorMode={theme}
@@ -133,7 +133,7 @@ export function FlowsBoard() {
             <Background />
           </ReactFlow>
         </div>
-        <div className="w-70 bg-(var[--muted]) p-4">
+        <div className="h-full w-70 p-4 overflow-y-hidden">
           <SaveButton onSave={onSave} />
           {rfInstance && (
             <DnDSidebar
