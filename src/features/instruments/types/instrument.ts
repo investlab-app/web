@@ -10,5 +10,6 @@ export const instrument = z.object({
   logo: z.string().nullable(),
   icon: z.string().nullable(),
   is_watched: z.boolean().default(false),
+  marketCap: z.number().nullable().optional(),
 });
 export type Instrument = z.infer<typeof instrument>;

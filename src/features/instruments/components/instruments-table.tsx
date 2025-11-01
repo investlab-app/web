@@ -262,6 +262,38 @@ export const InstrumentTable = ({
       ),
       enableSorting: false,
     },
+    {
+      accessorKey: 'marketCap',
+      header: () => (
+        <div className="flex items-center gap-1 justify-end not-sm:hidden">
+          <span className="text-right">{t('instruments.market_cap')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.market_cap',
+                  'Total market capitalization of the company'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="text-right not-sm:hidden">
+          {row.original.marketCap === null ||
+          row.original.marketCap === undefined ? (
+            <div className="text-muted-foreground">N/A</div>
+          ) : (
+            formatNumberWithSuffix(row.original.marketCap, i18n.language, 1)
+          )}
+        </div>
+      ),
+      enableSorting: false,
+    },
   ];
 
   return (
@@ -290,13 +322,24 @@ function InstrumentTableBodySkeleton({ rowCount = 5 }) {
         <Skeleton className="h-4 w-32" />
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-20" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-20" />
+        </div>
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-16" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-16" />
+        </div>
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-16" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </TableCell>
+      <TableCell className="h-10 not-sm:hidden">
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-24" />
+        </div>
       </TableCell>
     </TableRow>
   ));

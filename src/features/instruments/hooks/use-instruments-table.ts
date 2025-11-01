@@ -80,6 +80,9 @@ export function useInstrumentsTable({
           logo: instrument.logo ?? null,
           icon: instrument.icon ?? null,
           is_watched: instrument.is_watched,
+          marketCap: instrument.market_cap
+            ? Number(instrument.market_cap)
+            : null,
         } as Instrument;
         return acc;
       },
