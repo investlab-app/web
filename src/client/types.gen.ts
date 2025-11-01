@@ -615,6 +615,19 @@ export type VapidPublicKey = {
 };
 
 /**
+ * Serializer for watched tickers with icon and ticker information.
+ */
+export type WatchedTicker = {
+    /**
+     * Ticker Symbol
+     */
+    ticker: string;
+    name: string;
+    icon?: string | null;
+    logo?: string | null;
+};
+
+/**
  * Serializer for AccountValueSnapshot model.
  */
 export type AccountValueSnapshotDailyWritable = {
@@ -1014,6 +1027,19 @@ export type InvestorsMeWatchedInstrumentsToggleCreateResponses = {
 };
 
 export type InvestorsMeWatchedInstrumentsToggleCreateResponse = InvestorsMeWatchedInstrumentsToggleCreateResponses[keyof InvestorsMeWatchedInstrumentsToggleCreateResponses];
+
+export type InvestorsMeWatchedTickersListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/watched-tickers/';
+};
+
+export type InvestorsMeWatchedTickersListResponses = {
+    200: Array<WatchedTicker>;
+};
+
+export type InvestorsMeWatchedTickersListResponse = InvestorsMeWatchedTickersListResponses[keyof InvestorsMeWatchedTickersListResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;

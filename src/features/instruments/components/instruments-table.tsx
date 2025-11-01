@@ -85,7 +85,7 @@ export const InstrumentTable = ({
                     toggleWatched(row.original.id);
                   }}
                 />
-                <StarOff
+                <Star
                   className="hidden group-hover/heart:inline-flex cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();

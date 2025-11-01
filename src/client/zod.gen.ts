@@ -764,6 +764,22 @@ export const zVapidPublicKey = z.object({
 });
 
 /**
+ * Serializer for watched tickers with icon and ticker information.
+ */
+export const zWatchedTicker = z.object({
+    ticker: z.string().max(20),
+    name: z.string().max(255),
+    icon: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    logo: z.optional(z.union([
+        z.url(),
+        z.null()
+    ]))
+});
+
+/**
  * Serializer for AccountValueSnapshot model.
  */
 export const zAccountValueSnapshotDailyWritable = z.object({
@@ -1059,6 +1075,14 @@ export const zInvestorsMeWatchedInstrumentsToggleCreateData = z.object({
 });
 
 export const zInvestorsMeWatchedInstrumentsToggleCreateResponse = zToggleWatchedInstrument;
+
+export const zInvestorsMeWatchedTickersListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeWatchedTickersListResponse = z.array(zWatchedTicker);
 
 export const zMarketsHolidaysListData = z.object({
     body: z.optional(z.never()),

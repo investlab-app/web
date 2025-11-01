@@ -11,14 +11,14 @@ import {
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { investorsMeRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
 
 export function NavWatchedTickers() {
   const { t } = useTranslation();
 
-  const { data: investor, isLoading } = useQuery(investorsMeRetrieveOptions());
-
-  const watchedTickers = investor?.watching_instruments || [];
+  const { data: watchedTickers = [], isLoading } = useQuery(
+    investorsMeWatchedTickersListOptions()
+  );
 
   if (isLoading) {
     return (
@@ -54,14 +54,21 @@ export function NavWatchedTickers() {
             </div>
           ) : (
             watchedTickers.map((ticker) => (
-              <SidebarMenuItem key={ticker}>
-                <SidebarMenuButton asChild>
+              <SidebarMenuItem key={ticker.ticker}>
+                <SidebarMenuButton asChild tooltip={ticker.name}>
                   <Link
                     to="/instruments/$instrumentId"
-                    params={{ instrumentId: ticker }}
+                    params={{ instrumentId: ticker.ticker }}
                     className="text-sm"
                   >
-                    <span>{ticker}</span>
+                    {ticker.icon && (
+                      <img
+                        src={ticker.icon}
+                        alt={ticker.ticker}
+                        className="h-4 w-4 rounded-full"
+                      />
+                    )}
+                    <span>{ticker.ticker}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
