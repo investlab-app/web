@@ -211,9 +211,9 @@ export function useLiveChartUpdate({
     } else {
       const chartInstance = chartRef.current.getEchartsInstance();
       const currentOption = chartInstance.getOption();
-      // if (!currentOption) {
-      //   return;
-      // }
+      if (!currentOption || !currentOption.series || !currentOption.xAxis) {
+        return;
+      }
 
       const seriesData =
         (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
