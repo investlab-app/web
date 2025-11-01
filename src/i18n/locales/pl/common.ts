@@ -1,6 +1,7 @@
 const plCommon = {
   app_name: 'InvestLab',
   landing_text: 'Witaj w aplikacji InvestLab',
+  not_found: '404 - Nie znaleziono',
   page_doesnt_exist: 'Ta strona nie istnieje.',
   back_to_home: 'Wróć do głównej',
   go_back: 'Wróć',
