@@ -1,13 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import {
-  ArrowDown,
-  ArrowUp,
-  Heart,
-  HeartCrack,
-  HeartPlus,
-  Info,
-} from 'lucide-react';
+import { ArrowDown, ArrowUp, Heart, HeartPlus, Info } from 'lucide-react';
 import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
+import { FilledHeartCrack } from './filled-heart-crack';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -92,12 +86,13 @@ export const InstrumentTable = ({
                     toggleWatched(row.original.id);
                   }}
                 />
-                <HeartCrack
+                <FilledHeartCrack
                   className="hidden group-hover/heart:inline-flex cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWatched(row.original.id);
                   }}
+                  style={{ color: cssVar('--foreground') }}
                 />
               </>
             )}
