@@ -1,10 +1,12 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
@@ -14,7 +16,7 @@ interface InstrumentWithDescriptionHeaderProps {
 export function InstrumentHeader({
   ticker: instrumentId,
 }: InstrumentWithDescriptionHeaderProps) {
-  const { data: instrumentInfo } = useSuspenseQuery(
+  const { data: instrumentInfo, isPending, isError, error } = useQuery(
     instrumentsDetailRetrieveOptions({
       query: {
         ticker: instrumentId,
@@ -24,6 +26,30 @@ export function InstrumentHeader({
 
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
+
+  if (isPending) {
+    return <InstrumentHeaderSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <ErrorMessage
+        message={t('common.error_loading_instrument', {
+          defaultValue: `Failed to load instrument: ${error?.message || 'Unknown error'}`
+        })}
+      />
+    );
+  }
+
+  if (!instrumentInfo) {
+    return (
+      <ErrorMessage
+        message={t('common.instrument_not_found', {
+          defaultValue: 'Instrument not found'
+        })}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
@@ -126,6 +152,35 @@ export function InstrumentHeader({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function InstrumentHeaderSkeleton() {
+  return (
+    <div className="flex flex-col gap-2 sm:gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="flex-shrink-0">
+          <Skeleton className="h-24 w-24 rounded-full" />
+        </div>
+        <div className="flex flex-col gap-3 flex-1">
+          <div className="flex gap-2 flex-col items-start sm:gap-4 sm:flex-row">
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row flex-wrap gap-2">
+              <Skeleton className="h-6 w-32" />
+              <Skeleton className="h-6 w-40" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+      </div>
     </div>
   );
 }
