@@ -45,9 +45,9 @@ export function useLiveChartUpdate({
     if (!currentOption) return;
 
     const seriesData =
-      (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
+      (currentOption?.series as Array<EChartSeries>)[0]?.data ?? [];
     const xAxisData =
-      (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
+      (currentOption?.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
     // Update or initialize last point
     if (seriesData.length > 0 && xAxisData.length > 0) {
