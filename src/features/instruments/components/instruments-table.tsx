@@ -288,7 +288,7 @@ export const InstrumentTable = ({
           row.original.marketCap === undefined ? (
             <div className="text-muted-foreground">N/A</div>
           ) : (
-            formatNumberWithSuffix(row.original.marketCap, i18n.language, 1)
+            toFixedLocalized(row.original.marketCap, i18n.language, 0, 'USD')
           )}
         </div>
       ),
