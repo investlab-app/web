@@ -71,7 +71,7 @@ export const InstrumentTable = ({
         </div>
       ),
       cell: ({ row }) => (
-        <div className="group flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Heart
             className="hidden group-hover:inline-flex"
             fill={
@@ -81,7 +81,7 @@ export const InstrumentTable = ({
             }
           />
           <InstrumentIconCircle
-            className="group-hover:hidden inline-flex"
+            className="inline-flex group-hover:hidden"
             symbol={row.original.symbol}
             name={row.original.name}
             icon={row.original.icon}
