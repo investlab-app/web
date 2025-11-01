@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Star } from 'lucide-react';
 import { useInstrumentsTable } from '../hooks/use-instruments-table';
 import { InstrumentTable } from './instruments-table';
 import type { Instrument } from '../types/instrument';
 import type { SortingState } from '@tanstack/react-table';
 import { Button } from '@/features/shared/components/ui/button';
 import SearchInput from '@/features/shared/components/ui/search-input';
-import { Badge } from '@/features/shared/components/ui/badge';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
-import { X } from 'lucide-react';
 
 type InstrumentsTableContainerProps = {
   setInstrument: (instrument: Instrument) => void;
@@ -27,6 +26,7 @@ export const InstrumentsTableContainer = ({
   const [ordering, setOrdering] = useState<SortingState>([
     { id: 'symbol', desc: false },
   ]);
+  const [showWatchedOnly, setShowWatchedOnly] = useState(false);
 
   const {
     data,
@@ -48,16 +48,6 @@ export const InstrumentsTableContainer = ({
     setOpenSheet(true);
   };
 
-  const getSortLabel = () => {
-    if (!ordering || ordering.length === 0) return null;
-    const sortField = ordering[0].id;
-    const sortDirection = ordering[0].desc ? 'desc' : 'asc';
-    return `${sortField} (${sortDirection})`;
-  };
-
-  const hasActiveFilters = search || (ordering && ordering.length > 0);
-  const sortLabel = getSortLabel();
-
   return (
     <div className="flex flex-col gap-2">
       <SearchInput
@@ -67,40 +57,24 @@ export const InstrumentsTableContainer = ({
         placeholder={t('common.search')}
       />
 
-      {hasActiveFilters && (
-        <div className="flex flex-wrap gap-2">
-          {search && (
-            <Badge variant="secondary" className="gap-2">
-              <span>
-                {t('common.search')}: {search}
-              </span>
-              <button
-                onClick={() => setSearch('')}
-                className="hover:opacity-70 transition-opacity"
-              >
-                <X className="size-3" />
-              </button>
-            </Badge>
-          )}
-          {sortLabel && (
-            <Badge variant="secondary" className="gap-2">
-              <span>
-                {t('common.sorting')}: {sortLabel}
-              </span>
-              <button
-                onClick={() => setOrdering([{ id: 'symbol', desc: false }])}
-                className="hover:opacity-70 transition-opacity"
-              >
-                <X className="size-3" />
-              </button>
-            </Badge>
-          )}
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={() => setShowWatchedOnly(!showWatchedOnly)}
+          variant={showWatchedOnly ? 'default' : 'secondary'}
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Star
+            className="size-4"
+            fill={showWatchedOnly ? 'currentColor' : 'none'}
+          />
+          <span>{t('common.watched')}</span>
+        </Button>
+      </div>
 
       <ScrollableHorizontally>
         <InstrumentTable
-          data={data}
+          data={showWatchedOnly ? data.filter((i) => i.is_watched) : data}
           onInstrumentPressed={handleInstrumentPressed}
           rowCount={pageSize}
           sorting={ordering}
