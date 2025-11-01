@@ -71,8 +71,9 @@ export const InstrumentTable = ({
         </div>
       ),
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
+        <div className="group flex items-center gap-2">
           <Heart
+            className="hidden group-hover:inline-flex"
             fill={
               row.original.symbol === 'AMZN'
                 ? cssVar('--foreground')
@@ -80,6 +81,7 @@ export const InstrumentTable = ({
             }
           />
           <InstrumentIconCircle
+            className="group-hover:hidden inline-flex"
             symbol={row.original.symbol}
             name={row.original.name}
             icon={row.original.icon}
