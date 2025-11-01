@@ -1,13 +1,13 @@
 import { cn } from '../utils/styles';
 import { LanguageToggle } from './language-toggle';
 import { BreadcrumbNav } from './breadcrumb-nav';
+import { MarketStatusLED } from './market-status-led';
 import { Separator } from '@/features/shared/components/ui/separator';
 import {
   SidebarTrigger,
   useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 import { ThemeToggle } from '@/features/shared/components/mode-toggle';
-import { MarketStatusLED } from './market-status-led';
 
 interface SiteHeaderProps {
   className?: string;

@@ -17,8 +17,8 @@ export function MarketStatusLED() {
   // Market is open if it's "open" and not after hours or early hours
   const isMarketOpen =
     marketStatus?.market === 'open' &&
-    !marketStatus?.after_hours &&
-    !marketStatus?.early_hours;
+    !marketStatus.after_hours &&
+    !marketStatus.early_hours;
 
   // Get user's local timezone info
   const getLocalTimeInfo = (utcDate: Date) => {

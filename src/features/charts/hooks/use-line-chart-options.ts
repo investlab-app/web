@@ -88,6 +88,28 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
         color: useCssVar('--color-primary-hex'),
         width: 1,
       },
+      markPoint: {
+        symbol: 'circle',
+        symbolKeepAspect: true,
+        symbolOffset: [0, 0],
+        label: { show: false },
+        data:
+          seriesData.length > 0 && dates.length > 0
+            ? [
+                {
+                  xAxis: dates[dates.length - 1],
+                  yAxis: seriesData[seriesData.length - 1],
+                  itemStyle: {
+                    color: useCssVar('--color-primary-hex'),
+                    borderWidth: 0,
+                  },
+                  symbol: 'circle',
+                  symbolSize: 6,
+                },
+              ]
+            : [],
+        emphasis: { disabled: true },
+      },
     },
   ];
 

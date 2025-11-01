@@ -25,7 +25,7 @@ export function StockChartLine({
 
   useLiveChartUpdate({
     chartRef,
-    value: liveUpdatePoint?.close,
+    value: 203,
     date: liveUpdatePoint?.date,
   });
 

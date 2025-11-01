@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import type ReactECharts from 'echarts-for-react';
+import { useCssVar } from '@/features/shared/utils/styles';
 
 interface EChartSeries {
   data: Array<number | [number, number, number, number]>;
@@ -18,10 +19,11 @@ interface UseLiveChartUpdateProps {
 
 /**
  * Provides live updates to an ECharts line chart and renders a radiating
- * ring animation on the latest point:
- * - Rings are true circles (symbol: 'circle')
- * - Rings are stroke-only (transparent fill, colored border)
- * - Rings are anchored using xAxis/yAxis coordinates (no 'pin' effect)
+ * filled-circle animation on the latest point:
+ * - Circles are true circles (symbol: 'circle')
+ * - Circles are filled and expand while fading out
+ * - Circles are anchored using xAxis/yAxis coordinates (no 'pin' effect)
+ * - Center dot remains visible permanently
  */
 export function useLiveChartUpdate({
   chartRef,
@@ -29,7 +31,9 @@ export function useLiveChartUpdate({
   date,
 }: UseLiveChartUpdateProps) {
   const animationFrameRef = useRef<number | null>(null);
-  const cleanupTimeoutRef = useRef<number | null>(null);
+
+  // Get primary color once at the component level
+  const primaryColor = useCssVar('--color-primary-hex');
 
   useEffect(() => {
     if (value === undefined || !date || !chartRef.current) return;
@@ -61,17 +65,13 @@ export function useLiveChartUpdate({
       xAxis: { data: xAxisData },
     });
 
-    // Cancel any existing animations/timeouts
+    // Cancel any existing animations
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
-    if (cleanupTimeoutRef.current) {
-      clearTimeout(cleanupTimeoutRef.current);
-      cleanupTimeoutRef.current = null;
-    }
 
-    // Resolve axis coordinates for anchoring the rings
+    // Resolve axis coordinates for anchoring the circles
     const xValue = xAxisData[xAxisData.length - 1]; // date string on x-axis
     // In our current usage (line chart), value is a number (close price).
     // If an array is provided (OHLC), fallback to the second element or first if missing.
@@ -83,36 +83,66 @@ export function useLiveChartUpdate({
           : (undefined as unknown as number);
 
     // Animation config
-    const durationMs = 800;
+    const expandDurationMs = 800;
     const startTs = Date.now();
+    const centerDotSize = 6;
+
+    // Set initial mark point with center dot visible
+    chartInstance.setOption({
+      series: [
+        {
+          markPoint: {
+            symbol: 'circle',
+            symbolKeepAspect: true,
+            symbolOffset: [0, 0],
+            label: { show: false },
+            data: [
+              {
+                xAxis: xValue,
+                yAxis: yValue,
+                itemStyle: {
+                  color: primaryColor,
+                  borderWidth: 0,
+                },
+                symbol: 'circle' as const,
+                symbolSize: [centerDotSize, centerDotSize] as [number, number],
+                symbolOffset: [0, 0] as [number, number],
+              },
+            ],
+            emphasis: { disabled: true },
+          },
+        },
+      ],
+    });
 
     const animate = () => {
       const elapsed = Date.now() - startTs;
-      const progress = Math.min(elapsed / durationMs, 1);
+      const expandProgress = Math.min(elapsed / expandDurationMs, 1);
 
-      // Center dot (solid)
-      const centerDotSize = 6;
-
-      // Two stroke-only rings that expand and fade
-      // Sizes expand from base+delta; border opacity fades out over time
-      const rings = [
-        { maxGrow: 26, opacityFactor: 1.0, borderWidth: 2 },
-        { maxGrow: 18, opacityFactor: 0.7, borderWidth: 2 },
+      // Three filled circles that expand and fade
+      const discs = [
+        { maxGrow: 30, opacityFactor: 1.2 },
+        { maxGrow: 22, opacityFactor: 0.9 },
+        { maxGrow: 14, opacityFactor: 0.6 },
       ];
 
-      const ringDataItems = rings.map((ring) => {
-        const size = centerDotSize + ring.maxGrow * progress;
-        const opacity = Math.max(0, 1 - progress * ring.opacityFactor);
+      const discDataItems = discs.map((disc) => {
+        const size = centerDotSize + disc.maxGrow * expandProgress;
+        const opacity = Math.max(0, 1 - expandProgress * disc.opacityFactor);
+
+        // Convert opacity (0-1) to hex alpha
+        const hexAlpha = Math.round(opacity * 255)
+          .toString(16)
+          .padStart(2, '0');
 
         return {
           // Use axis-based positioning to avoid "pin" effects and ensure true center anchoring
           xAxis: xValue,
           yAxis: yValue,
-          // Stroke-only circle
+          // Filled circle with fading opacity
           itemStyle: {
-            color: 'rgba(0,0,0,0)', // transparent fill
-            borderColor: `rgba(34, 197, 94, ${opacity})`, // green-500 stroke
-            borderWidth: ring.borderWidth,
+            color: `${primaryColor}${hexAlpha}`, // primary color with dynamic opacity
+            borderWidth: 0,
           },
           symbolSize: [size, size] as [number, number],
           // Ensure circle symbol, not pin
@@ -123,12 +153,12 @@ export function useLiveChartUpdate({
       });
 
       const markPointData = [
-        // Solid center dot
+        // Solid center dot (always visible)
         {
           xAxis: xValue,
           yAxis: yValue,
           itemStyle: {
-            color: '#22c55e', // green-500
+            color: primaryColor,
             borderWidth: 0,
           },
           symbol: 'circle' as const,
@@ -136,8 +166,8 @@ export function useLiveChartUpdate({
           // Force anchor at exact center
           symbolOffset: [0, 0] as [number, number],
         },
-        // Expanding stroke-only rings
-        ...ringDataItems,
+        // Expanding filled circles (only during expand phase)
+        ...(expandProgress < 1 ? discDataItems : []),
       ];
 
       chartInstance.setOption({
@@ -157,19 +187,8 @@ export function useLiveChartUpdate({
         ],
       });
 
-      if (progress < 1) {
+      if (expandProgress < 1) {
         animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        // Clean up effect a moment after finishing
-        cleanupTimeoutRef.current = window.setTimeout(() => {
-          chartInstance.setOption({
-            series: [
-              {
-                markPoint: { data: [] },
-              },
-            ],
-          });
-        }, 100);
       }
     };
 
@@ -180,10 +199,65 @@ export function useLiveChartUpdate({
         cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
-      if (cleanupTimeoutRef.current) {
-        clearTimeout(cleanupTimeoutRef.current);
-        cleanupTimeoutRef.current = null;
-      }
     };
-  }, [value, date, chartRef]);
+  }, [value, date, chartRef, primaryColor]);
+
+  // Ensure center dot is always visible even when no live update is happening
+  useEffect(() => {
+    if (!chartRef.current) return;
+    // If we have live update values, animation effect handles the dot
+    if (value !== undefined && !!date) return;
+
+    const chartInstance = chartRef.current.getEchartsInstance();
+    const currentOption = chartInstance.getOption();
+    if (!currentOption) return;
+
+    const seriesData =
+      ((currentOption.series as Array<EChartSeries>)?.[0]
+        ?.data as EChartSeries['data']) ?? [];
+    const xAxisData =
+      ((currentOption.xAxis as Array<EChartXAxis>)?.[0]
+        ?.data as EChartXAxis['data']) ?? [];
+
+    const lastIndex = Math.min(seriesData.length, xAxisData.length) - 1;
+    if (lastIndex < 0) return;
+
+    const lastY =
+      typeof seriesData[lastIndex] === 'number'
+        ? (seriesData[lastIndex] as number)
+        : Array.isArray(seriesData[lastIndex])
+          ? ((seriesData[lastIndex] as [number, number, number, number])[1] ??
+            (seriesData[lastIndex] as [number, number, number, number])[0])
+          : undefined;
+
+    const lastX = xAxisData[lastIndex];
+    if (lastY === undefined || !lastX) return;
+
+    chartInstance.setOption({
+      series: [
+        {
+          markPoint: {
+            symbol: 'circle',
+            symbolKeepAspect: true,
+            symbolOffset: [0, 0],
+            label: { show: false },
+            data: [
+              {
+                xAxis: lastX,
+                yAxis: lastY as number,
+                itemStyle: {
+                  color: primaryColor,
+                  borderWidth: 0,
+                },
+                symbol: 'circle',
+                symbolSize: [6, 6],
+                symbolOffset: [0, 0],
+              },
+            ],
+            emphasis: { disabled: true },
+          },
+        },
+      ],
+    });
+  }, [chartRef, value, date, primaryColor]);
 }
