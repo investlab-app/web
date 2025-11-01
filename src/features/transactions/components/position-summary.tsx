@@ -48,7 +48,7 @@ export function PositionSummary({
 
   return (
     <div className={className}>
-      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted border-b border-muted-foreground/10">
+      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted">
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button
             variant="ghost"
@@ -129,9 +129,14 @@ export function PositionSummary({
   );
 }
 
-export function PositionSummarySkeleton() {
+export function PositionSummarySkeleton({ className }: { className?: string }) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted border-b border-muted-foreground/10">
+    <div
+      className={cn(
+        'flex flex-col sm:flex-row justify-between gap-4 bg-muted border-b border-muted-foreground/10',
+        className
+      )}
+    >
       <div className="flex flex-col gap-4 sm:flex-row">
         <Button
           variant="ghost"

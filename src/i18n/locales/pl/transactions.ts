@@ -6,6 +6,7 @@ const plTransactions = {
   table: {
     headers: {
       name: 'Nazwa',
+      transaction: 'Transakcja',
       quantity: 'Ilość',
       share_price: 'Cena akcji',
       acquisition_price: 'Cena nabycia',
@@ -36,6 +37,7 @@ const plTransactions = {
   no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
   tooltips: {
     name: 'Nazwa instrumentu finansowego',
+    transaction: 'Data i typ transakcji (kupno lub sprzedaż)',
     quantity: 'Ilość akcji w pozycji',
     share_price: 'Cena za akcję w czasie transakcji',
     acquisition_price:

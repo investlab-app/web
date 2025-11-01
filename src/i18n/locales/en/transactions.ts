@@ -6,6 +6,7 @@ const enTransactions = {
   table: {
     headers: {
       name: 'Name',
+      transaction: 'Transaction',
       quantity: 'Quantity',
       share_price: 'Share Price',
       acquisition_price: 'Acquisition Price',
@@ -33,6 +34,7 @@ const enTransactions = {
   no_open_positions: 'You have no open positions for this instrument.',
   tooltips: {
     name: 'Name of the financial instrument',
+    transaction: 'Date and type of transaction (buy or sell)',
     quantity: 'Number of shares held in the position',
     share_price: 'Price per share at the time of the transaction',
     acquisition_price: 'Price of acquisition (quantity × share price + fees)',

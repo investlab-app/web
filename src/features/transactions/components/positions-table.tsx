@@ -16,22 +16,22 @@ function usePositionsColumns() {
   const { t, i18n } = useTranslation();
   return new Array<ColumnDef<HistoryEntry>>(
     {
-      accessorKey: 'name',
+      accessorKey: 'timestamp',
       header: () => (
         <div className="flex items-center gap-1">
-          <span>{t('transactions.table.headers.name')}</span>
+          <span>{t('transactions.table.headers.transaction')}</span>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t('transactions.tooltips.name')}</p>
+              <p>{t('transactions.tooltips.transaction')}</p>
             </TooltipContent>
           </Tooltip>
         </div>
       ),
       cell: ({ row }) => (
-        <>
+        <div className="flex items-center gap-2">
           <Badge
             aria-label={dateToLocale(row.original.timestamp, i18n.language)}
             title={row.original.timestamp}
@@ -45,7 +45,7 @@ function usePositionsColumns() {
               ? t('transactions.badge.buy')
               : t('transactions.badge.sell')}
           </Badge>
-        </>
+        </div>
       ),
     },
     {
@@ -139,8 +139,10 @@ export function PositionsTable({
 
 export function PositionsTableSkeleton({
   enablePagination = false,
+  className,
 }: {
   enablePagination?: boolean;
+  className?: string;
 }) {
   const columns = usePositionsColumns();
   const [pagination, setPagination] = useState<PaginationState>({
@@ -157,6 +159,7 @@ export function PositionsTableSkeleton({
       enablePagination={enablePagination}
       FetchingRowsSkeleton={<PositionsRowsSkeleton />}
       isPending={true}
+      className={className}
     />
   );
 }
