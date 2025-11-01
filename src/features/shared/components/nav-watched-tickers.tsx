@@ -23,8 +23,8 @@ export function NavWatchedTickers() {
   if (isLoading) {
     return (
       <SidebarGroup>
-        <SidebarGroupLabel className="flex items-center gap-2">
-          <Star className="h-4 w-4" />
+        <SidebarGroupLabel className="flex items-center gap-2 leading-none">
+          <Star className="h-4 w-4 flex-shrink-0" />
           {t('common.watched', 'Watched')}
         </SidebarGroupLabel>
         <SidebarGroupContent>
@@ -42,8 +42,8 @@ export function NavWatchedTickers() {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="flex items-center gap-2">
-        <Star className="h-4 w-4" />
+      <SidebarGroupLabel className="flex items-center gap-2 leading-none">
+        <Star className="h-4 w-4 flex-shrink-0" />
         {t('common.watched', 'Watched')}
       </SidebarGroupLabel>
       <SidebarGroupContent>
