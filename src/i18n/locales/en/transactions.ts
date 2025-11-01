@@ -19,6 +19,12 @@ const enTransactions = {
     buy: 'Buy',
     sell: 'Sell',
   },
+  cards: {
+    sold_at: 'Sold @',
+    avg_buy_price: 'Avg Buy Price',
+    realized_gain_loss: 'Realized Gain / Loss',
+    realized_pct: 'Realized %',
+  },
   actions: {
     instrument_details: 'Instrument details',
   },
@@ -39,8 +45,10 @@ const enTransactions = {
     share_price: 'Price per share at the time of the transaction',
     acquisition_price: 'Price of acquisition (quantity × share price + fees)',
     market_value: 'Total current value of the position',
-    gain_loss: 'Absolute profit or loss amount',
-    gain_loss_pct: 'Percentage profit or loss',
+    gain_loss:
+      'For BUY: (current price - purchase price) × quantity. For SELL: (sell price - purchase price) × quantity',
+    gain_loss_pct:
+      'Profit or loss percentage. For BUY: based on current price vs purchase price. For SELL: based on sell price vs purchase price',
     expand_details: 'Expand to view transaction details',
     hide_details: 'Hide transaction details',
   },

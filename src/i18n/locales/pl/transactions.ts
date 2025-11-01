@@ -19,6 +19,12 @@ const plTransactions = {
     buy: 'Kupno',
     sell: 'Sprzedaż',
   },
+  cards: {
+    sold_at: 'Sprzedano @',
+    avg_buy_price: 'Średnia cena kupna',
+    realized_gain_loss: 'Zrealizowany zysk / strata',
+    realized_pct: 'Zrealizowany %',
+  },
   actions: {
     instrument_details: 'Szczegóły instrumentu',
   },
@@ -43,8 +49,10 @@ const plTransactions = {
     acquisition_price:
       'Cena nabycia pozycji (ilość × cena za akcję + prowizje)',
     market_value: 'Łączna aktualna wartość pozycji',
-    gain_loss: 'Bezwzględna kwota zysku lub straty',
-    gain_loss_pct: 'Procentowy zysk lub strata',
+    gain_loss:
+      'Dla KUPNA: (bieżąca cena - cena nabycia) × ilość. Dla SPRZEDAŻY: (cena sprzedaży - cena nabycia) × ilość',
+    gain_loss_pct:
+      'Procent zysku lub straty. Dla KUPNA: na podstawie bieżącej ceny vs cena nabycia. Dla SPRZEDAŻY: na podstawie ceny sprzedaży vs cena nabycia',
     expand_details: 'Rozwiń, aby zobaczyć szczegóły transakcji',
     hide_details: 'Ukryj szczegóły transakcji',
   },
