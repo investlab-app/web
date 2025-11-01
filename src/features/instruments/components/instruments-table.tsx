@@ -271,7 +271,7 @@ export const InstrumentTable = ({
       onRowClick={(row) => onInstrumentPressed(row.original)}
       isPending={isPending}
       FetchingRowsSkeleton={<InstrumentTableBodySkeleton rowCount={rowCount} />}
-      className="rounded-lg"
+      className="rounded-lg border border-muted"
     />
   );
 };
