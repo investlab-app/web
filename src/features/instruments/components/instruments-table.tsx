@@ -220,7 +220,7 @@ export const InstrumentTable = ({
                 )}
               >
                 {dayChange < 0 ? '-' : '+'}
-                {toFixedLocalized(Math.abs(dayChange), i18n.language, 2)}%
+                {Math.abs(dayChange).toFixed(2)}%
               </div>
             )}
           </div>
