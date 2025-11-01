@@ -30,6 +30,8 @@ import enPrivacyPolicy from './locales/en/legal/privacy-policy';
 import enTermsOfService from './locales/en/legal/terms-of-service';
 import enTable from './locales/en/table';
 import plTable from './locales/pl/table';
+import enMarketStatus from './locales/en/marketStatus';
+import plMarketStatus from './locales/pl/marketStatus';
 
 i18n
   .use(LanguageDetector)
@@ -67,6 +69,7 @@ i18n
             termsOfService: enTermsOfService,
           },
           table: enTable,
+          marketStatus: enMarketStatus,
         },
       },
       pl: {
@@ -87,6 +90,7 @@ i18n
             termsOfService: plTermsOfService,
           },
           table: plTable,
+          marketStatus: plMarketStatus,
         },
       },
     },

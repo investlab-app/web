@@ -22,10 +22,6 @@ export function NavWatchedTickers() {
 
   const watchedTickers = investor?.watching_instruments || [];
 
-  if (watchedTickers.length === 0 && state === 'collapsed') {
-    return null;
-  }
-
   if (isLoading) {
     return (
       <SidebarGroup>
