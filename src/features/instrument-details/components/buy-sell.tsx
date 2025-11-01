@@ -176,7 +176,9 @@ export const BuySell = ({ ticker }: BuySellProps) => {
       <div className="flex gap-2">
         <Button
           size="lg"
-          className={'flex-1 font-semibold bg-green-600 hover:bg-green-700'}
+          className={
+            'flex-1 font-semibold bg-green-600 hover:bg-green-700 text-white'
+          }
           onClick={() => handleOrder('buy')}
           disabled={isPending || volume === 0}
         >
@@ -184,7 +186,9 @@ export const BuySell = ({ ticker }: BuySellProps) => {
         </Button>
         <Button
           size="lg"
-          className={'flex-1 font-semibold bg-red-600 hover:bg-red-700'}
+          className={
+            'flex-1 font-semibold bg-red-600 hover:bg-red-700 text-white'
+          }
           onClick={() => handleOrder('sell')}
           disabled={isPending || volume === 0}
         >

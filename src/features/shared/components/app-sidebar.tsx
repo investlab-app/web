@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
 import {
+  Bell,
   History,
   LayoutDashboardIcon,
   List,
@@ -15,7 +16,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar';
@@ -69,6 +69,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         ),
       },
       {
+        title: t('common.flows'),
+        to: '/flows',
+        icon: Network,
+        tooltip: t(
+          'common.tooltips.navigation.flows',
+          'Create and manage your trading flows'
+        ),
+      },
+      {
         title: t('common.statistics'),
         to: '/statistics',
         icon: PieChart,
@@ -78,12 +87,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         ),
       },
       {
-        title: t('common.flows'),
-        to: '/flows',
-        icon: Network,
+        title: t('price_alerts.title', 'Notifications'),
+        to: '/price-alerts',
+        icon: Bell,
         tooltip: t(
-          'common.tooltips.navigation.flows',
-          'Create and manage your trading flows'
+          'common.tooltips.navigation.price_alerts',
+          'Manage your price alerts and notifications'
         ),
       },
     ],
@@ -101,14 +110,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="border-b border-sidebar-border h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link to="/" className="flex items-center gap-2">
-                <InvestLabLogo />
-                <span className="translate-y-[2px] font-black text-[16px]">
+            <div className="flex items-center gap-2 pointer-events-none select-none">
+              <InvestLabLogo className="ml-1.5" />
+              {state !== 'collapsed' && (
+                <span className="translate-y-[1px] font-black text-[16px]">
                   {t('common.app_name')}
                 </span>
-              </Link>
-            </SidebarMenuButton>
+              )}
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
