@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { PositionSummary, PositionSummarySkeleton } from './position-summary';
 import { PositionsCards, PositionsCardsSkeleton } from './positions-cards';
 import type { Position } from '@/client';
@@ -6,41 +6,76 @@ import { cn } from '@/features/shared/utils/styles';
 
 export function PositionSummaryWithTable({ position }: { position: Position }) {
   const [collapsed, setCollapsed] = useState(false);
+  const contentId = useId();
 
-  const currentPrice = position.market_value / position.quantity;
+  const currentPrice =
+    position.quantity > 0
+      ? position.market_value / position.quantity
+      : undefined;
 
   return (
-    <div>
+    <section
+      className={cn(
+        'relative overflow-hidden rounded-xl border bg-card shadow-sm transition-shadow',
+        'hover:shadow-md'
+      )}
+    >
       <PositionSummary
         key={position.symbol}
         position={position}
         setCollapsed={() => setCollapsed(!collapsed)}
         isCollapsed={collapsed}
         className={cn(
-          'rounded-t-lg overflow-hidden',
-          collapsed && 'rounded-b-lg'
+          'rounded-t-xl overflow-hidden border-b border-muted-foreground/10 bg-muted/40',
+          collapsed && 'rounded-b-xl'
         )}
       />
+
       {!collapsed && (
-        <div className="border-b border-l border-r border-muted border-t border-t-muted-foreground/25 rounded-b-lg bg-background overflow-hidden">
+        <div
+          id={contentId}
+          aria-hidden={collapsed}
+          className={cn(
+            'relative rounded-b-xl bg-background',
+            'px-2 py-2'
+          )}
+        >
+          {/* Soft edge fades to hint horizontal scroll */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-2 left-0 w-8 bg-gradient-to-r from-background to-transparent rounded-bl-xl"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-2 right-0 w-8 bg-gradient-to-l from-background to-transparent rounded-br-xl"
+          />
+
           <PositionsCards
             history={position.history}
             currentPrice={currentPrice}
-            className="rounded-none"
+            className={cn('rounded-none scroll-smooth snap-x snap-mandatory -mx-2')}
           />
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
 export function PositionSummaryWithTableSkeleton() {
   return (
-    <div className="overflow-hidden">
-      <PositionSummarySkeleton className="rounded-t-lg" />
-      <div className="border-b border-l border-r border-muted bg-background rounded-b-lg overflow-hidden">
+    <section className="relative overflow-hidden rounded-xl border bg-card shadow-sm">
+      <PositionSummarySkeleton className="rounded-t-xl" />
+      <div className="relative bg-background rounded-b-xl px-2 sm:px-3 md:px-4 py-2">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-2 left-0 w-8 bg-gradient-to-r from-background to-transparent rounded-bl-xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-2 right-0 w-8 bg-gradient-to-l from-background to-transparent rounded-br-xl"
+        />
         <PositionsCardsSkeleton className="rounded-none" />
       </div>
-    </div>
+    </section>
   );
 }

@@ -47,9 +47,10 @@ export function PositionSummary({
   );
 
   return (
-    <div className={className}>
-      <div className="flex flex-col sm:flex-row justify-between gap-4 bg-muted">
-        <div className="flex flex-col gap-4 sm:flex-row">
+    <div className={cn('bg-muted/40 px-3 py-3 sm:px-4 sm:py-4', className)}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Left: Toggle + instrument */}
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
@@ -59,7 +60,7 @@ export function PositionSummary({
               event.stopPropagation();
               setCollapsed();
             }}
-            className="h-full w-9 border-r border-muted-foreground/10"
+            className="h-9 w-9 shrink-0 border border-transparent hover:border-muted-foreground/20"
           >
             <ChevronDown
               className={cn(
@@ -68,7 +69,8 @@ export function PositionSummary({
               )}
             />
           </Button>
-          <div className="flex flex-row items-center gap-4">
+
+          <div className="flex items-center gap-3 sm:gap-4">
             <InstrumentIconCircle
               icon={position.icon}
               symbol={position.symbol}
@@ -79,7 +81,7 @@ export function PositionSummary({
               <Button
                 variant="link"
                 asChild
-                className="px-0 text-foreground text-lg"
+                className="px-0 text-foreground text-lg font-semibold"
               >
                 <Link
                   aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
@@ -96,11 +98,13 @@ export function PositionSummary({
             )}
           </div>
         </div>
-        <div className="grid w-full sm:grid-cols-2 lg:w-auto lg:grid-cols-4 items-center">
+
+        {/* Right: metrics */}
+        <div className="grid w-full sm:w-auto grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-1 sm:gap-x-4">
           <SummaryMetric
             label={t('common.quantity')}
             value={toFixedLocalized(position.quantity, i18n.language, 2)}
-            containerClassName="min-w-[160px]"
+            containerClassName="min-w-[140px]"
           />
           <SummaryMetric
             label={t('common.market_value')}
@@ -111,7 +115,7 @@ export function PositionSummary({
             label={t('common.gain')}
             value={toFixedLocalized(position.gain, i18n.language, 2)}
             valueClassName={getProfabilityColor(position.gain)}
-            containerClassName="min-w-[160px]"
+            containerClassName="min-w-[140px]"
           />
           <SummaryMetric
             label={t('common.gain_percentage')}
@@ -133,28 +137,31 @@ export function PositionSummarySkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'flex flex-col sm:flex-row justify-between gap-4 bg-muted border-b border-muted-foreground/10',
+        'px-3 py-3 sm:px-4 sm:py-4 bg-muted/40 border-b border-muted-foreground/10',
         className
       )}
     >
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-full w-9 border-r border-muted-foreground/10"
-        >
-          <ChevronDown className={cn('h-4 w-4 transition-transform')} />
-        </Button>
-        <div className="flex flex-row items-center gap-4">
-          <Skeleton className="h-10 w-10 rounded-full" />
-          <Skeleton className="h-6 w-32" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 shrink-0 border border-transparent"
+          >
+            <ChevronDown className={cn('h-4 w-4 transition-transform')} />
+          </Button>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-6 w-32" />
+          </div>
         </div>
-      </div>
-      <div className="grid w-full sm:grid-cols-2 lg:w-auto lg:grid-cols-4 items-center">
-        <SummaryMetricSkeleton />
-        <SummaryMetricSkeleton />
-        <SummaryMetricSkeleton />
-        <SummaryMetricSkeleton />
+
+        <div className="grid w-full sm:w-auto grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-1 sm:gap-x-4">
+          <SummaryMetricSkeleton />
+          <SummaryMetricSkeleton />
+          <SummaryMetricSkeleton />
+          <SummaryMetricSkeleton />
+        </div>
       </div>
     </div>
   );

@@ -124,7 +124,13 @@ function BuyCard({
   const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
   return (
-    <Card className="w-80 flex-shrink-0 border-l-4 border-l-blue-500">
+    <Card
+      className={[
+        'flex-shrink-0 snap-start transition-colors',
+        'w-[18rem] sm:w-80 md:w-96',
+        'hover:bg-accent/40',
+      ].join(' ')}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div>
@@ -221,7 +227,13 @@ function SellCard({
   const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
   return (
-    <Card className="w-80 flex-shrink-0 border-l-4 border-l-orange-500">
+    <Card
+      className={[
+        'flex-shrink-0 snap-start transition-colors',
+        'w-[18rem] sm:w-80 md:w-96',
+        'hover:bg-accent/40',
+      ].join(' ')}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div>
@@ -328,10 +340,13 @@ export function PositionsCards({
   }
 
   return (
-    <div className={`overflow-x-auto pb-4 ${className || ''}`}>
-      <div className="flex gap-4 px-1">
+    <div className={`overflow-x-auto ${className || ''}`}>
+      <div className="flex gap-4">
         {history.map((entry, index) => (
-          <div key={`${entry.timestamp}-${index}`} className="flex-shrink-0">
+          <div
+            key={`${entry.timestamp}-${index}`}
+            className={`flex-shrink-0 snap-start ${index === 0 ? 'pl-1' : ''}`}
+          >
             {entry.is_buy ? (
               <BuyCard
                 entry={entry}
@@ -359,11 +374,14 @@ export function PositionsCards({
 
 export function PositionsCardsSkeleton({ className }: { className?: string }) {
   return (
-    <div className={`overflow-x-auto pb-4 ${className || ''}`}>
-      <div className="flex gap-4 px-1">
+    <div className={`overflow-x-auto ${className || ''}`}>
+      <div className="flex gap-4">
         {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className="flex-shrink-0">
-            <Card className="w-80 animate-pulse">
+          <div
+            key={index}
+            className={`flex-shrink-0 snap-start ${index === 0 ? 'pl-1' : ''}`}
+          >
+            <Card className="w-[18rem] sm:w-80 md:w-96 animate-pulse">
               <CardHeader className="pb-3">
                 <div className="h-4 bg-muted rounded w-20 mb-2" />
                 <div className="h-3 bg-muted rounded w-24" />
