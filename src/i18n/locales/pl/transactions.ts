@@ -38,7 +38,8 @@ const plTransactions = {
     name: 'Nazwa instrumentu finansowego',
     quantity: 'Ilość akcji w pozycji',
     share_price: 'Cena za akcję w czasie transakcji',
-    acquisition_price: 'Cena nabycia pozycji (ilość × cena za akcję + prowizje)',
+    acquisition_price:
+      'Cena nabycia pozycji (ilość × cena za akcję + prowizje)',
     market_value: 'Łączna aktualna wartość pozycji',
     gain_loss: 'Bezwzględna kwota zysku lub straty',
     gain_loss_pct: 'Procentowy zysk lub strata',

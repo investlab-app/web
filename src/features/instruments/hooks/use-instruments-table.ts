@@ -55,7 +55,7 @@ export function useInstrumentsTable({
         typeof lastPageParam === 'number'
           ? lastPageParam
           : (lastPageParam.query?.page ?? 1);
-      return lastPage.next ? lastPageNumber + 1 : undefined;
+      return lastPage.next ? lastPageNumber + 1 : null;
     },
     placeholderData: keepPreviousData,
     meta: {
@@ -79,7 +79,7 @@ export function useInstrumentsTable({
           symbol: instrument.ticker,
           logo: instrument.logo ?? null,
           icon: instrument.icon ?? null,
-          is_watched: instrument.is_watched ?? false,
+          is_watched: instrument.is_watched,
         } as Instrument;
         return acc;
       },

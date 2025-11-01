@@ -1,0 +1,29 @@
+[2025-11-01T20:12:27.339Z] Error: Error parsing c:/Users/mkapica/Desktop/investlab/backend/backend/schema.yml: duplicated mapping key (1494:9)
+
+ 1491 |             type: string
+ 1492 |             format: uuid
+ 1493 |             title: Watching Instruments
+ 1494 |         balance:
+----------------^
+ 1495 |           type: string
+ 1496 |           format: decimal
+Stack:
+ParserError: Error parsing c:/Users/mkapica/Desktop/investlab/backend/backend/schema.yml: duplicated mapping key (1494:9)
+
+ 1491 |             type: string
+ 1492 |             format: uuid
+ 1493 |             title: Watching Instruments
+ 1494 |         balance:
+----------------^
+ 1495 |           type: string
+ 1496 |           format: decimal
+    at Object.handler (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\parsers\yaml.js:24:19)
+    at runNextPlugin (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\util\plugins.js:24:45)
+    at C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\util\plugins.js:43:9
+    at new Promise (<anonymous>)
+    at Object.run (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\util\plugins.js:16:12)
+    at parseFile (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\parse.js:72:30)
+    at $RefParser.parse (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\index.js:200:68)
+    at async $RefParser.bundle (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+json-schema-ref-parser@1.1.0\node_modules\@hey-api\json-schema-ref-parser\dist\lib\index.js:122:9)
+    at async Ol (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+openapi-ts@0.84.0_magicast@0.3.5_typescript@5.9.2\node_modules\@hey-api\openapi-ts\dist\index.cjs:54:2562)
+    at async ra (C:\Users\mkapica\Desktop\investlab\web\node_modules\.pnpm\@hey-api+openapi-ts@0.84.0_magicast@0.3.5_typescript@5.9.2\node_modules\@hey-api\openapi-ts\dist\index.cjs:54:8572)

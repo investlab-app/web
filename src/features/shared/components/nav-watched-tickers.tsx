@@ -9,14 +9,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { investorsMeRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 export function NavWatchedTickers() {
   const { t } = useTranslation();
-  const { state } = useSidebar();
 
   const { data: investor, isLoading } = useQuery(investorsMeRetrieveOptions());
 

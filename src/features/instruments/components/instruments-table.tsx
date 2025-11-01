@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Heart, HeartPlus, Info } from 'lucide-react';
+import { ArrowDown, ArrowUp, Info, Star, StarOff } from 'lucide-react';
 import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
-import { FilledHeartCrack } from './filled-heart-crack';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -78,7 +77,7 @@ export const InstrumentTable = ({
           <div className="group/heart hidden group-hover:flex items-center">
             {row.original.is_watched && (
               <>
-                <Heart
+                <Star
                   className="inline-flex group-hover/heart:hidden cursor-pointer"
                   fill={cssVar('--foreground')}
                   onClick={(e) => {
@@ -86,27 +85,27 @@ export const InstrumentTable = ({
                     toggleWatched(row.original.id);
                   }}
                 />
-                <FilledHeartCrack
+                <StarOff
                   className="hidden group-hover/heart:inline-flex cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWatched(row.original.id);
                   }}
-                  style={{ color: cssVar('--foreground') }}
                 />
               </>
             )}
             {!row.original.is_watched && (
               <>
-                <Heart
+                <Star
                   className="inline-flex group-hover/heart:hidden cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWatched(row.original.id);
                   }}
                 />
-                <HeartPlus
+                <Star
                   className="hidden group-hover/heart:inline-flex cursor-pointer"
+                  fill={cssVar('--foreground')}
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWatched(row.original.id);

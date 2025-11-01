@@ -36,7 +36,7 @@ export function OrdersSection({
       case 'limit':
         return <StopLimit ticker={instrumentId} />;
       default:
-        return <StopLossTakeProfit ticker={instrumentId} />
+        return <StopLossTakeProfit ticker={instrumentId} />;
     }
   };
 

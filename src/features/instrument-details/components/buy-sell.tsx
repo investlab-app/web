@@ -48,6 +48,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
         setPrice(volume !== undefined ? volume * currentPrice : 1);
         break;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPrice]);
 
   const handlePriceChange = (newPrice: number | undefined) => {

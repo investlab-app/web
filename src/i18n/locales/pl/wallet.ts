@@ -3,7 +3,8 @@ const plWallet = {
   deposit: 'Wpłata',
   withdraw: 'Wypłata',
   deposit_funds: 'Wpłata Środków',
-  deposit_description: 'Dodaj środki na swoje konto handlowe, aby rozpocząć inwestowanie.',
+  deposit_description:
+    'Dodaj środki na swoje konto handlowe, aby rozpocząć inwestowanie.',
   amount: 'Kwota',
   enter_amount: 'Wprowadź kwotę',
   minimum_deposit: 'Minimalna wpłata: $1.00',

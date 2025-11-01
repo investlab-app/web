@@ -156,8 +156,7 @@ export function MarketStatusLED() {
       const details = t('marketStatus.opens_in', {
         openTime: marketOpenET,
         hours: hoursUntilOpen,
-        hourLabel:
-          hoursUntilOpen === 1 ? t('common.hour') : t('common.hours'),
+        hourLabel: hoursUntilOpen === 1 ? t('common.hour') : t('common.hours'),
         localTime: utcTimeStr,
         timeZone,
       });

@@ -5,6 +5,7 @@ The wallet feature allows users to manage their account balance and deposit fund
 ## Overview
 
 The wallet feature provides:
+
 - **Balance Display**: Shows current account balance in the sidebar
 - **Deposit Functionality**: Modal dialog for depositing funds
 - **Real-time Updates**: Automatic balance refresh after transactions
@@ -18,16 +19,19 @@ Modal dialog component for depositing funds into the account.
 **Location**: `src/features/wallet/components/deposit-dialog.tsx`
 
 **Props**:
+
 - `open: boolean` - Controls whether the dialog is visible
 - `onOpenChange: (open: boolean) => void` - Callback when dialog open state changes
 
 **Features**:
+
 - Input validation for positive amounts
 - Loading state during deposit processing
 - Success/error toast notifications
 - Automatic query invalidation to refresh balance
 
 **Usage**:
+
 ```tsx
 import { DepositDialog } from '@/features/wallet/components/deposit-dialog';
 
@@ -50,6 +54,7 @@ Sidebar component displaying the wallet balance with a deposit button.
 **Location**: `src/features/shared/components/wallet-section.tsx`
 
 **Features**:
+
 - Displays formatted account balance
 - Loading skeleton during data fetch
 - Plus button to trigger deposit dialog
@@ -62,10 +67,12 @@ Integrated into `AppSidebar` footer in `src/features/shared/components/app-sideb
 ## Translations
 
 Wallet translations are available in:
+
 - **English**: `src/i18n/locales/en/wallet.ts`
 - **Polish**: `src/i18n/locales/pl/wallet.ts`
 
 Common keys:
+
 - `wallet.deposit` - "Deposit" action button
 - `wallet.deposit_funds` - "Deposit Funds" dialog title
 - `wallet.deposit_description` - Dialog description
@@ -109,6 +116,7 @@ const response = await depositFunds({ amount: numAmount });
 ### Additional Features
 
 Potential enhancements:
+
 - Withdrawal functionality
 - Transaction history view
 - Deposit method selection (credit card, bank transfer, etc.)

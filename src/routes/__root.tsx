@@ -11,8 +11,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-  const isTauri = 'isTauri' in window;
-
   return (
     <>
       <Outlet />

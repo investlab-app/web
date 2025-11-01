@@ -68,6 +68,14 @@ export type CurrentAccountValue = {
     gain_percentage: number | null;
 };
 
+export type DepositMoney = {
+    amount: string;
+};
+
+export type DepositMoneyRequest = {
+    amount: string;
+};
+
 export type HistoryEntry = {
     /**
      * Date of the transaction
@@ -229,8 +237,12 @@ export type InstrumentWithPrice = {
 export type Investor = {
     readonly id: string;
     readonly clerk_id: string;
-    watching_instruments?: Array<string>;
     readonly balance: string;
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
+    watching_instruments?: Array<string>;
 };
 
 /**
@@ -253,50 +265,6 @@ export type InvestorStats = {
      * Total account value
      */
     total_value: number;
-};
-
-export type InvestorUpdate = {
-    readonly id: string;
-    readonly clerk_id: string;
-    /**
-     * User's preferred language (e.g., 'en', 'pl')
-     */
-    language?: string;
-    watching_instruments?: Array<string>;
-};
-
-export type InvestorUpdateRequest = {
-    /**
-     * User's preferred language (e.g., 'en', 'pl')
-     */
-    language?: string;
-    watching_instruments?: Array<string>;
-};
-
-/**
- * * `en` - English
- * * `pl` - Polski
- */
-export type LanguageEnum = 'en' | 'pl';
-
-export type LanguageUpdate = {
-    /**
-     * Language code (e.g., 'en', 'pl')
-     *
-     * * `en` - English
-     * * `pl` - Polski
-     */
-    language: LanguageEnum;
-};
-
-export type LanguageUpdateRequest = {
-    /**
-     * Language code (e.g., 'en', 'pl')
-     *
-     * * `en` - English
-     * * `pl` - Polski
-     */
-    language: LanguageEnum;
 };
 
 /**
@@ -467,7 +435,7 @@ export type PaginatedPriceAlertList = {
     results: Array<PriceAlert>;
 };
 
-export type PatchedInvestorUpdateRequest = {
+export type PatchedInvestorRequest = {
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
@@ -767,10 +735,6 @@ export type InstrumentWithPriceWritable = {
 };
 
 export type InvestorWritable = {
-    watching_instruments?: Array<string>;
-};
-
-export type InvestorUpdateWritable = {
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
@@ -970,7 +934,7 @@ export type InvestorsRetrieveResponses = {
 export type InvestorsRetrieveResponse = InvestorsRetrieveResponses[keyof InvestorsRetrieveResponses];
 
 export type InvestorsPartialUpdateData = {
-    body?: PatchedInvestorUpdateRequest;
+    body?: PatchedInvestorRequest;
     path: {
         clerk_id: string;
     };
@@ -979,25 +943,23 @@ export type InvestorsPartialUpdateData = {
 };
 
 export type InvestorsPartialUpdateResponses = {
-    200: InvestorUpdate;
+    200: Investor;
 };
 
 export type InvestorsPartialUpdateResponse = InvestorsPartialUpdateResponses[keyof InvestorsPartialUpdateResponses];
 
-export type InvestorsUpdateData = {
-    body?: InvestorUpdateRequest;
-    path: {
-        clerk_id: string;
-    };
+export type InvestorsDepositCreateData = {
+    body: DepositMoneyRequest;
+    path?: never;
     query?: never;
-    url: '/api/investors/{clerk_id}/';
+    url: '/api/investors/deposit/';
 };
 
-export type InvestorsUpdateResponses = {
-    200: InvestorUpdate;
+export type InvestorsDepositCreateResponses = {
+    200: DepositMoney;
 };
 
-export type InvestorsUpdateResponse = InvestorsUpdateResponses[keyof InvestorsUpdateResponses];
+export type InvestorsDepositCreateResponse = InvestorsDepositCreateResponses[keyof InvestorsDepositCreateResponses];
 
 export type InvestorsMeRetrieveData = {
     body?: never;
@@ -1012,6 +974,19 @@ export type InvestorsMeRetrieveResponses = {
 
 export type InvestorsMeRetrieveResponse = InvestorsMeRetrieveResponses[keyof InvestorsMeRetrieveResponses];
 
+export type InvestorsMePartialUpdateData = {
+    body?: PatchedInvestorRequest;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/';
+};
+
+export type InvestorsMePartialUpdateResponses = {
+    200: Investor;
+};
+
+export type InvestorsMePartialUpdateResponse = InvestorsMePartialUpdateResponses[keyof InvestorsMePartialUpdateResponses];
+
 export type InvestorsMeAccountValueListData = {
     body?: never;
     path?: never;
@@ -1024,19 +999,6 @@ export type InvestorsMeAccountValueListResponses = {
 };
 
 export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
-
-export type InvestorsMeLanguageCreateData = {
-    body: LanguageUpdateRequest;
-    path?: never;
-    query?: never;
-    url: '/api/investors/me/language/';
-};
-
-export type InvestorsMeLanguageCreateResponses = {
-    201: LanguageUpdate;
-};
-
-export type InvestorsMeLanguageCreateResponse = InvestorsMeLanguageCreateResponses[keyof InvestorsMeLanguageCreateResponses];
 
 export type InvestorsMeWatchedInstrumentsToggleCreateData = {
     body?: never;

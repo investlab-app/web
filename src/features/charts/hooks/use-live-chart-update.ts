@@ -42,14 +42,12 @@ export function useLiveChartUpdate({
     const currentOption = chartInstance.getOption();
 
     // Be conservative: ECharts types on getOption can be loose across versions
-    if (!currentOption) return;
+    // if (!currentOption) return;
 
     const seriesData =
-      ((currentOption.series as Array<EChartSeries>)?.[0]
-        ?.data as EChartSeries['data']) ?? [];
+      (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
     const xAxisData =
-      ((currentOption.xAxis as Array<EChartXAxis>)?.[0]
-        ?.data as EChartXAxis['data']) ?? [];
+      (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
     // Update or initialize last point
     if (seriesData.length > 0 && xAxisData.length > 0) {
@@ -60,6 +58,7 @@ export function useLiveChartUpdate({
     }
 
     // Commit data update
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
     chartInstance.setOption({
       series: [{ data: seriesData }],
       xAxis: { data: xAxisData },
@@ -79,7 +78,7 @@ export function useLiveChartUpdate({
       typeof value === 'number'
         ? value
         : Array.isArray(value)
-          ? (value[1] ?? value[0])
+          ? value[1] || value[0]
           : (undefined as unknown as number);
 
     // Animation config
@@ -88,6 +87,7 @@ export function useLiveChartUpdate({
     const centerDotSize = 6;
 
     // Set initial mark point with center dot visible
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
     chartInstance.setOption({
       series: [
         {
@@ -206,58 +206,65 @@ export function useLiveChartUpdate({
   useEffect(() => {
     if (!chartRef.current) return;
     // If we have live update values, animation effect handles the dot
-    if (value !== undefined && !!date) return;
+    if (value === undefined || !date) {
+      // If we have live update values, animation effect handles the dot
+    } else {
+      const chartInstance = chartRef.current.getEchartsInstance();
+      const currentOption = chartInstance.getOption();
+      // if (!currentOption) {
+      //   return;
+      // }
 
-    const chartInstance = chartRef.current.getEchartsInstance();
-    const currentOption = chartInstance.getOption();
-    if (!currentOption) return;
+      const seriesData =
+        (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
+      const xAxisData =
+        (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
-    const seriesData =
-      ((currentOption.series as Array<EChartSeries>)?.[0]
-        ?.data as EChartSeries['data']) ?? [];
-    const xAxisData =
-      ((currentOption.xAxis as Array<EChartXAxis>)?.[0]
-        ?.data as EChartXAxis['data']) ?? [];
+      const lastIndex = Math.min(seriesData.length, xAxisData.length) - 1;
+      if (lastIndex < 0) {
+        return;
+      }
 
-    const lastIndex = Math.min(seriesData.length, xAxisData.length) - 1;
-    if (lastIndex < 0) return;
+      const lastY =
+        typeof seriesData[lastIndex] === 'number'
+          ? seriesData[lastIndex]
+          : Array.isArray(seriesData[lastIndex])
+            ? (seriesData[lastIndex] as Array<number>)[1] ||
+              (seriesData[lastIndex] as Array<number>)[0]
+            : undefined;
 
-    const lastY =
-      typeof seriesData[lastIndex] === 'number'
-        ? (seriesData[lastIndex] as number)
-        : Array.isArray(seriesData[lastIndex])
-          ? ((seriesData[lastIndex] as [number, number, number, number])[1] ??
-            (seriesData[lastIndex] as [number, number, number, number])[0])
-          : undefined;
+      const lastX = xAxisData[lastIndex];
+      if (lastY === undefined || !lastX) {
+        return;
+      }
 
-    const lastX = xAxisData[lastIndex];
-    if (lastY === undefined || !lastX) return;
-
-    chartInstance.setOption({
-      series: [
-        {
-          markPoint: {
-            symbol: 'circle',
-            symbolKeepAspect: true,
-            symbolOffset: [0, 0],
-            label: { show: false },
-            data: [
-              {
-                xAxis: lastX,
-                yAxis: lastY as number,
-                itemStyle: {
-                  color: primaryColor,
-                  borderWidth: 0,
+      // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
+      chartInstance.setOption({
+        series: [
+          {
+            markPoint: {
+              symbol: 'circle',
+              symbolKeepAspect: true,
+              symbolOffset: [0, 0],
+              label: { show: false },
+              data: [
+                {
+                  xAxis: lastX,
+                  yAxis: lastY,
+                  itemStyle: {
+                    color: primaryColor,
+                    borderWidth: 0,
+                  },
+                  symbol: 'circle',
+                  symbolSize: [6, 6],
+                  symbolOffset: [0, 0],
                 },
-                symbol: 'circle',
-                symbolSize: [6, 6],
-                symbolOffset: [0, 0],
-              },
-            ],
-            emphasis: { disabled: true },
+              ],
+              emphasis: { disabled: true },
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
+    }
   }, [chartRef, value, date, primaryColor]);
 }

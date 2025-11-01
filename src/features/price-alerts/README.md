@@ -38,6 +38,7 @@ backend/backend/modules/prices/
 ## Features
 
 ### Create Price Alert
+
 - Select a stock symbol from dropdown
 - Choose threshold type: "Price Goes Above" or "Price Goes Below"
 - Set target price
@@ -45,17 +46,20 @@ backend/backend/modules/prices/
 - Form validation with Zod schema
 
 ### View Price Alerts
+
 - Displays all user's alerts in a table
 - Shows symbol, name, threshold type, price, and status
 - Visual indicators (chevron up/down) for threshold types
 - Status badge (Active/Inactive)
 
 ### Delete Price Alert
+
 - Confirmation dialog before deletion
 - Loading state during deletion
 - Toast notifications for success/error
 
 ### Sidebar Navigation
+
 - New "Price Alerts" navigation item with Bell icon
 - Accessible from main dashboard
 
@@ -64,10 +68,12 @@ backend/backend/modules/prices/
 All endpoints require authentication (Clerk JWT token).
 
 ### List/Create Alerts
+
 - **GET** `/api/prices/price-alert/` - List all alerts for current user
 - **POST** `/api/prices/price-alert/` - Create new alert
 
 ### Retrieve/Update/Delete Alert
+
 - **GET** `/api/prices/price-alert/{id}/` - Get alert details
 - **PATCH** `/api/prices/price-alert/{id}/` - Update alert
 - **DELETE** `/api/prices/price-alert/{id}/` - Delete alert
@@ -121,9 +127,11 @@ updateMutation.mutate({
 ## Hooks
 
 ### `usePriceAlerts()`
+
 Fetches all price alerts for the current user.
 
 **Returns:**
+
 - `data`: `PriceAlert[]` - Array of alerts
 - `isLoading`: `boolean` - Loading state
 - `error`: `Error | null` - Any errors
@@ -131,9 +139,11 @@ Fetches all price alerts for the current user.
 **Caching:** 5 minutes stale time
 
 ### `useCreatePriceAlert()`
+
 Creates a new price alert.
 
 **Mutation Options:**
+
 ```typescript
 {
   instrument_ticker: string;
@@ -148,22 +158,27 @@ Creates a new price alert.
 ```
 
 **Side Effects:**
+
 - Invalidates `priceAlerts` query
 - Shows success/error toast
 
 ### `useDeletePriceAlert()`
+
 Deletes a price alert.
 
 **Parameters:** `alertId: string`
 
 **Side Effects:**
+
 - Invalidates `priceAlerts` query
 - Shows success/error toast
 
 ### `useUpdatePriceAlert()`
+
 Updates an existing price alert.
 
 **Parameters:**
+
 ```typescript
 {
   id: string;
@@ -176,28 +191,34 @@ Updates an existing price alert.
 ```
 
 **Side Effects:**
+
 - Invalidates `priceAlerts` query
 - Shows success/error toast
 
 ## Components
 
 ### `PriceAlertsContainer`
+
 Main container component that orchestrates all alerts functionality.
 
 **Features:**
+
 - Displays header with title and description
 - "Create Alert" button opens dialog
 - Shows empty state or alerts table
 - Handles create/delete operations
 
 ### `CreatePriceAlertForm`
+
 Form for creating new price alerts.
 
 **Props:**
+
 - `onSubmit: (data) => Promise<void>` - Submit handler
 - `isSubmitting?: boolean` - Loading state
 
 **Features:**
+
 - Symbol selection dropdown (auto-fetches instruments)
 - Threshold type selector (above/below)
 - Price input field with validation
@@ -205,15 +226,18 @@ Form for creating new price alerts.
 - Form validation with Zod
 
 ### `PriceAlertsTable`
+
 Table displaying all price alerts.
 
 **Props:**
+
 - `alerts: PriceAlert[]` - Array of alerts
 - `isLoading?: boolean` - Loading state
 - `onDelete?: (id: string) => Promise<void>` - Delete handler
 - `isDeleting?: boolean` - Deletion loading state
 
 **Features:**
+
 - Symbol and name columns
 - Threshold type with visual indicators
 - Price display with formatting
@@ -224,11 +248,13 @@ Table displaying all price alerts.
 ## Route
 
 ### `/price-alerts`
+
 Main route for price alerts management.
 
 **File:** `web/src/routes/_authed/price-alerts/index.tsx`
 
 **Features:**
+
 - Renders inside `AppFrame` for consistent layout
 - Protected route (requires authentication via `/_authed` parent)
 - Full page view of `PriceAlertsContainer`
@@ -274,10 +300,13 @@ common.tooltips.navigation:
 ## Integration with Backend
 
 ### Authentication
+
 All requests automatically include the Clerk JWT token via the API client.
 
 ### Data Model
+
 The `PriceAlert` model includes:
+
 - `id`: UUID primary key
 - `investor`: Foreign key to Investor
 - `instrument`: Foreign key to Instrument
@@ -288,6 +317,7 @@ The `PriceAlert` model includes:
 - `updated_at`: Timestamp
 
 ### Validation
+
 - Symbol must exist in Instruments table
 - Threshold value must be positive
 - Unique constraint: (instrument, threshold_type, threshold_value) per investor
@@ -295,12 +325,14 @@ The `PriceAlert` model includes:
 ## Error Handling
 
 ### User Feedback
+
 - Toast notifications for success/error
 - Form validation errors displayed inline
 - Confirmation dialog for destructive actions
 - Loading states during operations
 
 ### API Errors
+
 - Caught by mutation hooks
 - Logged to console
 - User-friendly error messages via toast
@@ -308,11 +340,13 @@ The `PriceAlert` model includes:
 ## Performance
 
 ### Caching
+
 - Price alerts cached with 5-minute stale time
 - Query invalidated on create/update/delete
 - Instruments list cached separately
 
 ### Optimization
+
 - Table virtualization not needed (typically < 100 alerts)
 - Form fields debounced via React Hook Form
 - Dialog lazy-loaded on first open
@@ -320,6 +354,7 @@ The `PriceAlert` model includes:
 ## Testing
 
 ### Unit Tests (Frontend)
+
 ```tsx
 describe('PriceAlertsContainer', () => {
   it('displays alerts from query', () => { ... });
@@ -329,6 +364,7 @@ describe('PriceAlertsContainer', () => {
 ```
 
 ### E2E Tests (Playwright)
+
 ```typescript
 test('user can create and delete price alert', async ({ page }) => {
   // Login via Clerk
@@ -354,18 +390,21 @@ test('user can create and delete price alert', async ({ page }) => {
 ## Troubleshooting
 
 ### Alerts not appearing
+
 1. Check user is authenticated (check Clerk session)
 2. Verify alerts exist in backend database
 3. Check network tab for API errors
 4. Verify user's investor record exists
 
 ### Form not submitting
+
 1. Check console for validation errors
 2. Verify symbol is correctly selected
 3. Check threshold value is valid number
 4. Ensure notifications config is properly set
 
 ### Delete not working
+
 1. Check confirmation dialog appears
 2. Verify delete button is not disabled
 3. Check network request succeeds

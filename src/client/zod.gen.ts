@@ -60,6 +60,14 @@ export const zCurrentAccountValue = z.object({
     ])
 });
 
+export const zDepositMoney = z.object({
+    amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
+});
+
+export const zDepositMoneyRequest = z.object({
+    amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
+});
+
 export const zHistoryEntry = z.object({
     timestamp: z.iso.datetime({
         offset: true
@@ -299,8 +307,9 @@ export const zInstrumentWithPrice = z.object({
 export const zInvestor = z.object({
     id: z.uuid().readonly(),
     clerk_id: z.string().readonly(),
-    watching_instruments: z.optional(z.array(z.uuid())),
-    balance: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly()
+    balance: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly(),
+    language: z.optional(z.string().max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 /**
@@ -311,35 +320,6 @@ export const zInvestorStats = z.object({
     total_gain: z.number(),
     invested: z.number(),
     total_value: z.number()
-});
-
-export const zInvestorUpdate = z.object({
-    id: z.uuid().readonly(),
-    clerk_id: z.string().readonly(),
-    language: z.optional(z.string().max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
-});
-
-export const zInvestorUpdateRequest = z.object({
-    language: z.optional(z.string().min(1).max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
-});
-
-/**
- * * `en` - English
- * * `pl` - Polski
- */
-export const zLanguageEnum = z.enum([
-    'en',
-    'pl'
-]);
-
-export const zLanguageUpdate = z.object({
-    language: zLanguageEnum
-});
-
-export const zLanguageUpdateRequest = z.object({
-    language: zLanguageEnum
 });
 
 export const zMarketCurrencies = z.object({
@@ -611,7 +591,7 @@ export const zPaginatedPriceAlertList = z.object({
     results: z.array(zPriceAlert)
 });
 
-export const zPatchedInvestorUpdateRequest = z.object({
+export const zPatchedInvestorRequest = z.object({
     language: z.optional(z.string().min(1).max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
@@ -924,10 +904,6 @@ export const zInstrumentWithPriceWritable = z.object({
 });
 
 export const zInvestorWritable = z.object({
-    watching_instruments: z.optional(z.array(z.uuid()))
-});
-
-export const zInvestorUpdateWritable = z.object({
     language: z.optional(z.string().max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
@@ -1033,24 +1009,22 @@ export const zInvestorsRetrieveData = z.object({
 export const zInvestorsRetrieveResponse = zInvestor;
 
 export const zInvestorsPartialUpdateData = z.object({
-    body: z.optional(zPatchedInvestorUpdateRequest),
+    body: z.optional(zPatchedInvestorRequest),
     path: z.object({
         clerk_id: z.string()
     }),
     query: z.optional(z.never())
 });
 
-export const zInvestorsPartialUpdateResponse = zInvestorUpdate;
+export const zInvestorsPartialUpdateResponse = zInvestor;
 
-export const zInvestorsUpdateData = z.object({
-    body: z.optional(zInvestorUpdateRequest),
-    path: z.object({
-        clerk_id: z.string()
-    }),
+export const zInvestorsDepositCreateData = z.object({
+    body: zDepositMoneyRequest,
+    path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsUpdateResponse = zInvestorUpdate;
+export const zInvestorsDepositCreateResponse = zDepositMoney;
 
 export const zInvestorsMeRetrieveData = z.object({
     body: z.optional(z.never()),
@@ -1060,6 +1034,14 @@ export const zInvestorsMeRetrieveData = z.object({
 
 export const zInvestorsMeRetrieveResponse = zInvestor;
 
+export const zInvestorsMePartialUpdateData = z.object({
+    body: z.optional(zPatchedInvestorRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMePartialUpdateResponse = zInvestor;
+
 export const zInvestorsMeAccountValueListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
@@ -1067,14 +1049,6 @@ export const zInvestorsMeAccountValueListData = z.object({
 });
 
 export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
-
-export const zInvestorsMeLanguageCreateData = z.object({
-    body: zLanguageUpdateRequest,
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-export const zInvestorsMeLanguageCreateResponse = zLanguageUpdate;
 
 export const zInvestorsMeWatchedInstrumentsToggleCreateData = z.object({
     body: z.optional(z.never()),
