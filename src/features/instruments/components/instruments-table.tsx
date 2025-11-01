@@ -1,5 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Heart, HeartPlus, Info } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowUp,
+  Heart,
+  HeartCrack,
+  HeartPlus,
+  Info,
+} from 'lucide-react';
 import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
@@ -74,35 +81,45 @@ export const InstrumentTable = ({
       ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          {row.original.is_watched && (
-            <>
-              <Heart
-                className="inline-flex group-hover:hidden cursor-pointer"
-                fill={cssVar('--foreground')}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWatched(row.original.id);
-                }}
-              />
-              <HeartPlus
-                className="hidden group-hover:inline-flex cursor-pointer"
-                fill={cssVar('--foreground')}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWatched(row.original.id);
-                }}
-              />
-            </>
-          )}
-          {!row.original.is_watched && (
-            <HeartPlus
-              className="hidden group-hover:inline-flex cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleWatched(row.original.id);
-              }}
-            />
-          )}
+          <div className="group/heart hidden group-hover:flex items-center">
+            {row.original.is_watched && (
+              <>
+                <Heart
+                  className="inline-flex group-hover/heart:hidden cursor-pointer"
+                  fill={cssVar('--foreground')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWatched(row.original.id);
+                  }}
+                />
+                <HeartCrack
+                  className="hidden group-hover/heart:inline-flex cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWatched(row.original.id);
+                  }}
+                />
+              </>
+            )}
+            {!row.original.is_watched && (
+              <>
+                <Heart
+                  className="inline-flex group-hover/heart:hidden cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWatched(row.original.id);
+                  }}
+                />
+                <HeartPlus
+                  className="hidden group-hover/heart:inline-flex cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWatched(row.original.id);
+                  }}
+                />
+              </>
+            )}
+          </div>
           <InstrumentIconCircle
             className="inline-flex group-hover:hidden"
             symbol={row.original.symbol}

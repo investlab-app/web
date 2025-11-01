@@ -9,6 +9,6 @@ export const instrument = z.object({
   symbol: z.string(),
   logo: z.string().nullable(),
   icon: z.string().nullable(),
-  is_watched: z.boolean().optional().default(false),
+  is_watched: z.boolean().default(false),
 });
 export type Instrument = z.infer<typeof instrument>;
