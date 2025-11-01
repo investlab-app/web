@@ -29,6 +29,7 @@ import {
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { NavWatchedTickers } from '@/features/shared/components/nav-watched-tickers';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
+import { WalletSection } from './wallet-section';
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
@@ -128,6 +129,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter className="px-0">
         <div className="px-2">
+          <WalletSection />
           {user ? <NavUser user={user} /> : <NavUserSkeleton />}
         </div>
         <div className={state === 'collapsed' ? 'hidden' : ''}>

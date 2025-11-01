@@ -42,7 +42,7 @@ export function useLiveChartUpdate({
     const currentOption = chartInstance.getOption();
 
     // Be conservative: ECharts types on getOption can be loose across versions
-    // if (!currentOption) return;
+    if (!currentOption) return;
 
     const seriesData =
       (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];

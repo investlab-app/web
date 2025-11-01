@@ -468,6 +468,42 @@ export const zMostTradedItem = z.object({
     ])
 });
 
+/**
+ * * `price_alert` - Price Alert
+ * * `order` - Order
+ * * `transaction` - Transaction
+ * * `system` - System
+ */
+export const zTypeEnum = z.enum([
+    'price_alert',
+    'order',
+    'transaction',
+    'system'
+]);
+
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export const zNotification = z.object({
+    id: z.uuid().readonly(),
+    type: z.optional(zTypeEnum),
+    type_display: z.string().readonly(),
+    title: z.string().max(255),
+    message: z.string(),
+    is_seen: z.optional(z.boolean()),
+    related_object_id: z.optional(z.union([
+        z.string().max(255),
+        z.null()
+    ])),
+    related_object_type: z.optional(z.union([
+        z.string().max(50),
+        z.null()
+    ])),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly()
+});
+
 export const zNotificationConfig = z.object({
     id: z.uuid().readonly(),
     is_email: z.optional(z.boolean()),
@@ -496,6 +532,31 @@ export const zNotificationConfigRequest = z.object({
     is_push: z.optional(z.boolean()),
     is_websocket: z.optional(z.boolean()),
     is_active: z.optional(z.boolean())
+});
+
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export const zNotificationRequest = z.object({
+    type: z.optional(zTypeEnum),
+    title: z.string().min(1).max(255),
+    message: z.string().min(1),
+    is_seen: z.optional(z.boolean()),
+    related_object_id: z.optional(z.union([
+        z.string().max(255),
+        z.null()
+    ])),
+    related_object_type: z.optional(z.union([
+        z.string().max(50),
+        z.null()
+    ]))
+});
+
+/**
+ * Serializer for marking notifications as seen
+ */
+export const zNotificationUpdate = z.object({
+    is_seen: z.optional(z.boolean())
 });
 
 export const zOrderDetail = z.object({
@@ -547,6 +608,19 @@ export const zPaginatedInstrumentWithPriceList = z.object({
     results: z.array(zInstrumentWithPrice)
 });
 
+export const zPaginatedNotificationList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zNotification)
+});
+
 export const zPaginatedOrderList = z.object({
     count: z.int(),
     next: z.optional(z.union([
@@ -594,6 +668,13 @@ export const zPaginatedPriceAlertList = z.object({
 export const zPatchedInvestorRequest = z.object({
     language: z.optional(z.string().min(1).max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
+});
+
+/**
+ * Serializer for marking notifications as seen
+ */
+export const zPatchedNotificationUpdateRequest = z.object({
+    is_seen: z.optional(z.boolean())
 });
 
 export const zPatchedPriceAlertRequest = z.object({
@@ -930,6 +1011,24 @@ export const zMarketOrderWritable = z.object({
     is_buy: z.boolean()
 });
 
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export const zNotificationWritable = z.object({
+    type: z.optional(zTypeEnum),
+    title: z.string().max(255),
+    message: z.string(),
+    is_seen: z.optional(z.boolean()),
+    related_object_id: z.optional(z.union([
+        z.string().max(255),
+        z.null()
+    ])),
+    related_object_type: z.optional(z.union([
+        z.string().max(50),
+        z.null()
+    ]))
+});
+
 export const zNotificationConfigWritable = z.object({
     is_email: z.optional(z.boolean()),
     is_push: z.optional(z.boolean()),
@@ -1124,6 +1223,59 @@ export const zNewsListData = z.object({
 });
 
 export const zNewsListResponse = z.array(zTickerNews);
+
+export const zNotificationsListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
+});
+
+export const zNotificationsListResponse = zPaginatedNotificationList;
+
+export const zNotificationsCreateData = z.object({
+    body: zNotificationRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zNotificationsCreateResponse = zNotification;
+
+export const zNotificationsRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zNotificationsRetrieveResponse = zNotification;
+
+export const zNotificationsPartialUpdateData = z.object({
+    body: z.optional(zPatchedNotificationUpdateRequest),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zNotificationsPartialUpdateResponse = zNotificationUpdate;
+
+export const zNotificationsMarkAllAsSeenCreateData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zNotificationsUnseenCountRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zNotificationsUnseenCountRetrieveResponse = zNotification;
 
 export const zNotificationsVapidPublicKeyRetrieveData = z.object({
     body: z.optional(z.never()),

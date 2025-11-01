@@ -24,7 +24,6 @@ export function NavMain({ items }: { items: Array<NavItem> }) {
     <SidebarGroup className="overflow-hidden">
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          <WalletSection />
           {items.map((item) => {
             const isActive = location.pathname === item.to;
             return (

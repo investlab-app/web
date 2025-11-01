@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Info, Star, StarOff } from 'lucide-react';
+import { ArrowDown, ArrowUp, Info, Star } from 'lucide-react';
 import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {

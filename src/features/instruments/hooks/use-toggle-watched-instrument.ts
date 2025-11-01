@@ -58,7 +58,7 @@ export function useToggleWatchedInstrument() {
       // Return previous data for rollback on error
       return { previousDataMap, baseKey };
     },
-    onError: (error, variables, context) => {
+    onError: (_error, _variables, context) => {
       // Rollback to previous data on error for all affected queries
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (context?.previousDataMap && context?.baseKey) {

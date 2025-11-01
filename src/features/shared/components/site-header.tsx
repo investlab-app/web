@@ -2,6 +2,7 @@ import { cn } from '../utils/styles';
 import { LanguageToggle } from './language-toggle';
 import { BreadcrumbNav } from './breadcrumb-nav';
 import { MarketStatusLED } from './market-status-led';
+import { NotificationPanel } from '@/features/notifications';
 import { Separator } from '@/features/shared/components/ui/separator';
 import {
   SidebarTrigger,
@@ -53,6 +54,11 @@ export function SiteHeader({ className }: SiteHeaderProps) {
           data-tauri-drag-region-ignore
         >
           <MarketStatusLED />
+          <Separator
+            orientation="vertical"
+            className="mx-2 data-[orientation=vertical]:h-4"
+          />
+          <NotificationPanel />
           <Separator
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"

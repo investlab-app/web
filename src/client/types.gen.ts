@@ -341,6 +341,30 @@ export type MostTradedItem = {
     gain_percentage: number | null;
 };
 
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export type Notification = {
+    readonly id: string;
+    /**
+     * Notification Type
+     */
+    type?: TypeEnum;
+    readonly type_display: string;
+    title: string;
+    message: string;
+    is_seen?: boolean;
+    /**
+     * ID of the related object (e.g., price alert ID, order ID)
+     */
+    related_object_id?: string | null;
+    /**
+     * Type of the related object (e.g., 'price_alert', 'order')
+     */
+    related_object_type?: string | null;
+    readonly created_at: string;
+};
+
 export type NotificationConfig = {
     readonly id: string;
     /**
@@ -387,6 +411,34 @@ export type NotificationConfigRequest = {
     is_active?: boolean;
 };
 
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export type NotificationRequest = {
+    /**
+     * Notification Type
+     */
+    type?: TypeEnum;
+    title: string;
+    message: string;
+    is_seen?: boolean;
+    /**
+     * ID of the related object (e.g., price alert ID, order ID)
+     */
+    related_object_id?: string | null;
+    /**
+     * Type of the related object (e.g., 'price_alert', 'order')
+     */
+    related_object_type?: string | null;
+};
+
+/**
+ * Serializer for marking notifications as seen
+ */
+export type NotificationUpdate = {
+    is_seen?: boolean;
+};
+
 export type Order = {
     readonly id: string;
     ticker: InstrumentName;
@@ -421,6 +473,13 @@ export type PaginatedInstrumentWithPriceList = {
     results: Array<InstrumentWithPrice>;
 };
 
+export type PaginatedNotificationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Notification>;
+};
+
 export type PaginatedOrderList = {
     count: number;
     next?: string | null;
@@ -441,6 +500,13 @@ export type PatchedInvestorRequest = {
      */
     language?: string;
     watching_instruments?: Array<string>;
+};
+
+/**
+ * Serializer for marking notifications as seen
+ */
+export type PatchedNotificationUpdateRequest = {
+    is_seen?: boolean;
 };
 
 export type PatchedPriceAlertRequest = {
@@ -610,6 +676,14 @@ export type TradingOverview = {
     total_gain: number;
 };
 
+/**
+ * * `price_alert` - Price Alert
+ * * `order` - Order
+ * * `transaction` - Transaction
+ * * `system` - System
+ */
+export type TypeEnum = 'price_alert' | 'order' | 'transaction' | 'system';
+
 export type VapidPublicKey = {
     public_key: string;
 };
@@ -759,6 +833,27 @@ export type MarketOrderWritable = {
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
+};
+
+/**
+ * Serializer for displaying notifications in the UI
+ */
+export type NotificationWritable = {
+    /**
+     * Notification Type
+     */
+    type?: TypeEnum;
+    title: string;
+    message: string;
+    is_seen?: boolean;
+    /**
+     * ID of the related object (e.g., price alert ID, order ID)
+     */
+    related_object_id?: string | null;
+    /**
+     * Type of the related object (e.g., 'price_alert', 'order')
+     */
+    related_object_type?: string | null;
 };
 
 export type NotificationConfigWritable = {
@@ -1091,6 +1186,98 @@ export type NewsListResponses = {
 };
 
 export type NewsListResponse = NewsListResponses[keyof NewsListResponses];
+
+export type NotificationsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/notifications/';
+};
+
+export type NotificationsListResponses = {
+    200: PaginatedNotificationList;
+};
+
+export type NotificationsListResponse = NotificationsListResponses[keyof NotificationsListResponses];
+
+export type NotificationsCreateData = {
+    body: NotificationRequest;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/';
+};
+
+export type NotificationsCreateResponses = {
+    201: Notification;
+};
+
+export type NotificationsCreateResponse = NotificationsCreateResponses[keyof NotificationsCreateResponses];
+
+export type NotificationsRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/notifications/{id}/';
+};
+
+export type NotificationsRetrieveResponses = {
+    200: Notification;
+};
+
+export type NotificationsRetrieveResponse = NotificationsRetrieveResponses[keyof NotificationsRetrieveResponses];
+
+export type NotificationsPartialUpdateData = {
+    body?: PatchedNotificationUpdateRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/notifications/{id}/';
+};
+
+export type NotificationsPartialUpdateResponses = {
+    200: NotificationUpdate;
+};
+
+export type NotificationsPartialUpdateResponse = NotificationsPartialUpdateResponses[keyof NotificationsPartialUpdateResponses];
+
+export type NotificationsMarkAllAsSeenCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/mark_all_as_seen/';
+};
+
+export type NotificationsMarkAllAsSeenCreateResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type NotificationsUnseenCountRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/unseen_count/';
+};
+
+export type NotificationsUnseenCountRetrieveResponses = {
+    200: Notification;
+};
+
+export type NotificationsUnseenCountRetrieveResponse = NotificationsUnseenCountRetrieveResponses[keyof NotificationsUnseenCountRetrieveResponses];
 
 export type NotificationsVapidPublicKeyRetrieveData = {
     body?: never;
