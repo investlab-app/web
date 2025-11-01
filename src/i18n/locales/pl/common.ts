@@ -13,6 +13,7 @@ const plCommon = {
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   watched: 'Obserwowane',
+  no_watched_instruments: 'Brak obserwowanych',
   add: 'Dodaj',
   help: 'Pomoc',
   settings: 'Ustawienia',
