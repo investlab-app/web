@@ -70,7 +70,7 @@ export const AssetAllocationTile = ({
                     <Tooltip key={instrument_ticker}>
                       <TooltipTrigger asChild>
                         <div
-                          className="rounded-md h-4 cursor-pointer"
+                          className="rounded-md h-4"
                           style={{
                             width: `${percentage}%`,
                             backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
