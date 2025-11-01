@@ -10,7 +10,7 @@ const enCommon = {
   dashboard: 'Dashboard',
   stocks: 'Stocks',
   statistics: 'Statistics',
-  flows: 'flows',
+  flows: 'Strategies',
   wallet: 'Wallet',
   watched: 'Watched',
   no_watched_instruments: 'No watched instruments',
@@ -61,7 +61,7 @@ const enCommon = {
   tooltips: {
     navigation: {
       dashboard: 'Dashboard',
-      flows: 'flows',
+      flows: 'strategies',
       instruments: 'Stocks',
       transactions: 'Transactions',
       statistics: 'Statistics',

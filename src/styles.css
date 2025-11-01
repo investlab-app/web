@@ -61,7 +61,7 @@ code {
   --font-serif: Georgia, Cambria, 'Times New Roman', Times, serif;
   --font-mono:
     Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  --radius: 0rem;
+  --radius: 0.25rem;
   --shadow-2xs: 0px 1px 0px 0px hsl(0 0% 0% / 0);
   --shadow-xs: 0px 1px 0px 0px hsl(0 0% 0% / 0);
   --shadow-sm:
@@ -135,7 +135,7 @@ code {
   --sidebar-accent-foreground: oklch(0.9851 0 0);
   --sidebar-border: var(--border);
   --sidebar-ring: oklch(0.4386 0 0);
-  --radius: 0rem;
+  --radius: 0.25rem;
   --shadow-2xs: 0px 1px 0px 0px hsl(0 0% 0% / 0);
   --shadow-xs: 0px 1px 0px 0px hsl(0 0% 0% / 0);
   --shadow-sm:

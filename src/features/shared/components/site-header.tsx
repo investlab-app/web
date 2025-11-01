@@ -59,12 +59,8 @@ export function SiteHeader({ className }: SiteHeaderProps) {
             className="mx-2 data-[orientation=vertical]:h-4"
           />
           <NotificationPanel />
-          <Separator
-            orientation="vertical"
-            className="mx-2 data-[orientation=vertical]:h-4"
-          />
-          <LanguageToggle />
           <ThemeToggle />
+          <LanguageToggle />
         </div>
       </div>
     </header>

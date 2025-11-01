@@ -153,7 +153,7 @@ export function NotificationPanel() {
         <Button
           variant="ghost"
           size="icon"
-          className="relative h-9 w-9"
+          className="relative h-7 w-7"
           aria-label={t('common.notifications', 'Notifications')}
         >
           <Bell className="h-5 w-5" />

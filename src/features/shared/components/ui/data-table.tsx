@@ -53,6 +53,7 @@ interface DataTableProps<TData, TValue> {
   FetchingRowsSkeleton: JSX.Element;
   enablePagination?: boolean;
   showSelectedRows?: boolean;
+  className?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,6 +69,7 @@ export function DataTable<TData, TValue>({
   FetchingRowsSkeleton,
   enablePagination = false,
   showSelectedRows = false,
+  className,
 }: DataTableProps<TData, TValue>) {
   'use no memo'; // https://github.com/TanStack/table/issues/5567
 
@@ -89,48 +91,50 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <Table className="rounded-md border border-muted">
-        <TableHeader className="bg-muted">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
+      <div className={cn(className, 'border border-muted')}>
+        <Table className={className}>
+          <TableHeader className="bg-muted">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {!table.getRowModel().rows.length
+              ? !isPending && <DataTableEmptyState columns={columns} />
+              : table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={cn('group', onRowClick && 'cursor-pointer')}
+                    onClick={() => onRowClick?.(row)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {!table.getRowModel().rows.length
-            ? !isPending && <DataTableEmptyState columns={columns} />
-            : table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className={cn('group', onRowClick && 'cursor-pointer')}
-                  onClick={() => onRowClick?.(row)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-          {isPending && FetchingRowsSkeleton}
-        </TableBody>
-      </Table>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+            {isPending && FetchingRowsSkeleton}
+          </TableBody>
+        </Table>
+      </div>
       {enablePagination && (
         <DataTablePagination
           table={table}

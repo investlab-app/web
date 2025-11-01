@@ -112,9 +112,11 @@ function usePositionsColumns() {
 export function PositionsTable({
   history,
   enablePagination = false,
+  className,
 }: {
   history: Array<HistoryEntry>;
   enablePagination?: boolean;
+  className?: string;
 }) {
   const columns = usePositionsColumns();
   const [pagination, setPagination] = useState<PaginationState>({
@@ -124,6 +126,7 @@ export function PositionsTable({
 
   return (
     <DataTable
+      className={className}
       data={history}
       columns={columns}
       pagination={pagination}
