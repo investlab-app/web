@@ -71,6 +71,7 @@ export function useInstrumentsTable({
         const dailySummary = priceInfo.daily_summary;
 
         acc[instrument.ticker] = {
+          id: instrument.id,
           name: instrument.name,
           volume: Number(dailySummary.volume),
           currentPrice: Number(priceInfo.current_price),
@@ -78,6 +79,7 @@ export function useInstrumentsTable({
           symbol: instrument.ticker,
           logo: instrument.logo ?? null,
           icon: instrument.icon ?? null,
+          is_watched: instrument.is_watched ?? false,
         } as Instrument;
         return acc;
       },

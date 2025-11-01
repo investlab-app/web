@@ -292,7 +292,8 @@ export const zInstrumentWithPrice = z.object({
         z.url(),
         z.null()
     ])),
-    price_info: zPriceDailySummary
+    price_info: zPriceDailySummary,
+    is_watched: z.boolean().readonly()
 });
 
 export const zInvestor = z.object({
@@ -766,6 +767,11 @@ export const zTickerNews = z.object({
     ]))
 });
 
+export const zToggleWatchedInstrument = z.object({
+    is_watched: z.boolean(),
+    instrument_id: z.string()
+});
+
 export const zTradingOverview = z.object({
     total_trades: z.int(),
     buys: z.int(),
@@ -1069,6 +1075,16 @@ export const zInvestorsMeLanguageCreateData = z.object({
 });
 
 export const zInvestorsMeLanguageCreateResponse = zLanguageUpdate;
+
+export const zInvestorsMeWatchedInstrumentsToggleCreateData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        instrument_id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeWatchedInstrumentsToggleCreateResponse = zToggleWatchedInstrument;
 
 export const zMarketsHolidaysListData = z.object({
     body: z.optional(z.never()),

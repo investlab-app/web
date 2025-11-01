@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Heart, Info } from 'lucide-react';
+import { ArrowDown, ArrowUp, Heart, HeartPlus, Info } from 'lucide-react';
+import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -37,6 +38,7 @@ export const InstrumentTable = ({
   isPending,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
+  const { mutate: toggleWatched } = useToggleWatchedInstrument();
 
   const columns: Array<ColumnDef<Instrument>> = [
     {
@@ -72,14 +74,35 @@ export const InstrumentTable = ({
       ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          <Heart
-            className="hidden group-hover:inline-flex"
-            fill={
-              row.original.symbol === 'AMZN'
-                ? cssVar('--foreground')
-                : undefined
-            }
-          />
+          {row.original.is_watched && (
+            <>
+              <Heart
+                className="inline-flex group-hover:hidden cursor-pointer"
+                fill={cssVar('--foreground')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWatched(row.original.id);
+                }}
+              />
+              <HeartPlus
+                className="hidden group-hover:inline-flex cursor-pointer"
+                fill={cssVar('--foreground')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWatched(row.original.id);
+                }}
+              />
+            </>
+          )}
+          {!row.original.is_watched && (
+            <HeartPlus
+              className="hidden group-hover:inline-flex cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWatched(row.original.id);
+              }}
+            />
+          )}
           <InstrumentIconCircle
             className="inline-flex group-hover:hidden"
             symbol={row.original.symbol}

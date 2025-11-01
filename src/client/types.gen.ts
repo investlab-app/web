@@ -223,6 +223,7 @@ export type InstrumentWithPrice = {
     icon?: string | null;
     logo?: string | null;
     price_info: PriceDailySummary;
+    readonly is_watched: boolean;
 };
 
 export type Investor = {
@@ -621,6 +622,17 @@ export type TickerNews = {
     publisher?: Publisher | null;
     tickers?: Array<string> | null;
     title?: string | null;
+};
+
+export type ToggleWatchedInstrument = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched: boolean;
+    /**
+     * ID of the instrument
+     */
+    instrument_id: string;
 };
 
 export type TradingOverview = {
@@ -1025,6 +1037,21 @@ export type InvestorsMeLanguageCreateResponses = {
 };
 
 export type InvestorsMeLanguageCreateResponse = InvestorsMeLanguageCreateResponses[keyof InvestorsMeLanguageCreateResponses];
+
+export type InvestorsMeWatchedInstrumentsToggleCreateData = {
+    body?: never;
+    path: {
+        instrument_id: string;
+    };
+    query?: never;
+    url: '/api/investors/me/watched-instruments/{instrument_id}/toggle/';
+};
+
+export type InvestorsMeWatchedInstrumentsToggleCreateResponses = {
+    200: ToggleWatchedInstrument;
+};
+
+export type InvestorsMeWatchedInstrumentsToggleCreateResponse = InvestorsMeWatchedInstrumentsToggleCreateResponses[keyof InvestorsMeWatchedInstrumentsToggleCreateResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;
