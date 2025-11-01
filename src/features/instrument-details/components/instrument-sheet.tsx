@@ -32,7 +32,11 @@ export function InstrumentSheetHeader({
           />
           <div className="flex flex-col gap-1">
             <span className="text-xl font-bold">{instrument.name}</span>
-            <Button variant="link" className="self-start p-0 h-min text-secondary-foreground" asChild>
+            <Button
+              variant="link"
+              className="self-start p-0 h-min text-secondary-foreground"
+              asChild
+            >
               <Link to={`/instruments/${instrument.symbol}`}>
                 {t('instruments.see_details')}
               </Link>
