@@ -26,7 +26,6 @@ import { Route as AuthedStatisticsRouteRouteImport } from './routes/_authed/stat
 import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
 import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
-import { Route as AuthedPriceAlertsIndexRouteImport } from './routes/_authed/price-alerts/index'
 import { Route as AuthedInstrumentsIndexRouteImport } from './routes/_authed/instruments/index'
 import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_authed/instruments/$instrumentId'
 
@@ -112,11 +111,6 @@ const AuthedStatisticsIndexRoute = AuthedStatisticsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedStatisticsRouteRoute,
 } as any)
-const AuthedPriceAlertsIndexRoute = AuthedPriceAlertsIndexRouteImport.update({
-  id: '/price-alerts/',
-  path: '/price-alerts/',
-  getParentRoute: () => AuthedRouteRoute,
-} as any)
 const AuthedInstrumentsIndexRoute = AuthedInstrumentsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -144,7 +138,6 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
-  '/price-alerts': typeof AuthedPriceAlertsIndexRoute
   '/statistics/': typeof AuthedStatisticsIndexRoute
   '/transactions/': typeof AuthedTransactionsIndexRoute
 }
@@ -160,7 +153,6 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
-  '/price-alerts': typeof AuthedPriceAlertsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
   '/transactions': typeof AuthedTransactionsIndexRoute
 }
@@ -183,7 +175,6 @@ export interface FileRoutesById {
   '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
-  '/_authed/price-alerts/': typeof AuthedPriceAlertsIndexRoute
   '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
   '/_authed/transactions/': typeof AuthedTransactionsIndexRoute
 }
@@ -204,7 +195,6 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments/'
-    | '/price-alerts'
     | '/statistics/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
@@ -220,7 +210,6 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/instruments/$instrumentId'
     | '/instruments'
-    | '/price-alerts'
     | '/statistics'
     | '/transactions'
   id:
@@ -242,7 +231,6 @@ export interface FileRouteTypes {
     | '/_legal/terms-of-service'
     | '/_authed/instruments/$instrumentId'
     | '/_authed/instruments/'
-    | '/_authed/price-alerts/'
     | '/_authed/statistics/'
     | '/_authed/transactions/'
   fileRoutesById: FileRoutesById
@@ -376,13 +364,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedStatisticsIndexRouteImport
       parentRoute: typeof AuthedStatisticsRouteRoute
     }
-    '/_authed/price-alerts/': {
-      id: '/_authed/price-alerts/'
-      path: '/price-alerts'
-      fullPath: '/price-alerts'
-      preLoaderRoute: typeof AuthedPriceAlertsIndexRouteImport
-      parentRoute: typeof AuthedRouteRoute
-    }
     '/_authed/instruments/': {
       id: '/_authed/instruments/'
       path: '/'
@@ -465,14 +446,12 @@ interface AuthedRouteRouteChildren {
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
   AuthedStatisticsRouteRoute: typeof AuthedStatisticsRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
-  AuthedPriceAlertsIndexRoute: typeof AuthedPriceAlertsIndexRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
   AuthedStatisticsRouteRoute: AuthedStatisticsRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
-  AuthedPriceAlertsIndexRoute: AuthedPriceAlertsIndexRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(

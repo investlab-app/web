@@ -46,55 +46,31 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.dashboard'),
         to: '/',
         icon: LayoutDashboardIcon,
-        tooltip: t(
-          'common.tooltips.navigation.dashboard',
-          'View your portfolio overview and account summary'
-        ),
-      },
-      {
-        title: t('common.stocks'),
-        to: '/instruments',
-        icon: List,
-        tooltip: t(
-          'common.tooltips.navigation.instruments',
-          'Browse and analyze available financial instruments'
-        ),
-      },
-      {
-        title: t('common.transactions'),
-        to: '/transactions',
-        icon: History,
-        tooltip: t(
-          'common.tooltips.navigation.transactions',
-          'View your trading history and portfolio positions'
-        ),
+        tooltip: t('common.tooltips.navigation.dashboard'),
       },
       {
         title: t('common.flows'),
         to: '/flows',
         icon: Network,
-        tooltip: t(
-          'common.tooltips.navigation.flows',
-          'Create and manage your trading flows'
-        ),
+        tooltip: t('common.tooltips.navigation.flows'),
+      },
+      {
+        title: t('common.stocks'),
+        to: '/instruments',
+        icon: List,
+        tooltip: t('common.tooltips.navigation.instruments'),
+      },
+      {
+        title: t('common.transactions'),
+        to: '/transactions',
+        icon: History,
+        tooltip: t('common.tooltips.navigation.transactions'),
       },
       {
         title: t('common.statistics'),
         to: '/statistics',
         icon: PieChart,
-        tooltip: t(
-          'common.tooltips.navigation.statistics',
-          'Analyze your portfolio performance and trends'
-        ),
-      },
-      {
-        title: t('price_alerts.title', 'Notifications'),
-        to: '/price-alerts',
-        icon: Bell,
-        tooltip: t(
-          'common.tooltips.navigation.price_alerts',
-          'Manage your price alerts and notifications'
-        ),
+        tooltip: t('common.tooltips.navigation.statistics'),
       },
     ],
     navSecondary: [

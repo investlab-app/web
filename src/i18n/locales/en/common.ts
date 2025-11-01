@@ -60,10 +60,11 @@ const enCommon = {
   faq: 'FAQ',
   tooltips: {
     navigation: {
-      dashboard: 'Portfolio overview and account summary',
-      instruments: 'Browse instruments',
-      transactions: 'Trading history',
-      statistics: 'Portfolio performance analysis',
+      dashboard: 'Dashboard',
+      flows: 'flows',
+      instruments: 'Stocks',
+      transactions: 'Transactions',
+      statistics: 'Statistics',
     },
     charts: {
       line_chart: 'Line chart',

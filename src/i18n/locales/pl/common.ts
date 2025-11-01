@@ -60,10 +60,11 @@ const plCommon = {
   faq: 'FAQ',
   tooltips: {
     navigation: {
-      dashboard: 'Przegląd portfela i konta',
-      instruments: 'Przeglądaj instrumenty',
-      transactions: 'Historia transakcji',
-      statistics: 'Analiza wyników portfela',
+      dashboard: 'Strona główna',
+      flows: 'Strategie',
+      instruments: 'Instrumenty',
+      transactions: 'Transakcje',
+      statistics: 'Statystyki',
     },
     charts: {
       line_chart: 'Wykres liniowy',
