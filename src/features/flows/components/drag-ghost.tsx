@@ -9,6 +9,8 @@ export function DragGhost({ type }: DragGhostProps) {
 
   if (!position) return null;
 
+  console.log(position);
+
   return (
     <div
       className="
@@ -24,7 +26,6 @@ export function DragGhost({ type }: DragGhostProps) {
         shadow-md
         flex items-center justify-center
         transform
-        -translate-x-1/2 -translate-y-1/2
         transition-transform duration-100
       "
       style={{

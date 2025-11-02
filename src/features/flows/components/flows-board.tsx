@@ -5,6 +5,7 @@ import {
   useEdgesState,
   useNodesState,
 } from '@xyflow/react';
+import { PanelRightIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { PriceOfNode } from '../nodes/number/price-of-node-settings';
 import { CustomNodeTypes } from '../types/node-types-2';
@@ -33,12 +34,12 @@ import { CheckEveryNode } from '../nodes/trigger/check-every-node-settings';
 import { PriceChangesNode } from '../nodes/trigger/price-changes-node-settings';
 import { SendNotificationNode } from '../nodes/action/send-notification-node-settings';
 import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-settings';
-import { DnDProvider } from '../utils/dnd-context';
 import { ChangeOverTime } from '../nodes/math/change-over-time-node-settings';
 import { OccurredXTimesNode } from '../nodes/logic-operator/occurred-x-times-node-settings';
+import { useDnD } from '../hooks/use-dnd';
 import { useValidators } from '../hooks/use-validators';
-import { DnDSidebar } from './sidebar/dnd-sidebar';
-import { SaveButton } from './execute-button';
+import { DragGhost } from './drag-ghost';
+import { FlowsSidebar } from './sidebar/flows-sidebar';
 import type {
   Connection,
   Edge,
@@ -48,6 +49,7 @@ import type {
 } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
+import { SidebarProvider, SidebarTrigger } from '@/features/shared/components/ui/sidebar';
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
@@ -89,6 +91,7 @@ const nodeTypes: NodeTypes = {
 export function FlowsBoard() {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [nodeType, setNodeType] = useState<string|null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const { validateConnectionNew } = useValidators();
@@ -106,10 +109,15 @@ export function FlowsBoard() {
     }
   }, [rfInstance]);
 
+  const {isDragging} = useDnD();
+
   return (
-    <DnDProvider>
-      <div className="flex w-full h-full">
-        <div className="flex-1">
+   
+    <SidebarProvider  className="flex w-full h-full" >
+        {isDragging && <DragGhost type={nodeType} />}
+
+      <div className="flex-1">
+
           <ReactFlow
             colorMode={theme}
             nodes={nodes}
@@ -129,20 +137,29 @@ export function FlowsBoard() {
             onInit={setRfInstance}
             isValidConnection={validateConnectionNew}
             zoomOnScroll={false}
-          >
+            >
             <Background />
           </ReactFlow>
-        </div>
-        <div className="h-full w-70 p-4 overflow-y-hidden">
-          <SaveButton onSave={onSave} />
-          {rfInstance && (
-            <DnDSidebar
+          </div>
+          <div className="h-full w-min">
+
+           <SidebarTrigger className="text-foreground" >
+           <PanelRightIcon />
+<span className="sr-only">Toggle Nodes Toolbox</span>
+                  </SidebarTrigger>
+</div>
+
+
+
+
+              {rfInstance && <FlowsSidebar
+
+              setNodeType={setNodeType}
               addNode={(node) => setNodes((nds) => nds.concat(node))}
               screenToFlowPosition={rfInstance.screenToFlowPosition}
-            />
-          )}
-        </div>
-      </div>
-    </DnDProvider>
+              onSave={onSave}
+              />}
+                  </SidebarProvider>
+
   );
 }
