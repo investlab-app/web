@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, SeparatorVertical } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { SummaryMetric, SummaryMetricSkeleton } from './summary-metric';
 import type { Position } from '@/client';
@@ -141,7 +141,7 @@ export function PositionSummarySkeleton({ className }: { className?: string }) {
       )}
     >
       <div className="flex flex-col gap-3 sm:gap-4">
-        <div className="flex items-center gap-2 sm:gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
