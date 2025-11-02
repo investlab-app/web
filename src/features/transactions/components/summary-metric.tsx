@@ -17,7 +17,7 @@ export function SummaryMetric({
   return (
     <div
       className={cn(
-        'border-muted-foreground/10 border-l p-3',
+        'border-muted-foreground/10 p-3',
         containerClassName
       )}
     >
@@ -33,7 +33,7 @@ export function SummaryMetric({
 
 export function SummaryMetricSkeleton() {
   return (
-    <div className="border-muted-foreground/10 border-l p-3 min-w-[140px]">
+    <div className="border-muted-foreground/10 p-3 min-w-[140px]">
       <Skeleton className="h-3 w-20 mb-1" />
       <Skeleton className="h-6 w-24" />
     </div>

@@ -26,7 +26,7 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
         setCollapsed={() => setCollapsed(!collapsed)}
         isCollapsed={collapsed}
         className={cn(
-          'rounded-t-xl overflow-hidden border-b border-muted-foreground/10 bg-muted/40',
+          'rounded-t-xl overflow-hidden bg-muted/40',
           collapsed && 'rounded-b-xl'
         )}
       />
@@ -35,23 +35,15 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
         <div
           id={contentId}
           aria-hidden={collapsed}
-          className={cn('relative rounded-b-xl bg-background', 'px-2 py-2')}
+          className={cn(
+            'relative rounded-b-xl border-t border-muted-foreground/20 bg-background'
+          )}
         >
-          {/* Soft edge fades to hint horizontal scroll */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-2 left-0 w-8 bg-gradient-to-r from-background to-transparent rounded-bl-xl"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-2 right-0 w-8 bg-gradient-to-l from-background to-transparent rounded-br-xl"
-          />
-
           <PositionsCards
             history={position.history}
             currentPrice={currentPrice}
             className={cn(
-              'rounded-none scroll-smooth snap-x snap-mandatory -mx-2'
+              'rounded-none scroll-smooth snap-x snap-mandatory'
             )}
           />
         </div>

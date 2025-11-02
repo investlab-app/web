@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, SeparatorVertical } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { SummaryMetric, SummaryMetricSkeleton } from './summary-metric';
 import type { Position } from '@/client';
@@ -47,10 +47,9 @@ export function PositionSummary({
   );
 
   return (
-    <div className={cn('bg-muted/40 px-3 py-3 sm:px-4 sm:py-4', className)}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {/* Left: Toggle + instrument */}
-        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+    <div className={cn('bg-muted/40', className)}>
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2 sm:gap-4 py-3 border-b-muted-foreground/10 border-b px-4">
           <Button
             variant="ghost"
             size="icon"
@@ -60,28 +59,28 @@ export function PositionSummary({
               event.stopPropagation();
               setCollapsed();
             }}
-            className="h-9 w-9 shrink-0 border border-transparent hover:border-muted-foreground/20"
+            className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 border border-transparent hover:border-muted-foreground/20"
           >
             <ChevronDown
               className={cn(
-                'h-4 w-4 transition-transform',
+                'h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform',
                 isCollapsed ? '-rotate-90' : 'rotate-0'
               )}
             />
           </Button>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             <InstrumentIconCircle
               icon={position.icon}
               symbol={position.symbol}
               name={position.name}
-              size="md"
+              size="sm"
             />
             {isNavigable ? (
               <Button
                 variant="link"
                 asChild
-                className="px-0 text-foreground text-lg font-semibold"
+                className="px-0 text-foreground text-sm sm:text-base font-semibold truncate max-w-[120px] sm:max-w-none"
               >
                 <Link
                   aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
@@ -92,30 +91,30 @@ export function PositionSummary({
                 </Link>
               </Button>
             ) : (
-              <span className="text-lg font-semibold text-foreground">
+              <span className="text-sm sm:text-base font-semibold text-foreground truncate max-w-[120px] sm:max-w-none">
                 {position.name}
               </span>
             )}
           </div>
         </div>
 
-        {/* Right: metrics */}
-        <div className="grid w-full sm:w-auto grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-1 sm:gap-x-4">
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <SummaryMetric
             label={t('common.quantity')}
             value={toFixedLocalized(position.quantity, i18n.language, 2)}
-            containerClassName="min-w-[140px]"
+            containerClassName="min-w-0 border-b border-r md:border-b-0 pl-4"
           />
           <SummaryMetric
             label={t('common.market_value')}
             value={`${toFixedLocalized(position.market_value, i18n.language, 2)}`}
-            containerClassName="min-w-[160px]"
+            containerClassName="min-w-0 border-b md:border-b-0 md:border-r"
           />
           <SummaryMetric
             label={t('common.gain')}
             value={toFixedLocalized(position.gain, i18n.language, 2)}
             valueClassName={getProfabilityColor(position.gain)}
-            containerClassName="min-w-[140px]"
+            containerClassName="min-w-0 border-r"
           />
           <SummaryMetric
             label={t('common.gain_percentage')}
@@ -125,7 +124,7 @@ export function PositionSummary({
                 : `${toFixedLocalized(position.gain_percentage, i18n.language, 2)}%`
             }
             valueClassName={getProfabilityColor(position.gain_percentage)}
-            containerClassName="min-w-[140px]"
+            containerClassName="min-w-0"
           />
         </div>
       </div>
@@ -137,26 +136,28 @@ export function PositionSummarySkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'px-3 py-3 sm:px-4 sm:py-4 bg-muted/40 border-b border-muted-foreground/10',
+        'px-2 py-2 sm:px-3 sm:py-3 md:px-4 md:py-4 bg-muted/40 border-b border-muted-foreground/10',
         className
       )}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 shrink-0 border border-transparent"
+            className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 border border-transparent"
           >
-            <ChevronDown className={cn('h-4 w-4 transition-transform')} />
+            <ChevronDown
+              className={cn('h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform')}
+            />
           </Button>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Skeleton className="h-10 w-10 rounded-full" />
-            <Skeleton className="h-6 w-32" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Skeleton className="h-8 w-8 sm:h-10 sm:w-10 rounded-full" />
+            <Skeleton className="h-5 w-24 sm:h-6 sm:w-32" />
           </div>
         </div>
 
-        <div className="grid w-full sm:w-auto grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-1 sm:gap-x-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-2 sm:gap-x-3 sm:gap-y-2 md:gap-x-4">
           <SummaryMetricSkeleton />
           <SummaryMetricSkeleton />
           <SummaryMetricSkeleton />

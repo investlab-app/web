@@ -128,7 +128,7 @@ function BuyCard({
       className={[
         'flex-shrink-0 snap-start transition-colors',
         'w-[18rem] sm:w-80 md:w-96',
-        'hover:bg-accent/40',
+        'hover:bg-accent/40 h-full',
       ].join(' ')}
     >
       <CardHeader className="pb-3">
@@ -341,11 +341,11 @@ export function PositionsCards({
 
   return (
     <div className={`overflow-x-auto ${className || ''}`}>
-      <div className="flex gap-4">
+      <div className="flex flex-row">
         {history.map((entry, index) => (
           <div
             key={`${entry.timestamp}-${index}`}
-            className={`flex-shrink-0 snap-start ${index === 0 ? 'pl-1' : ''}`}
+            className="h-full snap-start"
           >
             {entry.is_buy ? (
               <BuyCard
