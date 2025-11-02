@@ -24,6 +24,7 @@ const plTransactions = {
     avg_buy_price: 'Średnia cena kupna',
     realized_gain_loss: 'Zrealizowany zysk / strata',
     realized_pct: 'Zrealizowany %',
+    current_price: 'Obecna cena',
   },
   actions: {
     instrument_details: 'Szczegóły instrumentu',
@@ -41,6 +42,7 @@ const plTransactions = {
   error_loading:
     'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
   no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
+  end_of_history: 'Koniec historii transakcji',
   tooltips: {
     name: 'Nazwa instrumentu finansowego',
     transaction: 'Data i typ transakcji (kupno lub sprzedaż)',

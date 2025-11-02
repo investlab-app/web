@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import {
   PositionSummaryWithTable,
   PositionSummaryWithTableSkeleton,
@@ -16,16 +17,6 @@ export function Positions({ type }: PositionsTableProps) {
   const { t } = useTranslation();
   const { data, isPending, isError } = useQuery(
     statisticsTransactionsHistoryListOptions({ query: { type } })
-  );
-
-  // Debug: log the data to understand its structure
-  console.log(
-    'Positions data:',
-    data,
-    'Type:',
-    typeof data,
-    'Is array:',
-    Array.isArray(data)
   );
 
   if (isError) {

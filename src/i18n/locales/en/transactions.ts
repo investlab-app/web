@@ -24,6 +24,7 @@ const enTransactions = {
     avg_buy_price: 'Avg Buy Price',
     realized_gain_loss: 'Realized Gain / Loss',
     realized_pct: 'Realized %',
+    current_price: 'Current Price',
   },
   actions: {
     instrument_details: 'Instrument details',
@@ -38,6 +39,7 @@ const enTransactions = {
   },
   error_loading: 'Sorry, the transaction history could not be loaded.',
   no_open_positions: 'You have no open positions for this instrument.',
+  end_of_history: 'End of transaction history',
   tooltips: {
     name: 'Name of the financial instrument',
     transaction: 'Date and type of transaction (buy or sell)',

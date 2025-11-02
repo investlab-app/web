@@ -42,9 +42,7 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
           <PositionsCards
             history={position.history}
             currentPrice={currentPrice}
-            className={cn(
-              'rounded-none scroll-smooth snap-x snap-mandatory'
-            )}
+            className={cn('rounded-none scroll-smooth snap-x snap-mandatory')}
           />
         </div>
       )}
