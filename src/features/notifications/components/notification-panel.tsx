@@ -135,7 +135,7 @@ export function NotificationPanel() {
   const [open, setOpen] = useState(false);
 
   const { data: notifications, isLoading } = useNotifications();
-  const { count: unseenCount } = useUnseenNotificationCount();
+  const unseenCount = useUnseenNotificationCount();
   const markAsSeen = useMarkNotificationAsSeen();
   const markAllAsSeen = useMarkAllNotificationsAsSeen();
 
@@ -157,12 +157,12 @@ export function NotificationPanel() {
           aria-label={t('common.notifications', 'Notifications')}
         >
           <Bell className="h-5 w-5" />
-          {unseenCount > 0 && (
+          {(unseenCount ?? 0) > 0 && (
             <Badge
               variant="destructive"
               className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs font-bold"
             >
-              {unseenCount > 99 ? '99+' : unseenCount}
+              {(unseenCount ?? 0) > 99 ? '99+' : unseenCount}
             </Badge>
           )}
         </Button>
@@ -174,7 +174,7 @@ export function NotificationPanel() {
           <h3 className="font-semibold text-base">
             {t('common.notifications', 'Notifications')}
           </h3>
-          {unseenCount > 0 && (
+          {(unseenCount ?? 0) > 0 && (
             <Button
               variant="ghost"
               size="sm"

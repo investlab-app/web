@@ -3,9 +3,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   notificationsMarkAllAsSeenCreate,
   notificationsPartialUpdate,
-  notificationsUnseenCountRetrieve,
 } from '@/client/sdk.gen';
-import { notificationsListOptions } from '@/client/@tanstack/react-query.gen';
+import {
+  notificationsListOptions,
+  notificationsUnseenCountRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 /**
  * Fetch all notifications for the current user
@@ -30,27 +32,9 @@ export function useNotifications() {
  * Get count of unseen notifications
  */
 export function useUnseenNotificationCount() {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['notifications', 'unseen_count'],
-    queryFn: async () => {
-      const response = await notificationsUnseenCountRetrieve({
-        throwOnError: true,
-      });
-      // The response contains unseen_count from the backend
-      interface UnseenCountResponse {
-        unseen_count: number;
-      }
-      const responseData = response.data as unknown as UnseenCountResponse;
-      return responseData.unseen_count;
-    },
-  });
+  const { data } = useQuery(notificationsUnseenCountRetrieveOptions());
 
-  return {
-    count: data ?? 0,
-    isLoading,
-    error,
-    refetch,
-  };
+  return data;
 }
 
 /**

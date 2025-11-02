@@ -1274,7 +1274,7 @@ export type NotificationsUnseenCountRetrieveData = {
 };
 
 export type NotificationsUnseenCountRetrieveResponses = {
-    200: Notification;
+    200: number;
 };
 
 export type NotificationsUnseenCountRetrieveResponse = NotificationsUnseenCountRetrieveResponses[keyof NotificationsUnseenCountRetrieveResponses];

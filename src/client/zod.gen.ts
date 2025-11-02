@@ -1275,7 +1275,7 @@ export const zNotificationsUnseenCountRetrieveData = z.object({
     query: z.optional(z.never())
 });
 
-export const zNotificationsUnseenCountRetrieveResponse = zNotification;
+export const zNotificationsUnseenCountRetrieveResponse = z.int();
 
 export const zNotificationsVapidPublicKeyRetrieveData = z.object({
     body: z.optional(z.never()),

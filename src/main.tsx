@@ -2,7 +2,12 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  useIsRestoring,
+} from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
@@ -84,6 +89,7 @@ function App() {
   const clerk = useClerk();
   const isSessionCookie = document.cookie.includes('__session=');
   const isLoggedInBefore = isSessionCookie || auth.isSignedIn;
+  const isRestoring = useIsRestoring();
 
   useEffect(() => {
     // ensure session is fresh when back online
@@ -98,6 +104,10 @@ function App() {
       auth.signOut();
     }
   }, [auth, isSessionCookie]);
+
+  if (isRestoring) {
+    return null;
+  }
 
   return (
     <WSProvider>
