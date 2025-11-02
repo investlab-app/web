@@ -12,12 +12,11 @@ function RouteComponent() {
   return (
     <AppFrame>
       <ReactFlowProvider>
-         <DnDProvider>
-
-        <div className="h-[calc(100vh-var(--header-height)-2rem)]">
-          <FlowsBoard />
-        </div>
-         </DnDProvider>
+        <DnDProvider>
+          <div className="h-[calc(100vh-var(--header-height)-2rem)]">
+            <FlowsBoard />
+          </div>
+        </DnDProvider>
       </ReactFlowProvider>
     </AppFrame>
   );

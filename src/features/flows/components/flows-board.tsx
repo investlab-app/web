@@ -49,7 +49,10 @@ import type {
 } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import '@xyflow/react/dist/style.css';
-import { SidebarProvider, SidebarTrigger } from '@/features/shared/components/ui/sidebar';
+import {
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/features/shared/components/ui/sidebar';
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
@@ -91,7 +94,7 @@ const nodeTypes: NodeTypes = {
 export function FlowsBoard() {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const [nodeType, setNodeType] = useState<string|null>(null);
+  const [nodeType, setNodeType] = useState<string | null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const { validateConnectionNew } = useValidators();
@@ -109,57 +112,51 @@ export function FlowsBoard() {
     }
   }, [rfInstance]);
 
-  const {isDragging} = useDnD();
+  const { isDragging } = useDnD();
 
   return (
-   
-    <SidebarProvider  className="flex w-full h-full" >
-        {isDragging && <DragGhost type={nodeType} />}
+    <SidebarProvider className="flex w-full h-full">
+      {isDragging && <DragGhost type={nodeType} />}
 
       <div className="flex-1">
+        <ReactFlow
+          colorMode={theme}
+          nodes={nodes}
+          edges={edges}
+          nodeExtent={[
+            [-3000, -3000],
+            [3000, 3000],
+          ]}
+          translateExtent={[
+            [-3000, -3000],
+            [3000, 3000],
+          ]}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          onInit={setRfInstance}
+          isValidConnection={validateConnectionNew}
+          zoomOnScroll={false}
+        >
+          <Background />
+        </ReactFlow>
+      </div>
+      <div className=" h-full w-min">
+        <SidebarTrigger className="text-foreground">
+          <PanelRightIcon />
+          <span className="sr-only">Toggle Nodes Toolbox</span>
+        </SidebarTrigger>
+      </div>
 
-          <ReactFlow
-            colorMode={theme}
-            nodes={nodes}
-            edges={edges}
-            nodeExtent={[
-              [-3000, -3000],
-              [3000, 3000],
-            ]}
-            translateExtent={[
-              [-3000, -3000],
-              [3000, 3000],
-            ]}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            onInit={setRfInstance}
-            isValidConnection={validateConnectionNew}
-            zoomOnScroll={false}
-            >
-            <Background />
-          </ReactFlow>
-          </div>
-          <div className="h-full w-min">
-
-           <SidebarTrigger className="text-foreground" >
-           <PanelRightIcon />
-<span className="sr-only">Toggle Nodes Toolbox</span>
-                  </SidebarTrigger>
-</div>
-
-
-
-
-              {rfInstance && <FlowsSidebar
-
-              setNodeType={setNodeType}
-              addNode={(node) => setNodes((nds) => nds.concat(node))}
-              screenToFlowPosition={rfInstance.screenToFlowPosition}
-              onSave={onSave}
-              />}
-                  </SidebarProvider>
-
+      {rfInstance && (
+        <FlowsSidebar
+          setNodeType={setNodeType}
+          addNode={(node) => setNodes((nds) => nds.concat(node))}
+          screenToFlowPosition={rfInstance.screenToFlowPosition}
+          onSave={onSave}
+        />
+      )}
+    </SidebarProvider>
   );
 }

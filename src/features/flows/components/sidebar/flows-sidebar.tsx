@@ -1,27 +1,53 @@
-import { SaveButton } from "./save-button";
-import { DnDSidebar } from "./dnd-sidebar";
-import type { Node, XYPosition } from "@xyflow/react";
-import { Sidebar, SidebarContent, SidebarHeader } from "@/features/shared/components/ui/sidebar";
+import { FlowHeader } from '../flow-header';
+import { SaveButton } from './save-button';
+import { DnDSidebar } from './dnd-sidebar';
+import type { Node, XYPosition } from '@xyflow/react';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+} from '@/features/shared/components/ui/sidebar';
 
 interface FlowsSidebarProps {
   addNode: (node: Node) => void;
-  setNodeType: (type: string|null) => void;
+  setNodeType: (type: string | null) => void;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
   onSave: () => void;
 }
 
-
-export function FlowsSidebar({addNode, screenToFlowPosition, onSave, setNodeType} : FlowsSidebarProps)  {
-return (
-<Sidebar variant="sidebar" collapsible="offcanvas" side="right" className="overflow-hidden p-4">
-  <div className="h-10 bg-transparent">
-</div>
-      <SidebarHeader className="h-(--header-height) justify-center bg-transparent">
+export function FlowsSidebar({
+  addNode,
+  screenToFlowPosition,
+  onSave,
+  setNodeType,
+}: FlowsSidebarProps) {
+  return (
+    <Sidebar
+      variant="inset"
+      collapsible="offcanvas"
+      side="right"
+      noBackground
+      className="overflow-hidden p-3 mt-10 w-fit"
+    >
+      <SidebarHeader className="h-fit justify-center p-0">
+        {/* <FlowHeader
+  initialTitle="My Trading 1"
+  onSave={(newTitle) => {
+    console.log('Saving new title:', newTitle);
+  }}
+  onDelete={() => {
+    console.log('Deleting flow');
+  }}
+/> */}
         <SaveButton onSave={onSave} />
       </SidebarHeader>
-      <SidebarContent className="bg-transparent">
-        <DnDSidebar addNode={addNode} screenToFlowPosition={screenToFlowPosition} setNodeType={setNodeType}/>
+      <SidebarContent>
+        <DnDSidebar
+          addNode={addNode}
+          screenToFlowPosition={screenToFlowPosition}
+          setNodeType={setNodeType}
+        />
       </SidebarContent>
     </Sidebar>
-);
+  );
 }

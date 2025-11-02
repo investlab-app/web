@@ -31,9 +31,9 @@ export function SiteHeader({ className }: SiteHeaderProps) {
           marginLeft: isMobile ? 'calc(-1 * var(--sidebar-width-icon))' : '0',
         }}
       >
-        <SidebarTrigger className="-ml-1 text-foreground" >
+        <SidebarTrigger className="-ml-1 text-foreground">
           <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+          <span className="sr-only">Toggle Sidebar</span>
         </SidebarTrigger>
         <Separator
           orientation="vertical"

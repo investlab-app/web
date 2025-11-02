@@ -1,4 +1,4 @@
-import { useCallback, } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
 import { CustomNodeTypes } from '../../types/node-types-2';
@@ -73,7 +73,11 @@ interface DnDSidebarProps {
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
 }
 
-export function DnDSidebar({ addNode, screenToFlowPosition, setNodeType }: DnDSidebarProps) {
+export function DnDSidebar({
+  addNode,
+  screenToFlowPosition,
+  setNodeType,
+}: DnDSidebarProps) {
   const { t } = useTranslation();
   const { onDragStart } = useDnD();
 
@@ -99,178 +103,175 @@ export function DnDSidebar({ addNode, screenToFlowPosition, setNodeType }: DnDSi
   );
 
   return (
-    <div className="h-full flex flex-col bg-transparent">
-      
-      <div className="overflow-y-auto mb-5">
-        <SidebarSection
-          title={t('flows.sidebar.logical')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.logical_node'))}
-          children={{
-            [CustomNodeTypes.And]: {
-              component: AndNodeUI,
-              settingsType: AndNodeSettings,
-            },
-            [CustomNodeTypes.Or]: {
-              component: OrNodeUI,
-              settingsType: OrNodeSettings,
-            },
-            [CustomNodeTypes.Not]: {
-              component: NotNodeUI,
-              settingsType: NotNodeSettings,
-            },
-            [CustomNodeTypes.OccurredXTimes]: {
-              component: OccurredXTimesNodeUI,
-              settingsType: OccurredXTimesNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.triggers')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.trigger_node'))}
-          children={{
-            [CustomNodeTypes.CheckEvery]: {
-              component: CheckEveryNodeUI,
-              settingsType: CheckEveryNodeSettings,
-            },
-            [CustomNodeTypes.InstrumentBoughtSold]: {
-              component: InstrumentBoughtSoldNodeUI,
-              settingsType: InstrumentBoughtSoldNodeSettings,
-            },
-            [CustomNodeTypes.PriceChanges]: {
-              component: PriceChangesNodeUI,
-              settingsType: PriceChangesNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.actions')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.action_node'))}
-          children={{
-            [CustomNodeTypes.SendNotification]: {
-              component: SendNotificationNodeUI,
-              settingsType: SendNotificationNodeSettings,
-            },
-            [CustomNodeTypes.BuySellAmount]: {
-              component: BuySellAmountNodeUI,
-              settingsType: BuySellAmountNodeSettings,
-            },
-            [CustomNodeTypes.BuySellPercent]: {
-              component: BuySellPercentNodeUI,
-              settingsType: BuySellPercentNodeSettings,
-            },
-            [CustomNodeTypes.BuySellPrice]: {
-              component: BuySellPriceNodeUI,
-              settingsType: BuySellPriceNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.numbers')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.number_node'))}
-          children={{
-            [CustomNodeTypes.PriceOf]: {
-              component: PriceOfNodeUI,
-              settingsType: PriceOfNodeSettings,
-            },
-            [CustomNodeTypes.MoneyAvailable]: {
-              component: MoneyAvailableNodeUI,
-              settingsType: MoneyAvailableNodeSettings,
-            },
-            [CustomNodeTypes.NumberOfAssets]: {
-              component: NumberOfAssetsNodeUI,
-              settingsType: NumberOfAssetsNodeSettings,
-            },
-            [CustomNodeTypes.ValueOfAssets]: {
-              component: ValueOfAssetsNodeUI,
-              settingsType: ValueOfAssetsNodeSettings,
-            },
-            [CustomNodeTypes.Indicator]: {
-              component: IndicatorNodeUI,
-              settingsType: IndicatorNodeSettings,
-            },
-            [CustomNodeTypes.PriceChange]: {
-              component: PriceChangeNodeUI,
-              settingsType: PriceChangeNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.conditionals')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.conditional_node'))}
-          children={{
-            [CustomNodeTypes.FlowIf]: {
-              component: FlowIfNodeUI,
-              settingsType: FlowIfNodeSettings,
-            },
-            [CustomNodeTypes.NumbericFlowIf]: {
-              component: NumericFlowIfNodeUI,
-              settingsType: NumericFlowIfNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.math')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.math_node'))}
-          children={{
-            [CustomNodeTypes.Add]: {
-              component: AddNodeUI,
-              settingsType: AddNodeSettings,
-            },
-            [CustomNodeTypes.Subtract]: {
-              component: SubtractNodeUI,
-              settingsType: SubtractNodeSettings,
-            },
-            [CustomNodeTypes.Multiply]: {
-              component: MultiplyNodeUI,
-              settingsType: MultiplyNodeSettings,
-            },
-            [CustomNodeTypes.Divide]: {
-              component: DivideNodeUI,
-              settingsType: DivideNodeSettings,
-            },
-            [CustomNodeTypes.ChangeOverTime]: {
-              component: ChangeOverTimeNodeUI,
-              settingsType: ChangeOverTimeNodeSettings,
-            },
-          }}
-        />
-        <SidebarSection
-          title={t('flows.sidebar.predicates')}
-          createNodeFunc={createAddNewNode}
-          onDragStart={onDragStart}
-          setGhostType={() => setNodeType(t('flows.ghosts.predicate_node'))}
-          children={{
-            [CustomNodeTypes.StaysAboveBelow]: {
-              component: StaysAboveBelowNodeUI,
-              settingsType: StaysAboveBelowNodeSettings,
-            },
-            [CustomNodeTypes.IsGreaterLesser]: {
-              component: IsGreaterLessNodeUI,
-              settingsType: IsGreaterLessNodeSettings,
-            },
-            [CustomNodeTypes.HasRisenFallen]: {
-              component: HasRisenFallenNodeUI,
-              settingsType: HasRisenFallenNodeSettings,
-            },
-            [CustomNodeTypes.StaysTheSame]: {
-              component: StaysTheSameNodeUI,
-              settingsType: StaysTheSameNodeSettings,
-            },
-          }}
-        />
-      </div>
+    <div className="overflow-y-auto mb-5 pr-4">
+      <SidebarSection
+        title={t('flows.sidebar.logical')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.logical_node'))}
+        children={{
+          [CustomNodeTypes.And]: {
+            component: AndNodeUI,
+            settingsType: AndNodeSettings,
+          },
+          [CustomNodeTypes.Or]: {
+            component: OrNodeUI,
+            settingsType: OrNodeSettings,
+          },
+          [CustomNodeTypes.Not]: {
+            component: NotNodeUI,
+            settingsType: NotNodeSettings,
+          },
+          [CustomNodeTypes.OccurredXTimes]: {
+            component: OccurredXTimesNodeUI,
+            settingsType: OccurredXTimesNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.triggers')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.trigger_node'))}
+        children={{
+          [CustomNodeTypes.CheckEvery]: {
+            component: CheckEveryNodeUI,
+            settingsType: CheckEveryNodeSettings,
+          },
+          [CustomNodeTypes.InstrumentBoughtSold]: {
+            component: InstrumentBoughtSoldNodeUI,
+            settingsType: InstrumentBoughtSoldNodeSettings,
+          },
+          [CustomNodeTypes.PriceChanges]: {
+            component: PriceChangesNodeUI,
+            settingsType: PriceChangesNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.actions')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.action_node'))}
+        children={{
+          [CustomNodeTypes.SendNotification]: {
+            component: SendNotificationNodeUI,
+            settingsType: SendNotificationNodeSettings,
+          },
+          [CustomNodeTypes.BuySellAmount]: {
+            component: BuySellAmountNodeUI,
+            settingsType: BuySellAmountNodeSettings,
+          },
+          [CustomNodeTypes.BuySellPercent]: {
+            component: BuySellPercentNodeUI,
+            settingsType: BuySellPercentNodeSettings,
+          },
+          [CustomNodeTypes.BuySellPrice]: {
+            component: BuySellPriceNodeUI,
+            settingsType: BuySellPriceNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.numbers')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.number_node'))}
+        children={{
+          [CustomNodeTypes.PriceOf]: {
+            component: PriceOfNodeUI,
+            settingsType: PriceOfNodeSettings,
+          },
+          [CustomNodeTypes.MoneyAvailable]: {
+            component: MoneyAvailableNodeUI,
+            settingsType: MoneyAvailableNodeSettings,
+          },
+          [CustomNodeTypes.NumberOfAssets]: {
+            component: NumberOfAssetsNodeUI,
+            settingsType: NumberOfAssetsNodeSettings,
+          },
+          [CustomNodeTypes.ValueOfAssets]: {
+            component: ValueOfAssetsNodeUI,
+            settingsType: ValueOfAssetsNodeSettings,
+          },
+          [CustomNodeTypes.Indicator]: {
+            component: IndicatorNodeUI,
+            settingsType: IndicatorNodeSettings,
+          },
+          [CustomNodeTypes.PriceChange]: {
+            component: PriceChangeNodeUI,
+            settingsType: PriceChangeNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.conditionals')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.conditional_node'))}
+        children={{
+          [CustomNodeTypes.FlowIf]: {
+            component: FlowIfNodeUI,
+            settingsType: FlowIfNodeSettings,
+          },
+          [CustomNodeTypes.NumbericFlowIf]: {
+            component: NumericFlowIfNodeUI,
+            settingsType: NumericFlowIfNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.math')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.math_node'))}
+        children={{
+          [CustomNodeTypes.Add]: {
+            component: AddNodeUI,
+            settingsType: AddNodeSettings,
+          },
+          [CustomNodeTypes.Subtract]: {
+            component: SubtractNodeUI,
+            settingsType: SubtractNodeSettings,
+          },
+          [CustomNodeTypes.Multiply]: {
+            component: MultiplyNodeUI,
+            settingsType: MultiplyNodeSettings,
+          },
+          [CustomNodeTypes.Divide]: {
+            component: DivideNodeUI,
+            settingsType: DivideNodeSettings,
+          },
+          [CustomNodeTypes.ChangeOverTime]: {
+            component: ChangeOverTimeNodeUI,
+            settingsType: ChangeOverTimeNodeSettings,
+          },
+        }}
+      />
+      <SidebarSection
+        title={t('flows.sidebar.predicates')}
+        createNodeFunc={createAddNewNode}
+        onDragStart={onDragStart}
+        setGhostType={() => setNodeType(t('flows.ghosts.predicate_node'))}
+        children={{
+          [CustomNodeTypes.StaysAboveBelow]: {
+            component: StaysAboveBelowNodeUI,
+            settingsType: StaysAboveBelowNodeSettings,
+          },
+          [CustomNodeTypes.IsGreaterLesser]: {
+            component: IsGreaterLessNodeUI,
+            settingsType: IsGreaterLessNodeSettings,
+          },
+          [CustomNodeTypes.HasRisenFallen]: {
+            component: HasRisenFallenNodeUI,
+            settingsType: HasRisenFallenNodeSettings,
+          },
+          [CustomNodeTypes.StaysTheSame]: {
+            component: StaysTheSameNodeUI,
+            settingsType: StaysTheSameNodeSettings,
+          },
+        }}
+      />
     </div>
   );
 }
