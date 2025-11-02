@@ -1,8 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
 import { CustomNodeTypes } from '../../types/node-types-2';
-import { DragGhost } from '../drag-ghost';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
 import { MoneyAvailableNodeUI } from '../../nodes/number/money-available-node-ui';
@@ -70,13 +69,13 @@ const getId = () => `node_${nodeid++}`;
 
 interface DnDSidebarProps {
   addNode: (node: Node) => void;
+  setNodeType: (type: string | null) => void;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
 }
 
-export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
+export function DnDSidebar({ addNode, screenToFlowPosition, setNodeType }: DnDSidebarProps) {
   const { t } = useTranslation();
-  const { onDragStart, isDragging } = useDnD();
-  const [type, setType] = useState<string | null>(null);
+  const { onDragStart } = useDnD();
 
   const createAddNewNode = useCallback(
     (
@@ -93,21 +92,21 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           data: { settings: new settingsType() },
         };
         addNode(newNode);
-        setType(null);
+        setNodeType(null);
       };
     },
-    [setType, addNode, screenToFlowPosition]
+    [setNodeType, addNode, screenToFlowPosition]
   );
 
   return (
-    <div className="h-full flex flex-col">
-      {isDragging && <DragGhost type={type} />}
+    <div className="h-full flex flex-col bg-transparent">
+      
       <div className="overflow-y-auto mb-5">
         <SidebarSection
           title={t('flows.sidebar.logical')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.logical_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.logical_node'))}
           children={{
             [CustomNodeTypes.And]: {
               component: AndNodeUI,
@@ -131,7 +130,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.triggers')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.trigger_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.trigger_node'))}
           children={{
             [CustomNodeTypes.CheckEvery]: {
               component: CheckEveryNodeUI,
@@ -151,7 +150,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.actions')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.action_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.action_node'))}
           children={{
             [CustomNodeTypes.SendNotification]: {
               component: SendNotificationNodeUI,
@@ -175,7 +174,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.numbers')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.number_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.number_node'))}
           children={{
             [CustomNodeTypes.PriceOf]: {
               component: PriceOfNodeUI,
@@ -207,7 +206,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.conditionals')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.conditional_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.conditional_node'))}
           children={{
             [CustomNodeTypes.FlowIf]: {
               component: FlowIfNodeUI,
@@ -223,7 +222,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.math')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.math_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.math_node'))}
           children={{
             [CustomNodeTypes.Add]: {
               component: AddNodeUI,
@@ -251,7 +250,7 @@ export function DnDSidebar({ addNode, screenToFlowPosition }: DnDSidebarProps) {
           title={t('flows.sidebar.predicates')}
           createNodeFunc={createAddNewNode}
           onDragStart={onDragStart}
-          setGhostType={() => setType(t('flows.ghosts.predicate_node'))}
+          setGhostType={() => setNodeType(t('flows.ghosts.predicate_node'))}
           children={{
             [CustomNodeTypes.StaysAboveBelow]: {
               component: StaysAboveBelowNodeUI,

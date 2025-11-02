@@ -229,6 +229,7 @@ function Sidebar({
         )}
       />
       <div
+      // here is the shit magic, find a way to make coords of ghost not relative to this
         data-slot="sidebar-container"
         className={cn(
           'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-out md:flex',
@@ -257,9 +258,10 @@ function Sidebar({
 
 function SidebarTrigger({
   className,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button> ) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -275,8 +277,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      {children ?? <PanelLeftIcon />}
     </Button>
   );
 }

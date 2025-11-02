@@ -3,14 +3,14 @@ import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
 
 export class MathNodeSettings extends NodeSettings {
-  value?: number;
+  inB?: number;
 
   constructor() {
     super();
   }
 
   getUpdatedValue(value?: number): MathNodeSettings {
-    this.value = value;
+    this.inB = value;
     return this;
   }
 
@@ -23,8 +23,8 @@ export class MathNodeSettings extends NodeSettings {
       inConnections['out'] == 1 &&
       (Object.keys(outConnections).length == 2 ||
         ('inA' in outConnections &&
-          this.value != undefined &&
-          this.value !== 0))
+          this.inB != undefined &&
+          this.inB !== 0))
     );
   }
 

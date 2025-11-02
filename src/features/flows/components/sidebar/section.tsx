@@ -44,6 +44,7 @@ export function SidebarSection({
               key={type}
               className="cursor-grab hover:bg-gray-50 rounded transition-colors"
               onPointerDown={(event) => {
+                console.log('Setting ghost type for', type);
                 setGhostType();
                 onDragStart(event, createNodeFunc(type, settingsType));
               }}

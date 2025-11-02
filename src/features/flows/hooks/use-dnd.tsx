@@ -41,6 +41,7 @@ export const useDnD = () => {
       );
       const canvasDiv = elementUnderPointer?.closest('.react-flow');
       event.preventDefault();
+            console.log('Drag started with action:', elementUnderPointer);
 
       if (canvasDiv) {
         const screenPos = { x: event.clientX, y: event.clientY };
