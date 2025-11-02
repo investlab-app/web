@@ -35,10 +35,7 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
         <div
           id={contentId}
           aria-hidden={collapsed}
-          className={cn(
-            'relative rounded-b-xl bg-background',
-            'px-2 py-2'
-          )}
+          className={cn('relative rounded-b-xl bg-background', 'px-2 py-2')}
         >
           {/* Soft edge fades to hint horizontal scroll */}
           <div
@@ -53,7 +50,9 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
           <PositionsCards
             history={position.history}
             currentPrice={currentPrice}
-            className={cn('rounded-none scroll-smooth snap-x snap-mandatory -mx-2')}
+            className={cn(
+              'rounded-none scroll-smooth snap-x snap-mandatory -mx-2'
+            )}
           />
         </div>
       )}

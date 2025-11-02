@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
 import {
-  Bell,
   History,
   LayoutDashboardIcon,
   List,
@@ -20,6 +19,7 @@ import {
   useSidebar,
 } from './ui/sidebar';
 import { Separator } from './ui/separator';
+import { WalletSection } from './wallet-section';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
 import {
@@ -29,7 +29,6 @@ import {
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
 import { NavWatchedTickers } from '@/features/shared/components/nav-watched-tickers';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
-import { WalletSection } from './wallet-section';
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();

@@ -4,21 +4,40 @@ import { useEffect } from 'react';
 import { z } from 'zod';
 import { LandingPage } from '@/routes/-components/landing-page';
 import { Dashboard } from '@/routes/-components/dashboard';
+import { DashboardPending } from '@/routes/-components/dashboard-pending';
 import { syncLanguage } from '@/features/shared/queries/update-language';
+import {
+  investorsMeAccountValueListOptions,
+  statisticsAssetAllocationRetrieveOptions,
+  statisticsCurrentAccountValueRetrieveOptions,
+  statisticsOwnedSharesListOptions,
+  statisticsStatsRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 export const Route = createFileRoute('/')({
   validateSearch: z.object({
     initial_session: z.boolean().optional(),
   }),
-  loader: ({ context: { i18n } }) => {
+  loader: async ({ context: { i18n, queryClient } }) => {
+    await Promise.all([
+      queryClient.ensureQueryData(statisticsStatsRetrieveOptions()),
+      queryClient.ensureQueryData(
+        statisticsCurrentAccountValueRetrieveOptions()
+      ),
+      queryClient.ensureQueryData(statisticsAssetAllocationRetrieveOptions()),
+      queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
+      queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
+    ]);
+
     return {
       crumb: i18n.t('common.dashboard'),
     };
   },
-  component: Index,
+  pendingComponent: DashboardPending,
+  component: RouteComponent,
 });
 
-function Index() {
+function RouteComponent() {
   const { auth, isLoggedInBefore } = Route.useRouteContext();
 
   const { initial_session } = Route.useSearch();

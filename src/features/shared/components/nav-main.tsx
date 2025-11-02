@@ -1,5 +1,4 @@
 import { Link, useRouterState } from '@tanstack/react-router';
-import { WalletSection } from './wallet-section';
 import type { LinkProps } from '@tanstack/react-router';
 import type { LucideIcon } from 'lucide-react';
 import {

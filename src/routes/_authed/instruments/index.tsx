@@ -5,9 +5,19 @@ import { InstrumentsTableContainer } from '@/features/instruments/components/ins
 import { Sheet, SheetContent } from '@/features/shared/components/ui/sheet';
 import AppFrame from '@/features/shared/components/app-frame';
 import { InstrumentSheetContent } from '@/features/instrument-details/components/instrument-sheet';
+import { instrumentsWithPricesListInfiniteOptions } from '@/client/@tanstack/react-query.gen';
+import { InstrumentsPending } from '@/routes/-components/instruments-pending';
 
 export const Route = createFileRoute('/_authed/instruments/')({
   component: RouteComponent,
+  loader: async ({ context: { queryClient } }) => {
+    await queryClient.ensureInfiniteQueryData({
+      ...instrumentsWithPricesListInfiniteOptions({
+        query: { ordering: 'ticker', page_size: 10, search: '' },
+      }),
+    });
+  },
+  pendingComponent: InstrumentsPending,
 });
 
 function RouteComponent() {

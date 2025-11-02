@@ -2,7 +2,12 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  useIsRestoring,
+} from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
@@ -17,6 +22,7 @@ import {
   POSTHOG_KEY,
 } from './features/shared/utils/constants.ts';
 import { ErrorComponent } from './features/shared/components/error-component.tsx';
+import { RouterLoading } from './features/shared/components/router-loading.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
 import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
 import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
@@ -30,6 +36,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes - consider data fresh for 5 minutes
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
       meta: {
         persist: true,
@@ -70,6 +79,7 @@ export const router = createRouter({
   defaultErrorComponent: ({ error }) => {
     return <ErrorComponent error={error} />;
   },
+  defaultPendingComponent: () => <RouterLoading />,
 });
 
 function App() {
@@ -108,6 +118,25 @@ function App() {
   );
 }
 
+const persister = createAsyncStoragePersister({
+  storage: window.localStorage,
+});
+
+function RootApp() {
+  const isRestoring = useIsRestoring();
+
+  useEffect(() => {
+    console.log(`isRestoring=${isRestoring}`);
+  }, [isRestoring]);
+
+  // Wait for PersistQueryClientProvider to finish restoring
+  if (isRestoring) {
+    return null;
+  }
+
+  return <App />;
+}
+
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -129,15 +158,13 @@ if (rootElement && !rootElement.innerHTML) {
             <PersistQueryClientProvider
               client={queryClient}
               persistOptions={{
-                persister: createAsyncStoragePersister({
-                  storage: window.localStorage,
-                }),
+                persister,
                 dehydrateOptions: {
-                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
+                  shouldDehydrateQuery: () => true,
                 },
               }}
             >
-              <App />
+              <RootApp />
             </PersistQueryClientProvider>
           </Conditional>
         </ClerkThemedProvider>

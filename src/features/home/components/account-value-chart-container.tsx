@@ -9,10 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { AccountValueChartSkeleton } from './account-value-chart-skeleton';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
@@ -33,6 +33,9 @@ export const AccountValueChartContainer = () => {
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 
   if (!isSuccess) {
+    if (isPending) {
+      return <AccountValueChartSkeleton />;
+    }
     return (
       <Card>
         <CardHeader>
@@ -41,8 +44,7 @@ export const AccountValueChartContainer = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {isPending && <Skeleton className="w-full h-full" />}
-          {isError && <ErrorMessage message={t('common.error_loading_data')} />}
+          <ErrorMessage message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );
