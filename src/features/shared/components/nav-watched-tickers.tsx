@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouterState } from '@tanstack/react-router';
 import { Star } from 'lucide-react';
 import {
   SidebarGroup,
@@ -15,6 +15,7 @@ import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-q
 
 export function NavWatchedTickers() {
   const { t } = useTranslation();
+  const { location } = useRouterState();
 
   const { data: watchedTickers = [], isLoading } = useQuery(
     investorsMeWatchedTickersListOptions()
@@ -53,26 +54,34 @@ export function NavWatchedTickers() {
               {t('common.no_watched_instruments', 'brak obserwowanych')}
             </div>
           ) : (
-            watchedTickers.map((ticker) => (
-              <SidebarMenuItem key={ticker.ticker}>
-                <SidebarMenuButton asChild tooltip={ticker.name}>
-                  <Link
-                    to="/instruments/$instrumentId"
-                    params={{ instrumentId: ticker.ticker }}
-                    className="text-sm"
+            watchedTickers.map((ticker) => {
+              const isActive =
+                location.pathname === `/instruments/${ticker.ticker}`;
+              return (
+                <SidebarMenuItem key={ticker.ticker}>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={ticker.name}
+                    isActive={isActive}
                   >
-                    {ticker.icon && (
-                      <img
-                        src={ticker.icon}
-                        alt={ticker.ticker}
-                        className="h-4 w-4 rounded-full"
-                      />
-                    )}
-                    <span>{ticker.ticker}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))
+                    <Link
+                      to="/instruments/$instrumentId"
+                      params={{ instrumentId: ticker.ticker }}
+                      className="text-sm"
+                    >
+                      {ticker.icon && (
+                        <img
+                          src={ticker.icon}
+                          alt={ticker.ticker}
+                          className="h-4 w-4 rounded-full"
+                        />
+                      )}
+                      <span>{ticker.ticker}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })
           )}
         </SidebarMenu>
       </SidebarGroupContent>

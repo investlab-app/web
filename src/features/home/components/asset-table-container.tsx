@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import AssetTable from './asset-table';
+import { AssetTableSkeleton } from './asset-table-skeleton';
 import type { OwnedShare } from '@/client';
 import {
   Card,
@@ -11,7 +12,6 @@ import {
 import { ErrorMessage } from '@/features/shared/components/error-message';
 import { statisticsOwnedSharesListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
-import { AssetTableSkeleton } from './asset-table-skeleton';
 
 export const AssetTableContainer = () => {
   const { t } = useTranslation();

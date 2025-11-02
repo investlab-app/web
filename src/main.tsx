@@ -2,12 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  useIsRestoring,
-} from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
@@ -122,21 +117,6 @@ const persister = createAsyncStoragePersister({
   storage: window.localStorage,
 });
 
-function RootApp() {
-  const isRestoring = useIsRestoring();
-
-  useEffect(() => {
-    console.log(`isRestoring=${isRestoring}`);
-  }, [isRestoring]);
-
-  // Wait for PersistQueryClientProvider to finish restoring
-  if (isRestoring) {
-    return null;
-  }
-
-  return <App />;
-}
-
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -160,11 +140,11 @@ if (rootElement && !rootElement.innerHTML) {
               persistOptions={{
                 persister,
                 dehydrateOptions: {
-                  shouldDehydrateQuery: () => true,
+                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
                 },
               }}
             >
-              <RootApp />
+              <App />
             </PersistQueryClientProvider>
           </Conditional>
         </ClerkThemedProvider>

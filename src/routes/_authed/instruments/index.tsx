@@ -15,6 +15,8 @@ export const Route = createFileRoute('/_authed/instruments/')({
       ...instrumentsWithPricesListInfiniteOptions({
         query: { ordering: 'ticker', page_size: 10, search: '' },
       }),
+      initialPageParam: 1,
+      meta: { persist: false },
     });
   },
   pendingComponent: InstrumentsPending,

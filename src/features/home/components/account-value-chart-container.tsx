@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage } from '../../shared/components/error-message';
+import { AccountValueChartSkeleton } from './account-value-chart-skeleton';
 import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
@@ -12,12 +13,11 @@ import {
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
-import { AccountValueChartSkeleton } from './account-value-chart-skeleton';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { data, isPending, isError, isSuccess } = useQuery(
+  const { data, isPending, isSuccess } = useQuery(
     investorsMeAccountValueListOptions()
   );
 
