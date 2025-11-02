@@ -159,11 +159,13 @@ function Sidebar({
   collapsible = 'offcanvas',
   className,
   children,
+  noBackground = false,
   ...props
 }: React.ComponentProps<'div'> & {
   side?: 'left' | 'right';
   variant?: 'sidebar' | 'floating' | 'inset';
   collapsible?: 'offcanvas' | 'icon' | 'none';
+  noBackground?: boolean;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -172,7 +174,8 @@ function Sidebar({
       <div
         data-slot="sidebar"
         className={cn(
-          'bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
+          (noBackground ? 'bg-transparent' : 'bg-sidebar') +
+            ' text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
           className
         )}
         {...props}
@@ -189,7 +192,10 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+          className={cn(
+            noBackground ? 'bg-transparent' : 'bg-sidebar',
+            'text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden'
+          )}
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -229,7 +235,6 @@ function Sidebar({
         )}
       />
       <div
-      // here is the shit magic, find a way to make coords of ghost not relative to this
         data-slot="sidebar-container"
         className={cn(
           'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-out md:flex',
@@ -247,7 +252,10 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className={cn(
+            noBackground ? 'bg-transparent' : 'bg-sidebar',
+            'group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm'
+          )}
         >
           {children}
         </div>
@@ -261,7 +269,7 @@ function SidebarTrigger({
   children,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button> ) {
+}: React.ComponentProps<typeof Button>) {
   const { toggleSidebar } = useSidebar();
 
   return (

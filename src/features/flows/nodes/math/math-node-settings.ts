@@ -22,9 +22,7 @@ export class MathNodeSettings extends NodeSettings {
       'out' in inConnections &&
       inConnections['out'] == 1 &&
       (Object.keys(outConnections).length == 2 ||
-        ('inA' in outConnections &&
-          this.inB != undefined &&
-          this.inB !== 0))
+        ('inA' in outConnections && this.inB != undefined && this.inB !== 0))
     );
   }
 

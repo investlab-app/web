@@ -44,9 +44,9 @@ export function SiteHeader({ className }: SiteHeaderProps) {
           transitionProperty: 'margin',
         }}
       >
-        <SidebarTrigger className="-ml-1 text-foreground" >
+        <SidebarTrigger className="-ml-1 text-foreground">
           <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+          <span className="sr-only">Toggle Sidebar</span>
         </SidebarTrigger>
         <Separator
           orientation="vertical"
