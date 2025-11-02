@@ -168,6 +168,51 @@ function Sidebar({
   noBackground?: boolean;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const gapRef = React.useRef<HTMLDivElement>(null);
+
+  // Sync the gap width with the actual sidebar width
+  React.useEffect(() => {
+    if (!sidebarRef.current || !gapRef.current || isMobile) return;
+
+    const updateGapWidth = () => {
+      if (!gapRef.current || !sidebarRef.current) return;
+      
+      const sidebarWidth = sidebarRef.current.offsetWidth;
+
+      // If sidebar is collapsed/hidden (offcanvas), set gap to 0 and move sidebar off-screen
+      if (collapsible === 'offcanvas' && state === 'collapsed') {
+        gapRef.current.style.width = '0px';
+        // Move the sidebar off-screen based on its actual width
+        if (side === 'left') {
+          sidebarRef.current.style.left = `-${sidebarWidth}px`;
+        } else {
+          sidebarRef.current.style.right = `-${sidebarWidth}px`;
+        }
+        return;
+      }
+
+      // When expanded, reset position and update gap
+      if (side === 'left') {
+        sidebarRef.current.style.left = '0px';
+      } else {
+        sidebarRef.current.style.right = '0px';
+      }
+      
+      if (sidebarWidth) {
+        gapRef.current.style.width = `${sidebarWidth}px`;
+      }
+    };
+
+    // Update initially
+    updateGapWidth();
+
+    // Update on resize
+    const resizeObserver = new ResizeObserver(updateGapWidth);
+    resizeObserver.observe(sidebarRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [isMobile, state, collapsible, side]);
 
   if (collapsible === 'none') {
     return (
@@ -224,9 +269,10 @@ function Sidebar({
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div
+        ref={gapRef}
         data-slot="sidebar-gap"
         className={cn(
-          'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-out',
+                    'relative w-(--sidebar-width) bg-transparent',
           'group-data-[collapsible=offcanvas]:w-0',
           'group-data-[side=right]:rotate-180',
           variant === 'floating' || variant === 'inset'
@@ -235,9 +281,10 @@ function Sidebar({
         )}
       />
       <div
+        ref={sidebarRef}
         data-slot="sidebar-container"
         className={cn(
-          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-out md:flex',
+          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[width] duration-200 ease-linear md:flex',
           side === 'left'
             ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
             : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
