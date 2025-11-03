@@ -23,7 +23,7 @@ export const DivideNode = (props: NodeProps<DivideNode>) => {
   return (
     <DivideNodeUI
       nodeId={props.id}
-      value={props.data.settings.value}
+      value={props.data.settings.inB}
       onValueChange={(val) =>
         updateNodeData({ settings: props.data.settings.getUpdatedValue(val) })
       }

@@ -57,7 +57,7 @@ export const StaysAboveBelowNode = (props: NodeProps<StaysAboveBelowNode>) => {
     <StaysAboveBelowNodeUI
       nodeId={props.id}
       direction={props.data.settings.direction}
-      threshold={props.data.settings.value}
+      threshold={props.data.settings.inX}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
       onDirectionChange={(val: 'above' | 'below') => {

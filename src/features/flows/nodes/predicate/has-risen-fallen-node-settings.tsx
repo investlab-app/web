@@ -55,7 +55,7 @@ export const HasRisenFallenNode = (props: NodeProps<HasRisenFallenNode>) => {
     <HasRisenFallenNodeUI
       nodeId={props.id}
       direction={props.data.settings.direction}
-      value={props.data.settings.value}
+      value={props.data.settings.inX}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
       onDirectionChange={(val: 'risen' | 'fell') => {

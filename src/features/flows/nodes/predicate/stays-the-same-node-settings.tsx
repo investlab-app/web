@@ -21,8 +21,8 @@ export class StaysTheSameNodeSettings extends PredicateNodeSettings {
     return (
       Object.keys(inConnections).length == 1 &&
       'in' in outConnections &&
-      this.value != undefined &&
-      this.value > 0
+      this.inX != undefined &&
+      this.inX > 0
     );
   }
 
@@ -52,7 +52,7 @@ export const StaysTheSameNode = (props: NodeProps<StaysTheSameNode>) => {
   return (
     <StaysTheSameNodeUI
       nodeId={props.id}
-      value={props.data.settings.value}
+      value={props.data.settings.inX}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
       onValueChange={(val: number | undefined) => {

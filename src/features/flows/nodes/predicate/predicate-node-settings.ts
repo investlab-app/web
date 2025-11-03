@@ -3,14 +3,14 @@ import { NodeSettings } from '../node-settings';
 import { SuperNodeTypes } from '../../types/node-types-2';
 
 export class PredicateNodeSettings extends NodeSettings {
-  value?: number;
+  inX?: number;
 
   constructor() {
     super();
   }
 
   getUpdatedValue(value?: number): PredicateNodeSettings {
-    this.value = value;
+    this.inX = value;
     return this;
   }
 
@@ -21,7 +21,7 @@ export class PredicateNodeSettings extends NodeSettings {
     return (
       Object.keys(inConnections).length == 1 &&
       (Object.keys(outConnections).length == 2 ||
-        ('inValue' in outConnections && this.value != undefined))
+        ('inValue' in outConnections && this.inX != undefined))
     );
   }
 
