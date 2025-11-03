@@ -5,7 +5,7 @@ import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class IsGreaterLessNodeSettings extends PredicateNodeSettings {
-  direction: 'greater' | 'less';
+  direction: 'greater' | 'lesser';
 
   constructor() {
     super();
@@ -13,7 +13,7 @@ export class IsGreaterLessNodeSettings extends PredicateNodeSettings {
   }
 
   getUpdatedDirection(
-    direction: 'greater' | 'less'
+    direction: 'greater' | 'lesser'
   ): IsGreaterLessNodeSettings {
     this.direction = direction;
     return this;
@@ -34,8 +34,8 @@ export const IsGreaterLessNode = (props: NodeProps<IsGreaterLessNode>) => {
     <IsGreaterLessNodeUI
       nodeId={props.id}
       direction={props.data.settings.direction}
-      value={props.data.settings.value}
-      onDirectionChange={(val: 'greater' | 'less') => {
+      value={props.data.settings.inX}
+      onDirectionChange={(val: 'greater' | 'lesser') => {
         updateNodeData({
           settings: props.data.settings.getUpdatedDirection(val),
         });

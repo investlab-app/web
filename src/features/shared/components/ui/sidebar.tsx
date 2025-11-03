@@ -177,7 +177,7 @@ function Sidebar({
 
     const updateGapWidth = () => {
       if (!gapRef.current || !sidebarRef.current) return;
-      
+
       const sidebarWidth = sidebarRef.current.offsetWidth;
 
       // If sidebar is collapsed/hidden (offcanvas), set gap to 0 and move sidebar off-screen
@@ -198,7 +198,7 @@ function Sidebar({
       } else {
         sidebarRef.current.style.right = '0px';
       }
-      
+
       if (sidebarWidth) {
         gapRef.current.style.width = `${sidebarWidth}px`;
       }
@@ -272,7 +272,7 @@ function Sidebar({
         ref={gapRef}
         data-slot="sidebar-gap"
         className={cn(
-                    'relative w-(--sidebar-width) bg-transparent',
+          'relative w-(--sidebar-width) bg-transparent',
           'group-data-[collapsible=offcanvas]:w-0',
           'group-data-[side=right]:rotate-180',
           variant === 'floating' || variant === 'inset'

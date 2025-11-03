@@ -23,7 +23,7 @@ export const AddNode = (props: NodeProps<AddNode>) => {
   return (
     <AddNodeUI
       nodeId={props.id}
-      value={props.data.settings.value}
+      value={props.data.settings.inB}
       onValueChange={(val) =>
         updateNodeData({ settings: props.data.settings.getUpdatedValue(val) })
       }
