@@ -42,11 +42,14 @@ export function useLiveChartUpdate({
     const currentOption = chartInstance.getOption();
 
     // Be conservative: ECharts types on getOption can be loose across versions
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!currentOption) return;
 
     const seriesData =
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (currentOption?.series as Array<EChartSeries>)[0]?.data ?? [];
     const xAxisData =
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (currentOption?.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
     // Update or initialize last point
@@ -211,7 +214,8 @@ export function useLiveChartUpdate({
     } else {
       const chartInstance = chartRef.current.getEchartsInstance();
       const currentOption = chartInstance.getOption();
-      if (!currentOption || !currentOption.series || !currentOption.xAxis) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!currentOption?.series || !currentOption.xAxis) {
         return;
       }
 

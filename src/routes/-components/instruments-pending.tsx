@@ -6,7 +6,6 @@ import { ScrollableHorizontally } from '@/features/shared/components/scrollable-
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import AppFrame from '@/features/shared/components/app-frame';
-import { Sheet, SheetContent } from '@/features/shared/components/ui/sheet';
 
 const InstrumentTableBodySkeleton = ({ rowCount = 5 }) => {
   return Array.from({ length: rowCount }).map((_, idx) => (
@@ -41,7 +40,8 @@ const InstrumentsTableSkeleton = () => {
 
   return (
     <DataTable
-      columns={columns.map(() => ({
+      columns={columns.map((_, index) => ({
+        id: `skeleton-${index}`,
         accessorKey: '',
         header: () => <Skeleton className="h-4 w-16" />,
         cell: () => null,
@@ -55,53 +55,37 @@ const InstrumentsTableSkeleton = () => {
 export const InstrumentsPending = () => {
   return (
     <AppFrame>
-      <Sheet open={true}>
-        <SheetContent className="w-full sm:max-w-2/3 gap-0 overflow-y-auto">
-          <div className="p-6">
-            <div className="space-y-4">
-              <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            </div>
-          </div>
-        </SheetContent>
+      <div className="flex flex-col gap-2">
+        <SearchInput
+          value=""
+          onChange={() => {}}
+          className="max-w-md"
+          placeholder="Search..."
+          disabled
+        />
 
-        <div className="flex flex-col gap-2">
-          <SearchInput
-            value=""
-            onChange={() => {}}
-            className="max-w-md"
-            placeholder="Search..."
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            className="flex items-center gap-2"
             disabled
-          />
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex items-center gap-2"
-              disabled
-            >
-              <Star className="size-4" />
-              <span>Watched</span>
-            </Button>
-          </div>
-
-          <ScrollableHorizontally>
-            <InstrumentsTableSkeleton />
-          </ScrollableHorizontally>
-
-          <div className="flex justify-center mt-4">
-            <Button variant="outline" disabled>
-              Loading...
-            </Button>
-          </div>
+          >
+            <Star className="size-4" />
+            <span>Watched</span>
+          </Button>
         </div>
-      </Sheet>
+
+        <ScrollableHorizontally>
+          <InstrumentsTableSkeleton />
+        </ScrollableHorizontally>
+
+        <div className="flex justify-center mt-4">
+          <Button variant="outline" disabled>
+            Loading...
+          </Button>
+        </div>
+      </div>
     </AppFrame>
   );
 };
