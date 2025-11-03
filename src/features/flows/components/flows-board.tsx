@@ -53,6 +53,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/features/shared/components/ui/sidebar';
+import { cn } from '@/features/shared/utils/styles';
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
@@ -105,6 +106,7 @@ export function FlowsBoard() {
     [setEdges]
   );
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
@@ -115,10 +117,14 @@ export function FlowsBoard() {
   const { isDragging } = useDnD();
 
   return (
-    <SidebarProvider className="flex w-full h-full">
+    <SidebarProvider
+      open={sidebarOpen}
+      onOpenChange={setSidebarOpen}
+      className="flex w-full h-full"
+    >
       {isDragging && <DragGhost type={nodeType} />}
 
-      <div className="flex-1">
+      <div className="flex-1 ml-4">
         <ReactFlow
           colorMode={theme}
           nodes={nodes}
@@ -142,7 +148,7 @@ export function FlowsBoard() {
           <Background />
         </ReactFlow>
       </div>
-      <div className=" h-full w-min">
+      <div className={cn(' h-full w-min', sidebarOpen ? 'mr-0' : 'mr-4')}>
         <SidebarTrigger className="text-foreground">
           <PanelRightIcon />
           <span className="sr-only">Toggle Nodes Toolbox</span>

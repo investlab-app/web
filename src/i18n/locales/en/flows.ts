@@ -18,7 +18,7 @@ const enFlows = {
     triggers: 'Triggers',
     numbers: 'Value nodes',
     actions: 'Actions',
-    save_flow: 'Save Flow',
+    save_flow: 'Save Strategy',
     math: 'Math',
     predicates: 'Predicates',
   },

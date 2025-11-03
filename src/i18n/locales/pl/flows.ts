@@ -19,7 +19,7 @@ const plFlows = {
     numbers: 'Węzły wartości',
     math: 'Matematyka',
     actions: 'Akcje',
-    save_flow: 'Zapisz przepływ',
+    save_flow: 'Zapisz strategię',
     predicates: 'Predykaty',
   },
   ghosts: {

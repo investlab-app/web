@@ -5,7 +5,11 @@ import type { CustomNodeProps } from '../../types/node-props';
 
 export function NumberNodeUI({ nodeId, preview, children }: CustomNodeProps) {
   return (
-    <NodeUI nodeId={nodeId} preview={preview}>
+    <NodeUI
+      nodeId={nodeId}
+      preview={preview}
+      className={`bg-[var(--node-number)]`}
+    >
       {children}
       <ValidatedHandle
         type="target"

@@ -29,7 +29,11 @@ export function StaysTheSameNodeUI({
   const { t } = useTranslation();
 
   return (
-    <NodeUI nodeId={nodeId} preview={preview}>
+    <NodeUI
+      nodeId={nodeId}
+      preview={preview}
+      className={`bg-[var(--node-predicate)]`}
+    >
       <div className="flex flex-col">
         <div className="flex flex-row items-center">
           <div>

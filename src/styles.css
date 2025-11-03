@@ -102,7 +102,10 @@ code {
   --card-foreground-hex: rgb(15, 15, 15);
   --primary-hex: #6d48bf;
 
-  --node-predicate: oklch(89.253% 0.05945 238.538);
+  --node-math: oklch(92.252% 0.06229 73.941);
+  --node-flow: oklch(84.955% 0.08265 15.155);
+  --node-predicate: oklch(83.613% 0.10358 306.102);
+  --node-number: oklch(89.253% 0.05945 238.538);
   --node-trigger: oklch(96.16% 0.07719 98.942);
   --node-action: oklch(93.199% 0.12425 145.158);
 }
@@ -178,7 +181,10 @@ code {
   --card-foreground-hex: rgb(255, 255, 255);
   --primary-hex: #673492;
 
-  --node-predicate: oklch(38.736% 0.08462 244.406);
+  --node-math: oklch(37.29% 0.06992 69.587);
+  --node-flow: oklch(33.241% 0.1167 24.204);
+  --node-number: oklch(35.399% 0.07395 243.595);
+  --node-predicate: oklch(29.569% 0.14401 288.499);
   --node-trigger: oklch(55.492% 0.10378 105.284);
   --node-action: oklch(41.121% 0.12896 143.034);
 }

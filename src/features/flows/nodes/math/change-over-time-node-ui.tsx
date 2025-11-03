@@ -28,7 +28,7 @@ export function ChangeOverTimeNodeUI({
     <NodeUI
       preview={preview}
       nodeId={nodeId}
-      className={`bg-[var(--background)]`}
+      className={`bg-[var(--node-math)]`}
     >
       <div>
         {t('flows.nodes.change_of_value')} {t('flows.nodes.over_duration')}{' '}
