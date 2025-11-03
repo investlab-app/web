@@ -8,8 +8,9 @@ import {
   MessageAvatar,
   MessageContent,
 } from '@/features/shared/components/ai-elements/message';
+import { cn } from '@/features/shared/utils/styles';
 
-export function ChatInterface() {
+export function ChatInterface({ className }: { className?: string }) {
   const {
     messages,
     sendMessage,
@@ -54,7 +55,12 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col bg-background h-[calc(100vh-var(--header-height))]">
+    <div
+      className={cn(
+        'flex flex-col bg-background h-[calc(100vh-var(--header-height))]',
+        className
+      )}
+    >
       {/* Header */}
       <div className="border-b px-4 py-3 sm:px-6">
         <div className="flex items-center justify-between">

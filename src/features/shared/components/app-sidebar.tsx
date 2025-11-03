@@ -6,6 +6,7 @@ import {
   History,
   LayoutDashboardIcon,
   List,
+  MessageCircle,
   Network,
   PieChart,
 } from 'lucide-react';
@@ -70,6 +71,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         to: '/statistics',
         icon: PieChart,
         tooltip: t('common.tooltips.navigation.statistics'),
+      },
+      {
+        title: t('common.chat'),
+        to: '/chat',
+        icon: MessageCircle,
+        tooltip: t('common.tooltips.navigation.chat'),
       },
     ],
     navSecondary: [

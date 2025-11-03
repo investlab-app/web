@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authed/chat')({
 function ChatPage() {
   return (
     <AppFrame>
-      <ChatInterface />
+      <ChatInterface className='-m-4'/>
     </AppFrame>
   );
 }
