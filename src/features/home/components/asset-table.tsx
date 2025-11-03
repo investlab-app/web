@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import type { OwnedShareItem } from '@/client/types.gen';
+import type { OwnedShare } from '@/client';
 import {
   Table,
   TableBody,
@@ -12,16 +12,17 @@ import { cn } from '@/features/shared/utils/styles';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 
 type AssetTableProps = {
-  data: Array<OwnedShareItem>;
-  onAssetPressed: (asset: OwnedShareItem) => void;
+  data: Array<OwnedShare>;
+  onAssetPressed: (asset: OwnedShare) => void;
+  className?: string;
 };
 
-const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
+const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
   const { t, i18n } = useTranslation();
   return (
-    <div className="overflow-x-auto">
+    <div className={cn('overflow-x-auto', className)}>
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-muted">
           <TableRow>
             <TableHead className="hidden sm:table-cell">
               {t('instruments.name')}
@@ -53,26 +54,28 @@ const AssetTable = ({ data, onAssetPressed }: AssetTableProps) => {
               </TableCell>
               <TableCell className="text-right">
                 {toFixedLocalized(asset.value, i18n.language, 2)}{' '}
-                {t('common.currency')}
               </TableCell>
               <TableCell
                 className={cn(
                   'text-right',
-                  asset.profit < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
+                  asset.gain < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
                 )}
               >
-                {toFixedLocalized(asset.profit, i18n.language, 2)}{' '}
-                {t('common.currency')}
+                {toFixedLocalized(asset.gain, i18n.language, 2)}{' '}
               </TableCell>
               <TableCell
                 className={cn(
                   'text-right hidden sm:table-cell',
-                  asset.profit_percentage < 0
-                    ? 'text-[var(--red)]'
-                    : 'text-[var(--green)]'
+                  asset.gain_percentage === null
+                    ? ''
+                    : asset.gain_percentage < 0
+                      ? 'text-[var(--red)]'
+                      : 'text-[var(--green)]'
                 )}
               >
-                {toFixedLocalized(asset.profit_percentage, i18n.language, 2)}%
+                {asset.gain_percentage
+                  ? `${toFixedLocalized(asset.gain_percentage, i18n.language, 2)}%`
+                  : 'N/A'}
               </TableCell>
             </TableRow>
           ))}

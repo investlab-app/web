@@ -55,7 +55,7 @@ export function useChartOptions({
       },
       formatter,
     },
-    grid: { left: 0, right: 0, top: 0, bottom: 0 },
+    grid: { left: 20, right: 20, top: 20, bottom: 20 },
     xAxis: {
       type: 'category',
       data: dates,

@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsMeAccountValueRetrieveData, InvestorsMeAccountValueRetrieveResponses, InvestorsMeAssetAllocationRetrieveData, InvestorsMeAssetAllocationRetrieveResponses, InvestorsMeCurrentAccountValueRetrieveData, InvestorsMeCurrentAccountValueRetrieveResponses, InvestorsMeLanguageCreateData, InvestorsMeLanguageCreateResponses, InvestorsMeOwnedSharesRetrieveData, InvestorsMeOwnedSharesRetrieveResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeStatisticsMostTradedRetrieveData, InvestorsMeStatisticsMostTradedRetrieveResponses, InvestorsMeStatisticsProfileOverviewRetrieveData, InvestorsMeStatisticsProfileOverviewRetrieveResponses, InvestorsMeStatisticsTradingOverviewRetrieveData, InvestorsMeStatisticsTradingOverviewRetrieveResponses, InvestorsMeStatsRetrieveData, InvestorsMeStatsRetrieveResponses, InvestorsMeTransactionsHistoryListData, InvestorsMeTransactionsHistoryListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, InvestorsUpdateData, InvestorsUpdateResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
-import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsMeAccountValueRetrieveData, zInvestorsMeAccountValueRetrieveResponse, zInvestorsMeAssetAllocationRetrieveData, zInvestorsMeAssetAllocationRetrieveResponse, zInvestorsMeCurrentAccountValueRetrieveData, zInvestorsMeCurrentAccountValueRetrieveResponse, zInvestorsMeLanguageCreateData, zInvestorsMeLanguageCreateResponse, zInvestorsMeOwnedSharesRetrieveData, zInvestorsMeOwnedSharesRetrieveResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeStatisticsMostTradedRetrieveData, zInvestorsMeStatisticsMostTradedRetrieveResponse, zInvestorsMeStatisticsProfileOverviewRetrieveData, zInvestorsMeStatisticsProfileOverviewRetrieveResponse, zInvestorsMeStatisticsTradingOverviewRetrieveData, zInvestorsMeStatisticsTradingOverviewRetrieveResponse, zInvestorsMeStatsRetrieveData, zInvestorsMeStatsRetrieveResponse, zInvestorsMeTransactionsHistoryListData, zInvestorsMeTransactionsHistoryListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zInvestorsUpdateData, zInvestorsUpdateResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsDepositCreateData, InvestorsDepositCreateResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeWatchedInstrumentsToggleCreateData, InvestorsMeWatchedInstrumentsToggleCreateResponses, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsCreateData, NotificationsCreateResponses, NotificationsListData, NotificationsListResponses, NotificationsMarkAllAsSeenCreateData, NotificationsMarkAllAsSeenCreateResponses, NotificationsPartialUpdateData, NotificationsPartialUpdateResponses, NotificationsRetrieveData, NotificationsRetrieveResponses, NotificationsUnseenCountRetrieveData, NotificationsUnseenCountRetrieveResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatisticsAssetAllocationRetrieveData, StatisticsAssetAllocationRetrieveResponses, StatisticsCurrentAccountValueRetrieveData, StatisticsCurrentAccountValueRetrieveResponses, StatisticsOwnedSharesListData, StatisticsOwnedSharesListResponses, StatisticsStatisticsMostTradedListData, StatisticsStatisticsMostTradedListResponses, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatisticsTradingOverviewRetrieveResponses, StatisticsStatsRetrieveData, StatisticsStatsRetrieveResponses, StatisticsTransactionsHistoryListData, StatisticsTransactionsHistoryListResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
+import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsDepositCreateData, zInvestorsDepositCreateResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMePartialUpdateData, zInvestorsMePartialUpdateResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeWatchedInstrumentsToggleCreateData, zInvestorsMeWatchedInstrumentsToggleCreateResponse, zInvestorsMeWatchedTickersListData, zInvestorsMeWatchedTickersListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsCreateData, zNotificationsCreateResponse, zNotificationsListData, zNotificationsListResponse, zNotificationsMarkAllAsSeenCreateData, zNotificationsPartialUpdateData, zNotificationsPartialUpdateResponse, zNotificationsRetrieveData, zNotificationsRetrieveResponse, zNotificationsUnseenCountRetrieveData, zNotificationsUnseenCountRetrieveResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatisticsAssetAllocationRetrieveData, zStatisticsAssetAllocationRetrieveResponse, zStatisticsCurrentAccountValueRetrieveData, zStatisticsCurrentAccountValueRetrieveResponse, zStatisticsOwnedSharesListData, zStatisticsOwnedSharesListResponse, zStatisticsStatisticsMostTradedListData, zStatisticsStatisticsMostTradedListResponse, zStatisticsStatisticsTradingOverviewRetrieveData, zStatisticsStatisticsTradingOverviewRetrieveResponse, zStatisticsStatsRetrieveData, zStatisticsStatsRetrieveResponse, zStatisticsTransactionsHistoryListData, zStatisticsTransactionsHistoryListResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -145,13 +145,13 @@ export const investorsPartialUpdate = <ThrowOnError extends boolean = false>(opt
     });
 };
 
-export const investorsUpdate = <ThrowOnError extends boolean = false>(options: Options<InvestorsUpdateData, ThrowOnError>) => {
-    return (options.client ?? client).put<InvestorsUpdateResponses, unknown, ThrowOnError>({
+export const investorsDepositCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsDepositCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<InvestorsDepositCreateResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsUpdateData.parseAsync(data);
+            return await zInvestorsDepositCreateData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsUpdateResponse.parseAsync(data);
+            return await zInvestorsDepositCreateResponse.parseAsync(data);
         },
         security: [
             {
@@ -159,7 +159,7 @@ export const investorsUpdate = <ThrowOnError extends boolean = false>(options: O
                 type: 'http'
             }
         ],
-        url: '/api/investors/{clerk_id}/',
+        url: '/api/investors/deposit/',
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -192,16 +192,43 @@ export const investorsMeRetrieve = <ThrowOnError extends boolean = false>(option
 };
 
 /**
+ * Update current investor
+ * Update the investor profile for the currently authenticated user.
+ */
+export const investorsMePartialUpdate = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMePartialUpdateData, ThrowOnError>) => {
+    return (options?.client ?? client).patch<InvestorsMePartialUpdateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMePartialUpdateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMePartialUpdateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+        }
+    });
+};
+
+/**
  * Get account value over time
  * Get account value over time data for the currently authenticated user.
  */
-export const investorsMeAccountValueRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeAccountValueRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeAccountValueRetrieveResponses, unknown, ThrowOnError>({
+export const investorsMeAccountValueList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeAccountValueListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeAccountValueListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeAccountValueRetrieveData.parseAsync(data);
+            return await zInvestorsMeAccountValueListData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeAccountValueRetrieveResponse.parseAsync(data);
+            return await zInvestorsMeAccountValueListResponse.parseAsync(data);
         },
         security: [
             {
@@ -215,16 +242,16 @@ export const investorsMeAccountValueRetrieve = <ThrowOnError extends boolean = f
 };
 
 /**
- * Get asset allocation
- * Get asset allocation data for the currently authenticated user.
+ * Toggle watched instrument
+ * Toggle the watched status of an instrument for the current user.
  */
-export const investorsMeAssetAllocationRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeAssetAllocationRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeAssetAllocationRetrieveResponses, unknown, ThrowOnError>({
+export const investorsMeWatchedInstrumentsToggleCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeWatchedInstrumentsToggleCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<InvestorsMeWatchedInstrumentsToggleCreateResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeAssetAllocationRetrieveData.parseAsync(data);
+            return await zInvestorsMeWatchedInstrumentsToggleCreateData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeAssetAllocationRetrieveResponse.parseAsync(data);
+            return await zInvestorsMeWatchedInstrumentsToggleCreateResponse.parseAsync(data);
         },
         security: [
             {
@@ -232,22 +259,22 @@ export const investorsMeAssetAllocationRetrieve = <ThrowOnError extends boolean 
                 type: 'http'
             }
         ],
-        url: '/api/investors/me/asset-allocation/',
+        url: '/api/investors/me/watched-instruments/{instrument_id}/toggle/',
         ...options
     });
 };
 
 /**
- * Get current account value
- * Get the current account value as well as gain and percent gain for the authenticated user.
+ * Get watched tickers
+ * Get the list of watched tickers with icons for the currently authenticated user.
  */
-export const investorsMeCurrentAccountValueRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeCurrentAccountValueRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeCurrentAccountValueRetrieveResponses, unknown, ThrowOnError>({
+export const investorsMeWatchedTickersList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeWatchedTickersListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeWatchedTickersListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeCurrentAccountValueRetrieveData.parseAsync(data);
+            return await zInvestorsMeWatchedTickersListData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeCurrentAccountValueRetrieveResponse.parseAsync(data);
+            return await zInvestorsMeWatchedTickersListResponse.parseAsync(data);
         },
         security: [
             {
@@ -255,168 +282,7 @@ export const investorsMeCurrentAccountValueRetrieve = <ThrowOnError extends bool
                 type: 'http'
             }
         ],
-        url: '/api/investors/me/current-account-value/',
-        ...options
-    });
-};
-
-export const investorsMeLanguageCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeLanguageCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<InvestorsMeLanguageCreateResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeLanguageCreateData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeLanguageCreateResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/language/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * Get owned shares
- * Get owned shares data for the currently authenticated user.
- */
-export const investorsMeOwnedSharesRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeOwnedSharesRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeOwnedSharesRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeOwnedSharesRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeOwnedSharesRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/owned-shares/',
-        ...options
-    });
-};
-
-/**
- * Get overview about the most traded instruments
- * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
- */
-export const investorsMeStatisticsMostTradedRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatisticsMostTradedRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeStatisticsMostTradedRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeStatisticsMostTradedRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeStatisticsMostTradedRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/statistics/most-traded/',
-        ...options
-    });
-};
-
-/**
- * Get info about investor's level
- * Get the information about the level, exp points and points left to next level for the current investor
- */
-export const investorsMeStatisticsProfileOverviewRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatisticsProfileOverviewRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeStatisticsProfileOverviewRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeStatisticsProfileOverviewRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeStatisticsProfileOverviewRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/statistics/profile-overview/',
-        ...options
-    });
-};
-
-/**
- * Get trading performance overview
- * Returns total trades, number of buys/sells, average gain/loss, and total return for the current investor.
- */
-export const investorsMeStatisticsTradingOverviewRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatisticsTradingOverviewRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeStatisticsTradingOverviewRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeStatisticsTradingOverviewRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeStatisticsTradingOverviewRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/statistics/trading-overview/',
-        ...options
-    });
-};
-
-/**
- * Get investor stats
- * Get investor statistics for the currently authenticated user.
- */
-export const investorsMeStatsRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeStatsRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeStatsRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeStatsRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeStatsRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/stats/',
-        ...options
-    });
-};
-
-/**
- * Get transaction history
- * Get transaction history for the currently authenticated user. Can filter by position type (open/closed/both) and ticker symbol.
- */
-export const investorsMeTransactionsHistoryList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeTransactionsHistoryListData, ThrowOnError>) => {
-    return (options?.client ?? client).get<InvestorsMeTransactionsHistoryListResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zInvestorsMeTransactionsHistoryListData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zInvestorsMeTransactionsHistoryListResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/investors/me/transactions-history/',
+        url: '/api/investors/me/watched-tickers/',
         ...options
     });
 };
@@ -483,6 +349,171 @@ export const newsList = <ThrowOnError extends boolean = false>(options?: Options
             }
         ],
         url: '/api/news/',
+        ...options
+    });
+};
+
+/**
+ * API endpoint for retrieving and managing user notifications.
+ *
+ * Actions:
+ * - list: Get all notifications for current user
+ * - retrieve: Get a specific notification
+ * - partial_update: Mark a notification as seen/unseen
+ * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
+ * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
+ */
+export const notificationsList = <ThrowOnError extends boolean = false>(options?: Options<NotificationsListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<NotificationsListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/',
+        ...options
+    });
+};
+
+/**
+ * API endpoint for retrieving and managing user notifications.
+ *
+ * Actions:
+ * - list: Get all notifications for current user
+ * - retrieve: Get a specific notification
+ * - partial_update: Mark a notification as seen/unseen
+ * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
+ * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
+ */
+export const notificationsCreate = <ThrowOnError extends boolean = false>(options: Options<NotificationsCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<NotificationsCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+/**
+ * API endpoint for retrieving and managing user notifications.
+ *
+ * Actions:
+ * - list: Get all notifications for current user
+ * - retrieve: Get a specific notification
+ * - partial_update: Mark a notification as seen/unseen
+ * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
+ * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
+ */
+export const notificationsRetrieve = <ThrowOnError extends boolean = false>(options: Options<NotificationsRetrieveData, ThrowOnError>) => {
+    return (options.client ?? client).get<NotificationsRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/{id}/',
+        ...options
+    });
+};
+
+/**
+ * API endpoint for retrieving and managing user notifications.
+ *
+ * Actions:
+ * - list: Get all notifications for current user
+ * - retrieve: Get a specific notification
+ * - partial_update: Mark a notification as seen/unseen
+ * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
+ * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
+ */
+export const notificationsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<NotificationsPartialUpdateData, ThrowOnError>) => {
+    return (options.client ?? client).patch<NotificationsPartialUpdateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsPartialUpdateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsPartialUpdateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/{id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+/**
+ * Mark all notifications as seen for the current user
+ */
+export const notificationsMarkAllAsSeenCreate = <ThrowOnError extends boolean = false>(options?: Options<NotificationsMarkAllAsSeenCreateData, ThrowOnError>) => {
+    return (options?.client ?? client).post<NotificationsMarkAllAsSeenCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsMarkAllAsSeenCreateData.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/mark_all_as_seen/',
+        ...options
+    });
+};
+
+/**
+ * Get count of unseen notifications for the current user
+ */
+export const notificationsUnseenCountRetrieve = <ThrowOnError extends boolean = false>(options?: Options<NotificationsUnseenCountRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<NotificationsUnseenCountRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zNotificationsUnseenCountRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zNotificationsUnseenCountRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/notifications/unseen_count/',
         ...options
     });
 };
@@ -747,6 +778,167 @@ export const pricesPriceAlertUpdate = <ThrowOnError extends boolean = false>(opt
             'Content-Type': 'application/json',
             ...options.headers
         }
+    });
+};
+
+/**
+ * Get asset allocation
+ * Get asset allocation data for the currently authenticated user.
+ */
+export const statisticsAssetAllocationRetrieve = <ThrowOnError extends boolean = false>(options?: Options<StatisticsAssetAllocationRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsAssetAllocationRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsAssetAllocationRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsAssetAllocationRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/asset-allocation/',
+        ...options
+    });
+};
+
+/**
+ * Get current account value
+ * Get the current account value as well as gain and percent gain for the authenticated user.
+ */
+export const statisticsCurrentAccountValueRetrieve = <ThrowOnError extends boolean = false>(options?: Options<StatisticsCurrentAccountValueRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsCurrentAccountValueRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsCurrentAccountValueRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsCurrentAccountValueRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/current-account-value/',
+        ...options
+    });
+};
+
+/**
+ * Get owned shares
+ * Get owned shares data for the currently authenticated user.
+ */
+export const statisticsOwnedSharesList = <ThrowOnError extends boolean = false>(options?: Options<StatisticsOwnedSharesListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsOwnedSharesListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsOwnedSharesListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsOwnedSharesListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/owned-shares/',
+        ...options
+    });
+};
+
+/**
+ * Get overview about the most traded instruments
+ * Returns number of trades, number of buys/sells, avg gain/loss, and total return from the most frequently traded instruments.
+ */
+export const statisticsStatisticsMostTradedList = <ThrowOnError extends boolean = false>(options?: Options<StatisticsStatisticsMostTradedListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsStatisticsMostTradedListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsStatisticsMostTradedListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsStatisticsMostTradedListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/statistics/most-traded/',
+        ...options
+    });
+};
+
+/**
+ * Get trading performance overview
+ * Returns total trades, number of buys/sells, average gain/loss, and total return for the current investor.
+ */
+export const statisticsStatisticsTradingOverviewRetrieve = <ThrowOnError extends boolean = false>(options?: Options<StatisticsStatisticsTradingOverviewRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsStatisticsTradingOverviewRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsStatisticsTradingOverviewRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsStatisticsTradingOverviewRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/statistics/trading-overview/',
+        ...options
+    });
+};
+
+/**
+ * Get investor stats
+ * Get investor statistics for the currently authenticated user.
+ */
+export const statisticsStatsRetrieve = <ThrowOnError extends boolean = false>(options?: Options<StatisticsStatsRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsStatsRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsStatsRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsStatsRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/stats/',
+        ...options
+    });
+};
+
+/**
+ * Get transaction history
+ * Get transaction history for the currently authenticated user. Can filter by position type (open/closed/both) and ticker symbol.
+ */
+export const statisticsTransactionsHistoryList = <ThrowOnError extends boolean = false>(options?: Options<StatisticsTransactionsHistoryListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<StatisticsTransactionsHistoryListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zStatisticsTransactionsHistoryListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zStatisticsTransactionsHistoryListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/statistics/transactions-history/',
+        ...options
     });
 };
 

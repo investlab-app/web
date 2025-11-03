@@ -6,8 +6,11 @@ const plInstruments = {
   price: 'Cena',
   name: 'Nazwa',
   market_capital: 'Kapitał rynkowy',
+  market_cap: 'Kapitalizacja rynkowa',
   exchange: 'Giełda',
   sector: 'Sektor',
+  cik: 'CIK',
+  website: 'Strona internetowa',
   symbol: 'Symbol',
   day_change: 'Dzienna zmiana',
   news: 'Wiadomości',
@@ -53,8 +56,11 @@ const plInstruments = {
     current_price: 'Aktualna cena rynkowa za akcję',
     day_change: 'Procentowa zmiana ceny od poprzedniego dnia handlowego',
     volume: 'Liczba akcji handlowanych dzisiaj',
+    market_cap: 'Całkowita kapitalizacja rynkowa spółki',
     load_more: 'Załaduj więcej instrumentów z listy',
   },
+  browse_instruments: 'Przeglądaj instrumenty',
+  no_instruments_found: 'Nie znaleziono instrumentów',
 };
 
 export default plInstruments;

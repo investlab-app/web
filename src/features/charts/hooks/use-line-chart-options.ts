@@ -31,6 +31,10 @@ export function useLineChartOptions({
   const dates = chartData.map((item) => item.date);
   const seriesData = chartData.map((item) => item.close);
 
+  // Call hooks at top level (not conditionally)
+  const primaryColor = useCssVar('--color-primary-hex');
+  const cardColor = useCssVar('--color-card-hex');
+
   const formatter = useCallback(
     (params: TooltipComponentFormatterCallbackParams) => {
       const paramArray = Array.isArray(params) ? params : [params];
@@ -79,14 +83,37 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
           x2: 0,
           y2: 1,
           colorStops: [
-            { offset: 0, color: useCssVar('--color-card-foreground-hex') },
-            { offset: 1, color: useCssVar('--color-card-hex') },
+            { offset: 0, color: primaryColor },
+            { offset: 1, color: cardColor },
           ],
         },
       },
       lineStyle: {
-        color: useCssVar('--color-card-foreground-hex'),
+        color: primaryColor,
         width: 1,
+      },
+      markPoint: {
+        symbol: 'circle',
+        symbolKeepAspect: true,
+        symbolOffset: [0, 0],
+        label: { show: false },
+        data:
+          seriesData.length > 0 && dates.length > 0
+            ? [
+                {
+                  name: 'Last Value',
+                  xAxis: dates[dates.length - 1],
+                  yAxis: seriesData[seriesData.length - 1],
+                  itemStyle: {
+                    color: primaryColor,
+                    borderWidth: 0,
+                  },
+                  symbol: 'circle',
+                  symbolSize: 6,
+                },
+              ]
+            : [],
+        emphasis: { disabled: true },
       },
     },
   ];

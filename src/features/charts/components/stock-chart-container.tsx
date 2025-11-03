@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
-import { Message } from '../../shared/components/error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import { StockChart, StockChartSkeleton } from './stock-chart';
 import type { TimeInterval } from '../utils/time-ranges';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
@@ -40,6 +40,7 @@ import {
 import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
 import { pricesBars } from '@/client';
 import { roundDateToMinute, serialize } from '@/features/shared/utils/date';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface StockChartProps {
   ticker: string;
@@ -64,6 +65,13 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const [isCandlestick, setIsCandlestick] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<InstrumentPricePoint>();
 
+  const [tooltipsEnabled, setTooltipsEnabled] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setTooltipsEnabled(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   const query = {
     ticker,
     interval,
@@ -78,7 +86,14 @@ export function StockChartContainer({ ticker }: StockChartProps) {
     isSuccess,
     isError,
   } = useQuery({
-    queryKey: pricesBarsQueryKey({ query }),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: pricesBarsQueryKey({
+      query: {
+        ticker,
+        interval,
+        start_date: '',
+      },
+    }),
     queryFn: async () => {
       const bars = await pricesBars({ query });
 
@@ -95,7 +110,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         low: parseFloat(item.low),
       }));
     },
-    gcTime: 60_000, // 1 minute
+    staleTime: 60_000, // 1 minute
   });
 
   const { lastJsonMessage } = useWS([ticker]);
@@ -147,57 +162,85 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               variant="outline"
               aria-label="Toggle chart type"
             >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ToggleGroupItem value="line" aria-label="Line chart">
-                    <LineChartIcon strokeWidth={1.5} />
-                  </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {t(
-                      'common.tooltips.charts.line_chart',
-                      'Display price data as a simple line chart'
-                    )}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div>
-                    <ToggleGroupItem
-                      value="candle"
-                      aria-label="Candlestick chart"
-                    >
-                      <CandlestickChartIcon strokeWidth={1.5} />
+              {tooltipsEnabled ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <ToggleGroupItem value="line" aria-label="Line chart">
+                      <LineChartIcon strokeWidth={1.5} />
                     </ToggleGroupItem>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {t(
-                      'common.tooltips.charts.candlestick_chart',
-                      'Display detailed candlestick chart with open, high, low, close data'
-                    )}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    <p>
+                      {t(
+                        'common.tooltips.charts.line_chart',
+
+                        'Display price data as a simple line chart'
+                      )}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <ToggleGroupItem value="line" aria-label="Line chart">
+                  <LineChartIcon strokeWidth={1.5} />
+                </ToggleGroupItem>
+              )}
+
+              {tooltipsEnabled ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <ToggleGroupItem
+                        value="candle"
+                        aria-label="Candlestick chart"
+                      >
+                        <CandlestickChartIcon strokeWidth={1.5} />
+                      </ToggleGroupItem>
+                    </div>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    <p>
+                      {t(
+                        'common.tooltips.charts.candlestick_chart',
+
+                        'Display detailed candlestick chart with open, high, low, close data'
+                      )}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <ToggleGroupItem value="candle" aria-label="Candlestick chart">
+                  <CandlestickChartIcon strokeWidth={1.5} />
+                </ToggleGroupItem>
+              )}
             </ToggleGroup>
             <Select
               value={interval}
               onValueChange={(value) => setInterval(value as TimeInterval)}
             >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <SelectTrigger
-                    className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
-                    aria-label="Select interval"
-                  >
-                    <SelectValue placeholder={t('common.select_interval')} />
-                  </SelectTrigger>
-                </TooltipTrigger>
-                <TooltipContent>{t('common.select_interval')}</TooltipContent>
-              </Tooltip>
+              {tooltipsEnabled ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectTrigger
+                      className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
+                      aria-label="Select interval"
+                    >
+                      <SelectValue placeholder={t('common.select_interval')} />
+                    </SelectTrigger>
+                  </TooltipTrigger>
+
+                  <TooltipContent>{t('common.select_interval')}</TooltipContent>
+                </Tooltip>
+              ) : (
+                <SelectTrigger
+                  className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
+                  aria-label="Select interval"
+                >
+                  <SelectValue placeholder={t('common.select_interval')} />
+                </SelectTrigger>
+              )}
+
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>{t('common.interval')}</SelectLabel>
@@ -218,7 +261,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
       </CardHeader>
       <CardContent className="h-96">
         {isPending && <StockChartSkeleton />}
-        {isError && <Message message={t('common.error_loading_data')} />}
+        {isError && <ErrorMessage message={t('common.error_loading_data')} />}
         {isSuccess &&
           (priceHistory.length ? (
             <StockChart
@@ -230,7 +273,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               liveUpdatePoint={currentPrice}
             />
           ) : (
-            <Message
+            <EmptyMessage
               message={t('instruments.history_empty', {
                 ticker,
                 interval: t(timeIntervals[interval]),

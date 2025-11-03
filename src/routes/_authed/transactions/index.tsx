@@ -7,9 +7,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
-import { PositionsTable } from '@/features/transactions/components/positions-table';
 import AppFrame from '@/features/shared/components/app-frame';
-import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
+import { Positions } from '@/features/transactions/components/positions';
 
 export const Route = createFileRoute('/_authed/transactions/')({
   component: RouteComponent,
@@ -21,7 +20,7 @@ function RouteComponent() {
   return (
     <AppFrame>
       <Tabs defaultValue="open">
-        <TabsList>
+        <TabsList className="mb-2">
           <TabsTrigger value="open" className="cursor-pointer text-xs">
             <CircleDot className="opacity-80" />
             {t('transactions.tabs.open_positions')}
@@ -32,14 +31,10 @@ function RouteComponent() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="open">
-          <ScrollableHorizontally>
-            <PositionsTable type="open" />
-          </ScrollableHorizontally>
+          <Positions type="open" />
         </TabsContent>
         <TabsContent value="closed">
-          <ScrollableHorizontally>
-            <PositionsTable type="closed" />
-          </ScrollableHorizontally>
+          <Positions type="closed" />
         </TabsContent>
       </Tabs>
     </AppFrame>

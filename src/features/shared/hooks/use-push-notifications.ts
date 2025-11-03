@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+// TODO: Investigate why this does not work on Helium? Perplexity's web push example works fine.
+
 export interface PushSubscriptionData {
   endpoint: string;
   p256dh: string;

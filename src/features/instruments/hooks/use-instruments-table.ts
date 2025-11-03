@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import type { Instrument } from '../types/instrument';
 import type { SortingState } from '@tanstack/react-table';
+import type { PaginatedInstrumentWithPriceList } from '@/client/types.gen';
 import { livePrice } from '@/features/charts/types/live-price';
 import { useDebounce } from '@/features/shared/hooks/use-debounce';
 import { useWS } from '@/features/shared/hooks/use-ws';
@@ -50,17 +51,19 @@ export function useInstrumentsTable({
       },
     }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+    getNextPageParam: (
+      lastPage: PaginatedInstrumentWithPriceList,
+      _allPages: Array<PaginatedInstrumentWithPriceList>,
+      lastPageParam: number | { query?: { page?: number } }
+    ) => {
       const lastPageNumber =
         typeof lastPageParam === 'number'
           ? lastPageParam
-          : (lastPageParam.query?.page ?? 1);
-      return lastPage.next ? lastPageNumber + 1 : undefined;
+          : (lastPageParam?.query?.page ?? 1); // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+      return lastPage.next ? lastPageNumber + 1 : null;
     },
     placeholderData: keepPreviousData,
-    meta: {
-      persist: false,
-    },
+    meta: { persist: false },
   });
 
   const instruments = (data?.pages ?? [])
@@ -71,6 +74,7 @@ export function useInstrumentsTable({
         const dailySummary = priceInfo.daily_summary;
 
         acc[instrument.ticker] = {
+          id: instrument.id,
           name: instrument.name,
           volume: Number(dailySummary.volume),
           currentPrice: Number(priceInfo.current_price),
@@ -78,6 +82,10 @@ export function useInstrumentsTable({
           symbol: instrument.ticker,
           logo: instrument.logo ?? null,
           icon: instrument.icon ?? null,
+          is_watched: instrument.is_watched,
+          marketCap: instrument.market_cap
+            ? Number(instrument.market_cap)
+            : null,
         } as Instrument;
         return acc;
       },

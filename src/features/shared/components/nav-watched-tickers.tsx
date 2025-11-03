@@ -1,0 +1,96 @@
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { Link, useRouterState } from '@tanstack/react-router';
+import { Star } from 'lucide-react';
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/features/shared/components/ui/sidebar';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
+
+export function NavWatchedTickers() {
+  const { t } = useTranslation();
+  const { location } = useRouterState();
+  const { state } = useSidebar();
+
+  const { data: watchedTickers = [], isLoading } = useQuery(
+    investorsMeWatchedTickersListOptions()
+  );
+
+  if (isLoading) {
+    return (
+      <SidebarGroup>
+        <SidebarGroupLabel className="flex items-center gap-2 leading-none">
+          <Star className="h-4 w-4 flex-shrink-0" />
+          {t('common.watched', 'Watched')}
+        </SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {[1, 2, 3].map((i) => (
+              <SidebarMenuItem key={i}>
+                <Skeleton className="h-8 w-full" />
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  }
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel className="flex items-center gap-2 leading-none">
+        <Star className="h-4 w-4 flex-shrink-0" />
+        {t('common.watched', 'Watched')}
+      </SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {watchedTickers.length === 0 ? (
+            <div
+              className={`px-2 py-2 text-sm text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-200 ${
+                state === 'collapsed' ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
+              {t('common.no_watched_instruments', 'brak obserwowanych')}
+            </div>
+          ) : (
+            watchedTickers.map((ticker) => {
+              const isActive =
+                location.pathname === `/instruments/${ticker.ticker}`;
+              return (
+                <SidebarMenuItem key={ticker.ticker}>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={ticker.name}
+                    isActive={isActive}
+                  >
+                    <Link
+                      to="/instruments/$instrumentId"
+                      params={{ instrumentId: ticker.ticker }}
+                      className="text-sm"
+                    >
+                      {ticker.icon && (
+                        <img
+                          src={ticker.icon}
+                          alt={ticker.ticker}
+                          className="h-4 w-4 rounded-full"
+                        />
+                      )}
+                      <span>{ticker.ticker}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })
+          )}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
