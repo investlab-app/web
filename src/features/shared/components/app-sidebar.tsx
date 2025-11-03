@@ -7,7 +7,7 @@ import {
   LayoutDashboardIcon,
   List,
   PieChart,
-  Flower,
+  Workflow,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -68,7 +68,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t('common.strategies'),
         to: '/strategies',
-        icon: Flower,
+        icon: Workflow,
         tooltip: t(
           'common.tooltips.navigation.strategies',
           'See and edit your saved automated strategies'

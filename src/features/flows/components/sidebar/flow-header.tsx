@@ -51,7 +51,7 @@ export function FlowHeader({
         onChange={(e) => setTempTitle(e.target.value)}
         onKeyDown={handleKeyDown}
         disabled={!isEditing}
-        className="flex-1 border-0 text-lg font-semibold focus-visible:ring-0 disabled:opacity-100 disabled:cursor-default"
+        className="flex-1 border-0 text-lg font-semibold focus-visible:ring-0 disabled:opacity-100 disabled:cursor-default dark:bg-transparent"
         placeholder={t('flows.header.title_placeholder') || 'Flow Title'}
       />
       <div className="flex items-center gap-1">
