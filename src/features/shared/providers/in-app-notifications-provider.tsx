@@ -1,4 +1,4 @@
-import { use, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { toast } from 'sonner';
 import { inAppNotification } from '../types/in-app-notification';
 import { WSContext } from './ws-provider';
@@ -8,7 +8,7 @@ export function InAppNotificationsProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const wsContext = use(WSContext);
+  const wsContext = useContext(WSContext);
 
   if (wsContext === undefined) {
     throw new Error(
@@ -16,18 +16,25 @@ export function InAppNotificationsProvider({
     );
   }
 
+  const { notificationsWs } = wsContext;
+
   useEffect(() => {
+    if (!notificationsWs.lastJsonMessage) return;
+
     const notificationData = inAppNotification.safeParse(
-      wsContext.ws.lastJsonMessage
+      notificationsWs.lastJsonMessage
     );
-    if (notificationData.error) return;
+    if (notificationData.error) {
+      console.warn('Invalid notification format:', notificationData.error);
+      return;
+    }
 
     const notification = notificationData.data.notification;
 
     toast.info(notification.title, {
       description: notification.body,
     });
-  }, [wsContext.ws.lastJsonMessage]);
+  }, [notificationsWs.lastJsonMessage]);
 
   return <>{children}</>;
 }
