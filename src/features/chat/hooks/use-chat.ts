@@ -83,15 +83,21 @@ export function useChat(): UseChatReturn {
 
         case 'chunk':
           const chunkContent = data.content || '';
-          console.debug('[useChat] Received chunk:', chunkContent);
+          console.debug('[useChat] Received delta chunk:', {
+            content: chunkContent,
+            length: chunkContent.length,
+            accumulatedLength:
+              currentResponseRef.current.length + chunkContent.length,
+          });
           currentResponseRef.current += chunkContent;
           break;
 
         case 'end':
-          console.debug(
-            '[useChat] Ending response, full content length:',
-            currentResponseRef.current.length
-          );
+          console.debug('[useChat] Ending response, full content:', {
+            content: currentResponseRef.current,
+            length: currentResponseRef.current.length,
+            messageCount: messages.length,
+          });
           if (currentResponseRef.current) {
             const newMessage = {
               id: `msg-${messageIdRef.current++}`,
