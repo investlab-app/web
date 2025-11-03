@@ -8,7 +8,7 @@ export function FlowNodeUI({ nodeId, preview, children }: CustomNodeProps) {
     <NodeUI
       preview={preview}
       nodeId={nodeId}
-      className={`bg-[var(--background)]`}
+      className={`bg-[var(--node-flow)]`}
     >
       <div className="flex flex-col gap-2 text-center">{children}</div>
 

@@ -1,4 +1,4 @@
-import { FlowHeader } from '../flow-header';
+import { FlowHeader } from './flow-header';
 import { SaveButton } from './save-button';
 import { DnDSidebar } from './dnd-sidebar';
 import type { Node, XYPosition } from '@xyflow/react';
@@ -23,22 +23,22 @@ export function FlowsSidebar({
 }: FlowsSidebarProps) {
   return (
     <Sidebar
-      variant="inset"
+      variant="sidebar"
       collapsible="offcanvas"
       side="right"
       noBackground
       className="overflow-hidden p-3 mt-10 w-fit"
     >
       <SidebarHeader className="h-fit justify-center p-0">
-        {/* <FlowHeader
-  initialTitle="My Trading 1"
-  onSave={(newTitle) => {
-    console.log('Saving new title:', newTitle);
-  }}
-  onDelete={() => {
-    console.log('Deleting flow');
-  }}
-/> */}
+        <FlowHeader
+          initialTitle="My Trading 1"
+          onSave={(newTitle) => {
+            console.log('Saving new title:', newTitle);
+          }}
+          onDelete={() => {
+            console.log('Deleting flow');
+          }}
+        />
         <SaveButton onSave={onSave} />
       </SidebarHeader>
       <SidebarContent>

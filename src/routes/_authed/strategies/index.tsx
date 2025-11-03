@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authed/strategies/')({
 
 function RouteComponent() {
   return (
-    <AppFrame>
+    <AppFrame noXPadding>
       <ReactFlowProvider>
         <DnDProvider>
           <div className="h-[calc(100vh-var(--header-height)-2rem)]">

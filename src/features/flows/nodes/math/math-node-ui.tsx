@@ -26,7 +26,7 @@ export function MathNodeUI({
     <NodeUI
       preview={preview}
       nodeId={nodeId}
-      className={`bg-[var(--background)]`}
+      className={`bg-[var(--node-math)]`}
     >
       <div className="flex flex-col gap-2 text-center">
         {children}
