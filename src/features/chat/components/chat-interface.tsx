@@ -24,15 +24,30 @@ export function ChatInterface() {
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
+    console.debug('[ChatInterface] Messages updated, count:', messages.length);
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Debug component mounting and connection status
+  useEffect(() => {
+    console.debug('[ChatInterface] Component mounted/updated', {
+      isConnected,
+      messageCount: messages.length,
+      isLoading,
+      hasError: !!error,
+    });
+  }, [isConnected, messages.length, isLoading, error]);
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = inputRef.current;
-    if (!input || !input.value.trim()) return;
+    if (!input || !input.value.trim()) {
+      console.debug('[ChatInterface] Skipping send - empty input');
+      return;
+    }
 
     const message = input.value.trim();
+    console.debug('[ChatInterface] Sending message:', message);
     input.value = '';
 
     await sendMessage(message);
@@ -47,9 +62,9 @@ export function ChatInterface() {
             <h1 className="text-lg font-semibold">Financial Assistant</h1>
             <p className="text-xs text-muted-foreground">
               {isConnected ? (
-                <span className="text-green-600">Connected</span>
+                <span className="text-green-600">✓ Connected</span>
               ) : (
-                <span className="text-red-600">Disconnected</span>
+                <span className="text-red-600">✗ Disconnected</span>
               )}
             </p>
           </div>
@@ -57,7 +72,10 @@ export function ChatInterface() {
             <Button
               variant="outline"
               size="sm"
-              onClick={clearMessages}
+              onClick={() => {
+                console.debug('[ChatInterface] Clearing messages');
+                clearMessages();
+              }}
               disabled={isLoading}
             >
               Clear
@@ -115,6 +133,9 @@ export function ChatInterface() {
       {error && (
         <div className="border-t border-red-200 bg-red-50 px-4 py-2 sm:px-6">
           <p className="text-sm text-red-800">{error}</p>
+          <p className="text-xs text-red-600 mt-1">
+            Open the browser console (F12) for more debugging information
+          </p>
         </div>
       )}
 
@@ -166,6 +187,7 @@ function QuerySuggestions({
   ];
 
   const handleClick = (suggestion: string) => {
+    console.debug('[ChatInterface] Suggestion clicked:', suggestion);
     void onSuggestionClick(suggestion);
   };
 
