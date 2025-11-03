@@ -40,17 +40,7 @@ export function InstrumentHeader({
     return (
       <ErrorMessage
         message={t('common.error_loading_instrument', {
-          defaultValue: `Failed to load instrument: ${error?.message || 'Unknown error'}`,
-        })}
-      />
-    );
-  }
-
-  if (!instrumentInfo) {
-    return (
-      <ErrorMessage
-        message={t('common.instrument_not_found', {
-          defaultValue: 'Instrument not found',
+          defaultValue: `Failed to load instrument: ${error.message || 'Unknown error'}`,
         })}
       />
     );

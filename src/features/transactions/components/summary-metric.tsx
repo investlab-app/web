@@ -15,12 +15,7 @@ export function SummaryMetric({
   containerClassName,
 }: SummaryMetricProps) {
   return (
-    <div
-      className={cn(
-        'border-muted-foreground/10 p-3',
-        containerClassName
-      )}
-    >
+    <div className={cn('border-muted-foreground/10 p-3', containerClassName)}>
       <p className="text-[0.7rem] uppercase tracking-wide text-muted-foreground/80">
         {label}
       </p>

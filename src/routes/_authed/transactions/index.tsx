@@ -7,9 +7,6 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
-import { Button } from '@/features/shared/components/ui/button';
-import { Minimize2, Maximize2 } from 'lucide-react';
-import { useState } from 'react';
 import AppFrame from '@/features/shared/components/app-frame';
 import { Positions } from '@/features/transactions/components/positions';
 

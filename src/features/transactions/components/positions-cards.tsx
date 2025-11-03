@@ -165,7 +165,9 @@ function BuyCard({
               {t('transactions.cards.current_price')}
             </span>
             <span className="font-medium">
-              {currentPrice ? helpers.formatCurrency(currentPrice, language) : '—'}
+              {currentPrice
+                ? helpers.formatCurrency(currentPrice, language)
+                : '—'}
             </span>
           </div>
           <div className="border-t pt-1 mt-1">

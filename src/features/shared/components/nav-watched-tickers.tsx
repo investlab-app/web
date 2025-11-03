@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
@@ -16,6 +17,7 @@ import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-q
 export function NavWatchedTickers() {
   const { t } = useTranslation();
   const { location } = useRouterState();
+  const { state } = useSidebar();
 
   const { data: watchedTickers = [], isLoading } = useQuery(
     investorsMeWatchedTickersListOptions()
@@ -50,7 +52,11 @@ export function NavWatchedTickers() {
       <SidebarGroupContent>
         <SidebarMenu>
           {watchedTickers.length === 0 ? (
-            <div className="px-2 py-2 text-sm text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis">
+            <div
+              className={`px-2 py-2 text-sm text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-200 ${
+                state === 'collapsed' ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
               {t('common.no_watched_instruments', 'brak obserwowanych')}
             </div>
           ) : (

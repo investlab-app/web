@@ -70,9 +70,7 @@ const MostTradedOverviewSkeleton = () => {
                 <TableHead className="text-right">Total Return</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {RenderSkeletonRows()}
-            </TableBody>
+            <TableBody>{RenderSkeletonRows()}</TableBody>
           </Table>
         </div>
       </CardContent>

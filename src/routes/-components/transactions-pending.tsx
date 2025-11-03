@@ -28,14 +28,18 @@ export const TransactionsPending = () => {
         <TabsContent value="open">
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, index) => (
-              <PositionSummaryWithTableSkeleton key={`open-skeleton-${index}`} />
+              <PositionSummaryWithTableSkeleton
+                key={`open-skeleton-${index}`}
+              />
             ))}
           </div>
         </TabsContent>
         <TabsContent value="closed">
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, index) => (
-              <PositionSummaryWithTableSkeleton key={`closed-skeleton-${index}`} />
+              <PositionSummaryWithTableSkeleton
+                key={`closed-skeleton-${index}`}
+              />
             ))}
           </div>
         </TabsContent>

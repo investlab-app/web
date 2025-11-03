@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import type {
+  InstrumentWithPrice,
+  PaginatedInstrumentWithPriceList,
+} from '@/client/types.gen';
 import { investorsMeWatchedInstrumentsToggleCreate } from '@/client/sdk.gen';
 import {
   instrumentsWithPricesListInfiniteQueryKey,
@@ -39,20 +43,28 @@ export function useToggleWatchedInstrument() {
 
       // Optimistically update all matching queries
       matchingQueries.forEach((query) => {
-        queryClient.setQueryData(query.queryKey, (old: any) => {
-          if (!old?.pages) return old;
-          return {
-            ...old,
-            pages: old.pages.map((page: any) => ({
-              ...page,
-              results: page.results.map((instrument: any) =>
-                instrument.id === instrumentId
-                  ? { ...instrument, is_watched: !instrument.is_watched }
-                  : instrument
+        queryClient.setQueryData(
+          query.queryKey,
+          (
+            old: { pages: Array<PaginatedInstrumentWithPriceList> } | undefined
+          ) => {
+            if (!old?.pages) return old;
+            return {
+              ...old,
+              pages: old.pages.map(
+                (page: PaginatedInstrumentWithPriceList) => ({
+                  ...page,
+                  results: page.results.map(
+                    (instrument: InstrumentWithPrice) =>
+                      instrument.id === instrumentId
+                        ? { ...instrument, is_watched: !instrument.is_watched }
+                        : instrument
+                  ),
+                })
               ),
-            })),
-          };
-        });
+            };
+          }
+        );
       });
 
       // Return previous data for rollback on error
