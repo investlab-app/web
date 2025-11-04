@@ -1,15 +1,19 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import { PRICE_DIRECTION_OPTIONS } from '../../constants/node-options';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { ChangeEvent } from 'react';
+import type { PriceDirection } from '../../types/node-enums';
 import type { CustomNodeProps } from '../../types/node-props';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface PriceChangesNodeUIProps {
   value?: string;
-  direction?: 'over' | 'under';
+  direction?: PriceDirection;
   price?: number;
   onValueChange?: (value: string) => void;
-  onDirectionChange?: (direction: 'over' | 'under') => void;
+  onDirectionChange?: (direction: PriceDirection) => void;
   onPriceChange?: (price: number | undefined) => void;
 }
 
@@ -33,22 +37,16 @@ export function PriceChangesNodeUI({
           type="text"
           placeholder="AAPL"
           value={value}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            onValueChange(e.target.value)
-          }
+          onChange={(e) => onValueChange(e.target.value)}
         />
       )}
       {onDirectionChange ? (
-        <select
-          className="px-2 py-1 border rounded"
+        <EnumSelect
           value={direction}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'over' | 'under')
-          }
-        >
-          <option value="over">{t('flows.nodes.over')}</option>
-          <option value="under">{t('flows.nodes.under')}</option>
-        </select>
+          onChange={onDirectionChange}
+          options={PRICE_DIRECTION_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
       ) : (
         <div className="pl-1">{t('flows.placeholders.reaches_threshold')}</div>
       )}

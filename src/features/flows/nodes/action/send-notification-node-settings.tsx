@@ -1,18 +1,19 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { SendNotificationNodeUI } from './send-notification-node-ui';
+import { NotificationType } from '../../types/node-enums';
 import { ActionNodeSettings } from './action-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
+import { SendNotificationNodeUI } from './send-notification-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class SendNotificationNodeSettings extends ActionNodeSettings {
-  type: 'email' | 'push';
+  type: NotificationType;
 
   constructor() {
     super();
-    this.type = 'push';
+    this.type = NotificationType.Push;
   }
 
-  getUpdated(type: 'email' | 'push'): SendNotificationNodeSettings {
+  getUpdated(type: NotificationType): SendNotificationNodeSettings {
     this.type = type;
     return this;
   }
@@ -34,7 +35,7 @@ export const SendNotificationNode = (
     <SendNotificationNodeUI
       nodeId={props.id}
       type={props.data.settings.type}
-      onTypeChange={(val) => {
+      onTypeChange={(val: NotificationType) => {
         updateNodeData({
           settings: props.data.settings.getUpdated(val),
         });

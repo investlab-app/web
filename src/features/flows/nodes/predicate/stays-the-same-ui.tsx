@@ -1,19 +1,23 @@
 import { useTranslation } from 'react-i18next';
 import { Position } from '@xyflow/react';
-import { NodeUI } from '../node-ui';
+
+import { EnumSelect } from '../../components/enum-select';
 import { ValidatedHandle } from '../../components/validated-handle';
+import { TIME_UNIT_OPTIONS } from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
-import type { ChangeEvent } from 'react';
+import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { TimeUnit } from '../../types/node-enums';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface StaysTheSameNodeUIProps {
   value?: number;
   period?: number;
-  unit?: 'hour' | 'day' | 'week' | 'month';
+  unit?: TimeUnit;
   onValueChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
-  onUnitChange?: (value: 'hour' | 'day' | 'week' | 'month') => void;
+  onUnitChange?: (value: TimeUnit) => void;
 }
 
 export function StaysTheSameNodeUI({
@@ -66,20 +70,12 @@ export function StaysTheSameNodeUI({
           )}
 
           {onUnitChange && (
-            <select
-              className="px-2 py-1 border rounded"
+            <EnumSelect
               value={unit}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                onUnitChange(
-                  e.target.value as 'hour' | 'day' | 'week' | 'month'
-                )
-              }
-            >
-              <option value="hour">{t('flows.nodes.hour')}</option>
-              <option value="day">{t('flows.nodes.day')}</option>
-              <option value="week">{t('flows.nodes.week')}</option>
-              <option value="month">{t('flows.nodes.month')}</option>
-            </select>
+              onChange={onUnitChange}
+              options={TIME_UNIT_OPTIONS}
+              className="px-2 py-1 border rounded"
+            />
           )}
           {!preview && (
             <div className="ml-2">{t('flows.nodes.with_tolerance')}</div>

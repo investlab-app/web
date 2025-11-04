@@ -2,16 +2,17 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { InstrumentBoughtSoldNodeUI } from './instrument-bought-sold-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { TransactionAction } from '../../types/node-enums';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class InstrumentBoughtSoldNodeSettings extends TriggerNodeSettings {
   ticker: string;
-  action: 'bought' | 'sold';
+  action: TransactionAction;
 
   constructor() {
     super();
     this.ticker = '';
-    this.action = 'bought';
+    this.action = 'bought' as TransactionAction;
   }
 
   override isValid(
@@ -29,9 +30,7 @@ export class InstrumentBoughtSoldNodeSettings extends TriggerNodeSettings {
     return this;
   }
 
-  getUpdatedAction(
-    action: 'bought' | 'sold'
-  ): InstrumentBoughtSoldNodeSettings {
+  getUpdatedAction(action: TransactionAction): InstrumentBoughtSoldNodeSettings {
     this.action = action;
     return this;
   }

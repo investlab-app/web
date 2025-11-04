@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next';
+
 import { BuySellSelect } from '../../components/buy-sell-select';
+import { BuySellAction } from '../../types/node-enums';
 import { ActionNodeUI } from './action-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { ChangeEvent } from 'react';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface BuySellPercentNodeUIProps {
@@ -10,8 +13,8 @@ interface BuySellPercentNodeUIProps {
   onInstrumentChange?: (value: string | undefined) => void;
   percent?: number;
   onPercentChange?: (value: number | undefined) => void;
-  action: string;
-  onActionChange?: (value: string) => void;
+  action: BuySellAction;
+  onActionChange?: (value: BuySellAction) => void;
 }
 
 export function BuySellPercentNodeUI({
@@ -32,13 +35,13 @@ export function BuySellPercentNodeUI({
         <NumberInput
           className="w-30 mx-2"
           min={0}
-          max={action === 'sell' ? 100 : undefined}
+          max={action === BuySellAction.Sell ? 100 : undefined}
           defaultValue={10}
           stepper={5}
           suffix="%"
           value={percent}
           onValueChange={(val) => {
-            if (action === 'sell' && val && val > 100) {
+            if (action === BuySellAction.Sell && val && val > 100) {
               onPercentChange(100);
             } else {
               onPercentChange(val);

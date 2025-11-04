@@ -1,19 +1,26 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import {
+  TIME_UNIT_OPTIONS,
+  TREND_DIRECTION_OPTIONS,
+} from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { PredicateNodeUI } from './predicate-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { TimeUnit, TrendDirection } from '../../types/node-enums';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface HasRisenFallenNodeUIProps {
-  direction?: 'risen' | 'fell';
+  direction?: TrendDirection;
   value?: number;
   period?: number;
-  unit?: 'hour' | 'day' | 'week' | 'month';
-  onDirectionChange?: (value: 'risen' | 'fell') => void;
+  unit?: TimeUnit;
+  onDirectionChange?: (value: TrendDirection) => void;
   onValueChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
-  onUnitChange?: (value: 'hour' | 'day' | 'week' | 'month') => void;
+  onUnitChange?: (value: TimeUnit) => void;
 }
 
 export function HasRisenFallenNodeUI({
@@ -44,16 +51,12 @@ export function HasRisenFallenNodeUI({
       )}
 
       {onDirectionChange ? (
-        <select
-          className="px-2 py-1 mx-2 border rounded"
+        <EnumSelect
           value={direction}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'risen' | 'fell')
-          }
-        >
-          <option value="risen">{t('flows.nodes.risen')}</option>
-          <option value="fell">{t('flows.nodes.fell')}</option>
-        </select>
+          onChange={onDirectionChange}
+          options={TREND_DIRECTION_OPTIONS}
+          className="px-2 py-1 mx-2 border rounded"
+        />
       ) : (
         <div>
           {t('flows.nodes.has')} {t('flows.placeholders.risen_fallen')}{' '}
@@ -84,18 +87,12 @@ export function HasRisenFallenNodeUI({
       )}
 
       {onUnitChange && (
-        <select
-          className="px-2 py-1 border rounded"
+        <EnumSelect
           value={unit}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onUnitChange(e.target.value as 'hour' | 'day' | 'week' | 'month')
-          }
-        >
-          <option value="hour">{t('flows.nodes.hour')}</option>
-          <option value="day">{t('flows.nodes.day')}</option>
-          <option value="week">{t('flows.nodes.week')}</option>
-          <option value="month">{t('flows.nodes.month')}</option>
-        </select>
+          onChange={onUnitChange}
+          options={TIME_UNIT_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
       )}
       {!preview && <div className="ml-2">{t('flows.nodes.by')}</div>}
     </PredicateNodeUI>

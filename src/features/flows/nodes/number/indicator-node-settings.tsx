@@ -2,20 +2,21 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { IndicatorNodeUI } from './indicator-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { IndicatorType, TimeUnit } from '../../types/node-enums';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class IndicatorNodeSettings extends NumberNodeSettings {
-  indicator: 'rolling_avg' | 'other';
+  indicator: IndicatorType;
   ticker: string;
   period: number;
-  unit: 'hour' | 'day' | 'week';
+  unit: TimeUnit;
 
   constructor() {
     super();
-    this.indicator = 'rolling_avg';
+    this.indicator = 'rolling_avg' as IndicatorType;
     this.ticker = '';
     this.period = 1;
-    this.unit = 'day';
+    this.unit = 'day' as TimeUnit;
   }
 
   override isValid(
@@ -29,9 +30,7 @@ export class IndicatorNodeSettings extends NumberNodeSettings {
     );
   }
 
-  getUpdatedIndicator(
-    indicator: 'rolling_avg' | 'other'
-  ): IndicatorNodeSettings {
+  getUpdatedIndicator(indicator: IndicatorType): IndicatorNodeSettings {
     this.indicator = indicator;
     return this;
   }
@@ -46,7 +45,7 @@ export class IndicatorNodeSettings extends NumberNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(unit: 'hour' | 'day' | 'week'): IndicatorNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): IndicatorNodeSettings {
     this.unit = unit;
     return this;
   }
@@ -69,7 +68,7 @@ export const IndicatorNode = (props: NodeProps<IndicatorNode>) => {
       ticker={props.data.settings.ticker}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
-      onIndicatorChange={(val: 'rolling_avg' | 'other') => {
+      onIndicatorChange={(val: IndicatorType) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedIndicator(val),
         });
@@ -84,7 +83,7 @@ export const IndicatorNode = (props: NodeProps<IndicatorNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val ?? 1),
         });
       }}
-      onUnitChange={(val: 'hour' | 'day' | 'week') => {
+      onUnitChange={(val: TimeUnit) => {
         let newSettings = props.data.settings.getUpdatedUnit(val);
         if (val === 'hour' && props.data.settings.period > 24) {
           newSettings = newSettings.getUpdatedPeriod(24);

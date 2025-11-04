@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNodeData } from '../../hooks/use-node-data';
+import { TimeUnit } from '../../types/node-enums';
 import { SuperNodeTypes } from '../../types/node-types-2';
 import { NodeSettings } from '../node-settings';
 import { ChangeOverTimeNodeUI } from './change-over-time-node-ui';
@@ -8,11 +9,11 @@ import type { Node, NodeProps } from '@xyflow/react';
 
 export class ChangeOverTimeNodeSettings extends NodeSettings {
   period?: number;
-  unit?: 'hour' | 'day' | 'week' | 'month';
+  unit?: TimeUnit;
   constructor() {
     super();
     this.period = 1;
-    this.unit = 'day';
+    this.unit = TimeUnit.Day;
   }
 
   getUpdatedPeriod(period?: number): ChangeOverTimeNodeSettings {
@@ -20,9 +21,7 @@ export class ChangeOverTimeNodeSettings extends NodeSettings {
     return this;
   }
 
-  getUpdatedUnit(
-    unit?: 'hour' | 'day' | 'week' | 'month'
-  ): ChangeOverTimeNodeSettings {
+  getUpdatedUnit(unit?: TimeUnit): ChangeOverTimeNodeSettings {
     this.unit = unit;
     return this;
   }

@@ -1,19 +1,20 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { StaysAboveBelowNodeUI } from './stays-above-below-node-ui';
+import { PositionDirection, TimeUnit } from '../../types/node-enums';
 import { PredicateNodeSettings } from './predicate-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
+import { StaysAboveBelowNodeUI } from './stays-above-below-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class StaysAboveBelowNodeSettings extends PredicateNodeSettings {
-  direction: 'above' | 'below';
+  direction: PositionDirection;
   period: number;
-  unit: 'hour' | 'day' | 'week' | 'month';
+  unit: TimeUnit;
 
   constructor() {
     super();
-    this.direction = 'above';
+    this.direction = PositionDirection.Above;
     this.period = 1;
-    this.unit = 'day';
+    this.unit = TimeUnit.Day;
   }
 
   override isValid(
@@ -24,7 +25,7 @@ export class StaysAboveBelowNodeSettings extends PredicateNodeSettings {
   }
 
   getUpdatedDirection(
-    direction: 'above' | 'below'
+    direction: PositionDirection
   ): StaysAboveBelowNodeSettings {
     this.direction = direction;
     return this;
@@ -35,9 +36,7 @@ export class StaysAboveBelowNodeSettings extends PredicateNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(
-    unit: 'hour' | 'day' | 'week' | 'month'
-  ): StaysAboveBelowNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): StaysAboveBelowNodeSettings {
     this.unit = unit;
     return this;
   }
@@ -60,7 +59,7 @@ export const StaysAboveBelowNode = (props: NodeProps<StaysAboveBelowNode>) => {
       threshold={props.data.settings.inX}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
-      onDirectionChange={(val: 'above' | 'below') => {
+      onDirectionChange={(val: PositionDirection) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedDirection(val),
         });
@@ -75,7 +74,7 @@ export const StaysAboveBelowNode = (props: NodeProps<StaysAboveBelowNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val ?? 1),
         });
       }}
-      onUnitChange={(val: 'hour' | 'day' | 'week' | 'month') => {
+      onUnitChange={(val: TimeUnit) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedUnit(val),
         });

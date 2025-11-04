@@ -1,19 +1,20 @@
 import { useNodeData } from '../../hooks/use-node-data';
+import { ComparisonDirection } from '../../types/node-enums';
 import { IsGreaterLessNodeUI } from './is-greater-less-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class IsGreaterLessNodeSettings extends PredicateNodeSettings {
-  direction: 'greater' | 'lesser';
+  direction: ComparisonDirection;
 
   constructor() {
     super();
-    this.direction = 'greater';
+    this.direction = ComparisonDirection.Greater;
   }
 
   getUpdatedDirection(
-    direction: 'greater' | 'lesser'
+    direction: ComparisonDirection
   ): IsGreaterLessNodeSettings {
     this.direction = direction;
     return this;
@@ -35,7 +36,7 @@ export const IsGreaterLessNode = (props: NodeProps<IsGreaterLessNode>) => {
       nodeId={props.id}
       direction={props.data.settings.direction}
       value={props.data.settings.inX}
-      onDirectionChange={(val: 'greater' | 'lesser') => {
+      onDirectionChange={(val: ComparisonDirection) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedDirection(val),
         });

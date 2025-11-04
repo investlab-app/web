@@ -2,16 +2,17 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { CheckEveryNodeUI } from './check-every-node-ui';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { TimeUnit } from '../../types/node-enums';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class CheckEveryNodeSettings extends TriggerNodeSettings {
   interval: number;
-  unit: 'hour' | 'day' | 'week';
+  unit: TimeUnit;
 
   constructor() {
     super();
     this.interval = 1;
-    this.unit = 'day';
+    this.unit = 'day' as TimeUnit;
   }
 
   override isValid(
@@ -26,7 +27,7 @@ export class CheckEveryNodeSettings extends TriggerNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(unit: 'hour' | 'day' | 'week'): CheckEveryNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): CheckEveryNodeSettings {
     this.unit = unit;
     return this;
   }

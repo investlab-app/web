@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import { COMPARISON_DIRECTION_OPTIONS } from '../../constants/node-options';
 import { PredicateNodeUI } from './predicate-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { ComparisonDirection } from '../../types/node-enums';
 
 interface IsGreaterLessNodeUIProps {
-  direction?: 'greater' | 'lesser';
+  direction?: ComparisonDirection;
   value?: number;
-  onDirectionChange?: (value: 'greater' | 'lesser') => void;
+  onDirectionChange?: (value: ComparisonDirection) => void;
   onValueChange?: (value: number | undefined) => void;
 }
 
@@ -30,16 +33,12 @@ export function IsGreaterLessNodeUI({
       <div>{t('flows.nodes.is')}</div>
 
       {onDirectionChange ? (
-        <select
-          className="px-2 py-1 mx-2 border rounded"
+        <EnumSelect
           value={direction}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'greater' | 'lesser')
-          }
-        >
-          <option value="greater">{t('flows.nodes.greater')}</option>
-          <option value="lesser">{t('flows.nodes.less')}</option>
-        </select>
+          onChange={onDirectionChange}
+          options={COMPARISON_DIRECTION_OPTIONS}
+          className="px-2 py-1 mx-2 border rounded"
+        />
       ) : (
         <div className="mx-1">{t('flows.placeholders.greater_less')}</div>
       )}

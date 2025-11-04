@@ -1,11 +1,12 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { BuySellPriceNodeUI } from './buy-sell-price-node-ui';
+import { BuySellAction } from '../../types/node-enums';
 import { ActionNodeSettings } from './action-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
+import { BuySellPriceNodeUI } from './buy-sell-price-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class BuySellPriceNodeSettings extends ActionNodeSettings {
-  action: string;
+  action: BuySellAction;
   price: number;
   ticker: string;
 
@@ -13,7 +14,7 @@ export class BuySellPriceNodeSettings extends ActionNodeSettings {
     super();
     this.ticker = '';
     this.price = 100;
-    this.action = 'buy';
+    this.action = BuySellAction.Buy;
   }
 
   override isValid(
@@ -32,7 +33,7 @@ export class BuySellPriceNodeSettings extends ActionNodeSettings {
     return this;
   }
 
-  getUpdatedAction(action: string): BuySellPriceNodeSettings {
+  getUpdatedAction(action: BuySellAction): BuySellPriceNodeSettings {
     this.action = action;
     return this;
   }
@@ -69,7 +70,7 @@ export const BuySellPriceNode = (props: NodeProps<BuySellPriceNode>) => {
           settings: props.data.settings.getUpdatedPrice(val!),
         });
       }}
-      onActionChange={(val) => {
+      onActionChange={(val: BuySellAction) => {
         updateNodeData({ settings: props.data.settings.getUpdatedAction(val) });
       }}
     />

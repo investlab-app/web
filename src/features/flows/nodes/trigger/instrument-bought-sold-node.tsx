@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import { TRANSACTION_ACTION_OPTIONS } from '../../constants/node-options';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { ChangeEvent } from 'react';
+import type { TransactionAction } from '../../types/node-enums';
 import type { CustomNodeProps } from '../../types/node-props';
 
 interface InstrumentBoughtSoldNodeUIProps {
   value?: string;
-  action?: 'bought' | 'sold';
+  action?: TransactionAction;
   onValueChange?: (value: string) => void;
-  onActionChange?: (action: 'bought' | 'sold') => void;
+  onActionChange?: (action: TransactionAction) => void;
 }
 
 export function InstrumentBoughtSoldNodeUI({
@@ -27,24 +30,18 @@ export function InstrumentBoughtSoldNodeUI({
           type="text"
           placeholder="AAPL"
           value={value}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            onValueChange(e.target.value)
-          }
+          onChange={(e) => onValueChange(e.target.value)}
         />
       ) : (
         <div>{t('flows.placeholders.instrument')}</div>
       )}
       {onActionChange ? (
-        <select
-          className="px-2 ml-2 py-1 border rounded"
+        <EnumSelect
           value={action}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onActionChange(e.target.value as 'bought' | 'sold')
-          }
-        >
-          <option value="bought">{t('flows.nodes.bought')}</option>
-          <option value="sold">{t('flows.nodes.sold')}</option>
-        </select>
+          onChange={onActionChange}
+          options={TRANSACTION_ACTION_OPTIONS}
+          className="px-2 ml-2 py-1 border rounded"
+        />
       ) : (
         <div className="pl-1">{t('flows.placeholders.bought_sold')}</div>
       )}

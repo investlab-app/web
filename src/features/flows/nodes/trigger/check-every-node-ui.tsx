@@ -1,15 +1,19 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import { TIME_UNIT_OPTIONS } from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { ChangeEvent } from 'react';
+import type { TimeUnit } from '../../types/node-enums';
 import type { CustomNodeProps } from '../../types/node-props';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface CheckEveryNodeUIProps {
   interval?: number;
-  unit?: 'hour' | 'day' | 'week';
+  unit?: TimeUnit;
   onIntervalChange?: (value: number | undefined) => void;
-  onUnitChange?: (value: 'hour' | 'day' | 'week') => void;
+  onUnitChange?: (value: TimeUnit) => void;
 }
 
 export function CheckEveryNodeUI({
@@ -50,17 +54,12 @@ export function CheckEveryNodeUI({
         />
       )}
       {onUnitChange && (
-        <select
-          className="px-2 py-1 border rounded"
+        <EnumSelect
           value={unit}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onUnitChange(e.target.value as 'hour' | 'day' | 'week')
-          }
-        >
-          <option value="hour">{t('flows.nodes.hour')}</option>
-          <option value="day">{t('flows.nodes.day')}</option>
-          <option value="week">{t('flows.nodes.week')}</option>
-        </select>
+          onChange={onUnitChange}
+          options={TIME_UNIT_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
       )}
     </TriggerNodeUI>
   );
