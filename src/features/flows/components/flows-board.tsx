@@ -92,7 +92,11 @@ const nodeTypes: NodeTypes = {
   [CustomNodeTypes.BuySellPercent]: BuySellPercentNode,
 };
 
-export function FlowsBoard() {
+interface FlowsBoardProps {
+  id: string;
+}
+
+export function FlowsBoard({ id }: FlowsBoardProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [nodeType, setNodeType] = useState<string | null>(null);
@@ -116,6 +120,7 @@ export function FlowsBoard() {
 
   const { isDragging } = useDnD();
 
+  console.log('Rendering FlowsBoard with id:', id);
   return (
     <SidebarProvider
       open={sidebarOpen}
