@@ -1,5 +1,5 @@
-import {  cva } from 'class-variance-authority';
-import type {VariantProps} from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 import type { UIMessage } from 'ai';
 import type { ComponentProps, HTMLAttributes } from 'react';
 import {
@@ -25,7 +25,7 @@ export const Message = ({ className, from, ...props }: MessageProps) => (
 );
 
 const messageContentVariants = cva(
-  'is-user:dark flex flex-col gap-2 overflow-hidden rounded-lg text-sm',
+  'is-user:dark flex flex-col gap-2 overflow-hidden rounded-lg text-sm whitespace-pre-wrap',
   {
     variants: {
       variant: {

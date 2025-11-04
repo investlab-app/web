@@ -82,6 +82,7 @@ const enCommon = {
     system: 'System',
     toggle_theme: 'Toggle theme',
   },
+  chat: 'Czat',
 };
 
 export default enCommon;

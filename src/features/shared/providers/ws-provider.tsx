@@ -77,7 +77,7 @@ export function WSProvider({ children }: WSProviderParams) {
     heartbeat: {
       message: 'ping',
       returnMessage: 'pong',
-      timeout: 60000,
+      timeout: 5 * 60000,
       interval: 25000,
     },
   });
