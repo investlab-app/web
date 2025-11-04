@@ -31,6 +31,7 @@ import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-pr
 import './i18n/config.ts';
 import './styles.css';
 import '@fontsource-variable/spline-sans';
+import { deleteCookie } from './features/shared/utils/cookies.ts';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -99,9 +100,16 @@ function App() {
   }, [isOnline, clerk]);
 
   useEffect(() => {
-    // sign out explicitly if signed out but session cookie exists
-    if (auth.isLoaded && !auth.isSignedIn && isSessionCookie) {
-      auth.signOut();
+    console.log(`Auth loaded: ${auth.isLoaded}, Signed in: ${auth.isSignedIn}`);
+    if (auth.isLoaded && !auth.isSignedIn) {
+      console.log(`isSessionCookie: ${isSessionCookie}`);
+      if (isSessionCookie) {
+        auth.signOut();
+      } else {
+        sessionStorage.clear();
+        localStorage.clear();
+        deleteCookie('__session');
+      }
     }
   }, [auth, isSessionCookie]);
 

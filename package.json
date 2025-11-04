@@ -16,7 +16,7 @@
     "openapi-ts": "openapi-ts"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.48.1",
+    "@clerk/clerk-react": "^5.53.5",
     "@clerk/localizations": "^3.21.2",
     "@clerk/themes": "^2.4.10",
     "@dnd-kit/core": "^6.3.1",

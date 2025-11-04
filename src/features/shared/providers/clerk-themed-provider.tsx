@@ -30,7 +30,7 @@ export function ClerkThemedProvider({
 
   return (
     <ClerkProvider
-      publishableKey={publicKey}
+      publishableKey={publicKey}  
       appearance={{
         baseTheme: theme === 'dark' ? dark : undefined,
       }}

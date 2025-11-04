@@ -19,15 +19,17 @@ export const Route = createFileRoute('/')({
     initial_session: z.boolean().optional(),
   }),
   loader: async ({ context: { i18n, queryClient } }) => {
-    await Promise.all([
-      queryClient.ensureQueryData(statisticsStatsRetrieveOptions()),
-      queryClient.ensureQueryData(
-        statisticsCurrentAccountValueRetrieveOptions()
-      ),
-      queryClient.ensureQueryData(statisticsAssetAllocationRetrieveOptions()),
-      queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
-      queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
-    ]);
+    try {
+      await Promise.all([
+        queryClient.ensureQueryData(statisticsStatsRetrieveOptions()),
+        queryClient.ensureQueryData(
+          statisticsCurrentAccountValueRetrieveOptions()
+        ),
+        queryClient.ensureQueryData(statisticsAssetAllocationRetrieveOptions()),
+        queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
+        queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
+      ]);
+    } catch {}
 
     return {
       crumb: i18n.t('common.dashboard'),
