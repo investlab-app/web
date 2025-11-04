@@ -1,4 +1,11 @@
 const enFlows = {
+  listview: {
+    title: 'Your Strategies',
+    description1: 'Manage your automated investment strategies.',
+    description2:
+      'To view and edit a strategy, click the arrow next to the strategy name.',
+    add_strategy: 'Add new strategy',
+  },
   placeholders: {
     buy_sell: 'buy/sell',
     check_periodically: 'check periodically',

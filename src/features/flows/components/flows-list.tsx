@@ -34,7 +34,7 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
               <Plus className="h-4 w-4 sm:h-5 sm:w-5 " />
             </div>
             <span className="text-sm sm:text-base font-semibold text-foreground">
-              {t('flows.add_new_strategy', 'Add New Strategy')}
+              {t('flows.listview.add_strategy')}
             </span>
           </Button>
         </div>

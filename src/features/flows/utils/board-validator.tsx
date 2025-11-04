@@ -1,55 +1,59 @@
-// import { CustomNodeTypes } from '../types/node-types';
-// import type { Edge, Node } from '@xyflow/react';
+import { useValidators } from '../hooks/use-validators';
+import type { Edge, Node, NodeConnection } from '@xyflow/react';
 
-// export function validateNodes(nodes: Array<Node>, edges: Array<Edge>): boolean {
-//   const getConnections = (
-//     nodeId: string,
-//     handleId?: string,
-//     type?: 'source' | 'target'
-//   ) => {
-//     return edges.filter((edge) => {
-//       const isSource = type === 'source';
-//       const isTarget = type === 'target';
+/**
+ * Converts an array of Edge objects to NodeConnection objects.
+ * @param edges - Array of edges to convert
+ * @returns Array of node connections
+ */
+export function edgesToNodeConnections(
+  edges: ReadonlyArray<Edge>
+): Array<NodeConnection> {
+  return edges.map((edge) => ({
+    source: edge.source,
+    target: edge.target,
+    sourceHandle: edge.sourceHandle ?? null,
+    targetHandle: edge.targetHandle ?? null,
+    edgeId: edge.id,
+  }));
+}
 
-//       if (isSource && edge.source === nodeId) {
-//         return handleId ? edge.sourceHandle === handleId : true;
-//       }
+export function useValidateBoard() {
+  const { validateNode } = useValidators();
 
-//       if (isTarget && edge.target === nodeId) {
-//         return handleId ? edge.targetHandle === handleId : true;
-//       }
+  const getConnections = (
+    nodeId: string,
+    type: 'source' | 'target',
+    edges: ReadonlyArray<NodeConnection>
+  ) => {
+    return edges.filter((edge) => {
+      const isSource = type === 'source';
 
-//       // if type is not specified, return all related edges
-//       return edge.source === nodeId || edge.target === nodeId;
-//     });
-//   };
+      if (isSource) {
+        return edge.source === nodeId;
+      } else {
+        return edge.target === nodeId;
+      }
+    });
+  };
 
-//   for (const node of nodes) {
-//     if (node.type === CustomNodeTypes.And || node.type === CustomNodeTypes.Or) {
-//       const topConnections = getConnections(node.id, 'top-left', 'target');
-//       const bottomConnections = getConnections(
-//         node.id,
-//         'bottom-left',
-//         'target'
-//       );
+  const validateBoard = (
+    nodes: ReadonlyArray<Node>,
+    edges: ReadonlyArray<Edge>
+  ): boolean => {
+    const nodeConnections = edgesToNodeConnections(edges);
 
-//       const notEnoughConnections =
-//         topConnections.length < 1 || bottomConnections.length < 1;
+    for (const node of nodes) {
+      const inConnections = getConnections(node.id, 'target', nodeConnections);
+      const outConnections = getConnections(node.id, 'source', nodeConnections);
 
-//       if (notEnoughConnections) {
-//         console.warn(
-//           `Node ${node.id} is invalid: missing top or bottom inputs`
-//         );
-//         return false;
-//       }
-//     } else {
-//       const allConnections = getConnections(node.id);
-//       if (allConnections.length < 1) {
-//         console.warn(`Node ${node.id} is invalid: has no connections`);
-//         return false;
-//       }
-//     }
-//   }
+      if (!validateNode(node.id, inConnections, outConnections)) {
+        return false;
+      }
+    }
 
-//   return true;
-// }
+    return true;
+  };
+
+  return { validateBoard };
+}

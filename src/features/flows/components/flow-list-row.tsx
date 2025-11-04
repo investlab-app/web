@@ -53,7 +53,8 @@ export function FlowListRow({
 
           <div className="flex items-center gap-2">
             <Button
-              variant="link"
+              variant="ghost"
+              size="icon"
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
               asChild
             >

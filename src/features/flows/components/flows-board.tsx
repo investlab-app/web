@@ -37,6 +37,7 @@ import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-setting
 import { ChangeOverTime } from '../nodes/math/change-over-time-node-settings';
 import { OccurredXTimesNode } from '../nodes/logic-operator/occurred-x-times-node-settings';
 import { useDnD } from '../hooks/use-dnd';
+import { useValidateBoard } from '../utils/board-validator';
 import { useValidators } from '../hooks/use-validators';
 import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
@@ -103,6 +104,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const { validateConnection } = useValidators();
+  const { validateBoard } = useValidateBoard();
 
   const onConnect = useCallback(
     (params: Connection) =>
@@ -113,10 +115,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const onSave = useCallback(() => {
     if (rfInstance) {
+      if (!validateBoard(rfInstance.getNodes(), rfInstance.getEdges())) {
+        alert('Flow is invalid. Please fix the errors before saving.');
+        return;
+      }
       const flow = rfInstance.toObject();
       localStorage.setItem('example-flow', JSON.stringify(flow));
     }
-  }, [rfInstance]);
+  }, [rfInstance, validateBoard]);
 
   const { isDragging } = useDnD();
 
