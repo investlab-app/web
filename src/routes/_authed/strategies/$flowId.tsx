@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authed/strategies/$flowId')({
   loader: ({ params: { flowId } }) => {
     console.log('Loading flow with ID:', flowId);
     return {
-      crumb: `strategies/${flowId}`,
+      crumb: `${flowId}`,
     };
   },
 });

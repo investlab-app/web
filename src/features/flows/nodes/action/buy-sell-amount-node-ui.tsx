@@ -29,6 +29,7 @@ export function BuySellAmountNodeUI({
   preview,
 }: BuySellAmountNodeUIProps & CustomNodeProps) {
   const { t } = useTranslation();
+  console.log('Rerendering BuySellAmountNodeUI');
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       {onActionChange ? (

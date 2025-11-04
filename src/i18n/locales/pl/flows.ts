@@ -1,4 +1,11 @@
 const plFlows = {
+  listview: {
+    title: 'Twoje strategie',
+    description1: 'Zarządzaj swoimi strategiami automatycznego inwestowania.',
+    description2:
+      'Aby zobaczyć oraz edytować strategię, kliknij w strzałkę przy nazwie strategii.',
+    add_strategy: 'Dodaj nową strategię',
+  },
   placeholders: {
     buy_sell: 'kup/sprzedaj',
     check_periodically: 'sprawdzaj okresowo',

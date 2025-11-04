@@ -22,8 +22,11 @@ export function FlowsView() {
   ];
   return (
     <div>
-      <h1>{t('flows.title')}</h1>
-      <h3>{t('flows.description')}</h3>
+      <div className="text-2xl font-semibold mb-2">
+        {t('flows.listview.title')}
+      </div>
+      <div>{t('flows.listview.description1')}</div>
+      <div className="mb-4">{t('flows.listview.description2')}</div>
       <Tabs defaultValue={FlowType.Active} className="mt-4">
         <TabsList>
           <TabsTrigger
@@ -31,14 +34,14 @@ export function FlowsView() {
             className="cursor-pointer text-xs"
           >
             <CircleDot className="opacity-80" />
-            {t('transactions.tabs.open_positions')}
+            {t('flows.listview.active_strategies')}
           </TabsTrigger>
           <TabsTrigger
             value={FlowType.Closed}
             className="cursor-pointer text-xs"
           >
             <CheckCircle2 className="opacity-80" />
-            {t('transactions.tabs.closed_positions')}
+            {t('flows.listview.closed_strategies')}
           </TabsTrigger>
         </TabsList>
         <TabsContent value={FlowType.Active}>
