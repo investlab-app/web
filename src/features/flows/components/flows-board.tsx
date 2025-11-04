@@ -8,7 +8,7 @@ import {
 import { PanelRightIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { PriceOfNode } from '../nodes/number/price-of-node-settings';
-import { CustomNodeTypes } from '../types/node-types-2';
+import { CustomNodeTypes } from '../types/node-types';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node-settings';
 import { BuySellPriceNode } from '../nodes/action/buy-sell-price-node-settings';
 import { OrNode } from '../nodes/logic-operator/or-node-settings';
@@ -98,7 +98,7 @@ export function FlowsBoard() {
   const [nodeType, setNodeType] = useState<string | null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
-  const { validateConnectionNew } = useValidators();
+  const { validateConnection } = useValidators();
 
   const onConnect = useCallback(
     (params: Connection) =>
@@ -142,7 +142,7 @@ export function FlowsBoard() {
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           onInit={setRfInstance}
-          isValidConnection={validateConnectionNew}
+          isValidConnection={validateConnection}
           zoomOnScroll={false}
         >
           <Background />

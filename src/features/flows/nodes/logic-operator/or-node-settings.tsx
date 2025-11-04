@@ -1,7 +1,7 @@
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { OrNodeUI } from './or-node';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class OrNodeSettings extends LogicOperatorNodeSettings {
   constructor() {

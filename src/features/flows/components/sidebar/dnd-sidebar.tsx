@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
-import { CustomNodeTypes } from '../../types/node-types-2';
+import { CustomNodeTypes } from '../../types/node-types';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
 import { MoneyAvailableNodeUI } from '../../nodes/number/money-available-node-ui';

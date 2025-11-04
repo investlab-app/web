@@ -3,7 +3,7 @@ import { PriceChangesNodeUI } from './price-changes-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { PriceDirection } from '../../types/node-enums';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class PriceChangesNodeSettings extends TriggerNodeSettings {
   ticker: string;

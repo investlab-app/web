@@ -1,7 +1,7 @@
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { AndNodeUI } from './and-node';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class AndNodeSettings extends LogicOperatorNodeSettings {
   constructor() {

@@ -3,7 +3,7 @@ import { NumberNodeSettings } from './number-node-settings';
 import { PriceChangeNodeUI } from './price-change-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { TimeUnit } from '../../types/node-enums';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class PriceChangeNodeSettings extends NumberNodeSettings {
   ticker: string;

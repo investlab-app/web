@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { BuySellAction } from '../../types/node-enums';
 import { ActionNodeSettings } from './action-node-settings';
 import { BuySellAmountNodeUI } from './buy-sell-amount-node-ui';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class BuySellAmountNodeSettings extends ActionNodeSettings {

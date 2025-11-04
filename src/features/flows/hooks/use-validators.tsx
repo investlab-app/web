@@ -1,11 +1,5 @@
 import { getOutgoers, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
-import {
-  allowedConnections,
-  connectionCounts,
-} from '../utils/connection-rules';
-import { TypesMapping } from '../types/node-types';
-import type { CustomNodeTypes } from '../types/node-types';
 import type {
   Connection,
   Edge,
@@ -63,32 +57,6 @@ export const useValidators = () => {
       if (!target || !source) {
         return false;
       }
-      const sourceHandleId = Number(connection.sourceHandle);
-      const sourceSupertype = TypesMapping[source.type as CustomNodeTypes];
-      const tragetSupertype = TypesMapping[target.type as CustomNodeTypes];
-      if (
-        !allowedConnections[sourceSupertype][sourceHandleId].find(
-          (supertype) => supertype == tragetSupertype
-        )
-      ) {
-        return false;
-      }
-
-      if (_hasCycle(target, nodes, edges, connection.source)) return false;
-      return true;
-    },
-    [getEdges, getNodes, _hasCycle]
-  );
-
-  const validateConnectionNew = useCallback(
-    (connection: Connection | Edge) => {
-      const nodes = getNodes();
-      const edges = getEdges();
-      const target = nodes.find((node) => node.id === connection.target);
-      const source = nodes.find((node) => node.id === connection.source);
-      if (!target || !source) {
-        return false;
-      }
       const sourceObj = source.data.settings as NodeSettings;
       const targetObj = target.data.settings as NodeSettings;
       const allowedSupertypes = sourceObj.getAllowedSupertypes(
@@ -107,16 +75,6 @@ export const useValidators = () => {
   };
 
   const getAllowedConnections = (
-    nodeId: string,
-    type: HandleType,
-    handleId: number
-  ) => {
-    const node = getNode(nodeId);
-    if (!node) return 0;
-    const supertype = TypesMapping[node.type as CustomNodeTypes];
-    return connectionCounts[supertype][type][handleId];
-  };
-  const getAllowedConnectionsNew = (
     nodeId: string,
     type: HandleType,
     handleId: string
@@ -153,8 +111,6 @@ export const useValidators = () => {
   return {
     validateConnection,
     getAllowedConnections,
-    validateConnectionNew,
-    getAllowedConnectionsNew,
     validateNode,
     isConnectionValid,
   };

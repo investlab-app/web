@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { ValueOfAssetsNodeUI } from './value-of-assets-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class ValueOfAssetsNodeSettings extends NumberNodeSettings {
   ticker: string;

@@ -1,4 +1,4 @@
-import type { SuperNodeTypes } from '../types/node-types-2';
+import type { SuperNodeTypes } from '../types/node-types';
 
 export abstract class NodeSettings {
   abstract isValid(

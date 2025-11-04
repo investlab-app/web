@@ -3,7 +3,7 @@ import { IndicatorNodeUI } from './indicator-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { IndicatorType, TimeUnit } from '../../types/node-enums';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class IndicatorNodeSettings extends NumberNodeSettings {
   indicator: IndicatorType;

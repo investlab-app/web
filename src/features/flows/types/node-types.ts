@@ -1,48 +1,56 @@
 export enum SuperNodeTypes {
-  Connector = 'connector',
-  Flow = 'flow',
-  Rule = 'rule',
   Action = 'action',
+  Flow = 'flow',
+  LogicOperator = 'logicOperator',
+  Math = 'math',
+  Number = 'number',
+  NumericFlow = 'numericFlow',
+  Predicate = 'predicate',
   Trigger = 'trigger',
 }
 
 export enum CustomNodeTypes {
-  // Connector
-  And = 'and',
-  Or = 'or',
-
-  // Flow
-  IfThenElse = 'ifThenElse',
-
-  // Trigger
-  PriceChanges = 'priceChanges',
-  InstrumentBoughtSold = 'instrumentBoughtSold',
-  CheckEvery = 'checkEvery',
-
-  // Rule
-  PriceOverUnder = 'priceOverUnder',
-  HappensWithin = 'happensWithin',
-  HappensBetween = 'happensBetween',
-
   // Action
   BuySellAmount = 'buySellAmount',
   BuySellPrice = 'buySellPrice',
   BuySellPercent = 'buySellPercent',
   SendNotification = 'sendNotification',
-}
 
-export const TypesMapping = {
-  [CustomNodeTypes.And]: SuperNodeTypes.Connector,
-  [CustomNodeTypes.Or]: SuperNodeTypes.Connector,
-  [CustomNodeTypes.IfThenElse]: SuperNodeTypes.Flow,
-  [CustomNodeTypes.PriceOverUnder]: SuperNodeTypes.Rule,
-  [CustomNodeTypes.HappensBetween]: SuperNodeTypes.Rule,
-  [CustomNodeTypes.HappensWithin]: SuperNodeTypes.Rule,
-  [CustomNodeTypes.PriceChanges]: SuperNodeTypes.Trigger,
-  [CustomNodeTypes.InstrumentBoughtSold]: SuperNodeTypes.Trigger,
-  [CustomNodeTypes.CheckEvery]: SuperNodeTypes.Trigger,
-  [CustomNodeTypes.BuySellAmount]: SuperNodeTypes.Action,
-  [CustomNodeTypes.BuySellPrice]: SuperNodeTypes.Action,
-  [CustomNodeTypes.BuySellPercent]: SuperNodeTypes.Action,
-  [CustomNodeTypes.SendNotification]: SuperNodeTypes.Action,
-};
+  // Flow
+  FlowIf = 'flowIf',
+
+  // Logic Operator
+  And = 'and',
+  Not = 'not',
+  OccurredXTimes = 'occurredXTimes',
+  Or = 'or',
+
+  // Math
+  Add = 'add',
+  ChangeOverTime = 'changeOverTime',
+  Divide = 'divide',
+  Multiply = 'multiply',
+  Subtract = 'subtract',
+
+  // Number
+  PriceOf = 'priceOf',
+  Indicator = 'indicator',
+  PriceChange = 'priceChange',
+  MoneyAvailable = 'moneyAvailable',
+  NumberOfAssets = 'numberOfAssets',
+  ValueOfAssets = 'valueOfAsset',
+
+  // Numeric Flow
+  NumbericFlowIf = 'numbericFlowIf',
+
+  // Predicate
+  IsGreaterLesser = 'isGreaterLesser',
+  StaysTheSame = 'staysTheSame',
+  StaysAboveBelow = 'staysAboveBelow',
+  HasRisenFallen = 'hasRisenFallen',
+
+  // Trigger
+  PriceChanges = 'priceOverUnder',
+  InstrumentBoughtSold = 'boughtSold',
+  CheckEvery = 'checkEvery',
+}

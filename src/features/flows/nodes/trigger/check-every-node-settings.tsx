@@ -3,7 +3,7 @@ import { CheckEveryNodeUI } from './check-every-node-ui';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { TimeUnit } from '../../types/node-enums';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class CheckEveryNodeSettings extends TriggerNodeSettings {
   interval: number;

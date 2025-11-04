@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNodeData } from '../../hooks/use-node-data';
 import { TimeUnit } from '../../types/node-enums';
-import { SuperNodeTypes } from '../../types/node-types-2';
+import { SuperNodeTypes } from '../../types/node-types';
 import { NodeSettings } from '../node-settings';
 import { ChangeOverTimeNodeUI } from './change-over-time-node-ui';
-import type { CustomNodeTypes } from '@/features/flows/types/node-types-2';
+import type { CustomNodeTypes } from '@/features/flows/types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class ChangeOverTimeNodeSettings extends NodeSettings {

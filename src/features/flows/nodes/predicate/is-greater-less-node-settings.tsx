@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { ComparisonDirection } from '../../types/node-enums';
 import { IsGreaterLessNodeUI } from './is-greater-less-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class IsGreaterLessNodeSettings extends PredicateNodeSettings {

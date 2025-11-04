@@ -10,35 +10,6 @@ export interface CustomHandleProps {
   style?: Record<string, string>;
   overrideAllowedConnections?: number;
 }
-
-export const CustomHandle = ({
-  nodeId,
-  id,
-  type,
-  position,
-  style,
-  overrideAllowedConnections,
-}: CustomHandleProps) => {
-  const { getAllowedConnections, isConnectionValid } = useValidators();
-  const connections = useNodeConnections({
-    id: nodeId,
-    handleType: type,
-    handleId: id.toString(),
-  });
-  return (
-    <Handle
-      id={id.toString()}
-      type={type}
-      position={position}
-      isConnectable={isConnectionValid(
-        connections.length,
-        overrideAllowedConnections ?? getAllowedConnections(nodeId, type, id)
-      )}
-      style={style}
-    />
-  );
-};
-
 export interface ValidatedHandleProps {
   nodeId: string;
   id: string;
@@ -56,7 +27,7 @@ export const ValidatedHandle = ({
   style,
   overrideAllowedConnections,
 }: ValidatedHandleProps) => {
-  const { getAllowedConnectionsNew, isConnectionValid } = useValidators();
+  const { getAllowedConnections, isConnectionValid } = useValidators();
   const connections = useNodeConnections({
     id: nodeId,
     handleType: type,
@@ -69,7 +40,7 @@ export const ValidatedHandle = ({
       position={position}
       isConnectable={isConnectionValid(
         connections.length,
-        overrideAllowedConnections ?? getAllowedConnectionsNew(nodeId, type, id)
+        overrideAllowedConnections ?? getAllowedConnections(nodeId, type, id)
       )}
       style={style}
     />

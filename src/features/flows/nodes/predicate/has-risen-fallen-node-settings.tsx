@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { TimeUnit, TrendDirection } from '../../types/node-enums';
 import { HasRisenFallenNodeUI } from './has-risen-fallen-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class HasRisenFallenNodeSettings extends PredicateNodeSettings {

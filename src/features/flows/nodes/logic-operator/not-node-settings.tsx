@@ -1,7 +1,7 @@
 import { NotNodeUI } from './not-node';
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class NotNodeSettings extends LogicOperatorNodeSettings {
   constructor() {
