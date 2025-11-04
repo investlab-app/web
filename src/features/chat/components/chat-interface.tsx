@@ -169,7 +169,7 @@ export function ChatInterface({ className }: { className?: string }) {
                       : 'text-foreground'
                   )}
                 >
-                  <Streamdown isAnimating={isLoading}>
+                  <Streamdown isAnimating={message.isStreaming || isLoading}>
                     {message.content}
                   </Streamdown>
                 </div>
