@@ -1,8 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ReactFlowProvider } from '@xyflow/react';
 import AppFrame from '@/features/shared/components/app-frame';
-import { FlowsBoard } from '@/features/flows/components/flows-board';
-import { DnDProvider } from '@/features/flows/utils/dnd-context';
+import { FlowsView } from '@/features/flows/components/flows-view';
 
 export const Route = createFileRoute('/_authed/strategies/')({
   component: RouteComponent,
@@ -10,14 +8,8 @@ export const Route = createFileRoute('/_authed/strategies/')({
 
 function RouteComponent() {
   return (
-    <AppFrame noXPadding>
-      <ReactFlowProvider>
-        <DnDProvider>
-          <div className="h-[calc(100vh-var(--header-height)-2rem)]">
-            <FlowsBoard />
-          </div>
-        </DnDProvider>
-      </ReactFlowProvider>
+    <AppFrame>
+      <FlowsView />
     </AppFrame>
   );
 }
