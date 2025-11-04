@@ -50,6 +50,7 @@ export function useChat(): UseChatReturn {
     error: historyError,
   } = useQuery({
     ...chatHistoryRetrieveOptions(),
+    meta: { persist: false },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
