@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
-import { BuySellSelect } from '../../components/buy-sell-select';
+import { EnumSelect } from '../../components/enum-select';
+import { BUY_SELL_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
-import type { CustomNodeProps } from '../../types/node-props';
 import type { BuySellAction } from '../../types/node-enums';
+import type { CustomNodeProps } from '../../types/node-props';
 import type { ChangeEvent } from 'react';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';
@@ -30,7 +31,16 @@ export function BuySellPriceNodeUI({
   const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
-      <BuySellSelect action={action} onActionChange={onActionChange} />
+      {onActionChange ? (
+        <EnumSelect
+          value={action}
+          onChange={onActionChange}
+          options={BUY_SELL_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
+      ) : (
+        <div className="px-1">{t('flows.placeholders.buy_sell')}</div>
+      )}
       {onInstrumentChange && (
         <input
           className="mx-2 px-2 py-1 border rounded"

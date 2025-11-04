@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { BuySellSelect } from '../../components/buy-sell-select';
+import { EnumSelect } from '../../components/enum-select';
+import { BUY_SELL_OPTIONS } from '../../constants/node-options';
 import { BuySellAction } from '../../types/node-enums';
 import { ActionNodeUI } from './action-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
@@ -30,7 +31,16 @@ export function BuySellPercentNodeUI({
   const { t } = useTranslation();
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
-      <BuySellSelect action={action} onActionChange={onActionChange} />
+      {onActionChange ? (
+        <EnumSelect
+          value={action}
+          onChange={onActionChange}
+          options={BUY_SELL_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
+      ) : (
+        <div className="px-1">{t('flows.placeholders.buy_sell')}</div>
+      )}
       {onPercentChange && (
         <NumberInput
           className="w-30 mx-2"
