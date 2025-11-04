@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { Loader2, Send } from 'lucide-react';
+import { Streamdown } from 'streamdown';
+
 import { useChat } from '../hooks/use-chat';
 import { Button } from '@/features/shared/components/ui/button';
 import { Input } from '@/features/shared/components/ui/input';
 import {
   Message,
   MessageAvatar,
-  MessageContent,
 } from '@/features/shared/components/ai-elements/message';
 import { cn } from '@/features/shared/utils/styles';
 
@@ -117,7 +118,18 @@ export function ChatInterface({ className }: { className?: string }) {
                     name="AI"
                   />
                 )}
-                <MessageContent>{message.content}</MessageContent>
+                <div
+                  className={cn(
+                    'flex flex-col gap-2 overflow-hidden rounded-lg text-sm',
+                    message.role === 'user'
+                      ? 'max-w-[80%] px-4 py-3 bg-primary text-primary-foreground'
+                      : 'text-foreground'
+                  )}
+                >
+                  <Streamdown isAnimating={isLoading}>
+                    {message.content}
+                  </Streamdown>
+                </div>
               </Message>
             ))}
             {isLoading && (
