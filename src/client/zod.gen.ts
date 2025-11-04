@@ -1073,6 +1073,23 @@ export const zAuthSignInCreateData = z.object({
     query: z.optional(z.never())
 });
 
+export const zChatHistoryDestroyData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * No response body
+ */
+export const zChatHistoryDestroyResponse = z.void();
+
+export const zChatHistoryRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
 export const zInstrumentsListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),

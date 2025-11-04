@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedInstrumentsToggleCreate, investorsMeWatchedTickersList, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsCreate, notificationsList, notificationsMarkAllAsSeenCreate, notificationsPartialUpdate, notificationsRetrieve, notificationsUnseenCountRetrieve, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedInstrumentsToggleCreateData, InvestorsMeWatchedInstrumentsToggleCreateResponse, InvestorsMeWatchedTickersListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsCreateData, NotificationsCreateResponse, NotificationsListData, NotificationsListResponse, NotificationsMarkAllAsSeenCreateData, NotificationsPartialUpdateData, NotificationsPartialUpdateResponse, NotificationsRetrieveData, NotificationsUnseenCountRetrieveData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, chatHistoryDestroy, chatHistoryRetrieve, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedInstrumentsToggleCreate, investorsMeWatchedTickersList, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsCreate, notificationsList, notificationsMarkAllAsSeenCreate, notificationsPartialUpdate, notificationsRetrieve, notificationsUnseenCountRetrieve, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, ChatHistoryDestroyData, ChatHistoryDestroyResponse, ChatHistoryRetrieveData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedInstrumentsToggleCreateData, InvestorsMeWatchedInstrumentsToggleCreateResponse, InvestorsMeWatchedTickersListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsCreateData, NotificationsCreateResponse, NotificationsListData, NotificationsListResponse, NotificationsMarkAllAsSeenCreateData, NotificationsPartialUpdateData, NotificationsPartialUpdateResponse, NotificationsRetrieveData, NotificationsUnseenCountRetrieveData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -14,6 +14,27 @@ export const authSignInCreateMutation = (options?: Partial<Options<AuthSignInCre
     const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<AuthSignInCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await authSignInCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Clear all chat messages for the authenticated user.
+ *
+ * Returns:
+ * 200: Messages successfully deleted with count
+ * 404: Investor profile not found
+ */
+export const chatHistoryDestroyMutation = (options?: Partial<Options<ChatHistoryDestroyData>>): UseMutationOptions<ChatHistoryDestroyResponse, DefaultError, Options<ChatHistoryDestroyData>> => {
+    const mutationOptions: UseMutationOptions<ChatHistoryDestroyResponse, DefaultError, Options<ChatHistoryDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatHistoryDestroy({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -57,6 +78,34 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [
         params
     ];
+};
+
+export const chatHistoryRetrieveQueryKey = (options?: Options<ChatHistoryRetrieveData>) => createQueryKey('chatHistoryRetrieve', options);
+
+/**
+ * Retrieve chat message history for the authenticated user.
+ *
+ * Query Parameters:
+ * limit (int): Maximum number of messages to return (default: 50, max: 100)
+ * offset (int): Number of messages to skip for pagination (default: 0)
+ *
+ * Returns:
+ * 200: List of chat messages with pagination info
+ * 404: Investor profile not found
+ */
+export const chatHistoryRetrieveOptions = (options?: Options<ChatHistoryRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await chatHistoryRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: chatHistoryRetrieveQueryKey(options)
+    });
 };
 
 export const instrumentsListQueryKey = (options?: Options<InstrumentsListData>) => createQueryKey('instrumentsList', options);

@@ -16,9 +16,12 @@ export function ChatInterface({ className }: { className?: string }) {
     messages,
     sendMessage,
     clearMessages,
+    clearHistory,
     isLoading,
     isConnected,
     error,
+    isLoadingHistory,
+    isClearingHistory,
   } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -76,24 +79,64 @@ export function ChatInterface({ className }: { className?: string }) {
             </p>
           </div>
           {messages.length > 0 && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                console.debug('[ChatInterface] Clearing messages');
-                clearMessages();
-              }}
-              disabled={isLoading}
-            >
-              Clear
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  console.debug('[ChatInterface] Clearing messages locally');
+                  clearMessages();
+                }}
+                disabled={isLoading || isClearingHistory}
+              >
+                Clear
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={async () => {
+                  if (
+                    confirm(
+                      'Are you sure you want to delete all chat history? This cannot be undone.'
+                    )
+                  ) {
+                    console.debug('[ChatInterface] Clearing chat history');
+                    try {
+                      await clearHistory();
+                    } catch (e) {
+                      console.error(
+                        '[ChatInterface] Failed to clear history:',
+                        e
+                      );
+                    }
+                  }
+                }}
+                disabled={isLoading || isClearingHistory}
+              >
+                {isClearingHistory ? (
+                  <>
+                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                    Deleting...
+                  </>
+                ) : (
+                  'Delete History'
+                )}
+              </Button>
+            </div>
           )}
         </div>
       </div>
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
-        {messages.length === 0 ? (
+        {isLoadingHistory ? (
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <Loader2 className="h-8 w-8 animate-spin mb-4 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">
+              Loading chat history...
+            </p>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="max-w-md">
               <h2 className="text-xl font-semibold mb-2">

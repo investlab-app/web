@@ -932,6 +932,36 @@ export type AuthSignInCreateResponses = {
     200: unknown;
 };
 
+export type ChatHistoryDestroyData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/chat/history/';
+};
+
+export type ChatHistoryDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ChatHistoryDestroyResponse = ChatHistoryDestroyResponses[keyof ChatHistoryDestroyResponses];
+
+export type ChatHistoryRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/chat/history/';
+};
+
+export type ChatHistoryRetrieveResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
 export type InstrumentsListData = {
     body?: never;
     path?: never;
