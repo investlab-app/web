@@ -1,19 +1,20 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { PriceChangeNodeUI } from './price-change-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
+import { PriceChangeNodeUI } from './price-change-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { TimeUnit } from '../../types/node-enums';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class PriceChangeNodeSettings extends NumberNodeSettings {
   ticker: string;
   period: number;
-  unit: 'hour' | 'day' | 'week';
+  unit: TimeUnit;
 
   constructor() {
     super();
     this.ticker = '';
     this.period = 1;
-    this.unit = 'day';
+    this.unit = 'day' as TimeUnit;
   }
 
   override isValid(
@@ -37,7 +38,7 @@ export class PriceChangeNodeSettings extends NumberNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(unit: 'hour' | 'day' | 'week'): PriceChangeNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): PriceChangeNodeSettings {
     this.unit = unit;
     return this;
   }
@@ -69,7 +70,7 @@ export const PriceChangeNode = (props: NodeProps<PriceChangeNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val ?? 1),
         });
       }}
-      onUnitChange={(val: 'hour' | 'day' | 'week') => {
+      onUnitChange={(val: TimeUnit) => {
         let newSettings = props.data.settings.getUpdatedUnit(val);
         if (val === 'hour' && props.data.settings.period > 24) {
           newSettings = newSettings.getUpdatedPeriod(24);

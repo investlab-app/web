@@ -1,7 +1,9 @@
 import { BuySellSelect } from '../../components/buy-sell-select';
 import { ActionNodeUI } from './action-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { BuySellAction } from '../../types/node-enums';
+import type { ChangeEvent } from 'react';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface BuySellAmountNodeUIProps {
@@ -9,8 +11,8 @@ interface BuySellAmountNodeUIProps {
   onInstrumentChange?: (value: string | undefined) => void;
   amount?: number;
   onAmountChange?: (value: number | undefined) => void;
-  action?: string;
-  onActionChange?: (value: string) => void;
+  action?: BuySellAction;
+  onActionChange?: (value: BuySellAction) => void;
 }
 
 export function BuySellAmountNodeUI({

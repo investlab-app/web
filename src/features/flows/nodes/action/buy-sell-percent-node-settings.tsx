@@ -1,11 +1,12 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { BuySellPercentNodeUI } from './buy-sell-percent-node-ui';
+import { BuySellAction } from '../../types/node-enums';
 import { ActionNodeSettings } from './action-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
+import { BuySellPercentNodeUI } from './buy-sell-percent-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class BuySellPercentNodeSettings extends ActionNodeSettings {
-  action: string;
+  action: BuySellAction;
   percent: number;
   ticker: string;
 
@@ -13,7 +14,7 @@ export class BuySellPercentNodeSettings extends ActionNodeSettings {
     super();
     this.ticker = '';
     this.percent = 25;
-    this.action = 'buy';
+    this.action = BuySellAction.Buy;
   }
 
   override isValid(
@@ -32,7 +33,7 @@ export class BuySellPercentNodeSettings extends ActionNodeSettings {
     return this;
   }
 
-  getUpdatedAction(action: string): BuySellPercentNodeSettings {
+  getUpdatedAction(action: BuySellAction): BuySellPercentNodeSettings {
     this.action = action;
     return this;
   }
@@ -69,10 +70,10 @@ export const BuySellPercentNode = (props: NodeProps<BuySellPercentNode>) => {
           settings: props.data.settings.getUpdatedPercent(val!),
         });
       }}
-      onActionChange={(val) => {
+      onActionChange={(val: BuySellAction) => {
         let newSettings = props.data.settings.getUpdatedAction(val);
         if (
-          val === 'sell' &&
+          val === BuySellAction.Sell &&
           props.data.settings.percent &&
           props.data.settings.percent > 100
         ) {

@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import { NOTIFICATION_TYPE_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { NotificationType } from '../../types/node-enums';
 
 interface SendNotificationNodeUIProps {
-  type?: 'email' | 'push';
-  onTypeChange?: (value: 'email' | 'push') => void;
+  type?: NotificationType;
+  onTypeChange?: (value: NotificationType) => void;
 }
 
 export function SendNotificationNodeUI({
@@ -19,16 +22,12 @@ export function SendNotificationNodeUI({
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       <div>{t('flows.nodes.send_notification')}</div>
       {onTypeChange && (
-        <select
-          className="px-2 ml-2 py-1 border rounded"
+        <EnumSelect
           value={type}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onTypeChange(e.target.value as 'email' | 'push')
-          }
-        >
-          <option value="email">{t('flows.nodes.email')}</option>
-          <option value="push">{t('flows.nodes.push')}</option>
-        </select>
+          onChange={onTypeChange}
+          options={NOTIFICATION_TYPE_OPTIONS}
+          className="px-2 ml-2 py-1 border rounded"
+        />
       )}
       {!onTypeChange && (
         <div className="px-1">{t('flows.placeholders.email_push')}</div>

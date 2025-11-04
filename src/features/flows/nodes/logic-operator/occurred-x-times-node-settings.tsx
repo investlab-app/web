@@ -1,23 +1,24 @@
 import { useNodeData } from '../../hooks/use-node-data';
+import { ShortTimeUnit, TimeUnit } from '../../types/node-enums';
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { OccurredXTimesNodeUI } from './occurred-x-times-node-ui';
-import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
   times: number;
   period: number;
   interval: number;
-  timeUnit: 'hour' | 'day' | 'week' | 'month';
-  intervalUnit: 'hour' | 'day';
+  timeUnit: TimeUnit;
+  intervalUnit: ShortTimeUnit;
 
   constructor() {
     super();
     this.times = 1;
     this.period = 1;
     this.interval = 1;
-    this.timeUnit = 'day';
-    this.intervalUnit = 'day';
+    this.timeUnit = TimeUnit.Day;
+    this.intervalUnit = ShortTimeUnit.Day;
   }
 
   override isValid(
@@ -48,15 +49,13 @@ export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
     return this;
   }
 
-  getUpdatedTimeUnit(
-    timeUnit: 'hour' | 'day' | 'week' | 'month'
-  ): OccurredXTimesNodeSettings {
+  getUpdatedTimeUnit(timeUnit: TimeUnit): OccurredXTimesNodeSettings {
     this.timeUnit = timeUnit;
     return this;
   }
 
   getUpdatedIntervalUnit(
-    intervalUnit: 'hour' | 'day'
+    intervalUnit: ShortTimeUnit
   ): OccurredXTimesNodeSettings {
     this.intervalUnit = intervalUnit;
     return this;
@@ -93,12 +92,12 @@ export const OccurredXTimesNode = (props: NodeProps<OccurredXTimesNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val!),
         });
       }}
-      onTimeUnitChange={(val) => {
+      onTimeUnitChange={(val: TimeUnit) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedTimeUnit(val),
         });
       }}
-      onIntervalUnitChange={(val) => {
+      onIntervalUnitChange={(val: ShortTimeUnit) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedIntervalUnit(val),
         });

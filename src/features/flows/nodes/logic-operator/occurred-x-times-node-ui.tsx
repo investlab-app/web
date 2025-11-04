@@ -1,23 +1,27 @@
-import { useTranslation } from 'react-i18next';
 import { Position } from '@xyflow/react';
-import { NodeUI } from '../node-ui';
+import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
 import { ValidatedHandle } from '../../components/validated-handle';
+import { SHORT_TIME_UNIT_OPTIONS, TIME_UNIT_OPTIONS } from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
-import type { ChangeEvent } from 'react';
+import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { ShortTimeUnit, TimeUnit } from '../../types/node-enums';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface OccurredXTimesNodeUIProps {
   times?: number;
   interval?: number;
   period?: number;
-  timeUnit?: 'hour' | 'day' | 'week' | 'month';
-  intervalUnit?: 'hour' | 'day';
+  timeUnit?: TimeUnit;
+  intervalUnit?: ShortTimeUnit;
   onTimesChange?: (value: number | undefined) => void;
   onIntervalChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
-  onTimeUnitChange?: (value: 'hour' | 'day' | 'week' | 'month') => void;
-  onIntervalUnitChange?: (value: 'hour' | 'day') => void;
+  onTimeUnitChange?: (value: TimeUnit) => void;
+  onIntervalUnitChange?: (value: ShortTimeUnit) => void;
 }
 
 export function OccurredXTimesNodeUI({
@@ -79,20 +83,12 @@ export function OccurredXTimesNodeUI({
         />
       )}
       {onTimeUnitChange && (
-        <select
-          className="px-2 py-1 border rounded"
+        <EnumSelect
           value={timeUnit}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onTimeUnitChange(
-              e.target.value as 'hour' | 'day' | 'week' | 'month'
-            )
-          }
-        >
-          <option value="hour">{t('flows.nodes.hour')}</option>
-          <option value="day">{t('flows.nodes.day')}</option>
-          <option value="week">{t('flows.nodes.week')}</option>
-          <option value="month">{t('flows.nodes.month')}</option>
-        </select>
+          onChange={onTimeUnitChange}
+          options={TIME_UNIT_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
       )}
       {!preview && <div className="mx-2">{t('flows.nodes.with_events')}</div>}
       {onIntervalChange && (
@@ -115,16 +111,12 @@ export function OccurredXTimesNodeUI({
         />
       )}
       {onIntervalUnitChange && (
-        <select
-          className="px-2 py-1 ml-2 border rounded"
+        <EnumSelect
           value={intervalUnit}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onIntervalUnitChange(e.target.value as 'hour' | 'day')
-          }
-        >
-          <option value="hour">{t('flows.nodes.hour')}</option>
-          <option value="day">{t('flows.nodes.day')}</option>
-        </select>
+          onChange={onIntervalUnitChange}
+          options={SHORT_TIME_UNIT_OPTIONS}
+          className="px-2 py-1 ml-2 border rounded"
+        />
       )}
 
       <ValidatedHandle

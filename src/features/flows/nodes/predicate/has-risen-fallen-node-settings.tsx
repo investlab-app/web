@@ -1,19 +1,20 @@
 import { useNodeData } from '../../hooks/use-node-data';
+import { TimeUnit, TrendDirection } from '../../types/node-enums';
 import { HasRisenFallenNodeUI } from './has-risen-fallen-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
-import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class HasRisenFallenNodeSettings extends PredicateNodeSettings {
-  direction: 'risen' | 'fell';
+  direction: TrendDirection;
   period: number;
-  unit: 'hour' | 'day' | 'week' | 'month';
+  unit: TimeUnit;
 
   constructor() {
     super();
-    this.direction = 'risen';
+    this.direction = TrendDirection.Risen;
     this.period = 1;
-    this.unit = 'day';
+    this.unit = TimeUnit.Day;
   }
 
   override isValid(
@@ -23,7 +24,7 @@ export class HasRisenFallenNodeSettings extends PredicateNodeSettings {
     return super.isValid(inConnections, outConnections) && this.period > 0;
   }
 
-  getUpdatedDirection(direction: 'risen' | 'fell'): HasRisenFallenNodeSettings {
+  getUpdatedDirection(direction: TrendDirection): HasRisenFallenNodeSettings {
     this.direction = direction;
     return this;
   }
@@ -33,9 +34,7 @@ export class HasRisenFallenNodeSettings extends PredicateNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(
-    unit: 'hour' | 'day' | 'week' | 'month'
-  ): HasRisenFallenNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): HasRisenFallenNodeSettings {
     this.unit = unit;
     return this;
   }
@@ -58,7 +57,7 @@ export const HasRisenFallenNode = (props: NodeProps<HasRisenFallenNode>) => {
       value={props.data.settings.inX}
       period={props.data.settings.period}
       unit={props.data.settings.unit}
-      onDirectionChange={(val: 'risen' | 'fell') => {
+      onDirectionChange={(val: TrendDirection) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedDirection(val),
         });
@@ -73,7 +72,7 @@ export const HasRisenFallenNode = (props: NodeProps<HasRisenFallenNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val ?? 1),
         });
       }}
-      onUnitChange={(val: 'hour' | 'day' | 'week' | 'month') => {
+      onUnitChange={(val: TimeUnit) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedUnit(val),
         });

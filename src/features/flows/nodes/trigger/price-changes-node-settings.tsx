@@ -2,17 +2,18 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { PriceChangesNodeUI } from './price-changes-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
+import type { PriceDirection } from '../../types/node-enums';
 import type { CustomNodeTypes } from '../../types/node-types-2';
 
 export class PriceChangesNodeSettings extends TriggerNodeSettings {
   ticker: string;
-  direction: 'over' | 'under';
+  direction: PriceDirection;
   price: number;
 
   constructor() {
     super();
     this.ticker = '';
-    this.direction = 'over';
+    this.direction = 'over' as PriceDirection;
     this.price = 100;
   }
 
@@ -32,7 +33,7 @@ export class PriceChangesNodeSettings extends TriggerNodeSettings {
     return this;
   }
 
-  getUpdatedDirection(direction: 'over' | 'under'): PriceChangesNodeSettings {
+  getUpdatedDirection(direction: PriceDirection): PriceChangesNodeSettings {
     this.direction = direction;
     return this;
   }

@@ -1,17 +1,18 @@
 import { useNodeData } from '../../hooks/use-node-data';
+import { TimeUnit } from '../../types/node-enums';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import { StaysTheSameNodeUI } from './stays-the-same-ui';
-import type { Node, NodeProps } from '@xyflow/react';
 import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { Node, NodeProps } from '@xyflow/react';
 
 export class StaysTheSameNodeSettings extends PredicateNodeSettings {
   period: number;
-  unit: 'hour' | 'day' | 'week' | 'month';
+  unit: TimeUnit;
 
   constructor() {
     super();
     this.period = 1;
-    this.unit = 'day';
+    this.unit = TimeUnit.Day;
   }
 
   override isValid(
@@ -31,9 +32,7 @@ export class StaysTheSameNodeSettings extends PredicateNodeSettings {
     return this;
   }
 
-  getUpdatedUnit(
-    unit: 'hour' | 'day' | 'week' | 'month'
-  ): StaysTheSameNodeSettings {
+  getUpdatedUnit(unit: TimeUnit): StaysTheSameNodeSettings {
     this.unit = unit;
     return this;
   }
@@ -65,7 +64,7 @@ export const StaysTheSameNode = (props: NodeProps<StaysTheSameNode>) => {
           settings: props.data.settings.getUpdatedPeriod(val ?? 1),
         });
       }}
-      onUnitChange={(val: 'hour' | 'day' | 'week' | 'month') => {
+      onUnitChange={(val: TimeUnit) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedUnit(val),
         });

@@ -1,19 +1,26 @@
 import { useTranslation } from 'react-i18next';
+
+import { EnumSelect } from '../../components/enum-select';
+import {
+  POSITION_DIRECTION_OPTIONS,
+  TIME_UNIT_OPTIONS,
+} from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { PredicateNodeUI } from './predicate-node-ui';
-import type { ChangeEvent } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
+import type { PositionDirection, TimeUnit } from '../../types/node-enums';
+
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface StaysAboveBelowNodeUIProps {
-  direction?: 'above' | 'below';
+  direction?: PositionDirection;
   threshold?: number;
   period?: number;
-  unit?: 'hour' | 'day' | 'week' | 'month';
-  onDirectionChange?: (value: 'above' | 'below') => void;
+  unit?: TimeUnit;
+  onDirectionChange?: (value: PositionDirection) => void;
   onThresholdChange?: (value: number | undefined) => void;
   onPeriodChange?: (value: number | undefined) => void;
-  onUnitChange?: (value: 'hour' | 'day' | 'week' | 'month') => void;
+  onUnitChange?: (value: TimeUnit) => void;
 }
 
 export function StaysAboveBelowNodeUI({
@@ -60,18 +67,12 @@ export function StaysAboveBelowNodeUI({
       )}
 
       {onUnitChange && (
-        <select
-          className="px-2 py-1 border rounded"
+        <EnumSelect
           value={unit}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onUnitChange(e.target.value as 'hour' | 'day' | 'week' | 'month')
-          }
-        >
-          <option value="hour">{t('flows.nodes.hour')}</option>
-          <option value="day">{t('flows.nodes.day')}</option>
-          <option value="week">{t('flows.nodes.week')}</option>
-          <option value="month">{t('flows.nodes.month')}</option>
-        </select>
+          onChange={onUnitChange}
+          options={TIME_UNIT_OPTIONS}
+          className="px-2 py-1 border rounded"
+        />
       )}
 
       {!preview ? (
@@ -86,16 +87,12 @@ export function StaysAboveBelowNodeUI({
       )}
 
       {onDirectionChange && (
-        <select
-          className="px-2 py-1 mx-1 border rounded"
+        <EnumSelect
           value={direction}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            onDirectionChange(e.target.value as 'above' | 'below')
-          }
-        >
-          <option value="above">{t('flows.nodes.over')}</option>
-          <option value="below">{t('flows.nodes.under')}</option>
-        </select>
+          onChange={onDirectionChange}
+          options={POSITION_DIRECTION_OPTIONS}
+          className="px-2 py-1 mx-1 border rounded"
+        />
       )}
     </PredicateNodeUI>
   );
