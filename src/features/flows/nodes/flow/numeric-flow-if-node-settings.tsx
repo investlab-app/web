@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NodeSettings } from '../node-settings';
-import { SuperNodeTypes } from '../../types/node-types-2';
+import { SuperNodeTypes } from '../../types/node-types';
 import { NumericFlowIfNodeUI } from './numeric-flow-if-node-ui';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class NumericFlowIfNodeSettings extends NodeSettings {

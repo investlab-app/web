@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { ShortTimeUnit, TimeUnit } from '../../types/node-enums';
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { OccurredXTimesNodeUI } from './occurred-x-times-node-ui';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {

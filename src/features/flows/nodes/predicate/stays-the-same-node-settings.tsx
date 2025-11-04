@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { TimeUnit } from '../../types/node-enums';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import { StaysTheSameNodeUI } from './stays-the-same-ui';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class StaysTheSameNodeSettings extends PredicateNodeSettings {

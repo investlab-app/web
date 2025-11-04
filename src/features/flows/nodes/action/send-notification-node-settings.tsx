@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { NotificationType } from '../../types/node-enums';
 import { ActionNodeSettings } from './action-node-settings';
 import { SendNotificationNodeUI } from './send-notification-node-ui';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class SendNotificationNodeSettings extends ActionNodeSettings {

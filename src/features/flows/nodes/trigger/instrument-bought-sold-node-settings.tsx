@@ -3,7 +3,7 @@ import { InstrumentBoughtSoldNodeUI } from './instrument-bought-sold-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
 import type { TransactionAction } from '../../types/node-enums';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 
 export class InstrumentBoughtSoldNodeSettings extends TriggerNodeSettings {
   ticker: string;
@@ -30,7 +30,9 @@ export class InstrumentBoughtSoldNodeSettings extends TriggerNodeSettings {
     return this;
   }
 
-  getUpdatedAction(action: TransactionAction): InstrumentBoughtSoldNodeSettings {
+  getUpdatedAction(
+    action: TransactionAction
+  ): InstrumentBoughtSoldNodeSettings {
     this.action = action;
     return this;
   }

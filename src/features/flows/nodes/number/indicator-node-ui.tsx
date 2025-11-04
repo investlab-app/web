@@ -1,10 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
 import { EnumSelect } from '../../components/enum-select';
-import { INDICATOR_TYPE_OPTIONS, TIME_UNIT_OPTIONS,  } from '../../constants/node-options';
+import {
+  INDICATOR_TYPE_OPTIONS,
+  TIME_UNIT_OPTIONS,
+} from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { NumberNodeUI } from './number-node-ui';
-import type {IndicatorType, TimeUnit,  } from '../../types/node-enums';
+import type { IndicatorType, TimeUnit } from '../../types/node-enums';
 import type { CustomNodeProps } from '../../types/node-props';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';

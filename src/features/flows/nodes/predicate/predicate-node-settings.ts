@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NodeSettings } from '../node-settings';
-import { SuperNodeTypes } from '../../types/node-types-2';
+import { SuperNodeTypes } from '../../types/node-types';
 
 export class PredicateNodeSettings extends NodeSettings {
   inX?: number;

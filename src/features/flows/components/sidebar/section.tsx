@@ -1,5 +1,5 @@
 import type { NodeSettings } from '../../nodes/node-settings';
-import type { CustomNodeTypes } from '../../types/node-types-2';
+import type { CustomNodeTypes } from '../../types/node-types';
 import type { OnDropAction } from '../../utils/dnd-context';
 
 export type Constructor<T> = new () => T;

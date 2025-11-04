@@ -1,4 +1,3 @@
-
 export enum BuySellAction {
   Buy = 'buy',
   Sell = 'sell',

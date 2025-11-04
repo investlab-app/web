@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { EnumSelect } from '../../components/enum-select';
 import { ValidatedHandle } from '../../components/validated-handle';
-import { SHORT_TIME_UNIT_OPTIONS, TIME_UNIT_OPTIONS } from '../../constants/node-options';
+import {
+  SHORT_TIME_UNIT_OPTIONS,
+  TIME_UNIT_OPTIONS,
+} from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
