@@ -1,6 +1,6 @@
-import {  memo } from 'react';
+import { memo } from 'react';
 import { Streamdown } from 'streamdown';
-import type {ComponentProps} from 'react';
+import type { ComponentProps } from 'react';
 import { cn } from '@/features/shared/utils/styles';
 
 type ResponseProps = ComponentProps<typeof Streamdown>;

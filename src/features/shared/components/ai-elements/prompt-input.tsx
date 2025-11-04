@@ -10,29 +10,30 @@ import {
 } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import {
-  
-  
   Children,
-  
-  
-  
-  
   Fragment,
-  
-  
-  
-  
-  
   createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import type { ChatStatus, FileUIPart } from 'ai';
-import type {ChangeEvent, ChangeEventHandler, ClipboardEventHandler, ComponentProps, FormEvent, FormEventHandler, HTMLAttributes, KeyboardEventHandler, PropsWithChildren, ReactNode, RefObject} from 'react';
+import type {
+  ChangeEvent,
+  ChangeEventHandler,
+  ClipboardEventHandler,
+  ComponentProps,
+  FormEvent,
+  FormEventHandler,
+  HTMLAttributes,
+  KeyboardEventHandler,
+  PropsWithChildren,
+  ReactNode,
+  RefObject,
+} from 'react';
 import { Button } from '@/features/shared/components/ui/button';
 import {
   Command,
@@ -528,8 +529,8 @@ export const PromptInput = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const add = usingProvider
-    // eslint-disable-next-line no-shadow
-    ? (files: Array<File> | FileList) => controller.attachments.add(files)
+    ? // eslint-disable-next-line no-shadow
+      (files: Array<File> | FileList) => controller.attachments.add(files)
     : addLocal;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -689,7 +690,8 @@ export const PromptInput = ({
 
     // Convert blob URLs to data URLs asynchronously
     Promise.all(
-      files.map(async ({ id, ...item }) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+      files.map(async ({ id, ...item }) => {
+        // eslint-disable-line @typescript-eslint/no-unused-vars
         if (item.url && item.url.startsWith('blob:')) {
           return {
             ...item,
@@ -1013,14 +1015,10 @@ interface SpeechRecognition extends EventTarget {
   onstart: ((this: SpeechRecognition, ev: Event) => any) | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onend: ((this: SpeechRecognition, ev: Event) => any) | null;
-  onresult:
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any)
-    | null;
-  onerror:
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any)
-    | null;
+  onresult: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null;
+  onerror: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null;
 }
 
 interface SpeechRecognitionEvent extends Event {

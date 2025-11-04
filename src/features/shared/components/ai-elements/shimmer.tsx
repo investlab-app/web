@@ -1,12 +1,6 @@
 import { motion } from 'motion/react';
-import {
-  
-  
-  
-  memo,
-  useMemo
-} from 'react';
-import type {CSSProperties, ElementType, JSX} from 'react';
+import { memo, useMemo } from 'react';
+import type { CSSProperties, ElementType, JSX } from 'react';
 import { cn } from '@/features/shared/utils/styles';
 
 export type TextShimmerProps = {

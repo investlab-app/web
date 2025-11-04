@@ -1,12 +1,7 @@
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
-import {
-  BrainIcon,
-  ChevronDownIcon,
-  DotIcon
-  
-} from 'lucide-react';
+import { BrainIcon, ChevronDownIcon, DotIcon } from 'lucide-react';
 import { createContext, memo, useContext, useMemo } from 'react';
-import type {LucideIcon} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import { Badge } from '@/features/shared/components/ui/badge';
 import {

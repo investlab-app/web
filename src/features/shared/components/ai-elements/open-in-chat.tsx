@@ -3,8 +3,8 @@ import {
   ExternalLinkIcon,
   MessageCircleIcon,
 } from 'lucide-react';
-import {  createContext, useContext } from 'react';
-import type {ComponentProps} from 'react';
+import { createContext, useContext } from 'react';
+import type { ComponentProps } from 'react';
 import { Button } from '@/features/shared/components/ui/button';
 import {
   DropdownMenu,

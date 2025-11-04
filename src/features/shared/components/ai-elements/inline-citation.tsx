@@ -1,20 +1,18 @@
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import {
-  
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useState
+  useState,
 } from 'react';
-import type {ComponentProps} from 'react';
-import type {CarouselApi} from '@/features/shared/components/ui/carousel';
+import type { ComponentProps } from 'react';
+import type { CarouselApi } from '@/features/shared/components/ui/carousel';
 import { Badge } from '@/features/shared/components/ui/badge';
 import {
   Carousel,
-  
   CarouselContent,
-  CarouselItem
+  CarouselItem,
 } from '@/features/shared/components/ui/carousel';
 import {
   HoverCard,

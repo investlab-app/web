@@ -1,14 +1,11 @@
 import {
   BaseEdge,
-  
-  
-  
   Position,
   getBezierPath,
   getSimpleBezierPath,
-  useInternalNode
+  useInternalNode,
 } from '@xyflow/react';
-import type {EdgeProps, InternalNode, Node} from '@xyflow/react';
+import type { EdgeProps, InternalNode, Node } from '@xyflow/react';
 
 const Temporary = ({
   id,

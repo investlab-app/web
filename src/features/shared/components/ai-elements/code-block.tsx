@@ -1,16 +1,8 @@
 import { CheckIcon, CopyIcon } from 'lucide-react';
-import {
-  
-  
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
-import {   codeToHtml } from 'shiki';
-import type {ComponentProps, HTMLAttributes} from 'react';
-import type {BundledLanguage, ShikiTransformer} from 'shiki';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { codeToHtml } from 'shiki';
+import type { ComponentProps, HTMLAttributes } from 'react';
+import type { BundledLanguage, ShikiTransformer } from 'shiki';
 import type { Element } from 'hast';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';

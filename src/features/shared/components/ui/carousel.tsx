@@ -3,7 +3,7 @@
 import * as React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import type {UseEmblaCarouselType} from 'embla-carousel-react';
+import type { UseEmblaCarouselType } from 'embla-carousel-react';
 
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
@@ -60,7 +60,8 @@ function Carousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const onSelect = React.useCallback((api: CarouselApi) => { // eslint-disable-line no-shadow
+  const onSelect = React.useCallback((api: CarouselApi) => {
+    // eslint-disable-line no-shadow
     if (!api) return;
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());

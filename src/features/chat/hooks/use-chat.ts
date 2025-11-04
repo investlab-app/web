@@ -12,6 +12,7 @@ export interface ChatMessage {
   content: string;
   timestamp: string;
   created_at?: string;
+  isStreaming?: boolean;
 }
 
 interface UseChatReturn {
@@ -160,6 +161,20 @@ export function useChat(): UseChatReturn {
           setIsLoading(true);
           currentResponseRef.current = '';
           setError(null);
+
+          // Add a streaming message immediately
+          const streamingMessage = {
+            id: `msg-${messageIdRef.current++}-streaming`,
+            role: 'assistant' as const,
+            content: '',
+            timestamp: new Date().toISOString(),
+            isStreaming: true,
+          };
+          console.debug(
+            '[useChat] Adding streaming message:',
+            streamingMessage
+          );
+          setMessages((prev) => [...prev, streamingMessage]);
           break;
         }
 
@@ -172,6 +187,15 @@ export function useChat(): UseChatReturn {
               currentResponseRef.current.length + chunkContent.length,
           });
           currentResponseRef.current += chunkContent;
+
+          // Update the streaming message content in real-time
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.isStreaming
+                ? { ...msg, content: currentResponseRef.current }
+                : msg
+            )
+          );
           break;
         }
 
@@ -181,18 +205,21 @@ export function useChat(): UseChatReturn {
             length: currentResponseRef.current.length,
             messageCount: messages.length,
           });
-          if (currentResponseRef.current) {
-            const newMessage = {
-              id: `msg-${messageIdRef.current++}`,
-              role: 'assistant' as const,
-              content: currentResponseRef.current,
-              timestamp: new Date().toISOString(),
-            };
-            console.debug('[useChat] Adding assistant message:', newMessage);
-            setMessages((prev) => [...prev, newMessage]);
-          } else {
-            console.warn('[useChat] End message received but content is empty');
-          }
+
+          // Finalize the streaming message
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.isStreaming
+                ? {
+                    ...msg,
+                    id: `msg-${messageIdRef.current++}`, // Replace streaming ID with final ID
+                    content: currentResponseRef.current,
+                    isStreaming: false,
+                  }
+                : msg
+            )
+          );
+
           setIsLoading(false);
           currentResponseRef.current = '';
           break;
