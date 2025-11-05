@@ -1,5 +1,4 @@
 import { getOutgoers, useReactFlow } from '@xyflow/react';
-import { useCallback } from 'react';
 import type {
   Connection,
   Edge,
@@ -28,47 +27,41 @@ export const useValidators = () => {
     return counts;
   }
 
-  const _hasCycle = useCallback(
-    (
-      node: Node,
-      nodes: Array<Node>,
-      edges: Array<Edge>,
-      source: string,
-      visited = new Set()
-    ) => {
-      if (visited.has(node.id)) return false;
+  const _hasCycle = (
+    node: Node,
+    nodes: Array<Node>,
+    edges: Array<Edge>,
+    source: string,
+    visited = new Set()
+  ) => {
+    if (visited.has(node.id)) return false;
 
-      visited.add(node.id);
+    visited.add(node.id);
 
-      for (const outgoer of getOutgoers(node, nodes, edges)) {
-        if (outgoer.id === source) return true;
-        if (_hasCycle(outgoer, nodes, edges, source, visited)) return true;
-      }
-    },
-    []
-  );
+    for (const outgoer of getOutgoers(node, nodes, edges)) {
+      if (outgoer.id === source) return true;
+      if (_hasCycle(outgoer, nodes, edges, source, visited)) return true;
+    }
+  };
 
-  const validateConnection = useCallback(
-    (connection: Connection | Edge) => {
-      const nodes = getNodes();
-      const edges = getEdges();
-      const target = nodes.find((node) => node.id === connection.target);
-      const source = nodes.find((node) => node.id === connection.source);
-      if (!target || !source) {
-        return false;
-      }
-      const sourceObj = source.data.settings as NodeSettings;
-      const targetObj = target.data.settings as NodeSettings;
-      const allowedSupertypes = sourceObj.getAllowedSupertypes(
-        connection.sourceHandle!
-      );
-      if (!allowedSupertypes.includes(targetObj.getSupertype())) return false;
+  const validateConnection = (connection: Connection | Edge) => {
+    const nodes = getNodes();
+    const edges = getEdges();
+    const target = nodes.find((node) => node.id === connection.target);
+    const source = nodes.find((node) => node.id === connection.source);
+    if (!target || !source) {
+      return false;
+    }
+    const sourceObj = source.data.settings as NodeSettings;
+    const targetObj = target.data.settings as NodeSettings;
+    const allowedSupertypes = sourceObj.getAllowedSupertypes(
+      connection.sourceHandle!
+    );
+    if (!allowedSupertypes.includes(targetObj.getSupertype())) return false;
 
-      if (_hasCycle(target, nodes, edges, connection.source)) return false;
-      return true;
-    },
-    [getEdges, getNodes, _hasCycle]
-  );
+    if (_hasCycle(target, nodes, edges, connection.source)) return false;
+    return true;
+  };
 
   const isConnectionValid = (connectionsLen: number, allowed: number) => {
     return allowed >= 0 ? connectionsLen < allowed : true;

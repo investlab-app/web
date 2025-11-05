@@ -6,7 +6,7 @@ import {
   useNodesState,
 } from '@xyflow/react';
 import { PanelRightIcon } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { PriceOfNode } from '../nodes/number/price-of-node-settings';
 import { CustomNodeTypes } from '../types/node-types';
 import { BuySellAmountNode } from '../nodes/action/buy-sell-amount-node-settings';
@@ -55,6 +55,16 @@ import {
   SidebarTrigger,
 } from '@/features/shared/components/ui/sidebar';
 import { cn } from '@/features/shared/utils/styles';
+
+const NODE_EXTENT: [[number, number], [number, number]] = [
+  [-3000, -3000],
+  [3000, 3000],
+];
+
+const TRANSLATE_EXTENT: [[number, number], [number, number]] = [
+  [-3000, -3000],
+  [3000, 3000],
+];
 
 const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,
@@ -106,14 +116,13 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { validateConnection } = useValidators();
   const { validateBoard } = useValidateBoard();
 
-  const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-    [setEdges]
-  );
+  const onConnect = (params: Connection) =>
+    setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot));
+
+  const addNode = (node: Node) => setNodes((nds) => nds.concat(node));
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const onSave = useCallback(() => {
+  const onSave = () => {
     if (rfInstance) {
       if (!validateBoard(rfInstance.getNodes(), rfInstance.getEdges())) {
         alert('Flow is invalid. Please fix the errors before saving.');
@@ -122,7 +131,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       const flow = rfInstance.toObject();
       localStorage.setItem('example-flow', JSON.stringify(flow));
     }
-  }, [rfInstance, validateBoard]);
+  };
 
   const { isDragging } = useDnD();
 
@@ -140,14 +149,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           colorMode={theme}
           nodes={nodes}
           edges={edges}
-          nodeExtent={[
-            [-3000, -3000],
-            [3000, 3000],
-          ]}
-          translateExtent={[
-            [-3000, -3000],
-            [3000, 3000],
-          ]}
+          nodeExtent={NODE_EXTENT}
+          translateExtent={TRANSLATE_EXTENT}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
@@ -169,7 +172,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       {rfInstance && (
         <FlowsSidebar
           setNodeType={setNodeType}
-          addNode={(node) => setNodes((nds) => nds.concat(node))}
+          addNode={addNode}
           screenToFlowPosition={rfInstance.screenToFlowPosition}
           onSave={onSave}
         />
