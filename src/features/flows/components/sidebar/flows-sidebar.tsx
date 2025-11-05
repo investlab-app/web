@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { FlowHeader } from './flow-header';
 import { SaveButton } from './save-button';
 import { DnDSidebar } from './dnd-sidebar';
@@ -15,7 +16,7 @@ interface FlowsSidebarProps {
   onSave: () => void;
 }
 
-export function FlowsSidebar({
+export const FlowsSidebar = memo(function FlowsSidebar({
   addNode,
   screenToFlowPosition,
   onSave,
@@ -51,4 +52,4 @@ export function FlowsSidebar({
       </SidebarContent>
     </Sidebar>
   );
-}
+});
