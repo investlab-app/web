@@ -31,7 +31,7 @@ export const FlowsSidebar = memo(function FlowsSidebar({
       noBackground
       className="overflow-hidden p-3 mt-10 w-fit"
     >
-      <SidebarHeader className="h-fit justify-center p-0">
+      <SidebarHeader className="h-fit justify-center p-0 pr-3">
         <FlowHeader
           initialTitle="My Trading 1"
           onSave={(newTitle) => {
