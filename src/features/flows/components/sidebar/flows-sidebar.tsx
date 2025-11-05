@@ -21,6 +21,7 @@ export function FlowsSidebar({
   onSave,
   setNodeType,
 }: FlowsSidebarProps) {
+  console.log('sidebar rendering');
   return (
     <Sidebar
       variant="sidebar"

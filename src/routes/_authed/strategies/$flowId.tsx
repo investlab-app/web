@@ -7,7 +7,6 @@ import { FlowsBoard } from '@/features/flows/components/flows-board';
 export const Route = createFileRoute('/_authed/strategies/$flowId')({
   component: RouteComponent,
   loader: ({ params: { flowId } }) => {
-    console.log('Loading flow with ID:', flowId);
     return {
       crumb: `${flowId}`,
     };
