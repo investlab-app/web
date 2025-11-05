@@ -45,7 +45,7 @@ export function FlowHeader({
   };
 
   return (
-    <div className="flex items-center gap-2 mr-4">
+    <div className="flex items-center gap-2 mr-3">
       <Input
         value={isEditing ? tempTitle : title}
         onChange={(e) => setTempTitle(e.target.value)}

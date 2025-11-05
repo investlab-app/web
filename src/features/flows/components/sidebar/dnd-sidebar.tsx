@@ -103,7 +103,7 @@ export function DnDSidebar({
   );
 
   return (
-    <div className="overflow-y-auto mb-5 pr-4">
+    <div className="overflow-y-auto mb-5 pr-3">
       <SidebarSection
         title={t('flows.sidebar.logical')}
         createNodeFunc={createAddNewNode}
