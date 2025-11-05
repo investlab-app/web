@@ -9,8 +9,6 @@ export function DragGhost({ type }: DragGhostProps) {
 
   if (!position) return null;
 
-  console.log(position);
-
   return (
     <div
       className="
