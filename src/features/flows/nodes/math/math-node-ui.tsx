@@ -43,7 +43,8 @@ export function MathNodeUI({
           />
         )}
       </div>
-
+{!preview &&(
+  <>
       <ValidatedHandle
         nodeId={nodeId}
         type="source"
@@ -64,6 +65,8 @@ export function MathNodeUI({
         position={Position.Left}
         id="out"
       />
+        </>
+      )}
     </NodeUI>
   );
 }

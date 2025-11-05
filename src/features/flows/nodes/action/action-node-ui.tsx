@@ -11,12 +11,14 @@ export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
       className={`bg-[var(--node-action)]`}
     >
       {children}
+      {!preview &&
       <ValidatedHandle
         nodeId={nodeId}
         type="target"
         position={Position.Left}
         id="out"
       />
+}
     </NodeUI>
   );
 }

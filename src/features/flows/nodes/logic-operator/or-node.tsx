@@ -13,7 +13,8 @@ export function OrNodeUI({ nodeId, preview }: CustomNodeProps) {
       className={`bg-[var(--background)]`}
     >
       {t('flows.nodes.or').toUpperCase()}
-
+{!preview &&(
+  <>
       <ValidatedHandle
         nodeId={nodeId}
         type="target"
@@ -34,6 +35,8 @@ export function OrNodeUI({ nodeId, preview }: CustomNodeProps) {
         style={{ top: '70%' }}
         id="inB"
       />
+        </>
+      )}
     </NodeUI>
   );
 }

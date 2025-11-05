@@ -121,7 +121,8 @@ export function OccurredXTimesNodeUI({
           className="px-2 py-1 ml-2 border rounded"
         />
       )}
-
+{!preview &&(
+  <>
       <ValidatedHandle
         nodeId={nodeId}
         type="target"
@@ -134,6 +135,8 @@ export function OccurredXTimesNodeUI({
         position={Position.Right}
         id="in"
       />
+        </>
+      )}
     </NodeUI>
   );
 }

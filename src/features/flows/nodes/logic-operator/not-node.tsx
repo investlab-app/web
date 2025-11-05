@@ -13,7 +13,8 @@ export function NotNodeUI({ nodeId, preview }: CustomNodeProps) {
       className={`bg-[var(--background)]`}
     >
       {t('flows.nodes.not').toUpperCase()}
-
+{!preview &&(
+  <>
       <ValidatedHandle
         nodeId={nodeId}
         type="target"
@@ -26,6 +27,8 @@ export function NotNodeUI({ nodeId, preview }: CustomNodeProps) {
         position={Position.Right}
         id="in"
       />
+        </>
+      )}
     </NodeUI>
   );
 }
