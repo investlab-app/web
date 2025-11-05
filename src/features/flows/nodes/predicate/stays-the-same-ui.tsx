@@ -95,7 +95,8 @@ export function StaysTheSameNodeUI({
           </div>
         )}
       </div>
-
+{!preview &&(
+  <>
       <ValidatedHandle
         type="target"
         id="out"
@@ -108,6 +109,8 @@ export function StaysTheSameNodeUI({
         nodeId={nodeId}
         position={Position.Right}
       />
+        </>
+      )}
     </NodeUI>
   );
 }

@@ -67,7 +67,8 @@ export function ChangeOverTimeNodeUI({
           className="px-2 py-1 border rounded"
         />
       )}
-
+{!preview &&(
+  <>
       <ValidatedHandle
         nodeId={nodeId}
         type="source"
@@ -80,6 +81,8 @@ export function ChangeOverTimeNodeUI({
         position={Position.Left}
         id="out"
       />
+        </>
+      )}
     </NodeUI>
   );
 }

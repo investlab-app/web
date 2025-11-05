@@ -46,7 +46,8 @@ export function PredicateNodeUI({
           </div>
         )}
       </div>
-
+{!preview &&(
+  <>
       <ValidatedHandle
         type="target"
         id="out"
@@ -67,6 +68,8 @@ export function PredicateNodeUI({
         position={Position.Right}
         style={{ top: '75%' }}
       />
+        </>
+      )}
     </NodeUI>
   );
 }
