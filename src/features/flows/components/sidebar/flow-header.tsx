@@ -24,7 +24,6 @@ export function FlowHeader({
   const [title, setTitle] = useState(initialTitle);
   const [tempTitle, setTempTitle] = useState(initialTitle);
 
-  // Update title when initialTitle changes (e.g., when data is loaded)
   useEffect(() => {
     setTitle(initialTitle);
     setTempTitle(initialTitle);
@@ -36,30 +35,9 @@ export function FlowHeader({
   };
 
   const handleSave = () => {
-    if (!tempTitle.trim()) {
-      // Don't save if title is empty
-      return;
-    }
     setTitle(tempTitle);
     setIsEditing(false);
     onSave!(tempTitle);
-  };
-
-  const handleCancel = () => {
-    setTempTitle(title);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (canRename) {
-        handleSave();
-      }
-    } else if (e.key === 'Escape') {
-      if (canRename) {
-        handleCancel();
-      }
-    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +55,6 @@ export function FlowHeader({
       <Input
         value={canRename ? (isEditing ? tempTitle : title) : title}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
         disabled={canRename && !isEditing}
         className="flex-1 border-0 text-lg font-semibold focus-visible:ring-0 disabled:opacity-100 disabled:cursor-default dark:bg-transparent"
         placeholder={t('flows.header.title_placeholder')}

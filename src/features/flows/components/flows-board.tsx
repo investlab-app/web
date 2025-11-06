@@ -1,20 +1,19 @@
 import { PanelRightIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { useNavigate } from '@tanstack/react-router';
 import { useDnD } from '../hooks/use-dnd';
 import { useValidateBoard } from '../utils/board-validator';
-import { hasSettingsFactory, restoreNodeSettings } from '../utils/settings-factory';
+import { restoreBoard } from '../utils/board-restoration';
+import { useStrategyMutations } from '../hooks/strategy-mutations';
 import { useValidators } from '../hooks/use-validators';
 import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
 import { FlowHeader } from './sidebar/flow-header';
 import { FlowCanvas } from './flow-canvas';
 import type { FlowCanvasRef } from './flow-canvas';
-import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
-import type { CustomNodeTypes } from '../types/node-types';
+import type { Node, ReactFlowInstance } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
@@ -25,13 +24,7 @@ import {
 } from '@/features/shared/components/ui/sidebar';
 import { cn } from '@/features/shared/utils/styles';
 import {
-  graphLangCreateMutation,
-  graphLangDestroyMutation,
-  graphLangListQueryKey,
-  graphLangPartialUpdateMutation,
   graphLangRetrieveOptions,
-  graphLangRetrieveQueryKey,
-  graphLangUpdateMutation,
 } from '@/client/@tanstack/react-query.gen';
 
 interface FlowsBoardProps {
@@ -39,21 +32,21 @@ interface FlowsBoardProps {
 }
 
 export function FlowsBoard({ id }: FlowsBoardProps) {
-  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const isMobile = useIsMobile();
-  const flowCanvasRef = useRef<FlowCanvasRef>(null);
-  const [nodeType, setNodeType] = useState<string | null>(null);
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { appTheme: theme } = useTheme();
   const {validateConnection} = useValidators();
   const {validateBoard} = useValidateBoard();
-  // const { mutate: deleteFlow } = useDeleteFlow();
-  
-  const isNewStrategy = id === 'newstrategy';
-  const [flowName, setFlowName] = useState<string>(isNewStrategy ? 'New Strategy' : '');
+  const {deleteMutation, createMutation, updateMutation, patchNameMutation} = useStrategyMutations();
+  const { isDragging } = useDnD();
 
-  // Only fetch flow data if it's not a new strategy
+  const isNewStrategy = id === 'newstrategy';
+  const flowCanvasRef = useRef<FlowCanvasRef>(null);
+  const [nodeType, setNodeType] = useState<string | null>(null);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [editedFlowName, setEditedFlowName] = useState<string>('');
+
   const {
     data: flowData,
   } = useQuery({
@@ -63,120 +56,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     enabled: !isNewStrategy,
   });
 
-  const navigate = useNavigate();
+  // Compute flowName directly from data or use edited value
+  const flowName = editedFlowName || flowData?.name || (isNewStrategy ? 'New Strategy' : '');
 
-  // Update flowName when data is fetched
-  useEffect(() => {
-    if (flowData?.name && !isNewStrategy) {
-      setFlowName(flowData.name);
-    }
-  }, [flowData?.name, isNewStrategy]);
-
-  // Restore board data when flow data is fetched
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
-      console.log('Starting board restoration...');
-      const flow = flowData.raw_graph_data as {
-        nodes?: Array<Node>;
-        edges?: Array<Edge>;
-        viewport?: { x: number; y: number; zoom: number };
-      };
-      
-      // Restore nodes with their settings classes
-      const restoredNodes = (flow.nodes || []).map((node) => {
-        // Check if this node has settings that need restoration
-        if (node.data.settings && node.type) {
-          const nodeTypeValue = node.type as CustomNodeTypes;
-          
-          if (hasSettingsFactory(nodeTypeValue)) {
-            console.log(`Restoring settings for node type: ${nodeTypeValue}`);
-            // Restore the plain settings object to a class instance
-            const restoredSettings = restoreNodeSettings(
-              nodeTypeValue,
-              node.data.settings as Record<string, unknown>
-            );
-            
-            console.log('Plain settings:', node.data.settings);
-            console.log('Restored settings:', restoredSettings);
-            console.log('Has isValid method:', typeof restoredSettings.isValid === 'function');
-            
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                settings: restoredSettings,
-              },
-            };
-          } else {
-            console.warn(`No factory found for node type: ${nodeTypeValue}`);
-          }
-        }
-        
-        return node;
-      });
-      
-      console.log(`Restored ${restoredNodes.length} nodes`);
-      const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
-      rfInstance.setNodes(restoredNodes);
-      rfInstance.setEdges(flow.edges || []);
-      rfInstance.setViewport({ x, y, zoom });
+      restoreBoard(flowData.raw_graph_data, rfInstance);
     }
   }, [flowData?.raw_graph_data, rfInstance]);
-
-  const deleteMutation = useMutation({
-    ...graphLangDestroyMutation(),
-    onSuccess: async () => {
-      toast.success('Flow deleted successfully');
-      await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
-      navigate({
-        to: '/strategies',
-      });
-    },
-    onError: (error) => {
-      console.error('Failed to delete flow:', error);
-      toast.error('Failed to delete flow');
-    },
-  });
-
-  const createMutation = useMutation({
-    ...graphLangCreateMutation(),
-    onSuccess: async (data) => {
-      toast.success('Flow created successfully');
-      await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
-       navigate({
-        to: `/strategies/${data.id}`,
-      });
-    },
-    onError: (error) => {
-      console.error('Failed to create flow:', error);
-      toast.error('Failed to create flow');
-    },
-  });
-
-  const updateMutation = useMutation({
-    ...graphLangUpdateMutation(),
-    onSuccess: () => {
-      toast.success('Flow updated successfully');
-            queryClient.refetchQueries({ queryKey: graphLangRetrieveQueryKey({path: {id: id}}) });
-      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
-    },
-    onError: (error) => {
-      console.error('Failed to update flow:', error);
-      toast.error('Failed to update flow');
-    },
-  });
-
-  const patchNameMutation = useMutation({
-    ...graphLangPartialUpdateMutation(),
-    onSuccess: () => {
-      toast.success('Flow name updated successfully');
-      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
-    },
-    onError: (error) => {
-      console.error('Failed to update flow name:', error);
-      toast.error('Failed to update flow name');
-    },
-  });
 
   const addNode = (node: Node) => {
     flowCanvasRef.current?.addNode(node);
@@ -200,7 +87,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
 
   const handleDeleteFlow = () => {
     if (!isNewStrategy){
-
       deleteMutation.mutate({
         path : { id },
       });
@@ -211,7 +97,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
 
   const createOrUpdateFlow = () => {
     if (!rfInstance) return;
-
     if (!flowName.trim()) {
       toast.error('Flow name cannot be empty');
       return;
@@ -225,7 +110,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     const flow = rfInstance.toObject();
 
     if (!isNewStrategy) {
-      // Update existing flow using PUT
       updateMutation.mutate({
         path: { id },
         body: {
@@ -234,7 +118,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         },
       });
     } else {
-      // Create new flow
       createMutation.mutate({
         body: {
           name: flowName,
@@ -244,10 +127,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   };
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
-
-  const { isDragging } = useDnD();
 
   if (isMobile) {
     return (
@@ -310,7 +189,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           onSave={createOrUpdateFlow}
           onDelete={handleDeleteFlow}
           name={flowName}
-          onNameChange={setFlowName}
+          onNameChange={setEditedFlowName}
         />
       )}
     </SidebarProvider>

@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
-import { useDeleteFlow } from '../hooks/use-delete-flow';
 import { FlowListRow } from './flow-list-row';
 import { Button } from '@/features/shared/components/ui/button';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
@@ -15,14 +14,6 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
   const { t } = useTranslation();
    const isMobile = useIsMobile();
 
- const { mutate: deleteFlow } = useDeleteFlow();
-
-   const handleDeleteFlow = (id: string) => {
-    deleteFlow({
-      path: { id },
-    });
-  };
-
 
   return (
     <div className="flex flex-col gap-4">
@@ -31,8 +22,6 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
           key={strategy.id}
           id={strategy.id}
           name={strategy.name}
-          onEdit={() => console.log(`Edit strategy ${strategy.id}`)}
-          onDelete={() => handleDeleteFlow(strategy.id)}
         />
       ))}
 
