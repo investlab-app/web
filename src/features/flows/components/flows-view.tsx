@@ -1,5 +1,6 @@
 import { CheckCircle2, CircleDot } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { FlowsList } from './flows-list';
 import {
   Tabs,
@@ -7,6 +8,9 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/features/shared/components/ui/tabs';
+import { graphLangListOptions } from '@/client/@tanstack/react-query.gen';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { Message } from '@/features/shared/components/error-message';
 
 enum FlowType {
   Active = 'active',
@@ -15,11 +19,46 @@ enum FlowType {
 
 export function FlowsView() {
   const { t } = useTranslation();
-  const strategies = [
-    { id: '1', name: 'Strategy One' },
-    { id: '2', name: 'Strategy Two' },
-    { id: '3', name: 'Strategy Three' },
-  ];
+  
+  const {
+    data: flowsData,
+    isPending,
+    isError,
+  } = useQuery(graphLangListOptions());
+
+  const strategies = flowsData?.results.map((flow) => ({
+    id: flow.id,
+    name: flow.name,
+  })) ?? [];
+
+  if (isPending) {
+    return (
+      <div>
+        <div className="text-2xl font-semibold mb-2">
+          {t('flows.listview.title')}
+        </div>
+        <Skeleton className="h-4 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-2/3 mb-4" />
+        <div className="space-y-4 mt-4">
+          {[...Array(3)].map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        <div className="text-2xl font-semibold mb-2">
+          {t('flows.listview.title')}
+        </div>
+        <Message message={t('common.error_loading_data')} />
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="text-2xl font-semibold mb-2">

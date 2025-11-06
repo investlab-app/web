@@ -14,6 +14,8 @@ interface FlowsSidebarProps {
   setNodeType: (type: string | null) => void;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
   onSave: () => void;
+  onDelete: () => void;
+  name: string;
 }
 
 export const FlowsSidebar = memo(function FlowsSidebar({
@@ -21,6 +23,8 @@ export const FlowsSidebar = memo(function FlowsSidebar({
   screenToFlowPosition,
   onSave,
   setNodeType,
+  onDelete,
+  name
 }: FlowsSidebarProps) {
   console.log('sidebar rendering');
   return (
@@ -33,13 +37,11 @@ export const FlowsSidebar = memo(function FlowsSidebar({
     >
       <SidebarHeader className="h-fit justify-center p-0 pr-3">
         <FlowHeader
-          initialTitle="My Trading 1"
+          initialTitle={name}
           onSave={(newTitle) => {
             console.log('Saving new title:', newTitle);
           }}
-          onDelete={() => {
-            console.log('Deleting flow');
-          }}
+          onDelete={onDelete}
         />
         <SaveButton onSave={onSave} />
       </SidebarHeader>
