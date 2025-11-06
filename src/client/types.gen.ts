@@ -998,6 +998,7 @@ export type NotificationHistoryWritable = {
 };
 
 export type OrderWritable = {
+    ticker: InstrumentName;
     detail_type: number;
 };
 
