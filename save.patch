@@ -1,0 +1,425 @@
+diff --git a/src/features/home/components/account-overview-ribbon.tsx b/src/features/home/components/account-overview-ribbon.tsx
+index 254277c..bf680ac 100644
+--- a/src/features/home/components/account-overview-ribbon.tsx
++++ b/src/features/home/components/account-overview-ribbon.tsx
+@@ -4,8 +4,7 @@ import { StatTile } from '../../shared/components/stat-tile';
+ import { ErrorCard } from '@/features/shared/components/error-card';
+ import { toFixedLocalized } from '@/features/shared/utils/numbers';
+ import {
+-  investorsMeCurrentAccountValueRetrieveOptions,
+-  investorsMeStatsRetrieveOptions,
++  statisticsCurrentAccountValueRetrieveOptions,
+ } from '@/client/@tanstack/react-query.gen';
+ 
+ const AccountOverviewRibbon = () => {
+@@ -15,63 +14,17 @@ const AccountOverviewRibbon = () => {
+     data: investorStats,
+     isPending: statsPending,
+     isError: statsError,
+-  } = useQuery(investorsMeStatsRetrieveOptions());
++  } = useQuery(statisticsCurrentAccountValueRetrieveOptions());
++
++
++
+ 
+-  const {
+-    data: currentAccountValue,
+-    isPending: accountValuePending,
+-    isError: accountValueError,
+-  } = useQuery(investorsMeCurrentAccountValueRetrieveOptions());
+ 
+-  const isPending = statsPending || accountValuePending;
+-  const isError = statsError || accountValueError;
+ 
+-  const tiles = [
+-    {
+-      title: t('investor.todays_return'),
+-      value: investorStats?.todays_return,
+-      isProgress: true,
+-    },
+-    {
+-      title: t('investor.total_return'),
+-      value: investorStats?.total_return,
+-      isProgress: true,
+-    },
+-    {
+-      title: t('investor.invested'),
+-      value: investorStats?.invested,
+-      isProgress: false,
+-    },
+-    {
+-      title: t('investor.total_account_value'),
+-      value: currentAccountValue?.total_account_value,
+-      isProgress: false,
+-    },
+-  ];
+ 
+   return (
+     <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+-      {tiles.map((tile, index) =>
+-        isPending ? (
+-          <StatTile.Skeleton key={`skeleton-${index}`} />
+-        ) : isError || !tile.value ? (
+-          <ErrorCard key={`error-${index}`} />
+-        ) : (
+-          <StatTile
+-            key={index}
+-            title={tile.title}
+-            value={`${toFixedLocalized(tile.value, i18n.language, 2)} ${t('common.currency')}`}
+-            isProgress={tile.isProgress}
+-            coloring={
+-              tile.isProgress
+-                ? tile.value >= 0
+-                  ? StatTile.Coloring.POSITIVE
+-                  : StatTile.Coloring.NEGATIVE
+-                : StatTile.Coloring.NEUTRAL
+-            }
+-          />
+-        )
+-      )}
++      
+     </div>
+   );
+ };
+diff --git a/src/features/home/components/account-value-chart-container.tsx b/src/features/home/components/account-value-chart-container.tsx
+index 144a0b7..4cd285c 100644
+--- a/src/features/home/components/account-value-chart-container.tsx
++++ b/src/features/home/components/account-value-chart-container.tsx
+@@ -11,34 +11,14 @@ import {
+ } from '@/features/shared/components/ui/card';
+ import { Skeleton } from '@/features/shared/components/ui/skeleton';
+ import { toFixedLocalized } from '@/features/shared/utils/numbers';
+-import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
++
+ 
+ export const AccountValueChartContainer = () => {
+   const { t, i18n } = useTranslation();
+ 
+-  const { data, isPending, isError } = useQuery(
+-    investorsMeAccountValueRetrieveOptions()
+-  );
+-
+-  const chartData: Array<InstrumentPricePoint> =
+-    data?.data.map((point) => ({
+-      date: new Date(point.date).toISOString(),
+-      open: point.value,
+-      close: point.value,
+-      high: point.value,
+-      low: point.value,
+-    })) || [];
+-
+-  const currentValue = chartData[chartData.length - 1]?.close ?? 0;
+-
+-  if (isPending) {
+-    return <AccountValueChartContainer.Skeleton />;
+-  }
+-
+-  if (isError) {
+-    return <AccountValueChartContainer.Error />;
+-  }
++ 
+ 
++  
+   return (
+     <Card>
+       <CardHeader>
+@@ -46,16 +26,11 @@ export const AccountValueChartContainer = () => {
+           {t('investor.account_value_over_time')}
+         </CardTitle>
+         <div className="text-4xl font-bold tabular-nums">
+-          {toFixedLocalized(currentValue, i18n.language)} {t('common.currency')}
++          {toFixedLocalized(24, i18n.language)} {t('common.currency')}
+         </div>
+       </CardHeader>
+       <CardContent className="h-96">
+-        <StockChart
+-          type="line"
+-          ticker="Account Value"
+-          priceHistory={chartData}
+-          selectedInterval="WEEK"
+-        />
++       
+       </CardContent>
+     </Card>
+   );
+diff --git a/src/features/home/components/asset-allocation-container.tsx b/src/features/home/components/asset-allocation-container.tsx
+index 57d6570..6d797ee 100644
+--- a/src/features/home/components/asset-allocation-container.tsx
++++ b/src/features/home/components/asset-allocation-container.tsx
+@@ -9,73 +9,17 @@ import {
+ } from '@/features/shared/components/ui/card';
+ import { Skeleton } from '@/features/shared/components/ui/skeleton';
+ import { Message } from '@/features/shared/components/error-message';
+-import { investorsMeAssetAllocationRetrieveOptions } from '@/client/@tanstack/react-query.gen';
++
+ 
+ const AssetAllocationContainer = () => {
+   const { t } = useTranslation();
+ 
+-  const {
+-    data: assetAllocation,
+-    isPending,
+-    isError,
+-  } = useQuery(investorsMeAssetAllocationRetrieveOptions());
+-
+-  if (isPending) {
+-    return (
+-      <Card>
+-        <CardHeader>
+-          <Skeleton className="h-6 w-32" />
+-          <Skeleton className="h-10 w-48" />
+-          <Skeleton className="h-5 w-40" />
+-        </CardHeader>
+-        <CardContent className="space-y-6">
+-          <div className="space-y-4">
+-            <Skeleton className="h-5 w-18" />
+-            <Skeleton className="h-4 w-full" />
+-            <div className="space-y-4">
+-              {[...Array(3)].map((_, i) => (
+-                <div key={i} className="flex items-center justify-between">
+-                  <div className="flex items-center gap-3">
+-                    <Skeleton className="w-4 h-4 rounded-full" />
+-                    <div className="space-y-2">
+-                      <Skeleton className="h-4 w-20" />
+-                      <Skeleton className="h-3 w-10" />
+-                    </div>
+-                  </div>
+-                  <Skeleton className="h-5 w-24" />
+-                </div>
+-              ))}
+-            </div>
+-          </div>
+-        </CardContent>
+-      </Card>
+-    );
+-  }
++  
+ 
+-  if (isError) {
+-    return (
+-      <Card>
+-        <CardHeader>
+-          <CardTitle>{t('investor.asset_allocation')}</CardTitle>
+-        </CardHeader>
+-        <CardContent>
+-          <Message message={t('common.error_loading_data')} />
+-        </CardContent>
+-      </Card>
+-    );
+-  }
+ 
+-  const assets: Array<[string, number]> = assetAllocation.allocations.map(
+-    (item) => [item.asset_class_display_name, item.value]
+-  );
+ 
+   return (
+-    <AssetAllocationTile
+-      totalValue={assetAllocation.total_value}
+-      yearlyGain={assetAllocation.total_return_this_year}
+-      currency={t('common.currency')}
+-      assets={assets}
+-    />
++<div></div>
+   );
+ };
+ 
+diff --git a/src/features/home/components/asset-table-container.tsx b/src/features/home/components/asset-table-container.tsx
+index 68f5f5a..14d5759 100644
+--- a/src/features/home/components/asset-table-container.tsx
++++ b/src/features/home/components/asset-table-container.tsx
+@@ -1,7 +1,7 @@
+ import { useTranslation } from 'react-i18next';
+ import { useQuery } from '@tanstack/react-query';
+ import AssetTable from './asset-table';
+-import type { OwnedShareItem } from '@/client';
++
+ import {
+   Card,
+   CardContent,
+@@ -10,39 +10,18 @@ import {
+ } from '@/features/shared/components/ui/card';
+ import { Skeleton } from '@/features/shared/components/ui/skeleton';
+ import { Message } from '@/features/shared/components/error-message';
+-import { investorsMeOwnedSharesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
++
+ 
+ const AssetTableContainer = () => {
+   const { t } = useTranslation();
+-  const handleAssetPressed = (asset: OwnedShareItem) => {
+-    void asset;
+-    // noop
+-  };
+-
+-  const {
+-    data: ownedSharesData,
+-    isPending,
+-    isError,
+-  } = useQuery(investorsMeOwnedSharesRetrieveOptions());
+-
+-  if (isError) {
+-    return <AssetTableContainer.Error />;
+-  }
+-
+-  if (isPending) {
+-    return <AssetTableContainer.Skeleton />;
+-  }
+-
++ 
+   return (
+     <Card className="text-xl">
+       <CardHeader>
+         <CardTitle>{t('investor.owned_shares')}</CardTitle>
+       </CardHeader>
+       <CardContent>
+-        <AssetTable
+-          data={ownedSharesData.owned_shares}
+-          onAssetPressed={handleAssetPressed}
+-        />
++       
+       </CardContent>
+     </Card>
+   );
+diff --git a/src/features/shared/components/wallet-section.tsx b/src/features/shared/components/wallet-section.tsx
+index 3ca7a13..cb45af1 100644
+--- a/src/features/shared/components/wallet-section.tsx
++++ b/src/features/shared/components/wallet-section.tsx
+@@ -8,30 +8,17 @@ import {
+   SidebarMenuButton,
+   SidebarMenuItem,
+ } from '@/features/shared/components/ui/sidebar';
+-import { investorsMeCurrentAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
++
+ 
+ export function WalletSection() {
+   const { t } = useTranslation();
+ 
+-  const {
+-    data: accountValue,
+-    isPending,
+-    isError,
+-    isSuccess,
+-  } = useQuery(investorsMeCurrentAccountValueRetrieveOptions());
+-
+   return (
+     <SidebarMenuItem className="flex items-center gap-1">
+       <SidebarMenuButton tooltip={t('common.wallet')} asChild>
+         <div className="flex items-center justify-between">
+           <Wallet />
+-          {isPending && <Skeleton className="h-6 w-24" />}
+-          {isError && <Skeleton className="h-6 w-24" />}
+-          {isSuccess &&
+-            new Intl.NumberFormat('en-US', {
+-              style: 'currency',
+-              currency: t('common.currency'),
+-            }).format(accountValue.total_account_value)}
++
+           <Button
+             size="icon"
+             className="ml-auto size-8 group-data-[collapsible=icon] bg-primary active:bg-primary/90  hover:bg-primary/90 duration-200 ease-linear"
+diff --git a/src/features/shared/queries/update-language.tsx b/src/features/shared/queries/update-language.tsx
+index 9208f85..f4e5638 100644
+--- a/src/features/shared/queries/update-language.tsx
++++ b/src/features/shared/queries/update-language.tsx
+@@ -1,15 +1,6 @@
+ import i18n from '@/i18n/config';
+-import { investorsMeLanguageCreate } from '@/client/sdk.gen';
+-import { zLanguageEnum } from '@/client/zod.gen';
+ 
+ export const syncLanguage = async () => {
+-  const { language } = i18n;
+-  const parsed = zLanguageEnum.safeParse(language);
+-  if (!parsed.success) {
+-    console.warn(`Unsupported language code: ${language}`);
+-    return;
+-  }
+-  await investorsMeLanguageCreate({
+-    body: { language: parsed.data },
+-  });
++
++
+ };
+diff --git a/src/features/statistics/components/profile-overview.tsx b/src/features/statistics/components/profile-overview.tsx
+index 0e6ed3d..2a7c00c 100644
+--- a/src/features/statistics/components/profile-overview.tsx
++++ b/src/features/statistics/components/profile-overview.tsx
+@@ -11,10 +11,7 @@ import {
+ } from '@/features/shared/components/ui/table';
+ import { Skeleton } from '@/features/shared/components/ui/skeleton';
+ import { cn } from '@/features/shared/utils/styles';
+-import {
+-  investorsMeCurrentAccountValueRetrieveOptions,
+-  investorsMeStatisticsProfileOverviewRetrieveOptions,
+-} from '@/client/@tanstack/react-query.gen';
++
+ import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
+ 
+ const ProfileOverviewBodySkeleton = () => {
+@@ -45,20 +42,6 @@ const ProfileOverviewBodySkeleton = () => {
+ const ProfileOverview = () => {
+   const { t } = useTranslation();
+ 
+-  const [profileOverviewResult, currentAccountValueResult] = useQueries({
+-    queries: [
+-      investorsMeStatisticsProfileOverviewRetrieveOptions(),
+-      investorsMeCurrentAccountValueRetrieveOptions(),
+-    ],
+-  });
+-  const data =
+-    profileOverviewResult.data && currentAccountValueResult.data
+-      ? {
+-          ...profileOverviewResult.data,
+-          ...currentAccountValueResult.data,
+-        }
+-      : undefined;
+-
+   return (
+     <ScrollableHorizontally>
+       <Table>
+@@ -82,46 +65,7 @@ const ProfileOverview = () => {
+           </TableRow>
+         </TableHeader>
+         <TableBody>
+-          {!data ? (
+-            <ProfileOverviewBodySkeleton />
+-          ) : (
+-            <TableRow>
+-              <TableCell>{data.level}</TableCell>
+-              <TableCell className="text-right">{data.exp_points}</TableCell>
+-              <TableCell className="text-right">
+-                {data.left_to_next_level}
+-              </TableCell>
+-              <TableCell className="text-right">
+-                {data.total_account_value.toFixed(2)}
+-              </TableCell>
+-
+-              <TableCell
+-                className={cn(
+-                  'text-right',
+-                  data.gain < 0
+-                    ? 'text-red-500'
+-                    : data.gain > 0
+-                      ? 'text-green-500'
+-                      : ''
+-                )}
+-              >
+-                {data.gain.toFixed(2)} {t('common.currency')}
+-              </TableCell>
+-              <TableCell
+-                className={cn(
+-                  'text-right',
+-                  data.gain_percent < 0
+-                    ? 'text-red-500'
+-                    : data.gain_percent > 0
+-                      ? 'text-green-500'
+-                      : ''
+-                )}
+-              >
+-                {data.gain_percent.toFixed(2)}
+-                {'%'}
+-              </TableCell>
+-            </TableRow>
+-          )}
++         
+         </TableBody>
+       </Table>
+     </ScrollableHorizontally>

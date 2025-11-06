@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { useDeleteFlow } from '../hooks/use-delete-flow';
 import { FlowListRow } from './flow-list-row';
 import { Button } from '@/features/shared/components/ui/button';
+import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 
 interface FlowsListProps {
   strategies: ReadonlyArray<{ id: string; name: string }>;
@@ -12,6 +13,7 @@ interface FlowsListProps {
 
 export function FlowsList({ strategies, isActive }: FlowsListProps) {
   const { t } = useTranslation();
+   const isMobile = useIsMobile();
 
  const { mutate: deleteFlow } = useDeleteFlow();
 
@@ -34,7 +36,7 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
         />
       ))}
 
-      {isActive && (
+      {isActive && !isMobile && (
         <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
           <Link to={`/strategies/newstrategy`}>
           <Button

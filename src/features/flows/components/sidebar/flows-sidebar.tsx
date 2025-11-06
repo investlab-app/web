@@ -16,6 +16,7 @@ interface FlowsSidebarProps {
   onSave: () => void;
   onDelete: () => void;
   name: string;
+  onNameChange: (newName: string) => void;
 }
 
 export const FlowsSidebar = memo(function FlowsSidebar({
@@ -24,7 +25,8 @@ export const FlowsSidebar = memo(function FlowsSidebar({
   onSave,
   setNodeType,
   onDelete,
-  name
+  name,
+  onNameChange,
 }: FlowsSidebarProps) {
   console.log('sidebar rendering');
   return (
@@ -38,10 +40,9 @@ export const FlowsSidebar = memo(function FlowsSidebar({
       <SidebarHeader className="h-fit justify-center p-0 pr-3">
         <FlowHeader
           initialTitle={name}
-          onSave={(newTitle) => {
-            console.log('Saving new title:', newTitle);
-          }}
           onDelete={onDelete}
+          canRename={false}
+          onNameChange={onNameChange}
         />
         <SaveButton onSave={onSave} />
       </SidebarHeader>

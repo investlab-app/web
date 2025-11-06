@@ -1,17 +1,17 @@
 import { PanelRightIcon } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { useDnD } from '../hooks/use-dnd';
 import { useValidateBoard } from '../utils/board-validator';
 import { useValidators } from '../hooks/use-validators';
-import { useDeleteFlow } from '../hooks/use-delete-flow';
 import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
 import { FlowHeader } from './sidebar/flow-header';
 import { FlowCanvas } from './flow-canvas';
 import type { FlowCanvasRef } from './flow-canvas';
-import type { Node, ReactFlowInstance } from '@xyflow/react';
+import type { Node, ReactFlowInstance, Edge } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
@@ -21,14 +21,22 @@ import {
   SidebarTrigger,
 } from '@/features/shared/components/ui/sidebar';
 import { cn } from '@/features/shared/utils/styles';
-import { graphLangRetrieveOptions } from '@/client/@tanstack/react-query.gen';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import {
+  graphLangCreateMutation,
+  graphLangDestroyMutation,
+  graphLangListQueryKey,
+  graphLangPartialUpdateMutation,
+  graphLangRetrieveOptions,
+  graphLangUpdateMutation,
+} from '@/client/@tanstack/react-query.gen';
+import { useNavigate } from '@tanstack/react-router';
 
 interface FlowsBoardProps {
   id: string;
 }
 
 export function FlowsBoard({ id }: FlowsBoardProps) {
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const flowCanvasRef = useRef<FlowCanvasRef>(null);
@@ -37,14 +45,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { appTheme: theme } = useTheme();
   const {validateConnection} = useValidators();
   const {validateBoard} = useValidateBoard();
-  const { mutate: deleteFlow } = useDeleteFlow();
-
+  // const { mutate: deleteFlow } = useDeleteFlow();
+  
   const isNewStrategy = id === 'newstrategy';
+  const [flowName, setFlowName] = useState<string>(isNewStrategy ? 'New Strategy' : '');
 
   // Only fetch flow data if it's not a new strategy
   const {
     data: flowData,
-    isPending,
   } = useQuery({
     ...graphLangRetrieveOptions({
       path: { id },
@@ -52,51 +60,164 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     enabled: !isNewStrategy,
   });
 
-  const flowName = isNewStrategy ? 'New Strategy' : (flowData?.name ?? '...');
+  const navigate = useNavigate();
+
+  // Update flowName when data is fetched
+  useEffect(() => {
+    if (flowData?.name && !isNewStrategy) {
+      setFlowName(flowData.name);
+    }
+  }, [flowData?.name, isNewStrategy]);
+
+  // Restore board data when flow data is fetched
+  useEffect(() => {
+    if (flowData?.raw_graph_data && rfInstance) {
+      const flow = flowData.raw_graph_data as {
+        nodes?: Array<Node>;
+        edges?: Array<Edge>;
+        viewport?: { x: number; y: number; zoom: number };
+      };
+      
+      const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
+      rfInstance.setNodes(flow.nodes || []);
+      rfInstance.setEdges(flow.edges || []);
+      rfInstance.setViewport({ x, y, zoom });
+    }
+  }, [flowData?.raw_graph_data, rfInstance]);
+
+  const deleteMutation = useMutation({
+    ...graphLangDestroyMutation(),
+    onSuccess: async () => {
+      toast.success('Flow deleted successfully');
+      await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
+      navigate({
+        to: '/strategies',
+      });
+    },
+    onError: (error) => {
+      console.error('Failed to delete flow:', error);
+      toast.error('Failed to delete flow');
+    },
+  });
+
+  const createMutation = useMutation({
+    ...graphLangCreateMutation(),
+    onSuccess: async (data) => {
+      toast.success('Flow created successfully');
+      await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
+       navigate({
+        to: `/strategies/${data.id}`,
+      });
+    },
+    onError: (error) => {
+      console.error('Failed to create flow:', error);
+      toast.error('Failed to create flow');
+    },
+  });
+
+  const updateMutation = useMutation({
+    ...graphLangUpdateMutation(),
+    onSuccess: () => {
+      toast.success('Flow updated successfully');
+      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
+    },
+    onError: (error) => {
+      console.error('Failed to update flow:', error);
+      toast.error('Failed to update flow');
+    },
+  });
+
+  const patchNameMutation = useMutation({
+    ...graphLangPartialUpdateMutation(),
+    onSuccess: () => {
+      toast.success('Flow name updated successfully');
+      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
+    },
+    onError: (error) => {
+      console.error('Failed to update flow name:', error);
+      toast.error('Failed to update flow name');
+    },
+  });
 
   const addNode = (node: Node) => {
     flowCanvasRef.current?.addNode(node);
   };
 
-  const handleDeleteFlow = () => {
-    deleteFlow({
-      path: { id },
-    });
-  };
-
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const onSave = () => {
-    if (rfInstance) {
-      if (!validateBoard(rfInstance.getNodes(), rfInstance.getEdges())) {
-        alert('Flow is invalid. Please fix the errors before saving.');
-        return;
-      }
-      const flow = rfInstance.toObject();
-      localStorage.setItem('example-flow', JSON.stringify(flow));
+  const handlePatchName = (newName: string) => {
+    if (!newName.trim()) {
+      toast.error('Flow name cannot be empty');
+      return;
+    }
+    
+    if (!isNewStrategy) {
+      patchNameMutation.mutate({
+        path: { id },
+        body: {
+          name: newName,
+        },
+      });
     }
   };
 
-  const { isDragging } = useDnD();
+  const handleDeleteFlow = () => {
+    if (!isNewStrategy){
 
-  // Show loading skeleton while fetching flow data
-  if (!isNewStrategy && isPending) {
-    return (
-      <div className="flex flex-col h-full mx-4 gap-4">
-        <Skeleton className="h-10 w-48" />
-        <Skeleton className="h-full w-full" />
-      </div>
-    );
-  }
+      deleteMutation.mutate({
+        path : { id },
+      });
+    } else {
+      toast.error(t('flows.errors.cannot_delete_new_strategy', ));
+    }
+  };
+
+  const createOrUpdateFlow = () => {
+    if (!rfInstance) return;
+
+    if (!flowName.trim()) {
+      toast.error('Flow name cannot be empty');
+      return;
+    }
+
+    if (!validateBoard(rfInstance.getNodes(), rfInstance.getEdges())) {
+      toast.error('Flow is invalid. Please fix the errors before saving.');
+      return;
+    }
+
+    const flow = rfInstance.toObject();
+
+    if (!isNewStrategy) {
+      // Update existing flow using PUT
+      updateMutation.mutate({
+        path: { id },
+        body: {
+          name: flowName,
+          raw_graph_data: flow,
+        },
+      });
+    } else {
+      // Create new flow
+      createMutation.mutate({
+        body: {
+          name: flowName,
+          raw_graph_data: flow,
+        },
+      });
+    }
+  };
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+
+  const { isDragging } = useDnD();
 
   if (isMobile) {
     return (
       <div className="flex flex-col h-full mx-4">
           <FlowHeader
             initialTitle={flowName}
-            onSave={(newTitle) => {
-              console.log('Saving new title:', newTitle);
-            }}
+            onSave={handlePatchName}
             onDelete={handleDeleteFlow}
+            canRename={true}
           />
         <Alert className="border-warning bg-warning/10 my-4">
           <AlertDescription>
@@ -112,6 +233,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
             theme={theme}
             validateConnection={validateConnection}
             onInit={setRfInstance}
+            readOnly
           />
         </div>
       </div>
@@ -146,9 +268,10 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           setNodeType={setNodeType}
           addNode={addNode}
           screenToFlowPosition={rfInstance.screenToFlowPosition}
-          onSave={onSave}
+          onSave={createOrUpdateFlow}
           onDelete={handleDeleteFlow}
           name={flowName}
+          onNameChange={setFlowName}
         />
       )}
     </SidebarProvider>
