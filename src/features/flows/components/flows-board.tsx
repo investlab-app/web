@@ -3,15 +3,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useNavigate } from '@tanstack/react-router';
 import { useDnD } from '../hooks/use-dnd';
 import { useValidateBoard } from '../utils/board-validator';
+import { hasSettingsFactory, restoreNodeSettings } from '../utils/settings-factory';
 import { useValidators } from '../hooks/use-validators';
 import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
 import { FlowHeader } from './sidebar/flow-header';
 import { FlowCanvas } from './flow-canvas';
 import type { FlowCanvasRef } from './flow-canvas';
-import type { Node, ReactFlowInstance, Edge } from '@xyflow/react';
+import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
+import type { CustomNodeTypes } from '../types/node-types';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
@@ -27,9 +30,9 @@ import {
   graphLangListQueryKey,
   graphLangPartialUpdateMutation,
   graphLangRetrieveOptions,
+  graphLangRetrieveQueryKey,
   graphLangUpdateMutation,
 } from '@/client/@tanstack/react-query.gen';
-import { useNavigate } from '@tanstack/react-router';
 
 interface FlowsBoardProps {
   id: string;
@@ -72,14 +75,49 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   // Restore board data when flow data is fetched
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
+      console.log('Starting board restoration...');
       const flow = flowData.raw_graph_data as {
         nodes?: Array<Node>;
         edges?: Array<Edge>;
         viewport?: { x: number; y: number; zoom: number };
       };
       
+      // Restore nodes with their settings classes
+      const restoredNodes = (flow.nodes || []).map((node) => {
+        // Check if this node has settings that need restoration
+        if (node.data.settings && node.type) {
+          const nodeTypeValue = node.type as CustomNodeTypes;
+          
+          if (hasSettingsFactory(nodeTypeValue)) {
+            console.log(`Restoring settings for node type: ${nodeTypeValue}`);
+            // Restore the plain settings object to a class instance
+            const restoredSettings = restoreNodeSettings(
+              nodeTypeValue,
+              node.data.settings as Record<string, unknown>
+            );
+            
+            console.log('Plain settings:', node.data.settings);
+            console.log('Restored settings:', restoredSettings);
+            console.log('Has isValid method:', typeof restoredSettings.isValid === 'function');
+            
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                settings: restoredSettings,
+              },
+            };
+          } else {
+            console.warn(`No factory found for node type: ${nodeTypeValue}`);
+          }
+        }
+        
+        return node;
+      });
+      
+      console.log(`Restored ${restoredNodes.length} nodes`);
       const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
-      rfInstance.setNodes(flow.nodes || []);
+      rfInstance.setNodes(restoredNodes);
       rfInstance.setEdges(flow.edges || []);
       rfInstance.setViewport({ x, y, zoom });
     }
@@ -119,6 +157,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     ...graphLangUpdateMutation(),
     onSuccess: () => {
       toast.success('Flow updated successfully');
+            queryClient.refetchQueries({ queryKey: graphLangRetrieveQueryKey({path: {id: id}}) });
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
