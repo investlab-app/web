@@ -1,9 +1,11 @@
 import { PanelRightIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { useDnD } from '../hooks/use-dnd';
 import { useValidateBoard } from '../utils/board-validator';
 import { useValidators } from '../hooks/use-validators';
+import { useDeleteFlow } from '../hooks/use-delete-flow';
 import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
 import { FlowHeader } from './sidebar/flow-header';
@@ -19,6 +21,8 @@ import {
   SidebarTrigger,
 } from '@/features/shared/components/ui/sidebar';
 import { cn } from '@/features/shared/utils/styles';
+import { graphLangRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 interface FlowsBoardProps {
   id: string;
@@ -33,9 +37,31 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { appTheme: theme } = useTheme();
   const {validateConnection} = useValidators();
   const {validateBoard} = useValidateBoard();
+  const { mutate: deleteFlow } = useDeleteFlow();
+
+  const isNewStrategy = id === 'newstrategy';
+
+  // Only fetch flow data if it's not a new strategy
+  const {
+    data: flowData,
+    isPending,
+  } = useQuery({
+    ...graphLangRetrieveOptions({
+      path: { id },
+    }),
+    enabled: !isNewStrategy,
+  });
+
+  const flowName = isNewStrategy ? 'New Strategy' : (flowData?.name ?? '...');
 
   const addNode = (node: Node) => {
     flowCanvasRef.current?.addNode(node);
+  };
+
+  const handleDeleteFlow = () => {
+    deleteFlow({
+      path: { id },
+    });
   };
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -52,17 +78,25 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
 
   const { isDragging } = useDnD();
 
+  // Show loading skeleton while fetching flow data
+  if (!isNewStrategy && isPending) {
+    return (
+      <div className="flex flex-col h-full mx-4 gap-4">
+        <Skeleton className="h-10 w-48" />
+        <Skeleton className="h-full w-full" />
+      </div>
+    );
+  }
+
   if (isMobile) {
     return (
       <div className="flex flex-col h-full mx-4">
           <FlowHeader
-            initialTitle="..."
+            initialTitle={flowName}
             onSave={(newTitle) => {
               console.log('Saving new title:', newTitle);
             }}
-            onDelete={() => {
-              console.log('Deleting flow');
-            }}
+            onDelete={handleDeleteFlow}
           />
         <Alert className="border-warning bg-warning/10 my-4">
           <AlertDescription>
@@ -113,6 +147,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           addNode={addNode}
           screenToFlowPosition={rfInstance.screenToFlowPosition}
           onSave={onSave}
+          onDelete={handleDeleteFlow}
+          name={flowName}
         />
       )}
     </SidebarProvider>

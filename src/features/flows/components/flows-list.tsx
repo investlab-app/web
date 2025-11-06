@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { useDeleteFlow } from '../hooks/use-delete-flow';
 import { FlowListRow } from './flow-list-row';
 import { Button } from '@/features/shared/components/ui/button';
 
@@ -11,6 +13,15 @@ interface FlowsListProps {
 export function FlowsList({ strategies, isActive }: FlowsListProps) {
   const { t } = useTranslation();
 
+ const { mutate: deleteFlow } = useDeleteFlow();
+
+   const handleDeleteFlow = (id: string) => {
+    deleteFlow({
+      path: { id },
+    });
+  };
+
+
   return (
     <div className="flex flex-col gap-4">
       {strategies.map((strategy) => (
@@ -19,17 +30,18 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
           id={strategy.id}
           name={strategy.name}
           onEdit={() => console.log(`Edit strategy ${strategy.id}`)}
-          onDelete={() => console.log(`Delete strategy ${strategy.id}`)}
+          onDelete={() => handleDeleteFlow(strategy.id)}
         />
       ))}
 
       {isActive && (
         <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
+          <Link to={`/strategies/newstrategy`}>
           <Button
             variant="ghost"
             onClick={() => console.log('Add new strategy')}
             className="w-full h-auto p-4 justify-start gap-3"
-          >
+            >
             <div className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 flex items-center justify-center">
               <Plus className="h-4 w-4 sm:h-5 sm:w-5 " />
             </div>
@@ -37,6 +49,7 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
               {t('flows.listview.add_strategy')}
             </span>
           </Button>
+            </Link>
         </div>
       )}
     </div>
