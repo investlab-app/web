@@ -1,16 +1,19 @@
-import { useMutation } from '@tanstack/react-query';
-import { graphLangDestroyMutation } from '@/client/@tanstack/react-query.gen';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { graphLangDestroyMutation, graphLangListQueryKey } from '@/client/@tanstack/react-query.gen';
 
 export function useDeleteFlow() {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     ...graphLangDestroyMutation(),
     onSuccess: () => {
-      // TODO: Navigate back to flows list or show success message
-      console.log('Flow deleted successfully');
+      toast.success('Flow deleted successfully');
+      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
       console.error('Failed to delete flow:', error);
-      // TODO: Show error message to user
+      toast.error('Failed to delete flow');
     },
   });
 }

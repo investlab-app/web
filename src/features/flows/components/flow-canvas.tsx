@@ -17,6 +17,7 @@ interface FlowCanvasProps {
   theme: ColorMode;
   validateConnection: (connection: Connection | Edge) => boolean;
   onInit: (instance: ReactFlowInstance | null) => void;
+  readOnly?: boolean;
 }
 
 export interface FlowCanvasRef {
@@ -25,7 +26,7 @@ export interface FlowCanvasRef {
 
 export const FlowCanvas = memo(
   forwardRef<FlowCanvasRef, FlowCanvasProps>(function FlowCanvas(
-    { theme, validateConnection, onInit },
+    { theme, validateConnection, onInit, readOnly },
     ref
   ) {
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
@@ -39,6 +40,29 @@ export const FlowCanvas = memo(
     }));
 
     console.log('FlowCanvas rendering');
+
+    if (readOnly) {
+      return (
+<ReactFlow
+        colorMode={theme}
+        nodes={nodes}
+        edges={edges}
+        nodeExtent={NODE_EXTENT}
+        translateExtent={TRANSLATE_EXTENT}
+        nodeTypes={nodeTypes}
+        onInit={onInit}
+        zoomOnScroll={false}
+        panOnDrag={false}
+        zoomOnPinch={false}
+        zoomOnDoubleClick={false}
+        panOnScroll={false}
+        elementsSelectable={false}
+        nodesDraggable={false}
+      >
+        <Background />
+      </ReactFlow>
+      );
+    }
 
     return (
       <ReactFlow
