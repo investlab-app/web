@@ -2,25 +2,28 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { ArrowRight, ChevronRight, Trash2 } from 'lucide-react';
+import { useStrategyMutations } from '../hooks/strategy-mutations';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
 
 interface FlowListRowProps {
   id: string;
   name: string;
-  onEdit?: () => void;
-  onDelete?: () => void;
   className?: string;
 }
 
 export function FlowListRow({
   id,
   name,
-  onDelete,
   className,
 }: FlowListRowProps) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
+ const {deleteMutation} = useStrategyMutations();
+
+   const handleDeleteFlow = () => {
+    deleteMutation.mutate({ path: { id } });
+  };
 
   return (
     <div className={cn('bg-muted/40', className)}>
@@ -69,7 +72,7 @@ export function FlowListRow({
               aria-label={t('common.delete')}
               onClick={(event) => {
                 event.stopPropagation();
-                onDelete?.();
+                handleDeleteFlow();
               }}
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
             >
