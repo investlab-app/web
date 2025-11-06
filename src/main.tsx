@@ -26,19 +26,16 @@ import { RouterLoading } from './features/shared/components/router-loading.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
 import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
 import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
+import { deleteCookie } from './features/shared/utils/cookies.ts';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
 import './styles.css';
 import '@fontsource-variable/spline-sans';
-import { deleteCookie } from './features/shared/utils/cookies.ts';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5, // 5 minutes - consider data fresh for 5 minutes
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
       meta: {
