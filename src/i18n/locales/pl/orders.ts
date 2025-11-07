@@ -10,7 +10,8 @@ const plOrders = {
   current_price_error:
     'Przepraszamy, bieżąca cena nie mogła zostać załadowana.',
   order_success: 'Zlecenie złożone pomyślnie!',
-  order_failed: 'Nie udało się złożyć zlecenia: {{message}}',
+  order_failed:
+    'Nie udało się złożyć zlecenia. Sprawdź, czy masz wystarczające środki i spróbuj ponownie.',
 };
 
 export default plOrders;

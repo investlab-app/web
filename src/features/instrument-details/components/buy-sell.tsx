@@ -81,15 +81,8 @@ export const BuySell = ({ ticker }: BuySellProps) => {
       });
     },
     onError: (error) => {
-      let errorMessage = t('common.something_went_wrong');
-
-      if (Array.isArray(error)) {
-        errorMessage = error.join(', ');
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      toast.error(t('orders.order_failed', { message: errorMessage }));
+      console.warn('Order creation failed:', error);
+      toast.error(t('orders.order_failed'));
     },
     onSettled: () => {},
   });

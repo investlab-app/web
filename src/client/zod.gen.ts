@@ -47,7 +47,7 @@ export const zClerkLoginRequest = z.object({
 
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
     is_buy: z.boolean()
 });
 

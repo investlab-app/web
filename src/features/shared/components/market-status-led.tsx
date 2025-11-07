@@ -41,7 +41,7 @@ function MarketLED({
 }
 
 function useMarketStatus() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: marketStatus, isPending } = useQuery(
     marketsStatusRetrieveOptions()
   );
@@ -53,33 +53,20 @@ function useMarketStatus() {
       !marketStatus.early_hours
   );
 
-  // Helper: Format date to user's local time string and timezone
-  const getLocalTimeInfo = (date: Date) => {
-    const timeStr = date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    return { timeStr, timeZone };
-  };
+  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  // Helper: Convert Eastern Time hours to user's local time
-  // Used to show market open/close times in user's timezone
   const convertETToLocal = (etHour: number, etMinute: number = 0) => {
-    const etDate = new Date();
-    etDate.setHours(etHour, etMinute, 0, 0);
-
-    const localDate = new Date(
-      etDate.toLocaleString('en-US', {
-        timeZone: 'America/New_York',
-      })
+    const etOffset = 5;
+    const utcDate = new Date(
+      Date.UTC(1970, 0, 1, etHour + etOffset, etMinute, 0)
     );
 
-    return localDate.toLocaleTimeString('en-US', {
+    console.log('utcDate:', utcDate);
+
+    return utcDate.toLocaleString(i18n.language, {
+      timeZone: localTimeZone,
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
     });
   };
 
@@ -91,14 +78,25 @@ function useMarketStatus() {
       };
     }
 
-    const serverTime = new Date(marketStatus.server_time || Date.now());
-    const { timeStr, timeZone } = getLocalTimeInfo(serverTime);
+    const localServerTime = marketStatus.server_time
+      ? new Date(marketStatus.server_time).toLocaleTimeString(i18n.language, {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: localTimeZone,
+        })
+      : null;
 
-    // Market hours in Eastern Time (converted to user's local timezone)
-    const marketOpenET = convertETToLocal(9, 30); // 9:30 AM ET
-    const marketCloseET = convertETToLocal(16, 0); // 4:00 PM ET
-    const afterHoursCloseET = convertETToLocal(20, 0); // 8:00 PM ET
-    const isWeekend = serverTime.getDay() === 0 || serverTime.getDay() === 6;
+    const currentET = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+    );
+
+    // Market hours
+    const marketOpenET = convertETToLocal(9, 30);
+    console.log('marketOpenET:', marketOpenET);
+    const marketCloseET = convertETToLocal(16, 0);
+    const afterHoursCloseET = convertETToLocal(20, 0);
+
+    const isWeekend = currentET.getDay() === 0 || currentET.getDay() === 6;
 
     // Market is open - check which session (regular, pre-market, after-hours)
     if (marketStatus.market === 'open') {
@@ -108,8 +106,8 @@ function useMarketStatus() {
           details: t('marketStatus.after_hours_info', {
             closeTime: marketCloseET,
             afterHoursClose: afterHoursCloseET,
-            localTime: timeStr,
-            timeZone,
+            localTime: localServerTime,
+            timeZone: localTimeZone,
           }),
         };
       }
@@ -119,8 +117,8 @@ function useMarketStatus() {
           status: t('common.pre_market', 'Pre-Market'),
           details: t('marketStatus.pre_market_info', {
             openTime: marketOpenET,
-            localTime: timeStr,
-            timeZone,
+            localTime: localServerTime,
+            timeZone: localTimeZone,
           }),
         };
       }
@@ -130,8 +128,8 @@ function useMarketStatus() {
         details: t('marketStatus.regular_hours_info', {
           openTime: marketOpenET,
           closeTime: marketCloseET,
-          localTime: timeStr,
-          timeZone,
+          localTime: localServerTime,
+          timeZone: localTimeZone,
         }),
       };
     }
@@ -141,16 +139,21 @@ function useMarketStatus() {
         status: t('common.market_closed', 'Market Closed'),
         details: t('marketStatus.weekend_closed', {
           openTime: marketOpenET,
-          localTime: timeStr,
-          timeZone,
+          localTime: localServerTime,
+          timeZone: localTimeZone,
         }),
       };
     }
 
-    // Check if market opens later today (before 1:30 PM UTC = 9:30 AM ET)
-    const hours = serverTime.getHours();
-    if (hours < 13) {
-      const hoursUntilOpen = 13 - hours;
+    // Check if market opens later today (before 9:30 AM ET)
+    const hours = currentET.getHours();
+    if (hours < 10) {
+      let hoursUntilOpen = 9 - hours;
+      let minutesUntilOpen = 30 - currentET.getMinutes();
+      if (minutesUntilOpen < 0) {
+        hoursUntilOpen -= 1;
+        minutesUntilOpen += 60;
+      }
       return {
         status: t('common.market_closed', 'Market Closed'),
         details: t('marketStatus.opens_in', {
@@ -158,20 +161,21 @@ function useMarketStatus() {
           hours: hoursUntilOpen,
           hourLabel:
             hoursUntilOpen === 1 ? t('common.hour') : t('common.hours'),
-          localTime: timeStr,
-          timeZone,
+          minutes: minutesUntilOpen,
+          localTime: localServerTime,
+          timeZone: localTimeZone,
         }),
       };
     }
 
-    // Market already closed for the day (after 8:00 PM UTC = 4:00 PM ET)
-    if (hours >= 20) {
+    // Market already closed for the day (after 4:00 PM ET)
+    if (hours >= 16) {
       return {
         status: t('common.market_closed', 'Market Closed'),
         details: t('marketStatus.opens_tomorrow', {
           openTime: marketOpenET,
-          localTime: timeStr,
-          timeZone,
+          localTime: localServerTime,
+          timeZone: localTimeZone,
         }),
       };
     }
@@ -180,13 +184,12 @@ function useMarketStatus() {
     return {
       status: t('common.market_closed', 'Market Closed'),
       details: t('marketStatus.market_closed_default', {
-        localTime: timeStr,
-        timeZone,
+        localTime: localServerTime,
+        timeZone: localTimeZone,
       }),
     };
   };
 
-  // Return hook state and computed values
   return {
     isPending,
     isMarketOpen,
