@@ -9,15 +9,20 @@ export function useLivePrices(...tickers: Array<string>) {
 
   const [prices, setPrices] = useState<Record<string, number>>({});
 
+  const queryOptions = pricesListOptions({ query: { tickers } });
+
+  console.log(`queryOptions:`, queryOptions);
+
   const { data } = useQuery({
-    ...pricesListOptions({ query: { tickers } }),
+    ...queryOptions,
     staleTime: Infinity,
+    enabled: tickers.length > 0,
   });
 
   useEffect(() => {
     if (data === undefined) return;
     const initialPrices = Object.fromEntries(
-      data.results.map((p) => {
+      data.map((p) => {
         const price = Number(p.current_price);
         return [p.ticker, price];
       })

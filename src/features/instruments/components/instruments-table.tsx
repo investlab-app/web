@@ -54,9 +54,9 @@ export const InstrumentTable = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {column.getIsSorted() === 'asc' ? (
-              <ArrowDown className="h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
               <ArrowUp className="h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="h-4 w-4" />
             ) : (
               <ArrowUpDown className="h-4 w-4" />
             )}
@@ -286,9 +286,9 @@ export const InstrumentTable = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {column.getIsSorted() === 'asc' ? (
-              <ArrowDown className="h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
               <ArrowUp className="h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="h-4 w-4" />
             ) : (
               <ArrowUpDown className="h-4 w-4" />
             )}

@@ -45,11 +45,6 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
-export const zCreateMarketOrder = z.object({
-    id: z.uuid().readonly(),
-    investor: z.uuid().readonly()
-});
-
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
     volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
@@ -614,19 +609,6 @@ export const zPaginatedPriceAlertList = z.object({
         z.null()
     ])),
     results: z.array(zPriceAlert)
-});
-
-export const zPaginatedPriceDailySummaryList = z.object({
-    count: z.int(),
-    next: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    previous: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    results: z.array(zPriceDailySummary)
 });
 
 export const zPatchedInvestorRequest = z.object({
@@ -1226,19 +1208,17 @@ export const zOrdersMarketCreateData = z.object({
     query: z.optional(z.never())
 });
 
-export const zOrdersMarketCreateResponse = zCreateMarketOrder;
+export const zOrdersMarketCreateResponse = zOrder;
 
 export const zPricesListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.object({
-        page: z.optional(z.int()),
-        page_size: z.optional(z.int()),
         tickers: z.array(z.string().min(1)).max(50)
     })
 });
 
-export const zPricesListResponse = zPaginatedPriceDailySummaryList;
+export const zPricesListResponse = z.array(zPriceDailySummary);
 
 export const zPricesRetrieveData = z.object({
     body: z.optional(z.never()),

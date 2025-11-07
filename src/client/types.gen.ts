@@ -56,11 +56,6 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
-export type CreateMarketOrder = {
-    readonly id: string;
-    readonly investor: string;
-};
-
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
@@ -464,13 +459,6 @@ export type PaginatedPriceAlertList = {
     next?: string | null;
     previous?: string | null;
     results: Array<PriceAlert>;
-};
-
-export type PaginatedPriceDailySummaryList = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: Array<PriceDailySummary>;
 };
 
 export type PatchedInvestorRequest = {
@@ -1231,7 +1219,7 @@ export type OrdersMarketCreateData = {
 };
 
 export type OrdersMarketCreateResponses = {
-    201: CreateMarketOrder;
+    201: Order;
 };
 
 export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
@@ -1241,14 +1229,6 @@ export type PricesListData = {
     path?: never;
     query: {
         /**
-         * A page number within the paginated result set.
-         */
-        page?: number;
-        /**
-         * Number of results to return per page.
-         */
-        page_size?: number;
-        /**
          * List of ticker symbols to fetch prices for (max 50).
          */
         tickers: Array<string>;
@@ -1257,7 +1237,7 @@ export type PricesListData = {
 };
 
 export type PricesListResponses = {
-    200: PaginatedPriceDailySummaryList;
+    200: Array<PriceDailySummary>;
 };
 
 export type PricesListResponse = PricesListResponses[keyof PricesListResponses];
