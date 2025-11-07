@@ -1,7 +1,19 @@
-import { Background, ReactFlow, addEdge, useEdgesState, useNodesState } from '@xyflow/react';
+import {
+  Background,
+  ReactFlow,
+  addEdge,
+  useEdgesState,
+  useNodesState,
+} from '@xyflow/react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
 import { nodeTypes } from '../types/node-types-to-settings';
-import type { ColorMode, Connection, Edge, Node, ReactFlowInstance } from '@xyflow/react';
+import type {
+  ColorMode,
+  Connection,
+  Edge,
+  Node,
+  ReactFlowInstance,
+} from '@xyflow/react';
 
 const NODE_EXTENT: [[number, number], [number, number]] = [
   [-3000, -3000],
@@ -41,24 +53,24 @@ export const FlowCanvas = memo(
 
     if (readOnly) {
       return (
-<ReactFlow
-        colorMode={theme}
-        nodes={nodes}
-        edges={edges}
-        nodeExtent={NODE_EXTENT}
-        translateExtent={TRANSLATE_EXTENT}
-        nodeTypes={nodeTypes}
-        onInit={onInit}
-        zoomOnScroll={false}
-        panOnDrag={false}
-        zoomOnPinch={false}
-        zoomOnDoubleClick={false}
-        panOnScroll={false}
-        elementsSelectable={false}
-        nodesDraggable={false}
-      >
-        <Background />
-      </ReactFlow>
+        <ReactFlow
+          colorMode={theme}
+          nodes={nodes}
+          edges={edges}
+          nodeExtent={NODE_EXTENT}
+          translateExtent={TRANSLATE_EXTENT}
+          nodeTypes={nodeTypes}
+          onInit={onInit}
+          zoomOnScroll={false}
+          panOnDrag={false}
+          zoomOnPinch={false}
+          zoomOnDoubleClick={false}
+          panOnScroll={false}
+          elementsSelectable={false}
+          nodesDraggable={false}
+        >
+          <Background />
+        </ReactFlow>
       );
     }
 
@@ -82,4 +94,3 @@ export const FlowCanvas = memo(
     );
   })
 );
-

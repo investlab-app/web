@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pencil, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/features/shared/components/ui/button';
@@ -21,14 +21,21 @@ export function FlowHeader({
 }: FlowHeaderProps) {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(initialTitle);
   const [tempTitle, setTempTitle] = useState(initialTitle);
 
-  const handleEdit = () => {
+  useEffect(() => {
+    setTitle(initialTitle);
     setTempTitle(initialTitle);
+  }, [initialTitle]);
+
+  const handleEdit = () => {
+    setTempTitle(title);
     setIsEditing(true);
   };
 
   const handleSave = () => {
+    setTitle(tempTitle);
     setIsEditing(false);
     onSave!(tempTitle);
   };
@@ -38,18 +45,15 @@ export function FlowHeader({
     if (canRename) {
       setTempTitle(newValue);
     } else {
+      setTitle(newValue);
       onNameChange?.(newValue);
     }
   };
 
-    const displayValue = canRename 
-    ? (isEditing ? tempTitle : initialTitle) 
-    : initialTitle;
-
   return (
     <div className="flex items-center gap-2">
       <Input
-        value={displayValue}
+        value={canRename ? (isEditing ? tempTitle : title) : title}
         onChange={handleChange}
         disabled={canRename && !isEditing}
         className="flex-1 border-0 text-lg font-semibold focus-visible:ring-0 disabled:opacity-100 disabled:cursor-default dark:bg-transparent"

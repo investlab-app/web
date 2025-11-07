@@ -23,9 +23,7 @@ import {
   SidebarTrigger,
 } from '@/features/shared/components/ui/sidebar';
 import { cn } from '@/features/shared/utils/styles';
-import {
-  graphLangRetrieveOptions,
-} from '@/client/@tanstack/react-query.gen';
+import { graphLangRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
 interface FlowsBoardProps {
   id: string;
@@ -35,9 +33,10 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const { appTheme: theme } = useTheme();
-  const {validateConnection} = useValidators();
-  const {validateBoard} = useValidateBoard();
-  const {deleteMutation, createMutation, updateMutation, patchNameMutation} = useStrategyMutations();
+  const { validateConnection } = useValidators();
+  const { validateBoard } = useValidateBoard();
+  const { deleteMutation, createMutation, updateMutation, patchNameMutation } =
+    useStrategyMutations();
   const { isDragging } = useDnD();
 
   const isNewStrategy = id === 'newstrategy';
@@ -47,16 +46,15 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [editedFlowName, setEditedFlowName] = useState<string>('');
 
-  const {
-    data: flowData,
-  } = useQuery({
+  const { data: flowData } = useQuery({
     ...graphLangRetrieveOptions({
       path: { id },
     }),
     enabled: !isNewStrategy,
   });
 
-  const flowName = editedFlowName || flowData?.name || (isNewStrategy ? 'New Strategy' : '');
+  const flowName =
+    editedFlowName || flowData?.name || (isNewStrategy ? 'New Strategy' : '');
 
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
@@ -73,7 +71,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       toast.error('Flow name cannot be empty');
       return;
     }
-    
+
     if (!isNewStrategy) {
       patchNameMutation.mutate({
         path: { id },
@@ -81,16 +79,18 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           name: newName,
         },
       });
+    } else {
+      toast.error(t('flows.errors.cannot_rename_new_strategy'));
     }
   };
 
   const handleDeleteFlow = () => {
-    if (!isNewStrategy){
+    if (!isNewStrategy) {
       deleteMutation.mutate({
-        path : { id },
+        path: { id },
       });
     } else {
-      toast.error(t('flows.errors.cannot_delete_new_strategy', ));
+      toast.error(t('flows.errors.cannot_delete_new_strategy'));
     }
   };
 
@@ -126,16 +126,15 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   };
 
-
   if (isMobile) {
     return (
       <div className="flex flex-col h-full mx-4">
-          <FlowHeader
-            initialTitle={flowName}
-            onSave={handlePatchName}
-            onDelete={handleDeleteFlow}
-            canRename={true}
-          />
+        <FlowHeader
+          initialTitle={flowName}
+          onSave={handlePatchName}
+          onDelete={handleDeleteFlow}
+          canRename={true}
+        />
         <Alert className="border-warning bg-warning/10 my-4">
           <AlertDescription>
             {t('flows.mobile.edit_restricted', {

@@ -31,17 +31,20 @@ export function restoreBoard(
             },
           };
         } catch (error) {
-          console.error(`Failed to restore settings for node ${node.id}:`, error);
+          console.error(
+            `Failed to restore settings for node ${node.id}:`,
+            error
+          );
           return node;
         }
-      } 
+      }
     }
-    
+
     return node;
   });
-  
+
   const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
-  
+
   rfInstance.setNodes(restoredNodes);
   rfInstance.setEdges(flow.edges || []);
   rfInstance.setViewport({ x, y, zoom });

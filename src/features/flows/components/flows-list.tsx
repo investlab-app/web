@@ -12,26 +12,24 @@ interface FlowsListProps {
 
 export function FlowsList({ strategies, isActive }: FlowsListProps) {
   const { t } = useTranslation();
-   const isMobile = useIsMobile();
-   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-4">
       {strategies.map((strategy) => (
-        <FlowListRow
-          key={strategy.id}
-          id={strategy.id}
-          name={strategy.name}
-        />
+        <FlowListRow key={strategy.id} id={strategy.id} name={strategy.name} />
       ))}
 
       {isActive && !isMobile && (
         <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
           <Button
             variant="ghost"
-            onClick={() => {navigate({to: `/strategies/newstrategy`})}}
+            onClick={() => {
+              navigate({ to: `/strategies/newstrategy` });
+            }}
             className="w-full h-auto p-4 justify-start gap-3"
-            >
+          >
             <div className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 flex items-center justify-center">
               <Plus className="h-4 w-4 sm:h-5 sm:w-5 " />
             </div>
