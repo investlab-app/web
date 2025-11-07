@@ -1,9 +1,8 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { generateUUID } from '../utils/pseudo-crypto';
 import { WSContext } from '../providers/ws-provider';
-import type { WSChannel } from '../providers/ws-provider';
 
-export function useWS(channel: WSChannel, events: Array<string>) {
+export function useWS(events: Array<string>) {
   const wsContext = useContext(WSContext);
 
   if (wsContext === undefined) {

@@ -273,7 +273,6 @@ code {
     @apply bg-background text-foreground;
   }
 
-  /* Custom selection styles using primary color with enhanced styling */
   ::selection {
     background-color: var(--primary);
     color: var(--primary-foreground);

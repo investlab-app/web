@@ -65,13 +65,6 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const [isCandlestick, setIsCandlestick] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<InstrumentPricePoint>();
 
-  const [tooltipsEnabled, setTooltipsEnabled] = useState(false);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setTooltipsEnabled(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
   const query = {
     ticker,
     interval,

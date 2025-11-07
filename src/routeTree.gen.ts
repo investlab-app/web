@@ -17,7 +17,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LegalTermsOfServiceRouteImport } from './routes/_legal/terms-of-service'
 import { Route as LegalPrivacyPolicyRouteImport } from './routes/_legal/privacy-policy'
 import { Route as LegalFaqRouteImport } from './routes/_legal/faq'
-import { Route as AuthedChatRouteImport } from './routes/_authed/chat'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
@@ -66,11 +65,6 @@ const LegalFaqRoute = LegalFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => LegalRouteRoute,
-} as any)
-const AuthedChatRoute = AuthedChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => AuthedRouteRoute,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -139,7 +133,6 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/chat': typeof AuthedChatRoute
   '/faq': typeof LegalFaqRoute
   '/privacy-policy': typeof LegalPrivacyPolicyRoute
   '/terms-of-service': typeof LegalTermsOfServiceRoute
@@ -155,7 +148,6 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/chat': typeof AuthedChatRoute
   '/faq': typeof LegalFaqRoute
   '/privacy-policy': typeof LegalPrivacyPolicyRoute
   '/terms-of-service': typeof LegalTermsOfServiceRoute
@@ -178,7 +170,6 @@ export interface FileRoutesById {
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
-  '/_authed/chat': typeof AuthedChatRoute
   '/_legal/faq': typeof LegalFaqRoute
   '/_legal/privacy-policy': typeof LegalPrivacyPolicyRoute
   '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
@@ -199,7 +190,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
-    | '/chat'
     | '/faq'
     | '/privacy-policy'
     | '/terms-of-service'
@@ -215,7 +205,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
-    | '/chat'
     | '/faq'
     | '/privacy-policy'
     | '/terms-of-service'
@@ -237,7 +226,6 @@ export interface FileRouteTypes {
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
-    | '/_authed/chat'
     | '/_legal/faq'
     | '/_legal/privacy-policy'
     | '/_legal/terms-of-service'
@@ -312,13 +300,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/faq'
       preLoaderRoute: typeof LegalFaqRouteImport
       parentRoute: typeof LegalRouteRoute
-    }
-    '/_authed/chat': {
-      id: '/_authed/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof AuthedChatRouteImport
-      parentRoute: typeof AuthedRouteRoute
     }
     '/_auth/verify-email': {
       id: '/_auth/verify-email'
@@ -465,14 +446,12 @@ interface AuthedRouteRouteChildren {
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
   AuthedStatisticsRouteRoute: typeof AuthedStatisticsRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
-  AuthedChatRoute: typeof AuthedChatRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
   AuthedStatisticsRouteRoute: AuthedStatisticsRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
-  AuthedChatRoute: AuthedChatRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
