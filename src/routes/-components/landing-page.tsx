@@ -71,7 +71,7 @@ export function LandingPage() {
                   {t('hero.title_2')}
                 </span>
               </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
+              <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto text-balance">
                 {t('hero.description')}
               </p>
               <div className="mt-10 flex items-center justify-center gap-4">
