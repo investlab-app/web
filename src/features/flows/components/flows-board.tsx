@@ -54,7 +54,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   });
 
   const flowName =
-    editedFlowName || flowData?.name || (isNewStrategy ? 'New Strategy' : '');
+    editedFlowName || flowData?.name || (isNewStrategy ? t('flows.placeholders.new_strategy') : '');
 
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
@@ -68,7 +68,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
 
   const handlePatchName = (newName: string) => {
     if (!newName.trim()) {
-      toast.error('Flow name cannot be empty');
+      toast.error(t('flows.errors.flow_name_empty'));
       return;
     }
 
@@ -97,12 +97,12 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const createOrUpdateFlow = () => {
     if (!rfInstance) return;
     if (!flowName.trim()) {
-      toast.error('Flow name cannot be empty');
+      toast.error(t('flows.errors.flow_name_empty'));
       return;
     }
 
     if (!validateBoard(rfInstance.getNodes(), rfInstance.getEdges())) {
-      toast.error('Flow is invalid. Please fix the errors before saving.');
+      toast.error(t('flows.errors.flow_invalid'));
       return;
     }
 
@@ -137,10 +137,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         />
         <Alert className="border-warning bg-warning/10 my-4">
           <AlertDescription>
-            {t('flows.mobile.edit_restricted', {
-              defaultValue:
-                'You are in mobile view. You can delete or rename your strategy, but to edit it, you need a larger device.',
-            })}
+            {t('flows.errors.edit_restricted')}
           </AlertDescription>
         </Alert>
         <div className="flex-1">
