@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useChartAnimation } from './use-chart-animation';
+import { useExpandingCirclesChartAnimation } from './use-expanding-circles-chart-animation';
 import type { RefObject } from 'react';
 import type ReactECharts from 'echarts-for-react';
 import { useCssVar } from '@/features/shared/utils/styles';
@@ -26,9 +26,8 @@ export function useLiveChartUpdate({
   chartRef,
   value,
   date,
-  chartType = 'line',
+  chartType,
 }: UseLiveChartUpdateProps) {
-  // Get primary color once at the component level
   const primaryColor = useCssVar('--color-primary-hex');
 
   useEffect(() => {
@@ -37,7 +36,6 @@ export function useLiveChartUpdate({
     const chartInstance = chartRef.current.getEchartsInstance();
     const currentOption = chartInstance.getOption();
 
-    // Be conservative: ECharts types on getOption can be loose across versions
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!currentOption) return;
 
@@ -85,77 +83,10 @@ export function useLiveChartUpdate({
           : undefined
       : undefined;
 
-  useChartAnimation({
+  useExpandingCirclesChartAnimation({
     chartRef,
     xValue: xValue || '',
     yValue: yValue || 0,
     trigger: chartType === 'line' && value !== undefined && date !== undefined,
   });
-
-  // Ensure center dot is always visible even when no live update is happening (only for line charts)
-  useEffect(() => {
-    if (!chartRef.current || chartType !== 'line') return;
-    // If we have live update values, animation effect handles the dot
-    if (value === undefined || !date) {
-      // If we have live update values, animation effect handles the dot
-    } else {
-      const chartInstance = chartRef.current.getEchartsInstance();
-      const currentOption = chartInstance.getOption();
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!currentOption?.series || !currentOption.xAxis) {
-        return;
-      }
-
-      const seriesData =
-        (currentOption.series as Array<EChartSeries>)[0]?.data ?? [];
-      const xAxisData =
-        (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
-
-      const lastIndex = Math.min(seriesData.length, xAxisData.length) - 1;
-      if (lastIndex < 0) {
-        return;
-      }
-
-      const lastY =
-        typeof seriesData[lastIndex] === 'number'
-          ? seriesData[lastIndex]
-          : Array.isArray(seriesData[lastIndex])
-            ? (seriesData[lastIndex] as Array<number>)[1] ||
-              (seriesData[lastIndex] as Array<number>)[0]
-            : undefined;
-
-      const lastX = xAxisData[lastIndex];
-      if (lastY === undefined || !lastX) {
-        return;
-      }
-
-      // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
-      chartInstance.setOption({
-        series: [
-          {
-            markPoint: {
-              symbol: 'circle',
-              symbolKeepAspect: true,
-              symbolOffset: [0, 0],
-              label: { show: false },
-              data: [
-                {
-                  xAxis: lastX,
-                  yAxis: lastY,
-                  itemStyle: {
-                    color: primaryColor,
-                    borderWidth: 0,
-                  },
-                  symbol: 'circle',
-                  symbolSize: [6, 6],
-                  symbolOffset: [0, 0],
-                },
-              ],
-              emphasis: { disabled: true },
-            },
-          },
-        ],
-      });
-    }
-  }, [chartRef, value, date, primaryColor, chartType]);
 }

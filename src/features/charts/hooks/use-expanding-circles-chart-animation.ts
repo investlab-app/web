@@ -12,7 +12,7 @@ interface UseChartAnimationProps {
 
 /* A React hook that provides animated expanding circles for ECharts
    line charts to highlight the latest data point with visual feedback. */
-export function useChartAnimation({
+export function useExpandingCirclesChartAnimation({
   chartRef,
   xValue,
   yValue,
