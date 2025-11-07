@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { ArrowRight, ChevronRight, Trash2 } from 'lucide-react';
 import { useStrategyMutations } from '../hooks/strategy-mutations';
 import { cn } from '@/features/shared/utils/styles';
@@ -20,6 +20,7 @@ export function FlowListRow({
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
  const {deleteMutation} = useStrategyMutations();
+ const navigate = useNavigate();
 
    const handleDeleteFlow = () => {
     deleteMutation.mutate({ path: { id } });
@@ -34,8 +35,7 @@ export function FlowListRow({
             size="icon"
             aria-label={isCollapsed ? t('common.expand') : t('common.collapse')}
             aria-expanded={!isCollapsed}
-            onClick={(event) => {
-              event.stopPropagation();
+            onClick={() => {
               setIsCollapsed(!isCollapsed);
             }}
             className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 border border-transparent hover:border-muted-foreground/20"
@@ -58,20 +58,18 @@ export function FlowListRow({
             <Button
               variant="ghost"
               size="icon"
+              onClick={()=>navigate({to: `/strategies/${id}`})}
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
               asChild
             >
-              <Link to={`/strategies/${id}`}>
                 <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              </Link>
             </Button>
 
             <Button
               variant="ghost"
               size="icon"
               aria-label={t('common.delete')}
-              onClick={(event) => {
-                event.stopPropagation();
+              onClick={() => {
                 handleDeleteFlow();
               }}
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
@@ -85,8 +83,7 @@ export function FlowListRow({
           <div className="p-4 border-b border-muted-foreground/10">
             <p className="text-sm text-muted-foreground">
               {t(
-                'flows.strategy_details_placeholder',
-                'Strategy details will appear here'
+                'flows.strategy_details_placeholder'
               )}
             </p>
           </div>

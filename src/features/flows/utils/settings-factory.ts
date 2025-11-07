@@ -8,15 +8,8 @@ import { PriceChangesNodeSettings } from '../nodes/trigger/price-changes-node-se
 import { CustomNodeTypes } from '../types/node-types';
 import type { NodeSettings } from '../nodes/node-settings';
 
-/**
- * Factory function type that creates a settings instance from plain JSON data
- */
 type SettingsFactory = (data: Record<string, unknown>) => NodeSettings;
 
-/**
- * Map of node types to their settings class constructors
- * This allows us to reconstruct class instances from plain JSON objects
- */
 const settingsClassMap: Partial<Record<CustomNodeTypes, SettingsFactory>> = {
   // Action nodes
   [CustomNodeTypes.BuySellAmount]: (data) =>
@@ -37,18 +30,6 @@ const settingsClassMap: Partial<Record<CustomNodeTypes, SettingsFactory>> = {
     Object.assign(new InstrumentBoughtSoldNodeSettings(), data),
 };
 
-/**
- * Restores a plain settings object to its proper class instance
- * 
- * @param nodeType - The type of node (e.g., 'checkEvery', 'buySellAmount')
- * @param settingsData - Plain object containing settings data from JSON
- * @returns A properly instantiated settings class with all methods restored
- * 
- * @example
- * const plainSettings = { unit: 'day', interval: 1 };
- * const restored = restoreNodeSettings('checkEvery', plainSettings);
- * // restored is now a CheckEveryNodeSettings instance with isValid() method
- */
 export function restoreNodeSettings(
   nodeType: CustomNodeTypes,
   settingsData: Record<string, unknown>
@@ -65,9 +46,6 @@ export function restoreNodeSettings(
   return factory(settingsData);
 }
 
-/**
- * Checks if a node type has a settings factory registered
- */
 export function hasSettingsFactory(nodeType: CustomNodeTypes): boolean {
   return nodeType in settingsClassMap;
 }

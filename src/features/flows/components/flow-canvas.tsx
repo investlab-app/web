@@ -39,8 +39,6 @@ export const FlowCanvas = memo(
       addNode: (node: Node) => setNodes((nds) => nds.concat(node)),
     }));
 
-    console.log('FlowCanvas rendering');
-
     if (readOnly) {
       return (
 <ReactFlow
