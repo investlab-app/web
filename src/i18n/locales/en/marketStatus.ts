@@ -11,8 +11,7 @@ const enMarketStatus = {
     'Market opens at {{openTime}} ({{timeZone}}) in {{hours}}h {{minutes}}m.\nServer time: {{localTime}}',
   opens_tomorrow:
     'Market opens tomorrow at {{openTime}} ({{timeZone}}).\nServer time: {{localTime}}',
-  market_closed_default:
-    'Market closed.\nServer time: {{localTime}}',
+  market_closed_default: 'Market closed.\nServer time: {{localTime}}',
 };
 
 export default enMarketStatus;

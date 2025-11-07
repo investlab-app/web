@@ -11,8 +11,7 @@ const plMarketStatus = {
     'Rynek otwiera się o {{openTime}} ({{timeZone}}) za {{hours}}h {{minutes}}m.\nCzas serwera: {{localTime}}',
   opens_tomorrow:
     'Rynek otwiera się jutro o {{openTime}} ({{timeZone}}).\nCzas serwera: {{localTime}}',
-  market_closed_default:
-    'Rynek zamknięty.\nCzas serwera: {{localTime}}',
+  market_closed_default: 'Rynek zamknięty.\nCzas serwera: {{localTime}}',
 };
 
 export default plMarketStatus;

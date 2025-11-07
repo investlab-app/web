@@ -246,7 +246,6 @@ export function NotificationPanel() {
       })
     : t('common.notifications');
 
-  
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -265,20 +264,23 @@ export function NotificationPanel() {
         align="end"
       >
         <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
-            <h3 className="text-sm font-semibold leading-none">
-              {t('common.notifications')}
-            </h3>
-            {hasNotifications ? (
-              <Badge
-                variant="secondary"
-                className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-              >
-                {t(`notifications.count_${getPluralForm(normalizedNotifications.length, locale)}`, {
+          <h3 className="text-sm font-semibold leading-none">
+            {t('common.notifications')}
+          </h3>
+          {hasNotifications ? (
+            <Badge
+              variant="secondary"
+              className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+            >
+              {t(
+                `notifications.count_${getPluralForm(normalizedNotifications.length, locale)}`,
+                {
                   count: normalizedNotifications.length,
-                })}
-              </Badge>
-            ) : null}
-          </div>
+                }
+              )}
+            </Badge>
+          ) : null}
+        </div>
 
         <Separator />
 

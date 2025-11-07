@@ -20,7 +20,12 @@ const SixDigitOTPInput = () => {
   );
 };
 
-const NumberInput = (props: Omit<React.ComponentProps<typeof NumberInputComponent>, 'value' | 'onBlur' | 'onValueChange'>) => {
+const NumberInput = (
+  props: Omit<
+    React.ComponentProps<typeof NumberInputComponent>,
+    'value' | 'onBlur' | 'onValueChange'
+  >
+) => {
   const field = useFieldContext<number>();
   return (
     <NumberInputComponent

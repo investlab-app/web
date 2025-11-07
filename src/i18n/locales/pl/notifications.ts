@@ -6,10 +6,12 @@ const plNotifications = {
     system: 'System',
   },
   trigger_with_count: 'Powiadomienia ({{count}})',
-  subtitle: 'Bądź na bieżąco z alertami cenowymi, zleceniami i aktywnością konta.',
+  subtitle:
+    'Bądź na bieżąco z alertami cenowymi, zleceniami i aktywnością konta.',
   empty_state: {
     subtitle: 'Wszystko przeczytane — poinformujemy Cię, gdy coś się zmieni.',
-    description: 'Alerty cenowe, zlecenia i aktualizacje portfela pojawią się tutaj natychmiast po ich otrzymaniu.',
+    description:
+      'Alerty cenowe, zlecenia i aktualizacje portfela pojawią się tutaj natychmiast po ich otrzymaniu.',
   },
   count_one: '{{count}} powiadomienie',
   count_few: '{{count}} powiadomienia',
