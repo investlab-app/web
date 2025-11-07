@@ -9,32 +9,36 @@ import { InstrumentHeader } from '@/features/instruments/components/instrument-w
 import {
   instrumentsDetailRetrieveOptions,
   newsListOptions,
+  pricesListOptions,
   statisticsTransactionsHistoryListOptions,
 } from '@/client/@tanstack/react-query.gen';
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: RouteComponent,
-  loader: ({ params: { instrumentId }, context: { queryClient } }) => {
-    try {
-      Promise.all([
-        queryClient.ensureQueryData(
-          instrumentsDetailRetrieveOptions({ query: { ticker: instrumentId } })
-        ),
-        queryClient.ensureQueryData(
-          statisticsTransactionsHistoryListOptions({
-            query: {
-              type: 'open',
-              tickers: [instrumentId],
-            },
-          })
-        ),
-        queryClient.ensureQueryData(
-          newsListOptions({
-            query: { ticker: instrumentId },
-          })
-        ),
-      ]);
-    } catch {}
+  loader: async ({ params: { instrumentId }, context: { queryClient } }) => {
+    await Promise.all([
+      queryClient.ensureQueryData(
+        instrumentsDetailRetrieveOptions({ query: { ticker: instrumentId } })
+      ),
+      queryClient.ensureQueryData(
+        statisticsTransactionsHistoryListOptions({
+          query: {
+            type: 'open',
+            tickers: [instrumentId],
+          },
+        })
+      ),
+      queryClient.ensureQueryData(
+        newsListOptions({
+          query: { ticker: instrumentId },
+        })
+      ),
+      queryClient.ensureQueryData(
+        pricesListOptions({
+          query: { tickers: [instrumentId] },
+        })
+      ),
+    ]);
     return {
       crumb: instrumentId,
     };
