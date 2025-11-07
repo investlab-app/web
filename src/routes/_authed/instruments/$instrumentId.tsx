@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { StockChartContainer } from '@/features/charts/components/stock-chart-container';
 import { OrdersSection } from '@/features/instrument-details/components/orders-section';
 import { TransactionsHistorySection } from '@/features/instrument-details/components/transactions-history-section';
+import { InstrumentDetailPending } from '@/features/instrument-details/components/instrument-detail-pending';
 
 import AppFrame from '@/features/shared/components/app-frame';
 import { NewsSection } from '@/features/instruments/components/news-section';
@@ -15,6 +16,7 @@ import {
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: RouteComponent,
+  pendingComponent: InstrumentDetailPending,
   loader: async ({ params: { instrumentId }, context: { queryClient } }) => {
     await Promise.all([
       queryClient.ensureQueryData(

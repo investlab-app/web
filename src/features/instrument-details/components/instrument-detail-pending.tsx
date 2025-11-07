@@ -1,10 +1,10 @@
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import {
   Card,
+  CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-  CardAction,
 } from '@/features/shared/components/ui/card';
 import AppFrame from '@/features/shared/components/app-frame';
 
