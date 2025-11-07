@@ -2,12 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Star } from 'lucide-react';
+import { useSetWatchedTicker } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import { PriceAlertButton } from '@/features/instrument-details/components/price-alert-button';
 import { Badge } from '@/features/shared/components/ui/badge';
+import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
-import { instrumentsDetailRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { instrumentsDetailRetrieveOptions, investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
   ticker: string;
@@ -31,6 +34,13 @@ export function InstrumentHeader({
 
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
+  const { mutate: setWatchedTicker } = useSetWatchedTicker();
+
+  const { data: watchedTickers = [] } = useQuery(
+    investorsMeWatchedTickersListOptions()
+  );
+
+  const isWatched = watchedTickers.some(ticker => ticker.ticker === instrumentId);
 
   if (isPending) {
     return <InstrumentHeaderSkeleton />;
@@ -62,7 +72,27 @@ export function InstrumentHeader({
             <h1 className="text-2xl font-bold ">
               {instrumentInfo.name || instrumentId}
             </h1>
-            <PriceAlertButton ticker={instrumentId} />
+            <div className="flex gap-2 items-center">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setWatchedTicker({
+                    instrument_id: instrumentInfo.id,
+                    is_watched: !isWatched,
+                  });
+                }}
+                className={isWatched ? 'bg-accent' : ''}
+              >
+                <Star
+                  className={`size-4 ${
+                    isWatched ? 'fill-current' : ''
+                  }`}
+                />
+                {isWatched ? t('common.watched') : t('common.watch')}
+              </Button>
+              <PriceAlertButton ticker={instrumentId} />
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex flex-row flex-wrap gap-2 items-center">
@@ -161,7 +191,10 @@ function InstrumentHeaderSkeleton() {
         <div className="flex flex-col gap-3 flex-1">
           <div className="flex gap-2 flex-col items-start sm:gap-4 sm:flex-row">
             <Skeleton className="h-8 w-40" />
-            <Skeleton className="h-10 w-32" />
+            <div className="flex gap-2 items-center">
+              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-8 w-32" />
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex flex-row flex-wrap gap-2">

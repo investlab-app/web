@@ -13,6 +13,7 @@ const enCommon = {
   statistics: 'Statistics',
   flows: 'Strategies',
   wallet: 'Wallet',
+  watch: 'Watch',
   watched: 'Watched',
   no_watched_instruments: 'No watched instruments',
   market_open: 'Market Open',
