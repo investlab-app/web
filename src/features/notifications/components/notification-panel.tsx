@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Loader2 } from 'lucide-react';
+import {
+  Bell,
+  Clock,
+  Receipt,
+  ShieldCheck,
+  ShoppingCart,
+  TrendingUp,
+} from 'lucide-react';
 
 import { useQuery } from '@tanstack/react-query';
+import type { LucideIcon } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
@@ -11,85 +19,190 @@ import {
 import { Button } from '@/features/shared/components/ui/button';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { ScrollArea } from '@/features/shared/components/ui/scroll-area';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Separator } from '@/features/shared/components/ui/separator';
 import { cn } from '@/features/shared/utils/styles';
 import { investorsMeNotificationsListOptions } from '@/client/@tanstack/react-query.gen';
 
-const NOTIFICATION_TYPE_COLORS: Record<string, string> = {
-  price_alert: 'bg-blue-50 dark:bg-blue-950',
-  order: 'bg-green-50 dark:bg-green-950',
-  transaction: 'bg-purple-50 dark:bg-purple-950',
-  system: 'bg-gray-50 dark:bg-gray-950',
+type NotificationBadgeVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'outline';
+
+type NotificationTypeMeta = {
+  labelKey: string;
+  fallbackLabel: string;
+  badgeVariant: NotificationBadgeVariant;
+  icon: LucideIcon;
+  iconClassName: string;
 };
 
-const NOTIFICATION_TYPE_BADGE_VARIANTS: Record<
-  string,
-  'default' | 'secondary' | 'destructive' | 'outline'
-> = {
-  price_alert: 'default',
-  order: 'default',
-  transaction: 'default',
-  system: 'secondary',
+const NOTIFICATION_TYPE_META: Record<string, NotificationTypeMeta> = {
+  price_alert: {
+    labelKey: 'notifications.types.price_alert',
+    fallbackLabel: 'Price alert',
+    badgeVariant: 'outline',
+    icon: TrendingUp,
+    iconClassName:
+      'border-sky-500/30 bg-sky-500/10 text-sky-600 dark:border-sky-500/30 dark:bg-sky-500/20 dark:text-sky-400',
+  },
+  order: {
+    labelKey: 'notifications.types.order',
+    fallbackLabel: 'Order update',
+    badgeVariant: 'outline',
+    icon: ShoppingCart,
+    iconClassName:
+      'border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-400',
+  },
+  transaction: {
+    labelKey: 'notifications.types.transaction',
+    fallbackLabel: 'Transaction',
+    badgeVariant: 'outline',
+    icon: Receipt,
+    iconClassName:
+      'border-violet-500/30 bg-violet-500/10 text-violet-600 dark:border-violet-500/30 dark:bg-violet-500/20 dark:text-violet-400',
+  },
+  system: {
+    labelKey: 'notifications.types.system',
+    fallbackLabel: 'System',
+    badgeVariant: 'secondary',
+    icon: ShieldCheck,
+    iconClassName:
+      'border-muted-foreground/30 bg-muted text-muted-foreground dark:border-muted-foreground/40 dark:bg-muted/60',
+  },
 };
+
+const RELATIVE_TIME_DIVISIONS: Array<{
+  amount: number;
+  unit: Intl.RelativeTimeFormatUnit;
+}> = [
+  { amount: 60, unit: 'second' },
+  { amount: 60, unit: 'minute' },
+  { amount: 24, unit: 'hour' },
+  { amount: 7, unit: 'day' },
+  { amount: 4.34524, unit: 'week' },
+  { amount: 12, unit: 'month' },
+  { amount: Infinity, unit: 'year' },
+];
+
+const formatterCache = new Map<string, Intl.RelativeTimeFormat>();
+
+function getPluralForm(count: number, locale: string): string {
+  if (count === 1) return 'one';
+
+  // Polish plural forms
+  const isPolish = locale.startsWith('pl');
+  if (isPolish) {
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
+
+    if (lastTwoDigits >= 12 && lastTwoDigits <= 14) return 'many';
+    if (lastDigit >= 2 && lastDigit <= 4) return 'few';
+    return 'many';
+  }
+
+  // English and other languages
+  return 'other';
+}
+
+function getRelativeTimeFormatter(
+  locale: string
+): Intl.RelativeTimeFormat | null {
+  if (
+    typeof Intl === 'undefined' ||
+    typeof Intl.RelativeTimeFormat === 'undefined'
+  ) {
+    return null;
+  }
+
+  if (!formatterCache.has(locale)) {
+    formatterCache.set(
+      locale,
+      new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })
+    );
+  }
+
+  return formatterCache.get(locale) ?? null;
+}
+
+function formatRelativeTime(dateString: string, locale: string) {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  const diffInSeconds = (date.getTime() - Date.now()) / 1000;
+  const formatter = getRelativeTimeFormatter(locale);
+
+  if (!formatter) {
+    return date.toLocaleString(locale);
+  }
+
+  let duration = diffInSeconds;
+
+  for (const division of RELATIVE_TIME_DIVISIONS) {
+    if (Math.abs(duration) < division.amount || division.amount === Infinity) {
+      return formatter.format(Math.round(duration), division.unit);
+    }
+    duration /= division.amount;
+  }
+
+  return formatter.format(Math.round(duration), 'year');
+}
 
 interface NotificationItemProps {
-  type: string;
-  localizedMessage: string;
-  sent_at: string;
+  title: string;
+  message: string;
+  sentAt: string;
+  locale: string;
+  meta: NotificationTypeMeta;
 }
 
 function NotificationItem({
-  type,
-  localizedMessage,
-  sent_at,
+  title,
+  message,
+  sentAt,
+  locale,
+  meta,
 }: NotificationItemProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return 'just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-
-    return date.toLocaleDateString();
-  };
-
-  const notificationType = type || 'system';
+  const Icon = meta.icon;
 
   return (
-    <div
-      className={cn(
-        'w-full text-left p-3 rounded-md border transition-colors',
-        NOTIFICATION_TYPE_COLORS[notificationType],
-        'opacity-100 hover:opacity-90'
-      )}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-semibold text-sm truncate">
-              {notificationType.charAt(0).toUpperCase() +
-                notificationType.slice(1)}
-            </h4>
-            <Badge
-              variant={NOTIFICATION_TYPE_BADGE_VARIANTS[notificationType]}
-              className="flex-shrink-0 text-xs"
-            >
-              {notificationType}
-            </Badge>
-          </div>
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
-            {localizedMessage}
-          </p>
-          <p className="text-xs text-muted-foreground">{formatDate(sent_at)}</p>
+    <article className="group relative flex w-full items-start gap-3 rounded-lg border border-border/60 bg-muted/40 p-3 transition hover:bg-muted/60">
+      <span
+        aria-hidden
+        className={cn(
+          'flex h-10 w-10 flex-none items-center justify-center rounded-md border text-base transition-colors',
+          meta.iconClassName
+        )}
+      >
+        <Icon className="h-5 w-5" />
+      </span>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <h4 className="text-sm font-semibold leading-tight text-foreground">
+            {title}
+          </h4>
+          <Badge
+            variant={meta.badgeVariant}
+            className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+          >
+            {meta.fallbackLabel}
+          </Badge>
+        </div>
+
+        <p className="mt-1 text-sm text-muted-foreground line-clamp-3">
+          {message}
+        </p>
+
+        <div className="mt-2 flex items-center gap-1 text-xs font-medium text-muted-foreground">
+          <Clock className="h-3.5 w-3.5" aria-hidden />
+          <time dateTime={sentAt}>{formatRelativeTime(sentAt, locale)}</time>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -97,59 +210,115 @@ export function NotificationPanel() {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
 
-  const {
-    data: notifications = [],
-    isPending,
-  } = useQuery(investorsMeNotificationsListOptions());
+  const { data: notifications = [], isPending } = useQuery(
+    investorsMeNotificationsListOptions()
+  );
 
+  const locale = i18n.language || 'en';
+
+  const normalizedNotifications = useMemo(
+    () =>
+      notifications.map((notification) => {
+        const typeKey = notification.type || 'system';
+        const meta =
+          NOTIFICATION_TYPE_META[typeKey] ?? NOTIFICATION_TYPE_META.system;
+        const fallbackMessage =
+          notification.message_en || notification.message_pl || '';
+
+        return {
+          id: notification.id,
+          title: t(meta.labelKey, meta.fallbackLabel),
+          message:
+            locale.startsWith('pl') && notification.message_pl
+              ? notification.message_pl
+              : notification.message_en || fallbackMessage,
+          sentAt: notification.sent_at,
+          meta,
+        };
+      }),
+    [notifications, locale, t]
+  );
+
+  const hasNotifications = normalizedNotifications.length > 0;
+  const triggerLabel = hasNotifications
+    ? t('notifications.trigger_with_count', {
+        count: normalizedNotifications.length,
+      })
+    : t('common.notifications');
+
+  
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          className="relative h-7 w-7"
-          aria-label={t('common.notifications', 'Notifications')}
+          className="relative h-9 w-9"
+          aria-label={triggerLabel}
         >
           <Bell className="h-5 w-5" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[420px] p-0" align="end">
-        {/* Header */}
-        <div className="border-b p-4 flex items-center justify-between">
-          <h3 className="font-semibold text-base">
-            {t('common.notifications', 'Notifications')}
-          </h3>
-        </div>
+      <PopoverContent
+        className="w-[420px] overflow-hidden rounded-xl border border-border/60 p-0 shadow-xl"
+        align="end"
+      >
+        <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
+            <h3 className="text-sm font-semibold leading-none">
+              {t('common.notifications')}
+            </h3>
+            {hasNotifications ? (
+              <Badge
+                variant="secondary"
+                className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+              >
+                {t(`notifications.count_${getPluralForm(normalizedNotifications.length, locale)}`, {
+                  count: normalizedNotifications.length,
+                })}
+              </Badge>
+            ) : null}
+          </div>
 
         <Separator />
 
-        {/* Notifications List */}
         <ScrollArea className="h-[400px]">
           {isPending ? (
-            <div className="flex items-center justify-center h-full py-8">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <div className="space-y-4 p-4">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <Skeleton className="h-10 w-10 rounded-md" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-3 w-2/3" />
+                    <Skeleton className="h-3 w-4/5" />
+                  </div>
+                </div>
+              ))}
             </div>
-          ) : notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full gap-2 p-6">
-              <Bell className="h-8 w-8 text-muted-foreground opacity-50" />
-              <p className="text-sm text-muted-foreground text-center">
-                {t('common.no_notifications', 'No notifications yet')}
-              </p>
+          ) : !hasNotifications ? (
+            <div className="flex flex-col items-center justify-center gap-4 px-6 py-12 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-dashed border-border/60 bg-muted/40">
+                <Bell className="h-6 w-6 text-muted-foreground" aria-hidden />
+              </span>
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-foreground">
+                  {t('common.no_notifications')}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {t('notifications.empty_state.description')}
+                </p>
+              </div>
             </div>
           ) : (
-            <div className="space-y-2 p-4">
-              {notifications.map((notification) => (
+            <div className="space-y-3 p-4">
+              {normalizedNotifications.map((notification) => (
                 <NotificationItem
                   key={notification.id}
-                  type={notification.type}
-                  localizedMessage={
-                    i18n.language === 'pl'
-                      ? notification.message_pl
-                      : notification.message_en
-                  }
-                  sent_at={notification.sent_at}
+                  title={notification.title}
+                  message={notification.message}
+                  sentAt={notification.sentAt}
+                  locale={locale}
+                  meta={notification.meta}
                 />
               ))}
             </div>

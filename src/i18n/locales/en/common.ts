@@ -83,6 +83,8 @@ const enCommon = {
     toggle_theme: 'Toggle theme',
   },
   chat: 'Czat',
+  notifications: 'Notifications',
+  no_notifications: 'No notifications yet',
 };
 
 export default enCommon;

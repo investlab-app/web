@@ -29,11 +29,12 @@ function usePositionsCardHelpers(history: Array<HistoryEntry>) {
 
     for (let i = 0; i < upToIndex; i++) {
       const entry = history[i];
+      const quantity = Number(entry.quantity);
       if (entry.is_buy) {
-        totalCost += entry.share_price * entry.quantity;
-        totalQuantity += entry.quantity;
+        totalCost += entry.share_price * quantity;
+        totalQuantity += quantity;
       } else {
-        totalQuantity -= entry.quantity;
+        totalQuantity -= quantity;
       }
     }
 
@@ -48,11 +49,11 @@ function usePositionsCardHelpers(history: Array<HistoryEntry>) {
   ): number | null => {
     if (entry.is_buy) {
       if (!currentPrice) return null;
-      return (currentPrice - entry.share_price) * entry.quantity;
+      return (currentPrice - entry.share_price) * Number(entry.quantity);
     } else {
       const avgBuyPrice = calculateAverageBuyPrice(entryIndex);
       if (avgBuyPrice === null) return null;
-      return (entry.share_price - avgBuyPrice) * entry.quantity;
+      return (entry.share_price - avgBuyPrice) * Number(entry.quantity);
     }
   };
 
@@ -65,12 +66,12 @@ function usePositionsCardHelpers(history: Array<HistoryEntry>) {
 
     let totalAcquisitionCost = 0;
     if (entry.is_buy) {
-      totalAcquisitionCost = entry.share_price * entry.quantity;
+      totalAcquisitionCost = entry.share_price * Number(entry.quantity);
     } else {
       if (entryIndex === undefined) return null;
       const avgBuyPrice = calculateAverageBuyPrice(entryIndex);
       if (avgBuyPrice === null) return null;
-      totalAcquisitionCost = avgBuyPrice * entry.quantity;
+      totalAcquisitionCost = avgBuyPrice * Number(entry.quantity);
     }
 
     if (totalAcquisitionCost === 0) return null;

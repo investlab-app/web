@@ -102,12 +102,12 @@ export function PositionSummary({
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <SummaryMetric
             label={t('common.quantity')}
-            value={toFixedLocalized(position.quantity, i18n.language, 2)}
+            value={toFixedLocalized(Number(position.quantity), i18n.language, 2)}
             containerClassName="min-w-0 border-b border-r md:border-b-0 pl-4"
           />
           <SummaryMetric
             label={t('common.market_value')}
-            value={`${toFixedLocalized(position.market_value, i18n.language, 2)}`}
+            value={`${toFixedLocalized(Number(position.market_value), i18n.language, 2)}`}
             containerClassName="min-w-0 border-b md:border-b-0 md:border-r"
           />
           <SummaryMetric

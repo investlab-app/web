@@ -82,6 +82,8 @@ const plCommon = {
     system: 'Systemowy',
     toggle_theme: 'Przełącz motyw',
   },
+  notifications: 'Powiadomienia',
+  no_notifications: 'Brak powiadomień',
 };
 
 export default plCommon;

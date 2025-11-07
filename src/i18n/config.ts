@@ -32,6 +32,8 @@ import enTable from './locales/en/table';
 import plTable from './locales/pl/table';
 import enMarketStatus from './locales/en/marketStatus';
 import plMarketStatus from './locales/pl/marketStatus';
+import enNotifications from './locales/en/notifications';
+import plNotifications from './locales/pl/notifications';
 
 i18n
   .use(LanguageDetector)
@@ -70,6 +72,7 @@ i18n
           },
           table: enTable,
           marketStatus: enMarketStatus,
+          notifications: enNotifications,
         },
       },
       pl: {
@@ -91,6 +94,7 @@ i18n
           },
           table: plTable,
           marketStatus: plMarketStatus,
+          notifications: plNotifications,
         },
       },
     },
