@@ -172,14 +172,12 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div>
-                    <ToggleGroupItem
-                      value="candle"
-                      aria-label="Candlestick chart"
-                    >
-                      <CandlestickChartIcon strokeWidth={1.5} />
-                    </ToggleGroupItem>
-                  </div>
+                  <ToggleGroupItem
+                    value="candle"
+                    aria-label="Candlestick chart"
+                  >
+                    <CandlestickChartIcon strokeWidth={1.5} />
+                  </ToggleGroupItem>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
