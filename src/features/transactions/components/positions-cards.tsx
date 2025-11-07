@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
+import { cn } from '@/features/shared/utils/styles';
 
 interface PositionsCardsProps {
   history: Array<HistoryEntry>;
@@ -127,16 +128,17 @@ function BuyCard({
 
   return (
     <Card
-      className={[
+      className={cn(
         'flex-shrink-0 snap-start transition-colors h-full rounded-none',
         'w-[16rem] sm:w-72 md:w-80',
         'hover:bg-accent/40',
-      ].join(' ')}
+        'py-4'
+      )}
     >
       <CardHeader className="px-3">
         <div className="flex items-start justify-between">
           <div>
-            <Badge variant="default" className="mb-1 text-xs">
+            <Badge variant="default" className="mb-2 text-xs">
               {t('transactions.badge.buy')}
             </Badge>
             <CardTitle className="text-xs text-muted-foreground">
@@ -231,21 +233,22 @@ function SellCard({
   t: (key: string) => string;
 }) {
   const avgBuyPrice = helpers.calculateAverageBuyPrice(entryIndex);
-  const gain = helpers.calculateNumericalGain(entry, entryIndex);
-  const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
+  // const gain = helpers.calculateNumericalGain(entry, entryIndex);
+  // const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
   return (
     <Card
-      className={[
+      className={cn(
         'flex-shrink-0 snap-start transition-colors h-full rounded-none',
         'w-[16rem] sm:w-72 md:w-80',
         'hover:bg-accent/40',
-      ].join(' ')}
+        'py-4 h-56'
+      )}
     >
       <CardHeader className="px-3">
         <div className="flex items-start justify-between">
           <div>
-            <Badge variant="secondary" className="mb-1 text-xs">
+            <Badge variant="secondary" className="mb-2 text-xs">
               {t('transactions.badge.sell')}
             </Badge>
             <CardTitle className="text-xs text-muted-foreground">
@@ -254,8 +257,8 @@ function SellCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-3 space-y-2 flex flex-col h-full">
-        <div className="space-y-1 flex-1">
+      <CardContent className="px-3 space-y-2 flex flex-col">
+        <div className="space-y-2 flex-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
               {t('transactions.table.headers.quantity')}
@@ -281,50 +284,46 @@ function SellCard({
                 : '—'}
             </span>
           </div>
-          <div className="border-t pt-1 mt-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground flex items-center gap-1">
-                {t('transactions.cards.realized_gain_loss')}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="size-2.5 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t('transactions.tooltips.gain_loss')}</p>
-                  </TooltipContent>
-                </Tooltip>
+          {/* <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground flex items-center gap-1">
+              {t('transactions.cards.realized_gain_loss')}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="size-2.5 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t('transactions.tooltips.gain_loss')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </span>
+            {gain !== null ? (
+              <span className={`font-medium ${helpers.getGainColor(gain)}`}>
+                {helpers.formatCurrency(gain, language)}
               </span>
-              {gain !== null ? (
-                <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                  {helpers.formatCurrency(gain, language)}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">—</span>
-              )}
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground flex items-center gap-1">
-                {t('transactions.cards.realized_pct')}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="size-2.5 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t('transactions.tooltips.gain_loss_pct')}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </span>
-              {gainPct !== null ? (
-                <span
-                  className={`font-medium ${helpers.getGainColor(gainPct)}`}
-                >
-                  {helpers.formatPercentage(gainPct)}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">—</span>
-              )}
-            </div>
+            ) : (
+              <span className="text-muted-foreground">—</span>
+            )}
           </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground flex items-center gap-1">
+              {t('transactions.cards.realized_pct')}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="size-2.5 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t('transactions.tooltips.gain_loss_pct')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </span>
+            {gainPct !== null ? (
+              <span className={`font-medium ${helpers.getGainColor(gainPct)}`}>
+                {helpers.formatPercentage(gainPct)}
+              </span>
+            ) : (
+              <span className="text-muted-foreground">—</span>
+            )}
+          </div> */}
         </div>
       </CardContent>
     </Card>
