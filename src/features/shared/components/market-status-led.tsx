@@ -7,68 +7,82 @@ import {
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
 
-export function MarketStatusLED() {
+function PendingLED({ t }: { t: (key: string, fallback: string) => string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse" />
+      <span className="text-xs text-muted-foreground">
+        {t('common.loading', 'Loading')}
+      </span>
+    </div>
+  );
+}
+
+function MarketLED({
+  isMarketOpen,
+  status,
+}: {
+  isMarketOpen: boolean;
+  status: string;
+}) {
+  return (
+    <div className="flex items-center gap-2 cursor-help">
+      <div
+        className={`w-2 h-2 rounded-full transition-all ${
+          isMarketOpen ? 'bg-green-500 animate-pulse' : 'bg-red-500'
+        }`}
+        aria-label={isMarketOpen ? 'Market open' : 'Market closed'}
+      />
+      <span className="text-xs text-muted-foreground hidden sm:inline">
+        {status}
+      </span>
+    </div>
+  );
+}
+
+function useMarketStatus() {
   const { t } = useTranslation();
-  const { data: marketStatus, isLoading } = useQuery(
+  const { data: marketStatus, isPending } = useQuery(
     marketsStatusRetrieveOptions()
   );
 
-  // Determine if market is open based on market property
-  // Market is open if it's "open" and not after hours or early hours
-  const isMarketOpen =
+  // Market is considered open only during regular trading hours (not pre/after market)
+  const isMarketOpen = Boolean(
     marketStatus?.market === 'open' &&
-    !marketStatus.after_hours &&
-    !marketStatus.early_hours;
+      !marketStatus.after_hours &&
+      !marketStatus.early_hours
+  );
 
-  // Get user's local timezone info
-  const getLocalTimeInfo = (utcDate: Date) => {
-    const localDate = new Date(utcDate);
-    const hours = localDate.getHours();
-    const minutes = localDate.getMinutes();
-    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
-    // Get timezone abbreviation
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    return { hours, minutes, timeStr, timeZone };
-  };
-
-  // Convert ET hours to local time
-  const convertETToLocal = (etHour: number, etMinute: number = 0) => {
-    const now = new Date();
-
-    // Get current ET time using formatter
-    const etFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/New_York',
+  // Helper: Format date to user's local time string and timezone
+  const getLocalTimeInfo = (date: Date) => {
+    const timeStr = date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
     });
-
-    const etParts = etFormatter.formatToParts(now);
-    const currentETHour = parseInt(
-      etParts.find((p) => p.type === 'hour')?.value || '0',
-      10
-    );
-    const currentETMinute = parseInt(
-      etParts.find((p) => p.type === 'minute')?.value || '0',
-      10
-    );
-
-    // Calculate difference between target ET time and current ET time
-    const currentETInMinutes = currentETHour * 60 + currentETMinute;
-    const targetETInMinutes = etHour * 60 + etMinute;
-    const diffInMinutes = targetETInMinutes - currentETInMinutes;
-
-    // Apply difference to current local time
-    const localTime = new Date(now.getTime() + diffInMinutes * 60 * 1000);
-    const hours = localTime.getHours();
-    const minutes = localTime.getMinutes();
-
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return { timeStr, timeZone };
   };
 
-  // Determine market status for tooltip
+  // Helper: Convert Eastern Time hours to user's local time
+  // Used to show market open/close times in user's timezone
+  const convertETToLocal = (etHour: number, etMinute: number = 0) => {
+    const etDate = new Date();
+    etDate.setHours(etHour, etMinute, 0, 0);
+
+    const localDate = new Date(
+      etDate.toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+      })
+    );
+
+    return localDate.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  };
+
   const getMarketStatusInfo = () => {
     if (!marketStatus) {
       return {
@@ -77,146 +91,129 @@ export function MarketStatusLED() {
       };
     }
 
-    const serverTime = marketStatus.server_time
-      ? new Date(marketStatus.server_time)
-      : new Date();
+    const serverTime = new Date(marketStatus.server_time || Date.now());
+    const { timeStr, timeZone } = getLocalTimeInfo(serverTime);
 
-    const {
-      hours: utcHours,
-      timeStr: utcTimeStr,
-      timeZone,
-    } = getLocalTimeInfo(serverTime);
+    // Market hours in Eastern Time (converted to user's local timezone)
+    const marketOpenET = convertETToLocal(9, 30); // 9:30 AM ET
+    const marketCloseET = convertETToLocal(16, 0); // 4:00 PM ET
+    const afterHoursCloseET = convertETToLocal(20, 0); // 8:00 PM ET
+    const isWeekend = serverTime.getDay() === 0 || serverTime.getDay() === 6;
 
-    // Market hours (ET): 9:30 AM - 4:00 PM (13:30 - 20:00 UTC)
-    // After hours: 4:00 PM - 8:00 PM (20:00 - 00:00 UTC)
-    // Pre-market: 4:00 AM - 9:30 AM (09:00 - 13:30 UTC)
-
-    const marketOpenET = convertETToLocal(9, 30);
-    const marketCloseET = convertETToLocal(16, 0);
-    const afterHoursCloseET = convertETToLocal(20, 0);
-
+    // Market is open - check which session (regular, pre-market, after-hours)
     if (marketStatus.market === 'open') {
       if (marketStatus.after_hours) {
-        const details = t('marketStatus.after_hours_info', {
-          closeTime: marketCloseET,
-          afterHoursClose: afterHoursCloseET,
-          localTime: utcTimeStr,
-          timeZone,
-        });
         return {
           status: t('common.after_hours', 'After Hours'),
-          details,
+          details: t('marketStatus.after_hours_info', {
+            closeTime: marketCloseET,
+            afterHoursClose: afterHoursCloseET,
+            localTime: timeStr,
+            timeZone,
+          }),
         };
       }
 
       if (marketStatus.early_hours) {
-        const details = t('marketStatus.pre_market_info', {
-          openTime: marketOpenET,
-          localTime: utcTimeStr,
-          timeZone,
-        });
         return {
           status: t('common.pre_market', 'Pre-Market'),
-          details,
+          details: t('marketStatus.pre_market_info', {
+            openTime: marketOpenET,
+            localTime: timeStr,
+            timeZone,
+          }),
         };
       }
 
-      const details = t('marketStatus.regular_hours_info', {
-        openTime: marketOpenET,
-        closeTime: marketCloseET,
-        localTime: utcTimeStr,
-        timeZone,
-      });
       return {
         status: t('common.market_open', 'Market Open'),
-        details,
+        details: t('marketStatus.regular_hours_info', {
+          openTime: marketOpenET,
+          closeTime: marketCloseET,
+          localTime: timeStr,
+          timeZone,
+        }),
       };
     }
-
-    // Market is closed
-    const dayOfWeek = serverTime.getUTCDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
     if (isWeekend) {
-      const details = t('marketStatus.weekend_closed', {
-        openTime: marketOpenET,
-        localTime: utcTimeStr,
-        timeZone,
-      });
       return {
         status: t('common.market_closed', 'Market Closed'),
-        details,
+        details: t('marketStatus.weekend_closed', {
+          openTime: marketOpenET,
+          localTime: timeStr,
+          timeZone,
+        }),
       };
     }
 
-    // Weekday but market closed
-    if (utcHours < 13) {
-      // Before 1:30 PM UTC (9:30 AM ET)
-      const hoursUntilOpen = 13 - utcHours;
-      const details = t('marketStatus.opens_in', {
-        openTime: marketOpenET,
-        hours: hoursUntilOpen,
-        hourLabel: hoursUntilOpen === 1 ? t('common.hour') : t('common.hours'),
-        localTime: utcTimeStr,
-        timeZone,
-      });
+    // Check if market opens later today (before 1:30 PM UTC = 9:30 AM ET)
+    const hours = serverTime.getHours();
+    if (hours < 13) {
+      const hoursUntilOpen = 13 - hours;
       return {
         status: t('common.market_closed', 'Market Closed'),
-        details,
-      };
-    } else if (utcHours >= 20) {
-      // After 8:00 PM UTC (4:00 PM ET)
-      const details = t('marketStatus.opens_tomorrow', {
-        openTime: marketOpenET,
-        localTime: utcTimeStr,
-        timeZone,
-      });
-      return {
-        status: t('common.market_closed', 'Market Closed'),
-        details,
+        details: t('marketStatus.opens_in', {
+          openTime: marketOpenET,
+          hours: hoursUntilOpen,
+          hourLabel:
+            hoursUntilOpen === 1 ? t('common.hour') : t('common.hours'),
+          localTime: timeStr,
+          timeZone,
+        }),
       };
     }
 
-    const details = t('marketStatus.market_closed_default', {
-      localTime: utcTimeStr,
-      timeZone,
-    });
+    // Market already closed for the day (after 8:00 PM UTC = 4:00 PM ET)
+    if (hours >= 20) {
+      return {
+        status: t('common.market_closed', 'Market Closed'),
+        details: t('marketStatus.opens_tomorrow', {
+          openTime: marketOpenET,
+          localTime: timeStr,
+          timeZone,
+        }),
+      };
+    }
+
+    // Default closed message (fallback case)
     return {
       status: t('common.market_closed', 'Market Closed'),
-      details,
+      details: t('marketStatus.market_closed_default', {
+        localTime: timeStr,
+        timeZone,
+      }),
     };
   };
 
-  const { status, details } = getMarketStatusInfo();
+  // Return hook state and computed values
+  return {
+    isPending,
+    isMarketOpen,
+    marketStatusInfo: getMarketStatusInfo(),
+  };
+}
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse" />
-        <span className="text-xs text-muted-foreground">
-          {t('common.loading', 'Loading')}
-        </span>
-      </div>
-    );
+export function MarketStatusLED() {
+  const { t } = useTranslation();
+  const { isPending, isMarketOpen, marketStatusInfo } = useMarketStatus();
+
+  if (isPending) {
+    return <PendingLED t={t} />;
   }
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <div className="flex items-center gap-2 cursor-help">
-          <div
-            className={`w-2 h-2 rounded-full transition-all ${
-              isMarketOpen ? 'bg-green-500 animate-pulse' : 'bg-red-500'
-            }`}
-            aria-label={isMarketOpen ? 'Market open' : 'Market closed'}
+        <div>
+          <MarketLED
+            isMarketOpen={isMarketOpen}
+            status={marketStatusInfo.status}
           />
-          <span className="text-xs text-muted-foreground hidden sm:inline">
-            {status}
-          </span>
         </div>
       </TooltipTrigger>
       <TooltipContent side="bottom" className="whitespace-pre-line max-w-xs">
-        {details}
+        {marketStatusInfo.details}
       </TooltipContent>
     </Tooltip>
   );
