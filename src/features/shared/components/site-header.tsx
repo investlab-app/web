@@ -2,7 +2,7 @@ import { cn } from '../utils/styles';
 import { LanguageToggle } from './language-toggle';
 import { BreadcrumbNav } from './breadcrumb-nav';
 import { MarketStatusLED } from './market-status-led';
-// import { NotificationPanel } from '@/features/notifications';
+import { NotificationPanel } from '@/features/notifications/components/notification-panel';
 import { Separator } from '@/features/shared/components/ui/separator';
 import {
   SidebarTrigger,
@@ -58,7 +58,7 @@ export function SiteHeader({ className }: SiteHeaderProps) {
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
           />
-          {/* <NotificationPanel /> */}
+          <NotificationPanel />
           <ThemeToggle />
           <LanguageToggle />
         </div>

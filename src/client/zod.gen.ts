@@ -47,7 +47,7 @@ export const zClerkLoginRequest = z.object({
 
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
-    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
     is_buy: z.boolean()
 });
 
@@ -505,7 +505,7 @@ export const zNotificationConfigRequest = z.object({
 export const zNotificationHistory = z.object({
     id: z.uuid().readonly(),
     type: z.string(),
-    message: z.string(),
+    message_en: z.string(),
     message_pl: z.string(),
     sent_at: z.iso.datetime({
         offset: true
@@ -974,7 +974,7 @@ export const zNotificationConfigCreateRequestWritable = z.object({
  */
 export const zNotificationHistoryWritable = z.object({
     type: z.string(),
-    message: z.string(),
+    message_en: z.string(),
     message_pl: z.string(),
     sent_at: z.iso.datetime({
         offset: true

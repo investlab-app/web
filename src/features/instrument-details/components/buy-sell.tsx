@@ -169,7 +169,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
               ? t('instruments.volume')
               : t('instruments.price')}
           </span>
-          <span className="font-medium">
+          <span className="font-medium tabular-nums">
             {mode === 'price'
               ? (price / currentPrice).toFixed(5)
               : `$${(volume * currentPrice).toFixed(2)}`}
@@ -179,7 +179,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
           <span className="text-muted-foreground">
             {t('instruments.current_price')}
           </span>
-          <span className="font-medium">
+          <span className="font-medium tabular-nums">
             ${Number(currentPrice).toFixed(2)}
           </span>
         </div>

@@ -400,7 +400,7 @@ export type NotificationHistory = {
     /**
      * Notification message in English
      */
-    message: string;
+    message_en: string;
     /**
      * Notification message in Polish
      */
@@ -826,7 +826,7 @@ export type NotificationHistoryWritable = {
     /**
      * Notification message in English
      */
-    message: string;
+    message_en: string;
     /**
      * Notification message in Polish
      */

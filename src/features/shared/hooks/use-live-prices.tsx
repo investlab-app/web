@@ -34,7 +34,6 @@ export function useLivePrices(...tickers: Array<string>) {
     const out = livePrice.safeParse(lastJsonMessage);
 
     if (!out.success) {
-      console.error('Failed to parse live price message:', out.error);
       return;
     }
 
