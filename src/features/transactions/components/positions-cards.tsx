@@ -133,7 +133,7 @@ function BuyCard({
         'hover:bg-accent/40',
       ].join(' ')}
     >
-      <CardHeader className="pb-2 px-3 pt-3">
+      <CardHeader className="px-3">
         <div className="flex items-start justify-between">
           <div>
             <Badge variant="default" className="mb-1 text-xs">
@@ -145,8 +145,8 @@ function BuyCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-3 pb-3 space-y-2 flex flex-col h-full">
-        <div className="space-y-1 flex-1">
+      <CardContent className="px-3 flex flex-col h-full">
+        <div className="space-y-2 flex-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
               {t('transactions.table.headers.quantity')}
@@ -171,49 +171,45 @@ function BuyCard({
                 : '—'}
             </span>
           </div>
-          <div className="border-t pt-1 mt-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground flex items-center gap-1">
-                {t('transactions.table.headers.gain_loss')}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="size-2.5 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t('transactions.tooltips.gain_loss')}</p>
-                  </TooltipContent>
-                </Tooltip>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground flex items-center gap-1">
+              {t('transactions.table.headers.gain_loss')}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="size-2.5 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t('transactions.tooltips.gain_loss')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </span>
+            {gain !== null ? (
+              <span className={`font-medium ${helpers.getGainColor(gain)}`}>
+                {helpers.formatCurrency(gain, language)}
               </span>
-              {gain !== null ? (
-                <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                  {helpers.formatCurrency(gain, language)}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">—</span>
-              )}
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground flex items-center gap-1">
-                {t('transactions.table.headers.gain_loss_pct')}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="size-2.5 cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t('transactions.tooltips.gain_loss_pct')}</p>
-                  </TooltipContent>
-                </Tooltip>
+            ) : (
+              <span className="text-muted-foreground">—</span>
+            )}
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground flex items-center gap-1">
+              {t('transactions.table.headers.gain_loss_pct')}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="size-2.5 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t('transactions.tooltips.gain_loss_pct')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </span>
+            {gainPct !== null ? (
+              <span className={`font-medium ${helpers.getGainColor(gainPct)}`}>
+                {helpers.formatPercentage(gainPct)}
               </span>
-              {gainPct !== null ? (
-                <span
-                  className={`font-medium ${helpers.getGainColor(gainPct)}`}
-                >
-                  {helpers.formatPercentage(gainPct)}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">—</span>
-              )}
-            </div>
+            ) : (
+              <span className="text-muted-foreground">—</span>
+            )}
           </div>
         </div>
       </CardContent>
@@ -246,7 +242,7 @@ function SellCard({
         'hover:bg-accent/40',
       ].join(' ')}
     >
-      <CardHeader className="pb-2 px-3 pt-3">
+      <CardHeader className="px-3">
         <div className="flex items-start justify-between">
           <div>
             <Badge variant="secondary" className="mb-1 text-xs">
@@ -258,7 +254,7 @@ function SellCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-3 pb-3 space-y-2 flex flex-col h-full">
+      <CardContent className="px-3 space-y-2 flex flex-col h-full">
         <div className="space-y-1 flex-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
