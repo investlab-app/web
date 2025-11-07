@@ -32,7 +32,6 @@ export function StockChartCandlestick({
       liveUpdatePoint.high,
     ],
     date: liveUpdatePoint?.date,
-    chartType: 'candlestick',
   });
 
   return (
