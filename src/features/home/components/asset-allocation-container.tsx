@@ -22,7 +22,7 @@ export const AssetAllocationContainer = () => {
 
   if (!isSuccess) {
     if (isPending) {
-      return <AssetAllocationSkeleton />;
+      return <AssetAllocationContainerSkeleton />;
     }
     return (
       <Card>
@@ -45,7 +45,8 @@ export const AssetAllocationContainer = () => {
   );
 };
 
-export const AssetAllocationSkeleton = () => {
+
+export const AssetAllocationContainerSkeleton = () => {
   return (
     <Card>
       <CardHeader>

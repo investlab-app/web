@@ -1,8 +1,8 @@
 import { StatTile } from '@/features/shared/components/stat-tile';
-import { AssetAllocationSkeleton } from '@/features/home/components/asset-allocation-skeleton';
 import { AccountValueChartContainerSkeleton } from '@/features/home/components/account-value-chart-container';
-import { AssetTableSkeleton } from '@/features/home/components/asset-table-skeleton';
 import AppFrame from '@/features/shared/components/app-frame';
+import { AssetTableContainerSkeleton } from '@/features/home/components/asset-table-container';
+import { AssetAllocationContainerSkeleton } from '@/features/home/components/asset-allocation-container';
 
 export const DashboardPending = () => {
   return (
@@ -14,10 +14,10 @@ export const DashboardPending = () => {
           ))}
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <AssetAllocationSkeleton />
+          <AssetAllocationContainerSkeleton />
           <AccountValueChartContainerSkeleton />
         </div>
-        <AssetTableSkeleton />
+        <AssetTableContainerSkeleton />
       </div>
     </AppFrame>
   );
