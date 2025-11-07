@@ -62,31 +62,10 @@ export function useLiveChartUpdate({
     });
   }, [value, date, chartRef, primaryColor, chartType]);
 
-  // Animation hook for line charts
-  const xValue = chartRef.current
-    ? (() => {
-        const chartInstance = chartRef.current.getEchartsInstance();
-        const currentOption = chartInstance.getOption();
-
-        const xAxisData =
-          (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
-        return xAxisData[xAxisData.length - 1];
-      })()
-    : undefined;
-
-  const yValue =
-    value !== undefined
-      ? typeof value === 'number'
-        ? value
-        : Array.isArray(value)
-          ? value[1] || value[0]
-          : undefined
-      : undefined;
-
   useExpandingCirclesChartAnimation({
     chartRef,
-    xValue: xValue || '',
-    yValue: yValue || 0,
+    xValue: date || '',
+    yValue: typeof value === 'number' ? value : (value?.[1] ?? 0),
     trigger: chartType === 'line' && value !== undefined && date !== undefined,
   });
 }
