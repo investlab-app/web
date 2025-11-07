@@ -10,7 +10,10 @@ import { Badge } from '@/features/shared/components/ui/badge';
 import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
-import { instrumentsDetailRetrieveOptions, investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
+import {
+  instrumentsDetailRetrieveOptions,
+  investorsMeWatchedTickersListOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 interface InstrumentWithDescriptionHeaderProps {
   ticker: string;
@@ -40,7 +43,9 @@ export function InstrumentHeader({
     investorsMeWatchedTickersListOptions()
   );
 
-  const isWatched = watchedTickers.some(ticker => ticker.ticker === instrumentId);
+  const isWatched = watchedTickers.some(
+    (ticker) => ticker.ticker === instrumentId
+  );
 
   if (isPending) {
     return <InstrumentHeaderSkeleton />;
@@ -84,11 +89,7 @@ export function InstrumentHeader({
                 }}
                 className={isWatched ? 'bg-accent' : ''}
               >
-                <Star
-                  className={`size-4 ${
-                    isWatched ? 'fill-current' : ''
-                  }`}
-                />
+                <Star className={`size-4 ${isWatched ? 'fill-current' : ''}`} />
                 {isWatched ? t('common.watched') : t('common.watch')}
               </Button>
               <PriceAlertButton ticker={instrumentId} />
@@ -148,7 +149,11 @@ export function InstrumentHeader({
       {instrumentInfo.description && (
         <div className="flex flex-col gap-2">
           <div className="relative">
-            {isExpanded ? (
+            {instrumentInfo.description.length < 350 ? (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {instrumentInfo.description}
+              </p>
+            ) : isExpanded ? (
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {instrumentInfo.description}
                 <button
