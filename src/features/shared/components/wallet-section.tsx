@@ -27,14 +27,15 @@ export function WalletSection() {
     <>
       <SidebarMenuItem className="flex items-center gap-1">
         <SidebarMenuButton
+          className="active:bg-transparent hover:bg-transparent cursor-default"
+          asChild
           tooltip={
             isSuccess
               ? `${t('common.wallet')}: ${toFixedLocalized(parseFloat(accountValue.balance), i18n.language, 2)}`
               : t('common.wallet')
           }
-          asChild
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 h-12 ml-1">
             <Wallet />
             {isPending && <Skeleton className="h-6 w-24" />}
             {isError && <Skeleton className="h-6 w-24" />}
@@ -44,16 +45,16 @@ export function WalletSection() {
                 i18n.language,
                 2
               )}
-            <Button
-              size="icon"
-              className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear"
-              aria-label={t('common.add')}
-              onClick={() => setDepositDialogOpen(true)}
-            >
-              <Plus />
-            </Button>
           </div>
         </SidebarMenuButton>
+        <Button
+          size="icon"
+          className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear"
+          aria-label={t('common.add')}
+          onClick={() => setDepositDialogOpen(true)}
+        >
+          <Plus />
+        </Button>
       </SidebarMenuItem>
 
       <DepositDialog
