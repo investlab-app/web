@@ -1387,7 +1387,12 @@ export type PricesPriceAlertUpdateResponse = PricesPriceAlertUpdateResponses[key
 export type StatisticsAssetAllocationRetrieveData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * Number of top instruments without `Other` position
+         */
+        instruments_number?: number;
+    };
     url: '/api/statistics/asset-allocation/';
 };
 

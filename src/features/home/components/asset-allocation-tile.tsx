@@ -78,7 +78,8 @@ export const AssetAllocationTile = ({
                         />
                       </TooltipTrigger>
                       <TooltipContent>
-                        {instrument_ticker} - {instrument_name}:{' '}
+                        {instrument_ticker}
+                        {instrument_name && ` - ${instrument_name}`}:{' '}
                         {formatPercentage(value)}%
                       </TooltipContent>
                     </Tooltip>
@@ -107,9 +108,11 @@ export const AssetAllocationTile = ({
                       <div className="space-y-1">
                         <div className="font-medium">
                           {instrument_ticker}
-                          <span className="text-muted-foreground font-normal">
-                            {`  (${instrument_name})`}
-                          </span>
+                          {instrument_name && (
+                            <span className="text-muted-foreground font-normal">
+                              {`  (${instrument_name})`}
+                            </span>
+                          )}
                         </div>
                         <div className="text-muted-foreground text-sm">
                           {formatPercentage(value)}

@@ -15,6 +15,7 @@ const enInvestor = {
   no_asset_allocation_data: 'No asset allocation data available',
   no_account_value_data: 'No account value data available',
   no_owned_shares: 'No owned shares data available',
+  other_assets: 'Other assets',
 };
 
 export default enInvestor;

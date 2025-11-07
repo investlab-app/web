@@ -1322,7 +1322,9 @@ export const zPricesPriceAlertUpdateResponse = zPriceAlert;
 export const zStatisticsAssetAllocationRetrieveData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
-    query: z.optional(z.never())
+    query: z.optional(z.object({
+        instruments_number: z.optional(z.int().gte(3).lte(30)).default(5)
+    }))
 });
 
 export const zStatisticsAssetAllocationRetrieveResponse = zAssetAllocation;

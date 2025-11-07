@@ -15,6 +15,7 @@ const plInvestor = {
   no_asset_allocation_data: 'Brak danych o rozkładzie aktywów',
   no_account_value_data: 'Brak danych o wartości konta',
   no_owned_shares: 'Brak posiadanych udziałów',
+  other_assets: 'Inne aktywa',
 };
 
 export default plInvestor;

@@ -15,7 +15,11 @@ export const AssetAllocationContainer = () => {
   const { t } = useTranslation();
 
   const { data, isPending, isSuccess } = useQuery(
-    statisticsAssetAllocationRetrieveOptions()
+    statisticsAssetAllocationRetrieveOptions({
+      query: {
+        instruments_number: 4,
+      },
+    })
   );
 
   if (!isSuccess) {
@@ -34,11 +38,22 @@ export const AssetAllocationContainer = () => {
     );
   }
 
+  const allocations = data.allocations.map((allocation) => {
+    if (allocation.instrument_name === 'Other') {
+      return {
+        ...allocation,
+        instrument_name: '',
+        instrument_ticker: t('investor.other_assets'),
+      };
+    }
+    return allocation;
+  });
+
   return (
     <AssetAllocationTile
       totalValue={data.total_value}
       yearlyGain={data.total_gain_this_year}
-      assets={data.allocations}
+      assets={allocations}
     />
   );
 };
