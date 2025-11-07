@@ -28,16 +28,10 @@ const RenderSkeletonRows = (skeletonRowCount = 5) => {
         <Skeleton className="h-4 w-32" />
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-16" />
+        <Skeleton className="h-4 w-16 ml-auto" />
       </TableCell>
       <TableCell className="text-right h-10">
         <Skeleton className="h-4 w-20 ml-auto" />
-      </TableCell>
-      <TableCell className="text-right h-10">
-        <Skeleton className="h-4 w-16 ml-auto" />
-      </TableCell>
-      <TableCell className="text-right h-10">
-        <Skeleton className="h-4 w-16 ml-auto" />
       </TableCell>
       <TableCell className="text-right h-10">
         <Skeleton className="h-4 w-16 ml-auto" />
@@ -85,12 +79,6 @@ const MostTradedOverview = () => {
                   </TableHead>
                   <TableHead className="text-right">
                     {t('statistics.avg_gain')}
-                  </TableHead>
-                  <TableHead className="text-right">
-                    {t('statistics.avg_loss')}
-                  </TableHead>
-                  <TableHead className="text-right">
-                    {t('statistics.total_return')}
                   </TableHead>
                 </TableRow>
               </TableHeader>

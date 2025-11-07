@@ -54,7 +54,7 @@ export function PositionSummaryWithTableSkeleton() {
   return (
     <section className="relative overflow-hidden rounded-xl border bg-card shadow-sm">
       <PositionSummarySkeleton className="rounded-t-xl" />
-      <div className="relative bg-background rounded-b-xl px-2 sm:px-3 md:px-4 py-2">
+      <div className="relative bg-background rounded-b-xl">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-y-2 left-0 w-8 bg-gradient-to-r from-background to-transparent rounded-bl-xl"

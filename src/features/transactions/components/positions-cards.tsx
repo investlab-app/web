@@ -389,14 +389,11 @@ export function PositionsCards({
 export function PositionsCardsSkeleton({ className }: { className?: string }) {
   return (
     <ScrollableHorizontally>
-      <div className={`flex gap-4 ${className || ''}`}>
+      <div className={`flex ${className || ''}`}>
         {Array.from({ length: 3 }).map((_, index) => (
-          <div
-            key={index}
-            className={`flex-shrink-0 snap-start ${index === 0 ? 'pl-1' : ''}`}
-          >
+          <div key={index} className={'flex-shrink-0 snap-start'}>
             <Card className="w-[16rem] sm:w-72 md:w-80 h-full rounded-none animate-pulse">
-              <CardHeader className="pb-2 px-3 pt-3">
+              <CardHeader className="px-3">
                 <div className="h-3 bg-muted rounded w-16 mb-1" />
                 <div className="h-2.5 bg-muted rounded w-20" />
               </CardHeader>
