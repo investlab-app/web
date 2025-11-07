@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import AssetTable from './asset-table';
-import { AssetTableSkeleton } from './asset-table-skeleton';
 import type { OwnedShare } from '@/client';
 import {
   Card,
@@ -12,6 +11,7 @@ import {
 import { ErrorMessage } from '@/features/shared/components/error-message';
 import { statisticsOwnedSharesListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 export const AssetTableContainer = () => {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export const AssetTableContainer = () => {
   } = useQuery(statisticsOwnedSharesListOptions());
 
   if (isPending) {
-    return <AssetTableSkeleton />;
+    return <AssetTableContainerSkeleton />;
   }
 
   return (
@@ -48,6 +48,24 @@ export const AssetTableContainer = () => {
             className="border border-muted"
           />
         )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export const AssetTableContainerSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="h-6 w-28 bg-muted rounded-md animate-pulse" />
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
       </CardContent>
     </Card>
   );

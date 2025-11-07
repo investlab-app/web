@@ -12,6 +12,13 @@ export const toFixedLocalized = (
   });
 };
 
+// Decode HTML entities (&nbsp;) to regular spaces so text can wrap naturally
+export const decodeHtmlEntities = (text: string) => {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value.replace(/\s+/g, ' ');
+};
+
 /**
  * Format large numbers with language-specific suffixes (K, M, B, T)
  * Uses toLocaleString for proper number formatting based on locale

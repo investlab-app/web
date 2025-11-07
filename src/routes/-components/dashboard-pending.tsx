@@ -1,6 +1,6 @@
 import { StatTile } from '@/features/shared/components/stat-tile';
 import { AssetAllocationSkeleton } from '@/features/home/components/asset-allocation-skeleton';
-import { AccountValueChartSkeleton } from '@/features/home/components/account-value-chart-skeleton';
+import { AccountValueChartContainerSkeleton } from '@/features/home/components/account-value-chart-container';
 import { AssetTableSkeleton } from '@/features/home/components/asset-table-skeleton';
 import AppFrame from '@/features/shared/components/app-frame';
 
@@ -15,7 +15,7 @@ export const DashboardPending = () => {
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <AssetAllocationSkeleton />
-          <AccountValueChartSkeleton />
+          <AccountValueChartContainerSkeleton />
         </div>
         <AssetTableSkeleton />
       </div>

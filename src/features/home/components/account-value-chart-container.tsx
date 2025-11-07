@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage } from '../../shared/components/error-message';
-import { AccountValueChartSkeleton } from './account-value-chart-skeleton';
 import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
   Card,
@@ -17,7 +17,7 @@ import { EmptyMessage } from '@/features/shared/components/empty-message';
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { data, isPending, isSuccess } = useQuery(
+  const { data, isPending, isError } = useQuery(
     investorsMeAccountValueListOptions()
   );
 
@@ -32,10 +32,11 @@ export const AccountValueChartContainer = () => {
 
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 
-  if (!isSuccess) {
-    if (isPending) {
-      return <AccountValueChartSkeleton />;
-    }
+  if (isPending) {
+    return <AccountValueChartContainerSkeleton />;
+  }
+
+  if (isError) {
     return (
       <Card>
         <CardHeader>
@@ -77,6 +78,20 @@ export const AccountValueChartContainer = () => {
             selectedInterval="WEEK"
           />
         )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export const AccountValueChartContainerSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="h-6 w-40 bg-muted rounded-md animate-pulse" />
+        <div className="h-10 w-32 bg-muted rounded-md animate-pulse mt-2" />
+      </CardHeader>
+      <CardContent className="h-96">
+        <Skeleton className="w-full h-full" />
       </CardContent>
     </Card>
   );

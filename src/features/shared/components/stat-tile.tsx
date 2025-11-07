@@ -8,13 +8,17 @@ import {
 } from '@/features/shared/components/ui/card';
 import { cn } from '@/features/shared/utils/styles';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import {
+  decodeHtmlEntities,
+  toFixedLocalized,
+} from '@/features/shared/utils/numbers';
 
 enum TileColoring {
   POSITIVE = 'positive',
   NEGATIVE = 'negative',
   NEUTRAL = 'neutral',
 }
+
 interface StatTileProps {
   title: string;
   value: string;
@@ -35,7 +39,7 @@ export const StatTile = ({
   return (
     <Card
       className={cn(
-        'min-w-[200px] @container/card border border-[color:var(--color-border)] shadow-lg transition-shadow duration-200 hover:shadow-xl',
+        '@container/card border border-[color:var(--color-border)] shadow-lg transition-shadow duration-200 hover:shadow-xl',
         coloring === TileColoring.NEUTRAL
           ? 'bg-[color:var(--color-card)] text-[color:var(--color-card-foreground)] border-[color:var(--border)]'
           : coloring === TileColoring.POSITIVE
@@ -44,14 +48,12 @@ export const StatTile = ({
       )}
     >
       <CardHeader>
-        <CardDescription
-          className={cn('text-sm font-medium text-foreground/70')}
-        >
+        <CardDescription className="text-sm font-medium text-foreground/70">
           {title}
         </CardDescription>
 
-        <CardTitle className={cn('text-2xl font-semibold tabular-nums')}>
-          {value}
+        <CardTitle className="text-2xl font-semibold" title={value}>
+          {decodeHtmlEntities(value)}
         </CardTitle>
 
         {percentage !== undefined && (
