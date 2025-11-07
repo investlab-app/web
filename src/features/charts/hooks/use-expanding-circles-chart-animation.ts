@@ -28,6 +28,9 @@ export function useExpandingCirclesChartAnimation({
 
     const chartInstance = chartRef.current.getEchartsInstance();
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!chartInstance) return;
+
     // Animation config
     const expandDurationMs = 800;
     const startTs = Date.now();
