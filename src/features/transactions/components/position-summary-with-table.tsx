@@ -9,8 +9,8 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
   const contentId = useId();
 
   const currentPrice =
-    position.quantity > 0
-      ? position.market_value / position.quantity
+    Number(position.quantity) > 0
+      ? position.market_value / Number(position.quantity)
       : undefined;
 
   return (

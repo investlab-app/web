@@ -8,6 +8,8 @@ const enOrders = {
   switch_to_price: 'Switch to price',
   switch_to_volume: 'Switch to volume',
   current_price_error: 'Sorry, the current price could not be loaded.',
+  order_success: 'Order placed successfully!',
+  order_failed: 'Failed to place order: {{message}}',
 };
 
 export default enOrders;

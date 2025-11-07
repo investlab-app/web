@@ -31,6 +31,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
   const [volume, setVolume] = useState(
     currentPrice && price ? price / currentPrice : undefined
   );
+  const volumePrecision = 5;
 
   useEffect(() => {
     if (currentPrice === undefined) return;
@@ -66,7 +67,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
   const { mutate: createOrder, isPending } = useMutation({
     ...ordersMarketCreateMutation(),
     onSuccess: () => {
-      toast.success('Order placed successfully!');
+      toast.success(t('orders.order_success'));
       queryClient.invalidateQueries({
         queryKey: statisticsTransactionsHistoryListOptions({
           query: {
@@ -79,8 +80,42 @@ export const BuySell = ({ ticker }: BuySellProps) => {
         queryKey: investorsMeRetrieveOptions().queryKey,
       });
     },
-    onError: (error) => {
-      toast.error(`Failed to place order: ${error.message}`);
+    onError: (error, mutation) => {
+      let errorMessage = t('common.something_went_wrong');
+
+      // Handle array response like ["Cannot create market order due to blocked funds"]
+      if (Array.isArray(error)) {
+        console.log("its an array");
+        errorMessage = error.join(', ');
+      } else if (error instanceof Error) {
+        console.log("its an error");
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        console.log("its a string");
+        errorMessage = error;
+      } else if (error && typeof error === 'object') {
+        console.log("its an object");
+        const errorObj = error as { detail?: unknown; message?: unknown };
+        if (typeof errorObj.message === 'string') {
+          errorMessage = errorObj.message;
+        } else if (typeof errorObj.detail === 'string') {
+          errorMessage = errorObj.detail;
+        } else if (Array.isArray(errorObj.detail)) {
+          errorMessage = errorObj.detail
+            .map((item: unknown) =>
+              typeof item === 'string' ? item :
+              typeof item === 'object' && item && 'msg' in item ? (item as { msg: string }).msg :
+              String(item)
+            )
+            .join(', ');
+        }
+      }
+
+      toast.error(t('orders.order_failed', { message: errorMessage }));
+    },
+    onSettled: () => {
+      // This ensures the mutation is properly completed after both success and error
+      console.log('Mutation settled');
     },
   });
 
@@ -89,7 +124,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
     createOrder({
       body: {
         ticker,
-        volume: volume.toFixed(2),
+        volume: volume.toFixed(volumePrecision),
         is_buy: type === 'buy',
       },
     });
@@ -133,7 +168,7 @@ export const BuySell = ({ ticker }: BuySellProps) => {
             onValueChange={handleVolumeChange}
             fixedDecimalScale
             stepper={0.25}
-            decimalScale={5}
+            decimalScale={volumePrecision}
             className="w-full"
             placeholder="0.00000"
           />

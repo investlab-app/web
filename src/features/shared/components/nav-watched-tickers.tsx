@@ -13,6 +13,7 @@ import {
 } from '@/features/shared/components/ui/sidebar';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
+import { InstrumentIconCircle } from '@/features/instruments/components/instrument-image-circle';
 
 export function NavWatchedTickers() {
   const { t } = useTranslation();
@@ -75,13 +76,12 @@ export function NavWatchedTickers() {
                       params={{ instrumentId: ticker.ticker }}
                       className="text-sm"
                     >
-                      {ticker.icon && (
-                        <img
-                          src={ticker.icon}
-                          alt={ticker.ticker}
-                          className="h-4 w-4 rounded-full"
-                        />
-                      )}
+                      <InstrumentIconCircle
+                        symbol={ticker.ticker}
+                        icon={ticker.icon ?? null}
+                        name={ticker.name}
+                        className="h-5 w-5 rounded-full"
+                      />
                       <span>{ticker.ticker}</span>
                     </Link>
                   </SidebarMenuButton>

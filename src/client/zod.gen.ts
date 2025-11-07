@@ -47,7 +47,7 @@ export const zClerkLoginRequest = z.object({
 
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
     is_buy: z.boolean()
 });
 
@@ -73,7 +73,7 @@ export const zHistoryEntry = z.object({
         offset: true
     }),
     is_buy: z.boolean(),
-    quantity: z.int(),
+    quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
     share_price: z.number(),
     acquisition_price: z.union([
         z.number(),
@@ -421,8 +421,8 @@ export const zMarketIndices = z.object({
 
 export const zMarketOrder = z.object({
     detail_type: z.string().readonly(),
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
-    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/)),
     is_buy: z.boolean()
 });
 
@@ -634,7 +634,7 @@ export const zPosition = z.object({
         z.url(),
         z.null()
     ]),
-    quantity: z.int(),
+    quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
     market_value: z.number(),
     gain: z.number(),
     gain_percentage: z.union([
@@ -950,8 +950,8 @@ export const zInvestorWritable = z.object({
 });
 
 export const zMarketOrderWritable = z.object({
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
-    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/)),
     is_buy: z.boolean()
 });
 

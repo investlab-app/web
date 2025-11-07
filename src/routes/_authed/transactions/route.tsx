@@ -4,7 +4,6 @@ import { statisticsTransactionsHistoryListOptions } from '@/client/@tanstack/rea
 
 export const Route = createFileRoute('/_authed/transactions')({
   loader: async ({ context: { i18n, queryClient } }) => {
-    // Pre-fetch data for both open and closed positions
     await Promise.all([
       queryClient.ensureQueryData(
         statisticsTransactionsHistoryListOptions({ query: { type: 'open' } })

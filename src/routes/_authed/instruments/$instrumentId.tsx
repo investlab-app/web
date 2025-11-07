@@ -6,10 +6,35 @@ import { TransactionsHistorySection } from '@/features/instrument-details/compon
 import AppFrame from '@/features/shared/components/app-frame';
 import { NewsSection } from '@/features/instruments/components/news-section';
 import { InstrumentHeader } from '@/features/instruments/components/instrument-with-description-header';
+import {
+  instrumentsDetailRetrieveOptions,
+  newsListOptions,
+  statisticsTransactionsHistoryListOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: RouteComponent,
-  loader: ({ params: { instrumentId } }) => {
+  loader: ({ params: { instrumentId }, context: { queryClient } }) => {
+    try {
+      Promise.all([
+        queryClient.ensureQueryData(
+          instrumentsDetailRetrieveOptions({ query: { ticker: instrumentId } })
+        ),
+        queryClient.ensureQueryData(
+          statisticsTransactionsHistoryListOptions({
+            query: {
+              type: 'open',
+              tickers: [instrumentId],
+            },
+          })
+        ),
+        queryClient.ensureQueryData(
+          newsListOptions({
+            query: { ticker: instrumentId },
+          })
+        ),
+      ]);
+    } catch {}
     return {
       crumb: instrumentId,
     };

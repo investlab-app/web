@@ -9,6 +9,8 @@ const plOrders = {
   switch_to_volume: 'Przełącz na wolumen',
   current_price_error:
     'Przepraszamy, bieżąca cena nie mogła zostać załadowana.',
+  order_success: 'Zlecenie złożone pomyślnie!',
+  order_failed: 'Nie udało się złożyć zlecenia: {{message}}',
 };
 
 export default plOrders;

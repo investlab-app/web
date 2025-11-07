@@ -35,8 +35,11 @@ export function OrdersSection({
         return <BuySell ticker={instrumentId} />;
       case 'limit':
         return <StopLimit ticker={instrumentId} />;
-      default:
+      case 'sl_tp':
         return <StopLossTakeProfit ticker={instrumentId} />;
+      default:
+        console.error(`Unknown order type: ${orderType}`);
+        return null;
     }
   };
 

@@ -88,7 +88,7 @@ export type HistoryEntry = {
     /**
      * Number of shares traded
      */
-    quantity: number;
+    quantity: string;
     /**
      * Price per share at the time of transaction
      */
@@ -496,7 +496,7 @@ export type Position = {
     /**
      * Total quantity of shares
      */
-    quantity: number;
+    quantity: string;
     /**
      * Current market value
      */

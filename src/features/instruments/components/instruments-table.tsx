@@ -9,10 +9,7 @@ import type {
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
 import { cn, cssVar } from '@/features/shared/utils/styles';
-import {
-  formatNumberWithSuffix,
-  toFixedLocalized,
-} from '@/features/shared/utils/numbers';
+import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
@@ -270,7 +267,7 @@ export const InstrumentTable = ({
           {row.original.volume === null ? (
             <div className="text-muted-foreground">N/A</div>
           ) : (
-            formatNumberWithSuffix(row.original.volume, i18n.language, 1)
+            toFixedLocalized(row.original.volume, i18n.language, 1)
           )}
         </div>
       ),

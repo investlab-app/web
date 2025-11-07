@@ -2,12 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  useIsRestoring,
-} from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
@@ -26,7 +21,6 @@ import { RouterLoading } from './features/shared/components/router-loading.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
 import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
 import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
-import { deleteCookie } from './features/shared/utils/cookies.ts';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
@@ -67,6 +61,7 @@ export type RouterContext = {
 };
 
 export const router = createRouter({
+  defaultPreload: 'intent',
   routeTree,
   context: {
     queryClient,
@@ -87,7 +82,6 @@ function App() {
   const clerk = useClerk();
   const isSessionCookie = document.cookie.includes('__session=');
   const isLoggedInBefore = isSessionCookie || auth.isSignedIn;
-  const isRestoring = useIsRestoring();
 
   useEffect(() => {
     // ensure session is fresh when back online
@@ -97,22 +91,11 @@ function App() {
   }, [isOnline, clerk]);
 
   useEffect(() => {
-    console.log(`Auth loaded: ${auth.isLoaded}, Signed in: ${auth.isSignedIn}`);
-    if (auth.isLoaded && !auth.isSignedIn) {
-      console.log(`isSessionCookie: ${isSessionCookie}`);
-      if (isSessionCookie) {
-        auth.signOut();
-      } else {
-        sessionStorage.clear();
-        localStorage.clear();
-        deleteCookie('__session');
-      }
+    // sign out explicitly if signed out but session cookie exists
+    if (auth.isLoaded && !auth.isSignedIn && isSessionCookie) {
+      auth.signOut();
     }
   }, [auth, isSessionCookie]);
-
-  if (isRestoring) {
-    return null;
-  }
 
   return (
     <WSProvider>
@@ -127,10 +110,6 @@ function App() {
     </WSProvider>
   );
 }
-
-const persister = createAsyncStoragePersister({
-  storage: window.localStorage,
-});
 
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
@@ -153,7 +132,9 @@ if (rootElement && !rootElement.innerHTML) {
             <PersistQueryClientProvider
               client={queryClient}
               persistOptions={{
-                persister,
+                persister: createAsyncStoragePersister({
+                  storage: window.localStorage,
+                }),
                 dehydrateOptions: {
                   shouldDehydrateQuery: (query) => query.meta?.persist === true,
                 },
