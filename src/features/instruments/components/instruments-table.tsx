@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ArrowDown, ArrowUp, Info, Star } from 'lucide-react';
-import { useToggleWatchedInstrument } from '../hooks/use-toggle-watched-instrument';
+import { useSetWatchedTicker } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -41,7 +41,7 @@ export const InstrumentTable = ({
   isPending,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
-  const { mutate: toggleWatched } = useToggleWatchedInstrument();
+  const { mutate: setWatchedTicker } = useSetWatchedTicker();
 
   const columns: Array<ColumnDef<Instrument>> = [
     {
@@ -85,14 +85,20 @@ export const InstrumentTable = ({
                   fill={cssVar('--foreground')}
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleWatched(row.original.id);
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: !row.original.is_watched,
+                    });
                   }}
                 />
                 <Star
                   className="hidden group-hover/heart:inline-flex cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleWatched(row.original.id);
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: !row.original.is_watched,
+                    });
                   }}
                 />
               </>
@@ -103,7 +109,10 @@ export const InstrumentTable = ({
                   className="inline-flex group-hover/heart:hidden cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleWatched(row.original.id);
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: true,
+                    });
                   }}
                 />
                 <Star
@@ -111,7 +120,10 @@ export const InstrumentTable = ({
                   fill={cssVar('--foreground')}
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleWatched(row.original.id);
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: true,
+                    });
                   }}
                 />
               </>

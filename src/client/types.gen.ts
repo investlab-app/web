@@ -488,6 +488,13 @@ export type PatchedPriceAlertRequest = {
     notification_config?: NotificationConfigRequest;
 };
 
+export type PatchedWatchedTickersTickerRequest = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched?: boolean;
+};
+
 export type Position = {
     /**
      * Ticker symbol
@@ -631,28 +638,6 @@ export type TickerNews = {
     title?: string | null;
 };
 
-export type ToggleWatchedInstrument = {
-    /**
-     * Whether the instrument is now being watched
-     */
-    is_watched: boolean;
-    /**
-     * ID of the instrument
-     */
-    instrument_id: string;
-};
-
-export type ToggleWatchedInstrumentRequest = {
-    /**
-     * Whether the instrument is now being watched
-     */
-    is_watched: boolean;
-    /**
-     * ID of the instrument
-     */
-    instrument_id: string;
-};
-
 export type TradingOverview = {
     total_trades: number;
     buys: number;
@@ -675,6 +660,13 @@ export type WatchedTicker = {
     name: string;
     icon?: string | null;
     logo?: string | null;
+};
+
+export type WatchedTickersTicker = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched: boolean;
 };
 
 /**
@@ -1112,8 +1104,8 @@ export type InvestorsMeWatchedTickersListResponses = {
 
 export type InvestorsMeWatchedTickersListResponse = InvestorsMeWatchedTickersListResponses[keyof InvestorsMeWatchedTickersListResponses];
 
-export type InvestorsMeWatchedTickersCreateData = {
-    body: ToggleWatchedInstrumentRequest;
+export type InvestorsMeWatchedTickersPartialUpdateData = {
+    body?: PatchedWatchedTickersTickerRequest;
     path: {
         instrument_id: string;
     };
@@ -1121,11 +1113,11 @@ export type InvestorsMeWatchedTickersCreateData = {
     url: '/api/investors/me/watched-tickers/{instrument_id}/';
 };
 
-export type InvestorsMeWatchedTickersCreateResponses = {
-    200: ToggleWatchedInstrument;
+export type InvestorsMeWatchedTickersPartialUpdateResponses = {
+    200: WatchedTickersTicker;
 };
 
-export type InvestorsMeWatchedTickersCreateResponse = InvestorsMeWatchedTickersCreateResponses[keyof InvestorsMeWatchedTickersCreateResponses];
+export type InvestorsMeWatchedTickersPartialUpdateResponse = InvestorsMeWatchedTickersPartialUpdateResponses[keyof InvestorsMeWatchedTickersPartialUpdateResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;

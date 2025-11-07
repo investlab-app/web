@@ -27,6 +27,7 @@ export function StockChartLine({
     chartRef,
     value: liveUpdatePoint?.close,
     date: liveUpdatePoint?.date,
+    chartType: 'line',
   });
 
   return (

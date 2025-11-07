@@ -61,7 +61,6 @@ function Carousel({
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
   const onSelect = React.useCallback((api: CarouselApi) => {
-    // eslint-disable-line no-shadow
     if (!api) return;
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());
@@ -101,7 +100,6 @@ function Carousel({
     api.on('select', onSelect);
 
     return () => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       api?.off('select', onSelect);
     };
   }, [api, onSelect]);

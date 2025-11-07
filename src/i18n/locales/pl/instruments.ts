@@ -28,6 +28,9 @@ const plInstruments = {
       'Przepraszamy, informacje o instrumencie nie mogły zostać załadowane.',
     news_unavailable: 'Wiadomości są obecnie niedostępne dla tego instrumentu.',
   },
+  watch: {
+    toggle_error: 'Nie udało się zmienić statusu obserwowania',
+  },
   price_alert_invalid_threshold: 'Proszę wprowadzić prawidłową wartość progową',
   price_alert: {
     set_alert: 'Ustaw alert',

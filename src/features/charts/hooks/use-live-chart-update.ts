@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useChartAnimation } from './use-chart-animation';
 import type { RefObject } from 'react';
 import type ReactECharts from 'echarts-for-react';
 import { useCssVar } from '@/features/shared/utils/styles';
@@ -15,6 +16,7 @@ interface UseLiveChartUpdateProps {
   chartRef: RefObject<ReactECharts | null>;
   value?: number | [number, number, number, number];
   date?: string;
+  chartType?: 'line' | 'candlestick';
 }
 
 /* A React hook that provides live updates to an ECharts instance 
@@ -24,9 +26,8 @@ export function useLiveChartUpdate({
   chartRef,
   value,
   date,
+  chartType = 'line',
 }: UseLiveChartUpdateProps) {
-  const animationFrameRef = useRef<number | null>(null);
-
   // Get primary color once at the component level
   const primaryColor = useCssVar('--color-primary-hex');
 
@@ -61,148 +62,39 @@ export function useLiveChartUpdate({
       series: [{ data: seriesData }],
       xAxis: { data: xAxisData },
     });
+  }, [value, date, chartRef, primaryColor, chartType]);
 
-    // Cancel any existing animations
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
+  // Animation hook for line charts
+  const xValue = chartRef.current
+    ? (() => {
+        const chartInstance = chartRef.current.getEchartsInstance();
+        const currentOption = chartInstance.getOption();
 
-    // Resolve axis coordinates for anchoring the circles
-    const xValue = xAxisData[xAxisData.length - 1]; // date string on x-axis
-    // In our current usage (line chart), value is a number (close price).
-    // If an array is provided (OHLC), fallback to the second element or first if missing.
-    const yValue =
-      typeof value === 'number'
+        const xAxisData =
+          (currentOption.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
+        return xAxisData[xAxisData.length - 1];
+      })()
+    : undefined;
+
+  const yValue =
+    value !== undefined
+      ? typeof value === 'number'
         ? value
         : Array.isArray(value)
           ? value[1] || value[0]
-          : (undefined as unknown as number);
+          : undefined
+      : undefined;
 
-    // Animation config
-    const expandDurationMs = 800;
-    const startTs = Date.now();
-    const centerDotSize = 6;
+  useChartAnimation({
+    chartRef,
+    xValue: xValue || '',
+    yValue: yValue || 0,
+    trigger: chartType === 'line' && value !== undefined && date !== undefined,
+  });
 
-    // Set initial mark point with center dot visible
-    // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
-    chartInstance.setOption({
-      series: [
-        {
-          markPoint: {
-            symbol: 'circle',
-            symbolKeepAspect: true,
-            symbolOffset: [0, 0],
-            label: { show: false },
-            data: [
-              {
-                xAxis: xValue,
-                yAxis: yValue,
-                itemStyle: {
-                  color: primaryColor,
-                  borderWidth: 0,
-                },
-                symbol: 'circle' as const,
-                symbolSize: [centerDotSize, centerDotSize] as [number, number],
-                symbolOffset: [0, 0] as [number, number],
-              },
-            ],
-            emphasis: { disabled: true },
-          },
-        },
-      ],
-    });
-
-    const animate = () => {
-      const elapsed = Date.now() - startTs;
-      const expandProgress = Math.min(elapsed / expandDurationMs, 1);
-
-      // Three filled circles that expand and fade
-      const discs = [
-        { maxGrow: 30, opacityFactor: 1.2 },
-        { maxGrow: 22, opacityFactor: 0.9 },
-        { maxGrow: 14, opacityFactor: 0.6 },
-      ];
-
-      const discDataItems = discs.map((disc) => {
-        const size = centerDotSize + disc.maxGrow * expandProgress;
-        const opacity = Math.max(0, 1 - expandProgress * disc.opacityFactor);
-
-        // Convert opacity (0-1) to hex alpha
-        const hexAlpha = Math.round(opacity * 255)
-          .toString(16)
-          .padStart(2, '0');
-
-        return {
-          // Use axis-based positioning to avoid "pin" effects and ensure true center anchoring
-          xAxis: xValue,
-          yAxis: yValue,
-          // Filled circle with fading opacity
-          itemStyle: {
-            color: `${primaryColor}${hexAlpha}`, // primary color with dynamic opacity
-            borderWidth: 0,
-          },
-          symbolSize: [size, size] as [number, number],
-          // Ensure circle symbol, not pin
-          symbol: 'circle' as const,
-          // Force anchor at exact center
-          symbolOffset: [0, 0] as [number, number],
-        };
-      });
-
-      const markPointData = [
-        // Solid center dot (always visible)
-        {
-          xAxis: xValue,
-          yAxis: yValue,
-          itemStyle: {
-            color: primaryColor,
-            borderWidth: 0,
-          },
-          symbol: 'circle' as const,
-          symbolSize: [centerDotSize, centerDotSize] as [number, number],
-          // Force anchor at exact center
-          symbolOffset: [0, 0] as [number, number],
-        },
-        // Expanding filled circles (only during expand phase)
-        ...(expandProgress < 1 ? discDataItems : []),
-      ];
-
-      chartInstance.setOption({
-        series: [
-          {
-            markPoint: {
-              symbol: 'circle',
-              symbolKeepAspect: true,
-              // Ensure all mark points are centered (no pin-like offset)
-              symbolOffset: [0, 0],
-              label: { show: false },
-              data: markPointData,
-              // Avoid hover styles shifting visuals
-              emphasis: { disabled: true },
-            },
-          },
-        ],
-      });
-
-      if (expandProgress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    };
-  }, [value, date, chartRef, primaryColor]);
-
-  // Ensure center dot is always visible even when no live update is happening
+  // Ensure center dot is always visible even when no live update is happening (only for line charts)
   useEffect(() => {
-    if (!chartRef.current) return;
+    if (!chartRef.current || chartType !== 'line') return;
     // If we have live update values, animation effect handles the dot
     if (value === undefined || !date) {
       // If we have live update values, animation effect handles the dot
@@ -265,5 +157,5 @@ export function useLiveChartUpdate({
         ],
       });
     }
-  }, [chartRef, value, date, primaryColor]);
+  }, [chartRef, value, date, primaryColor, chartType]);
 }

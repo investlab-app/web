@@ -27,6 +27,9 @@ const enInstruments = {
     info_loading: 'Sorry, the instrument information could not be loaded.',
     news_unavailable: 'News are currently unavailable for this instrument.',
   },
+  watch: {
+    toggle_error: 'Failed to toggle watch status',
+  },
   price_alert_invalid_threshold: 'Please enter a valid threshold value',
   price_alert: {
     set_alert: 'Set Alert',

@@ -641,6 +641,10 @@ export const zPatchedPriceAlertRequest = z.object({
     notification_config: z.optional(zNotificationConfigRequest)
 });
 
+export const zPatchedWatchedTickersTickerRequest = z.object({
+    is_watched: z.optional(z.boolean())
+});
+
 export const zPosition = z.object({
     symbol: z.string().max(10),
     name: z.string().max(255),
@@ -786,16 +790,6 @@ export const zTickerNews = z.object({
     ]))
 });
 
-export const zToggleWatchedInstrument = z.object({
-    is_watched: z.boolean(),
-    instrument_id: z.string()
-});
-
-export const zToggleWatchedInstrumentRequest = z.object({
-    is_watched: z.boolean(),
-    instrument_id: z.string().min(1)
-});
-
 export const zTradingOverview = z.object({
     total_trades: z.int(),
     buys: z.int(),
@@ -821,6 +815,10 @@ export const zWatchedTicker = z.object({
         z.url(),
         z.null()
     ]))
+});
+
+export const zWatchedTickersTicker = z.object({
+    is_watched: z.boolean()
 });
 
 /**
@@ -1139,15 +1137,15 @@ export const zInvestorsMeWatchedTickersListData = z.object({
 
 export const zInvestorsMeWatchedTickersListResponse = z.array(zWatchedTicker);
 
-export const zInvestorsMeWatchedTickersCreateData = z.object({
-    body: zToggleWatchedInstrumentRequest,
+export const zInvestorsMeWatchedTickersPartialUpdateData = z.object({
+    body: z.optional(zPatchedWatchedTickersTickerRequest),
     path: z.object({
         instrument_id: z.string()
     }),
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeWatchedTickersCreateResponse = zToggleWatchedInstrument;
+export const zInvestorsMeWatchedTickersPartialUpdateResponse = zWatchedTickersTicker;
 
 export const zMarketsHolidaysListData = z.object({
     body: z.optional(z.never()),

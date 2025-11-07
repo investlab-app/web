@@ -1,47 +1,58 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import type {
   InstrumentWithPrice,
   PaginatedInstrumentWithPriceList,
 } from '@/client/types.gen';
-import { investorsMeWatchedInstrumentsToggleCreate } from '@/client/sdk.gen';
 import {
   instrumentsWithPricesListInfiniteQueryKey,
   investorsMeWatchedTickersListQueryKey,
 } from '@/client/@tanstack/react-query.gen';
+import { investorsMeWatchedTickersPartialUpdate } from '@/client';
 
-export function useToggleWatchedInstrument() {
+export function useSetWatchedTicker() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (instrumentId: string) => {
-      return investorsMeWatchedInstrumentsToggleCreate({
-        path: {
-          instrument_id: instrumentId,
-        },
-      });
-    },
-    onMutate: async (instrumentId: string) => {
-      // Cancel any outgoing refetches so they don't overwrite optimistic update
+    mutationFn: ({
+      instrument_id,
+      is_watched,
+    }: {
+      instrument_id: string;
+      is_watched: boolean;
+    }) =>
+      investorsMeWatchedTickersPartialUpdate({
+        body: { is_watched },
+        path: { instrument_id },
+      }),
+    onMutate: async ({
+      instrument_id,
+    }: {
+      instrument_id: string;
+      is_watched: boolean;
+    }) => {
+      const instrumentId = instrument_id;
+      // Optimistically update instrumentsWithPricesListInfinite queries
+      // Cancel outgoing refetches
       await queryClient.cancelQueries({
         queryKey: instrumentsWithPricesListInfiniteQueryKey(),
         exact: false,
       });
 
-      // Get all queries matching the base key (regardless of parameters)
+      // Get all queries
       const queryCache = queryClient.getQueryCache();
       const baseKey = instrumentsWithPricesListInfiniteQueryKey();
-      const matchingQueries = queryCache.findAll({
-        queryKey: baseKey,
-      });
+      const matchingQueries = queryCache.findAll({ queryKey: baseKey });
 
-      // Store previous data from all matching queries for rollback
+      // Backup
       const previousDataMap = new Map();
       matchingQueries.forEach((query) => {
         previousDataMap.set(JSON.stringify(query.queryKey), query.state.data);
       });
 
-      // Optimistically update all matching queries
+      // Optimistically update
       matchingQueries.forEach((query) => {
         queryClient.setQueryData(
           query.queryKey,
@@ -72,7 +83,7 @@ export function useToggleWatchedInstrument() {
     },
     onError: (_error, _variables, context) => {
       // Rollback to previous data on error for all affected queries
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the onMutate can fail
       if (context?.previousDataMap && context?.baseKey) {
         const queryCache = queryClient.getQueryCache();
         const matchingQueries = queryCache.findAll({
@@ -88,9 +99,10 @@ export function useToggleWatchedInstrument() {
           }
         });
       }
-      toast.error('Failed to update watchlist');
+      toast.error(t('instruments.watch.toggle_error'));
     },
     onSuccess: () => {
+      // Invalidate watched tickers list to refetch
       queryClient.invalidateQueries({
         queryKey: investorsMeWatchedTickersListQueryKey(),
       });
