@@ -11,8 +11,6 @@ export function useLivePrices(...tickers: Array<string>) {
 
   const queryOptions = pricesListOptions({ query: { tickers } });
 
-  console.log(`queryOptions:`, queryOptions);
-
   const { data } = useQuery({
     ...queryOptions,
     staleTime: Infinity,
