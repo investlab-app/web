@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { FlowListRow } from './flow-list-row';
 import { Button } from '@/features/shared/components/ui/button';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
@@ -13,7 +13,7 @@ interface FlowsListProps {
 export function FlowsList({ strategies, isActive }: FlowsListProps) {
   const { t } = useTranslation();
    const isMobile = useIsMobile();
-
+   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-4">
@@ -27,10 +27,9 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
 
       {isActive && !isMobile && (
         <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
-          <Link to={`/strategies/newstrategy`}>
           <Button
             variant="ghost"
-            onClick={() => console.log('Add new strategy')}
+            onClick={() => {navigate({to: `/strategies/newstrategy`})}}
             className="w-full h-auto p-4 justify-start gap-3"
             >
             <div className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 flex items-center justify-center">
@@ -40,7 +39,6 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
               {t('flows.listview.add_strategy')}
             </span>
           </Button>
-            </Link>
         </div>
       )}
     </div>

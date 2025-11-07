@@ -28,7 +28,6 @@ export const FlowsSidebar = memo(function FlowsSidebar({
   name,
   onNameChange,
 }: FlowsSidebarProps) {
-  console.log('sidebar rendering');
   return (
     <Sidebar
       variant="sidebar"

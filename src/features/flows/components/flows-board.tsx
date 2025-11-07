@@ -56,7 +56,6 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     enabled: !isNewStrategy,
   });
 
-  // Compute flowName directly from data or use edited value
   const flowName = editedFlowName || flowData?.name || (isNewStrategy ? 'New Strategy' : '');
 
   useEffect(() => {
