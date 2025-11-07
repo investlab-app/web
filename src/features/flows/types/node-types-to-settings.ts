@@ -28,7 +28,7 @@ import { StaysTheSameNode } from '../nodes/predicate/stays-the-same-node-setting
 import { ChangeOverTime } from '../nodes/math/change-over-time-node-settings';
 import { OccurredXTimesNode } from '../nodes/logic-operator/occurred-x-times-node-settings';
 
-import type { NodeTypes } from "@xyflow/react";
+import type { NodeTypes } from '@xyflow/react';
 
 export const nodeTypes: NodeTypes = {
   [CustomNodeTypes.Not]: NotNode,

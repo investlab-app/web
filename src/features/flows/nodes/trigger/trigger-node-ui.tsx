@@ -15,13 +15,13 @@ export function TriggerNodeUI({
       preview={preview}
     >
       {children}
-{!preview &&(
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="in"
-      />
+      {!preview && (
+        <ValidatedHandle
+          nodeId={nodeId}
+          type="source"
+          position={Position.Right}
+          id="in"
+        />
       )}
     </NodeUI>
   );

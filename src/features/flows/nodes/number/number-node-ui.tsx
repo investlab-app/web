@@ -11,13 +11,13 @@ export function NumberNodeUI({ nodeId, preview, children }: CustomNodeProps) {
       className={`bg-[var(--node-number)]`}
     >
       {children}
-{!preview &&(
-      <ValidatedHandle
-        type="target"
-        id="out"
-        nodeId={nodeId}
-        position={Position.Left}
-      />
+      {!preview && (
+        <ValidatedHandle
+          type="target"
+          id="out"
+          nodeId={nodeId}
+          position={Position.Left}
+        />
       )}
     </NodeUI>
   );

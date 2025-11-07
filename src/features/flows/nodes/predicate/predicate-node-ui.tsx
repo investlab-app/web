@@ -46,28 +46,28 @@ export function PredicateNodeUI({
           </div>
         )}
       </div>
-{!preview &&(
-  <>
-      <ValidatedHandle
-        type="target"
-        id="out"
-        nodeId={nodeId}
-        position={Position.Left}
-      />
-      <ValidatedHandle
-        type="source"
-        id="inValue"
-        nodeId={nodeId}
-        position={Position.Right}
-        style={{ top: '25%' }}
-      />
-      <ValidatedHandle
-        type="source"
-        id="inX"
-        nodeId={nodeId}
-        position={Position.Right}
-        style={{ top: '75%' }}
-      />
+      {!preview && (
+        <>
+          <ValidatedHandle
+            type="target"
+            id="out"
+            nodeId={nodeId}
+            position={Position.Left}
+          />
+          <ValidatedHandle
+            type="source"
+            id="inValue"
+            nodeId={nodeId}
+            position={Position.Right}
+            style={{ top: '25%' }}
+          />
+          <ValidatedHandle
+            type="source"
+            id="inX"
+            nodeId={nodeId}
+            position={Position.Right}
+            style={{ top: '75%' }}
+          />
         </>
       )}
     </NodeUI>

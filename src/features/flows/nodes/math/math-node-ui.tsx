@@ -43,28 +43,28 @@ export function MathNodeUI({
           />
         )}
       </div>
-{!preview &&(
-  <>
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="inA"
-        style={{ top: '25%' }}
-      />
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="inB"
-        style={{ top: '75%' }}
-      />
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="target"
-        position={Position.Left}
-        id="out"
-      />
+      {!preview && (
+        <>
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="source"
+            position={Position.Right}
+            id="inA"
+            style={{ top: '25%' }}
+          />
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="source"
+            position={Position.Right}
+            id="inB"
+            style={{ top: '75%' }}
+          />
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="target"
+            position={Position.Left}
+            id="out"
+          />
         </>
       )}
     </NodeUI>

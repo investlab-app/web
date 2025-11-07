@@ -95,20 +95,20 @@ export function StaysTheSameNodeUI({
           </div>
         )}
       </div>
-{!preview &&(
-  <>
-      <ValidatedHandle
-        type="target"
-        id="out"
-        nodeId={nodeId}
-        position={Position.Left}
-      />
-      <ValidatedHandle
-        type="source"
-        id="in"
-        nodeId={nodeId}
-        position={Position.Right}
-      />
+      {!preview && (
+        <>
+          <ValidatedHandle
+            type="target"
+            id="out"
+            nodeId={nodeId}
+            position={Position.Left}
+          />
+          <ValidatedHandle
+            type="source"
+            id="in"
+            nodeId={nodeId}
+            position={Position.Right}
+          />
         </>
       )}
     </NodeUI>

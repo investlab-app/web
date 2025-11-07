@@ -121,20 +121,20 @@ export function OccurredXTimesNodeUI({
           className="px-2 py-1 ml-2 border rounded"
         />
       )}
-{!preview &&(
-  <>
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="target"
-        position={Position.Left}
-        id="out"
-      />
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="in"
-      />
+      {!preview && (
+        <>
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="target"
+            position={Position.Left}
+            id="out"
+          />
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="source"
+            position={Position.Right}
+            id="in"
+          />
         </>
       )}
     </NodeUI>

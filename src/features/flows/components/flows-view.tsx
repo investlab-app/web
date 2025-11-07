@@ -19,17 +19,18 @@ enum FlowType {
 
 export function FlowsView() {
   const { t } = useTranslation();
-  
+
   const {
     data: flowsData,
     isPending,
     isError,
   } = useQuery(graphLangListOptions());
 
-  const strategies = flowsData?.results.map((flow) => ({
-    id: flow.id,
-    name: flow.name,
-  })) ?? [];
+  const strategies =
+    flowsData?.results.map((flow) => ({
+      id: flow.id,
+      name: flow.name,
+    })) ?? [];
 
   if (isPending) {
     return (

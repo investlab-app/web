@@ -12,17 +12,13 @@ interface FlowListRowProps {
   className?: string;
 }
 
-export function FlowListRow({
-  id,
-  name,
-  className,
-}: FlowListRowProps) {
+export function FlowListRow({ id, name, className }: FlowListRowProps) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
- const {deleteMutation} = useStrategyMutations();
- const navigate = useNavigate();
+  const { deleteMutation } = useStrategyMutations();
+  const navigate = useNavigate();
 
-   const handleDeleteFlow = () => {
+  const handleDeleteFlow = () => {
     deleteMutation.mutate({ path: { id } });
   };
 
@@ -58,11 +54,11 @@ export function FlowListRow({
             <Button
               variant="ghost"
               size="icon"
-              onClick={()=>navigate({to: `/strategies/${id}`})}
+              onClick={() => navigate({ to: `/strategies/${id}` })}
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
               asChild
             >
-                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
 
             <Button
@@ -82,9 +78,7 @@ export function FlowListRow({
         {!isCollapsed && (
           <div className="p-4 border-b border-muted-foreground/10">
             <p className="text-sm text-muted-foreground">
-              {t(
-                'flows.strategy_details_placeholder'
-              )}
+              {t('flows.strategy_details_placeholder')}
             </p>
           </div>
         )}

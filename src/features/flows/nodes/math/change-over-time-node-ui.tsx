@@ -67,20 +67,20 @@ export function ChangeOverTimeNodeUI({
           className="px-2 py-1 border rounded"
         />
       )}
-{!preview &&(
-  <>
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="source"
-        position={Position.Right}
-        id="in"
-      />
-      <ValidatedHandle
-        nodeId={nodeId}
-        type="target"
-        position={Position.Left}
-        id="out"
-      />
+      {!preview && (
+        <>
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="source"
+            position={Position.Right}
+            id="in"
+          />
+          <ValidatedHandle
+            nodeId={nodeId}
+            type="target"
+            position={Position.Left}
+            id="out"
+          />
         </>
       )}
     </NodeUI>
