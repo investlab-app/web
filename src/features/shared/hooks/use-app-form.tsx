@@ -4,6 +4,7 @@ import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner'
 import { Button } from '@/features/shared/components/ui/button';
 import { FormInput as FormInputComponent } from '@/features/shared/components/ui/form-input';
 import { SixDigitOTPInput as SixDigitOTPInputComponent } from '@/features/shared/components/ui/six-digit-otp-input';
+import { NumberInput as NumberInputComponent } from '@/features/shared/components/ui/number-input';
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -15,6 +16,22 @@ const SixDigitOTPInput = () => {
       value={field.state.value}
       onBlur={field.handleBlur}
       onChange={(value) => field.handleChange(value.toString())}
+    />
+  );
+};
+
+const NumberInput = (props: Omit<React.ComponentProps<typeof NumberInputComponent>, 'value' | 'onBlur' | 'onValueChange'>) => {
+  const field = useFieldContext<number>();
+  return (
+    <NumberInputComponent
+      value={field.state.value}
+      onBlur={field.handleBlur}
+      onValueChange={(value) => {
+        if (value !== undefined) {
+          field.handleChange(value);
+        }
+      }}
+      {...props}
     />
   );
 };
@@ -87,6 +104,7 @@ export const { useAppForm } = createFormHook({
   fieldComponents: {
     FormInput,
     SixDigitOTPInput,
+    NumberInput,
   },
   formComponents: {
     SubmitButton,

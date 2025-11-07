@@ -6,7 +6,7 @@ const enWallet = {
   deposit_description: 'Add funds to your trading account to start investing.',
   amount: 'Amount',
   enter_amount: 'Enter amount',
-  minimum_deposit: 'Minimum deposit: $1.00',
+  minimum_deposit: 'Minimum deposit: ${{amount}}',
   deposit_success: 'Successfully deposited ${{amount}}',
   invalid_amount: 'Please enter a valid amount greater than $0',
   deposit_error: 'Failed to process deposit. Please try again.',

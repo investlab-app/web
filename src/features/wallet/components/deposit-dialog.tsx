@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -11,129 +10,129 @@ import {
   DialogTitle,
 } from '@/features/shared/components/ui/dialog';
 import { Button } from '@/features/shared/components/ui/button';
-import { Input } from '@/features/shared/components/ui/input';
 import { Label } from '@/features/shared/components/ui/label';
+import { useAppForm } from '@/features/shared/hooks/use-app-form';
+import {
+  investorsDepositCreateMutation,
+  investorsMeRetrieveOptions,
+} from '@/client/@tanstack/react-query.gen';
 
 interface DepositDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface DepositResult {
-  success: boolean;
-  amount: number;
-}
-
 export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const [amount, setAmount] = useState('');
 
-  const depositMutation = useMutation<DepositResult, Error, string>({
-    mutationFn: async (depositAmount: string): Promise<DepositResult> => {
-      const numAmount = parseFloat(depositAmount);
-
-      if (isNaN(numAmount) || numAmount <= 0) {
-        throw new Error(t('wallet.invalid_amount'));
+  const form = useAppForm({
+    defaultValues: {
+      amount: 5,
+    },
+    onSubmit: ({ value }) => {
+      if (value.amount <= 1 || value.amount > 100) {
+        toast.error(
+          t('wallet.invalid_amount', {
+            defaultValue: 'Amount must be between $1 and $100',
+          })
+        );
+        return;
       }
 
-      // TODO: Replace with actual API call when backend endpoint is ready
-      // For now, we'll just update the local state
-      console.log('Deposit attempt:', numAmount);
-
-      // Simulate API call
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ success: true, amount: numAmount });
-        }, 500);
+      depositMutation.mutate({
+        body: { amount: value.amount.toString() },
       });
     },
-    onSuccess: (data: DepositResult) => {
+  });
+
+  const depositMutation = useMutation({
+    ...investorsDepositCreateMutation(),
+    onSuccess: (data) => {
+      const amount =
+        typeof data.amount === 'string' ? parseFloat(data.amount) : data.amount;
       toast.success(
         t('wallet.deposit_success', {
-          defaultValue: `Successfully deposited $${data.amount.toFixed(2)}`,
-          amount: data.amount.toFixed(2),
+          defaultValue: `Successfully deposited $${amount.toFixed(2)}`,
+          amount: amount.toFixed(2),
         })
       );
 
       // Invalidate investor query to refresh balance
       queryClient.invalidateQueries({
-        queryKey: ['investors', 'me'],
+        queryKey: investorsMeRetrieveOptions().queryKey,
       });
 
-      setAmount('');
+      form.reset();
       onOpenChange(false);
     },
-    onError: (error: Error) => {
+    onError: (error) => {
+      console.error('Deposit failed:', error);
       toast.error(error.message || t('common.something_went_wrong'));
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    depositMutation.mutate(amount);
-  };
-
   const handleOpenChange = (newOpen: boolean) => {
     if (!depositMutation.isPending) {
-      setAmount('');
+      form.reset();
       onOpenChange(newOpen);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{t('wallet.deposit_funds')}</DialogTitle>
           <DialogDescription>
-            {t('wallet.deposit_description')}
+            {t('wallet.deposit_description', {
+              defaultValue: 'Add funds to your paper trading account.',
+            })}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="deposit-amount">{t('wallet.amount')}</Label>
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold">$</span>
-              <Input
-                id="deposit-amount"
-                type="number"
-                step="0.01"
-                min="0"
-                placeholder={t('wallet.enter_amount')}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                disabled={depositMutation.isPending}
-                autoFocus
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t('wallet.minimum_deposit')}
-            </p>
-          </div>
+        <form.AppForm>
+          <div className="space-y-6">
+            <form.AppField
+              name="amount"
+              children={(field) => (
+                <div className="space-y-2">
+                  <Label htmlFor="deposit-amount">
+                    {t('wallet.amount', { defaultValue: 'Amount' })}
+                  </Label>
+                  <field.NumberInput
+                    id="deposit-amount"
+                    min={1}
+                    max={100}
+                    decimalScale={2}
+                    fixedDecimalScale
+                    placeholder={t('wallet.enter_amount', {
+                      defaultValue: 'Enter amount',
+                    })}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {t('wallet.minimum_deposit', { amount: 1 })}
+                  </p>
+                </div>
+              )}
+            />
 
-          <DialogFooter className="pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleOpenChange(false)}
-              disabled={depositMutation.isPending}
-            >
-              {t('common.cancel')}
-            </Button>
-            <Button
-              type="submit"
-              disabled={
-                !amount || parseFloat(amount) <= 0 || depositMutation.isPending
-              }
-            >
-              {depositMutation.isPending
-                ? t('common.loading')
-                : t('wallet.deposit')}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleOpenChange(false)}
+                disabled={depositMutation.isPending}
+              >
+                {t('common.cancel', { defaultValue: 'Cancel' })}
+              </Button>
+              <form.SubmitButton>
+                {t('wallet.deposit', { defaultValue: 'Deposit' })}
+              </form.SubmitButton>
+            </DialogFooter>
+          </div>
+        </form.AppForm>
       </DialogContent>
     </Dialog>
   );

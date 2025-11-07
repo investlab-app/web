@@ -18,29 +18,31 @@ export const Route = createFileRoute('/_authed/instruments/$instrumentId')({
   component: RouteComponent,
   pendingComponent: InstrumentDetailPending,
   loader: async ({ params: { instrumentId }, context: { queryClient } }) => {
-    await Promise.all([
-      queryClient.ensureQueryData(
-        instrumentsDetailRetrieveOptions({ query: { ticker: instrumentId } })
-      ),
-      queryClient.ensureQueryData(
-        statisticsTransactionsHistoryListOptions({
-          query: {
-            type: 'open',
-            tickers: [instrumentId],
-          },
-        })
-      ),
-      queryClient.ensureQueryData(
-        newsListOptions({
-          query: { ticker: instrumentId },
-        })
-      ),
-      queryClient.ensureQueryData(
-        pricesListOptions({
-          query: { tickers: [instrumentId] },
-        })
-      ),
-    ]);
+    try {
+      await Promise.all([
+        queryClient.ensureQueryData(
+          instrumentsDetailRetrieveOptions({ query: { ticker: instrumentId } })
+        ),
+        queryClient.ensureQueryData(
+          statisticsTransactionsHistoryListOptions({
+            query: {
+              type: 'open',
+              tickers: [instrumentId],
+            },
+          })
+        ),
+        queryClient.ensureQueryData(
+          newsListOptions({
+            query: { ticker: instrumentId },
+          })
+        ),
+        queryClient.ensureQueryData(
+          pricesListOptions({
+            query: { tickers: [instrumentId] },
+          })
+        ),
+      ]);
+    } catch {}
     return {
       crumb: instrumentId,
     };
