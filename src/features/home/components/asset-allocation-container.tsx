@@ -14,11 +14,9 @@ import { Skeleton } from '@/features/shared/components/ui/skeleton';
 export const AssetAllocationContainer = () => {
   const { t } = useTranslation();
 
-  const {
-    data: assetAllocation,
-    isPending,
-    isSuccess,
-  } = useQuery(statisticsAssetAllocationRetrieveOptions());
+  const { data, isPending, isSuccess } = useQuery(
+    statisticsAssetAllocationRetrieveOptions()
+  );
 
   if (!isSuccess) {
     if (isPending) {
@@ -38,13 +36,12 @@ export const AssetAllocationContainer = () => {
 
   return (
     <AssetAllocationTile
-      totalValue={assetAllocation.total_value}
-      yearlyGain={assetAllocation.total_gain_this_year}
-      assets={assetAllocation.allocations}
+      totalValue={data.total_value}
+      yearlyGain={data.total_gain_this_year}
+      assets={data.allocations}
     />
   );
 };
-
 
 export const AssetAllocationContainerSkeleton = () => {
   return (

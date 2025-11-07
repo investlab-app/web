@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Info, Star } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Info, Star } from 'lucide-react';
 import { useSetWatchedTicker } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
@@ -55,8 +55,10 @@ export const InstrumentTable = ({
           >
             {column.getIsSorted() === 'asc' ? (
               <ArrowDown className="h-4 w-4" />
-            ) : (
+            ) : column.getIsSorted() === 'desc' ? (
               <ArrowUp className="h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="h-4 w-4" />
             )}
             {t('instruments.symbol')}
           </Button>
@@ -276,9 +278,22 @@ export const InstrumentTable = ({
     },
     {
       accessorKey: 'marketCap',
-      header: () => (
+      header: ({ column }) => (
         <div className="flex items-center gap-1 justify-end not-sm:hidden">
-          <span className="text-right">{t('instruments.market_cap')}</span>
+          <Button
+            variant="ghost"
+            className="-mx-1.5! px-1.5!"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowDown className="h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowUp className="h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="h-4 w-4" />
+            )}
+            {t('instruments.market_cap')}
+          </Button>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
@@ -304,7 +319,7 @@ export const InstrumentTable = ({
           )}
         </div>
       ),
-      enableSorting: false,
+      enableSorting: true,
     },
   ];
 

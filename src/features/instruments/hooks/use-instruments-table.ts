@@ -19,6 +19,7 @@ const API_COLUMNS: Record<string, string> = {
   currentPrice: 'price_info__current_price',
   todaysChange: 'price_info__todays_change',
   volume: 'price_info__daily_summary__volume',
+  marketCap: 'market_cap',
 };
 
 function getOrdering(sorting: SortingState | undefined) {
