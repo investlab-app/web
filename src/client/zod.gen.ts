@@ -45,6 +45,11 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
+export const zCreateMarketOrder = z.object({
+    id: z.uuid().readonly(),
+    investor: z.uuid().readonly()
+});
+
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
     volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
@@ -308,6 +313,7 @@ export const zInvestor = z.object({
     id: z.uuid().readonly(),
     clerk_id: z.string().readonly(),
     balance: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly(),
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
     language: z.optional(z.string().max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
@@ -468,42 +474,6 @@ export const zMostTradedItem = z.object({
     ])
 });
 
-/**
- * * `price_alert` - Price Alert
- * * `order` - Order
- * * `transaction` - Transaction
- * * `system` - System
- */
-export const zTypeEnum = z.enum([
-    'price_alert',
-    'order',
-    'transaction',
-    'system'
-]);
-
-/**
- * Serializer for displaying notifications in the UI
- */
-export const zNotification = z.object({
-    id: z.uuid().readonly(),
-    type: z.optional(zTypeEnum),
-    type_display: z.string().readonly(),
-    title: z.string().max(255),
-    message: z.string(),
-    is_seen: z.optional(z.boolean()),
-    related_object_id: z.optional(z.union([
-        z.string().max(255),
-        z.null()
-    ])),
-    related_object_type: z.optional(z.union([
-        z.string().max(50),
-        z.null()
-    ])),
-    created_at: z.iso.datetime({
-        offset: true
-    }).readonly()
-});
-
 export const zNotificationConfig = z.object({
     id: z.uuid().readonly(),
     is_email: z.optional(z.boolean()),
@@ -535,28 +505,22 @@ export const zNotificationConfigRequest = z.object({
 });
 
 /**
- * Serializer for displaying notifications in the UI
+ * Serializer for NotificationHistory model.
  */
-export const zNotificationRequest = z.object({
-    type: z.optional(zTypeEnum),
-    title: z.string().min(1).max(255),
-    message: z.string().min(1),
-    is_seen: z.optional(z.boolean()),
-    related_object_id: z.optional(z.union([
-        z.string().max(255),
-        z.null()
-    ])),
-    related_object_type: z.optional(z.union([
-        z.string().max(50),
-        z.null()
-    ]))
-});
-
-/**
- * Serializer for marking notifications as seen
- */
-export const zNotificationUpdate = z.object({
-    is_seen: z.optional(z.boolean())
+export const zNotificationHistory = z.object({
+    id: z.uuid().readonly(),
+    type: z.string(),
+    message: z.string(),
+    message_pl: z.string(),
+    sent_at: z.iso.datetime({
+        offset: true
+    }),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly()
 });
 
 export const zOrderDetail = z.object({
@@ -608,19 +572,6 @@ export const zPaginatedInstrumentWithPriceList = z.object({
     results: z.array(zInstrumentWithPrice)
 });
 
-export const zPaginatedNotificationList = z.object({
-    count: z.int(),
-    next: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    previous: z.optional(z.union([
-        z.url(),
-        z.null()
-    ])),
-    results: z.array(zNotification)
-});
-
 export const zPaginatedOrderList = z.object({
     count: z.int(),
     next: z.optional(z.union([
@@ -665,16 +616,23 @@ export const zPaginatedPriceAlertList = z.object({
     results: z.array(zPriceAlert)
 });
 
-export const zPatchedInvestorRequest = z.object({
-    language: z.optional(z.string().min(1).max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
+export const zPaginatedPriceDailySummaryList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zPriceDailySummary)
 });
 
-/**
- * Serializer for marking notifications as seen
- */
-export const zPatchedNotificationUpdateRequest = z.object({
-    is_seen: z.optional(z.boolean())
+export const zPatchedInvestorRequest = z.object({
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
+    language: z.optional(z.string().min(1).max(10)),
+    watching_instruments: z.optional(z.array(z.uuid()))
 });
 
 export const zPatchedPriceAlertRequest = z.object({
@@ -831,6 +789,11 @@ export const zTickerNews = z.object({
 export const zToggleWatchedInstrument = z.object({
     is_watched: z.boolean(),
     instrument_id: z.string()
+});
+
+export const zToggleWatchedInstrumentRequest = z.object({
+    is_watched: z.boolean(),
+    instrument_id: z.string().min(1)
 });
 
 export const zTradingOverview = z.object({
@@ -1001,6 +964,7 @@ export const zInstrumentWithPriceWritable = z.object({
 });
 
 export const zInvestorWritable = z.object({
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
     language: z.optional(z.string().max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
@@ -1009,24 +973,6 @@ export const zMarketOrderWritable = z.object({
     volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
     volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
     is_buy: z.boolean()
-});
-
-/**
- * Serializer for displaying notifications in the UI
- */
-export const zNotificationWritable = z.object({
-    type: z.optional(zTypeEnum),
-    title: z.string().max(255),
-    message: z.string(),
-    is_seen: z.optional(z.boolean()),
-    related_object_id: z.optional(z.union([
-        z.string().max(255),
-        z.null()
-    ])),
-    related_object_type: z.optional(z.union([
-        z.string().max(50),
-        z.null()
-    ]))
 });
 
 export const zNotificationConfigWritable = z.object({
@@ -1041,6 +987,18 @@ export const zNotificationConfigCreateRequestWritable = z.object({
     is_push: z.boolean(),
     is_websocket: z.boolean(),
     push_subscription: z.optional(zPushNotificationRequest)
+});
+
+/**
+ * Serializer for NotificationHistory model.
+ */
+export const zNotificationHistoryWritable = z.object({
+    type: z.string(),
+    message: z.string(),
+    message_pl: z.string(),
+    sent_at: z.iso.datetime({
+        offset: true
+    })
 });
 
 export const zOrderWritable = z.object({
@@ -1069,23 +1027,6 @@ export const zPriceAlertCreateRequestWritable = z.object({
 
 export const zAuthSignInCreateData = z.object({
     body: zClerkLoginRequest,
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-export const zChatHistoryDestroyData = z.object({
-    body: z.optional(z.never()),
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-/**
- * No response body
- */
-export const zChatHistoryDestroyResponse = z.void();
-
-export const zChatHistoryRetrieveData = z.object({
-    body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
@@ -1182,15 +1123,13 @@ export const zInvestorsMeAccountValueListData = z.object({
 
 export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
 
-export const zInvestorsMeWatchedInstrumentsToggleCreateData = z.object({
+export const zInvestorsMeNotificationsListData = z.object({
     body: z.optional(z.never()),
-    path: z.object({
-        instrument_id: z.string()
-    }),
+    path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeWatchedInstrumentsToggleCreateResponse = zToggleWatchedInstrument;
+export const zInvestorsMeNotificationsListResponse = z.array(zNotificationHistory);
 
 export const zInvestorsMeWatchedTickersListData = z.object({
     body: z.optional(z.never()),
@@ -1199,6 +1138,16 @@ export const zInvestorsMeWatchedTickersListData = z.object({
 });
 
 export const zInvestorsMeWatchedTickersListResponse = z.array(zWatchedTicker);
+
+export const zInvestorsMeWatchedTickersCreateData = z.object({
+    body: zToggleWatchedInstrumentRequest,
+    path: z.object({
+        instrument_id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeWatchedTickersCreateResponse = zToggleWatchedInstrument;
 
 export const zMarketsHolidaysListData = z.object({
     body: z.optional(z.never()),
@@ -1241,59 +1190,6 @@ export const zNewsListData = z.object({
 
 export const zNewsListResponse = z.array(zTickerNews);
 
-export const zNotificationsListData = z.object({
-    body: z.optional(z.never()),
-    path: z.optional(z.never()),
-    query: z.optional(z.object({
-        page: z.optional(z.int()),
-        page_size: z.optional(z.int())
-    }))
-});
-
-export const zNotificationsListResponse = zPaginatedNotificationList;
-
-export const zNotificationsCreateData = z.object({
-    body: zNotificationRequest,
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-export const zNotificationsCreateResponse = zNotification;
-
-export const zNotificationsRetrieveData = z.object({
-    body: z.optional(z.never()),
-    path: z.object({
-        id: z.string()
-    }),
-    query: z.optional(z.never())
-});
-
-export const zNotificationsRetrieveResponse = zNotification;
-
-export const zNotificationsPartialUpdateData = z.object({
-    body: z.optional(zPatchedNotificationUpdateRequest),
-    path: z.object({
-        id: z.string()
-    }),
-    query: z.optional(z.never())
-});
-
-export const zNotificationsPartialUpdateResponse = zNotificationUpdate;
-
-export const zNotificationsMarkAllAsSeenCreateData = z.object({
-    body: z.optional(z.never()),
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-export const zNotificationsUnseenCountRetrieveData = z.object({
-    body: z.optional(z.never()),
-    path: z.optional(z.never()),
-    query: z.optional(z.never())
-});
-
-export const zNotificationsUnseenCountRetrieveResponse = z.int();
-
 export const zNotificationsVapidPublicKeyRetrieveData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
@@ -1332,17 +1228,19 @@ export const zOrdersMarketCreateData = z.object({
     query: z.optional(z.never())
 });
 
-export const zOrdersMarketCreateResponse = zOrder;
+export const zOrdersMarketCreateResponse = zCreateMarketOrder;
 
 export const zPricesListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int()),
         tickers: z.array(z.string().min(1)).max(50)
     })
 });
 
-export const zPricesListResponse = zPriceDailySummary;
+export const zPricesListResponse = zPaginatedPriceDailySummaryList;
 
 export const zPricesRetrieveData = z.object({
     body: z.optional(z.never()),

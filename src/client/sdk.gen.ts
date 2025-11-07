@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, ChatHistoryDestroyData, ChatHistoryDestroyResponses, ChatHistoryRetrieveData, ChatHistoryRetrieveResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsDepositCreateData, InvestorsDepositCreateResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeWatchedInstrumentsToggleCreateData, InvestorsMeWatchedInstrumentsToggleCreateResponses, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsCreateData, NotificationsCreateResponses, NotificationsListData, NotificationsListResponses, NotificationsMarkAllAsSeenCreateData, NotificationsMarkAllAsSeenCreateResponses, NotificationsPartialUpdateData, NotificationsPartialUpdateResponses, NotificationsRetrieveData, NotificationsRetrieveResponses, NotificationsUnseenCountRetrieveData, NotificationsUnseenCountRetrieveResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatisticsAssetAllocationRetrieveData, StatisticsAssetAllocationRetrieveResponses, StatisticsCurrentAccountValueRetrieveData, StatisticsCurrentAccountValueRetrieveResponses, StatisticsOwnedSharesListData, StatisticsOwnedSharesListResponses, StatisticsStatisticsMostTradedListData, StatisticsStatisticsMostTradedListResponses, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatisticsTradingOverviewRetrieveResponses, StatisticsStatsRetrieveData, StatisticsStatsRetrieveResponses, StatisticsTransactionsHistoryListData, StatisticsTransactionsHistoryListResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
-import { zAuthSignInCreateData, zChatHistoryDestroyData, zChatHistoryDestroyResponse, zChatHistoryRetrieveData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsDepositCreateData, zInvestorsDepositCreateResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMePartialUpdateData, zInvestorsMePartialUpdateResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeWatchedInstrumentsToggleCreateData, zInvestorsMeWatchedInstrumentsToggleCreateResponse, zInvestorsMeWatchedTickersListData, zInvestorsMeWatchedTickersListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsCreateData, zNotificationsCreateResponse, zNotificationsListData, zNotificationsListResponse, zNotificationsMarkAllAsSeenCreateData, zNotificationsPartialUpdateData, zNotificationsPartialUpdateResponse, zNotificationsRetrieveData, zNotificationsRetrieveResponse, zNotificationsUnseenCountRetrieveData, zNotificationsUnseenCountRetrieveResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatisticsAssetAllocationRetrieveData, zStatisticsAssetAllocationRetrieveResponse, zStatisticsCurrentAccountValueRetrieveData, zStatisticsCurrentAccountValueRetrieveResponse, zStatisticsOwnedSharesListData, zStatisticsOwnedSharesListResponse, zStatisticsStatisticsMostTradedListData, zStatisticsStatisticsMostTradedListResponse, zStatisticsStatisticsTradingOverviewRetrieveData, zStatisticsStatisticsTradingOverviewRetrieveResponse, zStatisticsStatsRetrieveData, zStatisticsStatsRetrieveResponse, zStatisticsTransactionsHistoryListData, zStatisticsTransactionsHistoryListResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsDepositCreateData, InvestorsDepositCreateResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMeNotificationsListData, InvestorsMeNotificationsListResponses, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeWatchedTickersCreateData, InvestorsMeWatchedTickersCreateResponses, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersListResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatisticsAssetAllocationRetrieveData, StatisticsAssetAllocationRetrieveResponses, StatisticsCurrentAccountValueRetrieveData, StatisticsCurrentAccountValueRetrieveResponses, StatisticsOwnedSharesListData, StatisticsOwnedSharesListResponses, StatisticsStatisticsMostTradedListData, StatisticsStatisticsMostTradedListResponses, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatisticsTradingOverviewRetrieveResponses, StatisticsStatsRetrieveData, StatisticsStatsRetrieveResponses, StatisticsTransactionsHistoryListData, StatisticsTransactionsHistoryListResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
+import { zAuthSignInCreateData, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsDepositCreateData, zInvestorsDepositCreateResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMeNotificationsListData, zInvestorsMeNotificationsListResponse, zInvestorsMePartialUpdateData, zInvestorsMePartialUpdateResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeWatchedTickersCreateData, zInvestorsMeWatchedTickersCreateResponse, zInvestorsMeWatchedTickersListData, zInvestorsMeWatchedTickersListResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatisticsAssetAllocationRetrieveData, zStatisticsAssetAllocationRetrieveResponse, zStatisticsCurrentAccountValueRetrieveData, zStatisticsCurrentAccountValueRetrieveResponse, zStatisticsOwnedSharesListData, zStatisticsOwnedSharesListResponse, zStatisticsStatisticsMostTradedListData, zStatisticsStatisticsMostTradedListResponse, zStatisticsStatisticsTradingOverviewRetrieveData, zStatisticsStatisticsTradingOverviewRetrieveResponse, zStatisticsStatsRetrieveData, zStatisticsStatsRetrieveResponse, zStatisticsTransactionsHistoryListData, zStatisticsTransactionsHistoryListResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -40,59 +40,6 @@ export const authSignInCreate = <ThrowOnError extends boolean = false>(options: 
             'Content-Type': 'application/json',
             ...options.headers
         }
-    });
-};
-
-/**
- * Clear all chat messages for the authenticated user.
- *
- * Returns:
- * 200: Messages successfully deleted with count
- * 404: Investor profile not found
- */
-export const chatHistoryDestroy = <ThrowOnError extends boolean = false>(options?: Options<ChatHistoryDestroyData, ThrowOnError>) => {
-    return (options?.client ?? client).delete<ChatHistoryDestroyResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zChatHistoryDestroyData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zChatHistoryDestroyResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/chat/history/',
-        ...options
-    });
-};
-
-/**
- * Retrieve chat message history for the authenticated user.
- *
- * Query Parameters:
- * limit (int): Maximum number of messages to return (default: 50, max: 100)
- * offset (int): Number of messages to skip for pagination (default: 0)
- *
- * Returns:
- * 200: List of chat messages with pagination info
- * 404: Investor profile not found
- */
-export const chatHistoryRetrieve = <ThrowOnError extends boolean = false>(options?: Options<ChatHistoryRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<ChatHistoryRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zChatHistoryRetrieveData.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/chat/history/',
-        ...options
     });
 };
 
@@ -294,17 +241,13 @@ export const investorsMeAccountValueList = <ThrowOnError extends boolean = false
     });
 };
 
-/**
- * Toggle watched instrument
- * Toggle the watched status of an instrument for the current user.
- */
-export const investorsMeWatchedInstrumentsToggleCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeWatchedInstrumentsToggleCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<InvestorsMeWatchedInstrumentsToggleCreateResponses, unknown, ThrowOnError>({
+export const investorsMeNotificationsList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeNotificationsListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeNotificationsListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
-            return await zInvestorsMeWatchedInstrumentsToggleCreateData.parseAsync(data);
+            return await zInvestorsMeNotificationsListData.parseAsync(data);
         },
         responseValidator: async (data) => {
-            return await zInvestorsMeWatchedInstrumentsToggleCreateResponse.parseAsync(data);
+            return await zInvestorsMeNotificationsListResponse.parseAsync(data);
         },
         security: [
             {
@@ -312,15 +255,11 @@ export const investorsMeWatchedInstrumentsToggleCreate = <ThrowOnError extends b
                 type: 'http'
             }
         ],
-        url: '/api/investors/me/watched-instruments/{instrument_id}/toggle/',
+        url: '/api/investors/me/notifications/',
         ...options
     });
 };
 
-/**
- * Get watched tickers
- * Get the list of watched tickers with icons for the currently authenticated user.
- */
 export const investorsMeWatchedTickersList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeWatchedTickersListData, ThrowOnError>) => {
     return (options?.client ?? client).get<InvestorsMeWatchedTickersListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {
@@ -337,6 +276,29 @@ export const investorsMeWatchedTickersList = <ThrowOnError extends boolean = fal
         ],
         url: '/api/investors/me/watched-tickers/',
         ...options
+    });
+};
+
+export const investorsMeWatchedTickersCreate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeWatchedTickersCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<InvestorsMeWatchedTickersCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/watched-tickers/{instrument_id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
     });
 };
 
@@ -402,171 +364,6 @@ export const newsList = <ThrowOnError extends boolean = false>(options?: Options
             }
         ],
         url: '/api/news/',
-        ...options
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsList = <ThrowOnError extends boolean = false>(options?: Options<NotificationsListData, ThrowOnError>) => {
-    return (options?.client ?? client).get<NotificationsListResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsListData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zNotificationsListResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/',
-        ...options
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsCreate = <ThrowOnError extends boolean = false>(options: Options<NotificationsCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<NotificationsCreateResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsCreateData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zNotificationsCreateResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsRetrieve = <ThrowOnError extends boolean = false>(options: Options<NotificationsRetrieveData, ThrowOnError>) => {
-    return (options.client ?? client).get<NotificationsRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zNotificationsRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/{id}/',
-        ...options
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<NotificationsPartialUpdateData, ThrowOnError>) => {
-    return (options.client ?? client).patch<NotificationsPartialUpdateResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsPartialUpdateData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zNotificationsPartialUpdateResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/{id}/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * Mark all notifications as seen for the current user
- */
-export const notificationsMarkAllAsSeenCreate = <ThrowOnError extends boolean = false>(options?: Options<NotificationsMarkAllAsSeenCreateData, ThrowOnError>) => {
-    return (options?.client ?? client).post<NotificationsMarkAllAsSeenCreateResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsMarkAllAsSeenCreateData.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/mark_all_as_seen/',
-        ...options
-    });
-};
-
-/**
- * Get count of unseen notifications for the current user
- */
-export const notificationsUnseenCountRetrieve = <ThrowOnError extends boolean = false>(options?: Options<NotificationsUnseenCountRetrieveData, ThrowOnError>) => {
-    return (options?.client ?? client).get<NotificationsUnseenCountRetrieveResponses, unknown, ThrowOnError>({
-        requestValidator: async (data) => {
-            return await zNotificationsUnseenCountRetrieveData.parseAsync(data);
-        },
-        responseValidator: async (data) => {
-            return await zNotificationsUnseenCountRetrieveResponse.parseAsync(data);
-        },
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/notifications/unseen_count/',
         ...options
     });
 };

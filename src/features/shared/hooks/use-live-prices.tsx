@@ -1,11 +1,29 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useWS } from './use-ws';
 import { livePrice } from '@/features/charts/types/live-price';
+import { pricesListOptions } from '@/client/@tanstack/react-query.gen';
 
-export function useLivePrices(tickers: Array<string>) {
+export function useLivePrices(...tickers: Array<string>) {
   const { lastJsonMessage } = useWS(tickers);
 
   const [prices, setPrices] = useState<Record<string, number>>({});
+
+  const { data } = useQuery({
+    ...pricesListOptions({ query: { tickers } }),
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    if (data === undefined) return;
+    const initialPrices = Object.fromEntries(
+      data.results.map((p) => {
+        const price = Number(p.current_price);
+        return [p.ticker, price];
+      })
+    );
+    setPrices(initialPrices);
+  }, [data]);
 
   useEffect(() => {
     if (!lastJsonMessage) return;

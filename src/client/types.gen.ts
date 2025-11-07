@@ -56,6 +56,11 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
+export type CreateMarketOrder = {
+    readonly id: string;
+    readonly investor: string;
+};
+
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
@@ -238,6 +243,7 @@ export type Investor = {
     readonly id: string;
     readonly clerk_id: string;
     readonly balance: string;
+    blocked_funds?: string;
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
@@ -341,30 +347,6 @@ export type MostTradedItem = {
     gain_percentage: number | null;
 };
 
-/**
- * Serializer for displaying notifications in the UI
- */
-export type Notification = {
-    readonly id: string;
-    /**
-     * Notification Type
-     */
-    type?: TypeEnum;
-    readonly type_display: string;
-    title: string;
-    message: string;
-    is_seen?: boolean;
-    /**
-     * ID of the related object (e.g., price alert ID, order ID)
-     */
-    related_object_id?: string | null;
-    /**
-     * Type of the related object (e.g., 'price_alert', 'order')
-     */
-    related_object_type?: string | null;
-    readonly created_at: string;
-};
-
 export type NotificationConfig = {
     readonly id: string;
     /**
@@ -412,31 +394,28 @@ export type NotificationConfigRequest = {
 };
 
 /**
- * Serializer for displaying notifications in the UI
+ * Serializer for NotificationHistory model.
  */
-export type NotificationRequest = {
+export type NotificationHistory = {
+    readonly id: string;
     /**
-     * Notification Type
+     * Type of the notification
      */
-    type?: TypeEnum;
-    title: string;
+    type: string;
+    /**
+     * Notification message in English
+     */
     message: string;
-    is_seen?: boolean;
     /**
-     * ID of the related object (e.g., price alert ID, order ID)
+     * Notification message in Polish
      */
-    related_object_id?: string | null;
+    message_pl: string;
     /**
-     * Type of the related object (e.g., 'price_alert', 'order')
+     * When the notification was sent
      */
-    related_object_type?: string | null;
-};
-
-/**
- * Serializer for marking notifications as seen
- */
-export type NotificationUpdate = {
-    is_seen?: boolean;
+    sent_at: string;
+    readonly created_at: string;
+    readonly updated_at: string;
 };
 
 export type Order = {
@@ -473,13 +452,6 @@ export type PaginatedInstrumentWithPriceList = {
     results: Array<InstrumentWithPrice>;
 };
 
-export type PaginatedNotificationList = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: Array<Notification>;
-};
-
 export type PaginatedOrderList = {
     count: number;
     next?: string | null;
@@ -494,19 +466,20 @@ export type PaginatedPriceAlertList = {
     results: Array<PriceAlert>;
 };
 
+export type PaginatedPriceDailySummaryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<PriceDailySummary>;
+};
+
 export type PatchedInvestorRequest = {
+    blocked_funds?: string;
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
     watching_instruments?: Array<string>;
-};
-
-/**
- * Serializer for marking notifications as seen
- */
-export type PatchedNotificationUpdateRequest = {
-    is_seen?: boolean;
 };
 
 export type PatchedPriceAlertRequest = {
@@ -669,20 +642,23 @@ export type ToggleWatchedInstrument = {
     instrument_id: string;
 };
 
+export type ToggleWatchedInstrumentRequest = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched: boolean;
+    /**
+     * ID of the instrument
+     */
+    instrument_id: string;
+};
+
 export type TradingOverview = {
     total_trades: number;
     buys: number;
     sells: number;
     total_gain: number;
 };
-
-/**
- * * `price_alert` - Price Alert
- * * `order` - Order
- * * `transaction` - Transaction
- * * `system` - System
- */
-export type TypeEnum = 'price_alert' | 'order' | 'transaction' | 'system';
 
 export type VapidPublicKey = {
     public_key: string;
@@ -822,6 +798,7 @@ export type InstrumentWithPriceWritable = {
 };
 
 export type InvestorWritable = {
+    blocked_funds?: string;
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
@@ -833,27 +810,6 @@ export type MarketOrderWritable = {
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
-};
-
-/**
- * Serializer for displaying notifications in the UI
- */
-export type NotificationWritable = {
-    /**
-     * Notification Type
-     */
-    type?: TypeEnum;
-    title: string;
-    message: string;
-    is_seen?: boolean;
-    /**
-     * ID of the related object (e.g., price alert ID, order ID)
-     */
-    related_object_id?: string | null;
-    /**
-     * Type of the related object (e.g., 'price_alert', 'order')
-     */
-    related_object_type?: string | null;
 };
 
 export type NotificationConfigWritable = {
@@ -877,6 +833,28 @@ export type NotificationConfigCreateRequestWritable = {
     is_push: boolean;
     is_websocket: boolean;
     push_subscription?: PushNotificationRequest;
+};
+
+/**
+ * Serializer for NotificationHistory model.
+ */
+export type NotificationHistoryWritable = {
+    /**
+     * Type of the notification
+     */
+    type: string;
+    /**
+     * Notification message in English
+     */
+    message: string;
+    /**
+     * Notification message in Polish
+     */
+    message_pl: string;
+    /**
+     * When the notification was sent
+     */
+    sent_at: string;
 };
 
 export type OrderWritable = {
@@ -928,36 +906,6 @@ export type AuthSignInCreateErrors = {
 export type AuthSignInCreateResponses = {
     /**
      * Sign-in successful, token returned.
-     */
-    200: unknown;
-};
-
-export type ChatHistoryDestroyData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/chat/history/';
-};
-
-export type ChatHistoryDestroyResponses = {
-    /**
-     * No response body
-     */
-    204: void;
-};
-
-export type ChatHistoryDestroyResponse = ChatHistoryDestroyResponses[keyof ChatHistoryDestroyResponses];
-
-export type ChatHistoryRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/chat/history/';
-};
-
-export type ChatHistoryRetrieveResponses = {
-    /**
-     * No response body
      */
     200: unknown;
 };
@@ -1138,20 +1086,18 @@ export type InvestorsMeAccountValueListResponses = {
 
 export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
 
-export type InvestorsMeWatchedInstrumentsToggleCreateData = {
+export type InvestorsMeNotificationsListData = {
     body?: never;
-    path: {
-        instrument_id: string;
-    };
+    path?: never;
     query?: never;
-    url: '/api/investors/me/watched-instruments/{instrument_id}/toggle/';
+    url: '/api/investors/me/notifications/';
 };
 
-export type InvestorsMeWatchedInstrumentsToggleCreateResponses = {
-    200: ToggleWatchedInstrument;
+export type InvestorsMeNotificationsListResponses = {
+    200: Array<NotificationHistory>;
 };
 
-export type InvestorsMeWatchedInstrumentsToggleCreateResponse = InvestorsMeWatchedInstrumentsToggleCreateResponses[keyof InvestorsMeWatchedInstrumentsToggleCreateResponses];
+export type InvestorsMeNotificationsListResponse = InvestorsMeNotificationsListResponses[keyof InvestorsMeNotificationsListResponses];
 
 export type InvestorsMeWatchedTickersListData = {
     body?: never;
@@ -1165,6 +1111,21 @@ export type InvestorsMeWatchedTickersListResponses = {
 };
 
 export type InvestorsMeWatchedTickersListResponse = InvestorsMeWatchedTickersListResponses[keyof InvestorsMeWatchedTickersListResponses];
+
+export type InvestorsMeWatchedTickersCreateData = {
+    body: ToggleWatchedInstrumentRequest;
+    path: {
+        instrument_id: string;
+    };
+    query?: never;
+    url: '/api/investors/me/watched-tickers/{instrument_id}/';
+};
+
+export type InvestorsMeWatchedTickersCreateResponses = {
+    200: ToggleWatchedInstrument;
+};
+
+export type InvestorsMeWatchedTickersCreateResponse = InvestorsMeWatchedTickersCreateResponses[keyof InvestorsMeWatchedTickersCreateResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;
@@ -1216,98 +1177,6 @@ export type NewsListResponses = {
 };
 
 export type NewsListResponse = NewsListResponses[keyof NewsListResponses];
-
-export type NotificationsListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * A page number within the paginated result set.
-         */
-        page?: number;
-        /**
-         * Number of results to return per page.
-         */
-        page_size?: number;
-    };
-    url: '/api/notifications/';
-};
-
-export type NotificationsListResponses = {
-    200: PaginatedNotificationList;
-};
-
-export type NotificationsListResponse = NotificationsListResponses[keyof NotificationsListResponses];
-
-export type NotificationsCreateData = {
-    body: NotificationRequest;
-    path?: never;
-    query?: never;
-    url: '/api/notifications/';
-};
-
-export type NotificationsCreateResponses = {
-    201: Notification;
-};
-
-export type NotificationsCreateResponse = NotificationsCreateResponses[keyof NotificationsCreateResponses];
-
-export type NotificationsRetrieveData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/notifications/{id}/';
-};
-
-export type NotificationsRetrieveResponses = {
-    200: Notification;
-};
-
-export type NotificationsRetrieveResponse = NotificationsRetrieveResponses[keyof NotificationsRetrieveResponses];
-
-export type NotificationsPartialUpdateData = {
-    body?: PatchedNotificationUpdateRequest;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/notifications/{id}/';
-};
-
-export type NotificationsPartialUpdateResponses = {
-    200: NotificationUpdate;
-};
-
-export type NotificationsPartialUpdateResponse = NotificationsPartialUpdateResponses[keyof NotificationsPartialUpdateResponses];
-
-export type NotificationsMarkAllAsSeenCreateData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/notifications/mark_all_as_seen/';
-};
-
-export type NotificationsMarkAllAsSeenCreateResponses = {
-    /**
-     * No response body
-     */
-    200: unknown;
-};
-
-export type NotificationsUnseenCountRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/notifications/unseen_count/';
-};
-
-export type NotificationsUnseenCountRetrieveResponses = {
-    200: number;
-};
-
-export type NotificationsUnseenCountRetrieveResponse = NotificationsUnseenCountRetrieveResponses[keyof NotificationsUnseenCountRetrieveResponses];
 
 export type NotificationsVapidPublicKeyRetrieveData = {
     body?: never;
@@ -1370,7 +1239,7 @@ export type OrdersMarketCreateData = {
 };
 
 export type OrdersMarketCreateResponses = {
-    201: Order;
+    201: CreateMarketOrder;
 };
 
 export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
@@ -1380,6 +1249,14 @@ export type PricesListData = {
     path?: never;
     query: {
         /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        /**
          * List of ticker symbols to fetch prices for (max 50).
          */
         tickers: Array<string>;
@@ -1388,7 +1265,7 @@ export type PricesListData = {
 };
 
 export type PricesListResponses = {
-    200: PriceDailySummary;
+    200: PaginatedPriceDailySummaryList;
 };
 
 export type PricesListResponse = PricesListResponses[keyof PricesListResponses];

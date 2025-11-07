@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, chatHistoryDestroy, chatHistoryRetrieve, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedInstrumentsToggleCreate, investorsMeWatchedTickersList, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsCreate, notificationsList, notificationsMarkAllAsSeenCreate, notificationsPartialUpdate, notificationsRetrieve, notificationsUnseenCountRetrieve, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, ChatHistoryDestroyData, ChatHistoryDestroyResponse, ChatHistoryRetrieveData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedInstrumentsToggleCreateData, InvestorsMeWatchedInstrumentsToggleCreateResponse, InvestorsMeWatchedTickersListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsCreateData, NotificationsCreateResponse, NotificationsListData, NotificationsListResponse, NotificationsMarkAllAsSeenCreateData, NotificationsPartialUpdateData, NotificationsPartialUpdateResponse, NotificationsRetrieveData, NotificationsUnseenCountRetrieveData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersCreate, investorsMeWatchedTickersList, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersCreateData, InvestorsMeWatchedTickersCreateResponse, InvestorsMeWatchedTickersListData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesListResponse, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -14,27 +14,6 @@ export const authSignInCreateMutation = (options?: Partial<Options<AuthSignInCre
     const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<AuthSignInCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await authSignInCreate({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * Clear all chat messages for the authenticated user.
- *
- * Returns:
- * 200: Messages successfully deleted with count
- * 404: Investor profile not found
- */
-export const chatHistoryDestroyMutation = (options?: Partial<Options<ChatHistoryDestroyData>>): UseMutationOptions<ChatHistoryDestroyResponse, DefaultError, Options<ChatHistoryDestroyData>> => {
-    const mutationOptions: UseMutationOptions<ChatHistoryDestroyResponse, DefaultError, Options<ChatHistoryDestroyData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await chatHistoryDestroy({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -78,34 +57,6 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [
         params
     ];
-};
-
-export const chatHistoryRetrieveQueryKey = (options?: Options<ChatHistoryRetrieveData>) => createQueryKey('chatHistoryRetrieve', options);
-
-/**
- * Retrieve chat message history for the authenticated user.
- *
- * Query Parameters:
- * limit (int): Maximum number of messages to return (default: 50, max: 100)
- * offset (int): Number of messages to skip for pagination (default: 0)
- *
- * Returns:
- * 200: List of chat messages with pagination info
- * 404: Investor profile not found
- */
-export const chatHistoryRetrieveOptions = (options?: Options<ChatHistoryRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await chatHistoryRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: chatHistoryRetrieveQueryKey(options)
-    });
 };
 
 export const instrumentsListQueryKey = (options?: Options<InstrumentsListData>) => createQueryKey('instrumentsList', options);
@@ -350,30 +301,25 @@ export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMe
     });
 };
 
-/**
- * Toggle watched instrument
- * Toggle the watched status of an instrument for the current user.
- */
-export const investorsMeWatchedInstrumentsToggleCreateMutation = (options?: Partial<Options<InvestorsMeWatchedInstrumentsToggleCreateData>>): UseMutationOptions<InvestorsMeWatchedInstrumentsToggleCreateResponse, DefaultError, Options<InvestorsMeWatchedInstrumentsToggleCreateData>> => {
-    const mutationOptions: UseMutationOptions<InvestorsMeWatchedInstrumentsToggleCreateResponse, DefaultError, Options<InvestorsMeWatchedInstrumentsToggleCreateData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await investorsMeWatchedInstrumentsToggleCreate({
+export const investorsMeNotificationsListQueryKey = (options?: Options<InvestorsMeNotificationsListData>) => createQueryKey('investorsMeNotificationsList', options);
+
+export const investorsMeNotificationsListOptions = (options?: Options<InvestorsMeNotificationsListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsMeNotificationsList({
                 ...options,
-                ...fnOptions,
+                ...queryKey[0],
+                signal,
                 throwOnError: true
             });
             return data;
-        }
-    };
-    return mutationOptions;
+        },
+        queryKey: investorsMeNotificationsListQueryKey(options)
+    });
 };
 
 export const investorsMeWatchedTickersListQueryKey = (options?: Options<InvestorsMeWatchedTickersListData>) => createQueryKey('investorsMeWatchedTickersList', options);
 
-/**
- * Get watched tickers
- * Get the list of watched tickers with icons for the currently authenticated user.
- */
 export const investorsMeWatchedTickersListOptions = (options?: Options<InvestorsMeWatchedTickersListData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -387,6 +333,20 @@ export const investorsMeWatchedTickersListOptions = (options?: Options<Investors
         },
         queryKey: investorsMeWatchedTickersListQueryKey(options)
     });
+};
+
+export const investorsMeWatchedTickersCreateMutation = (options?: Partial<Options<InvestorsMeWatchedTickersCreateData>>): UseMutationOptions<InvestorsMeWatchedTickersCreateResponse, DefaultError, Options<InvestorsMeWatchedTickersCreateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsMeWatchedTickersCreateResponse, DefaultError, Options<InvestorsMeWatchedTickersCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await investorsMeWatchedTickersCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const marketsHolidaysListQueryKey = (options?: Options<MarketsHolidaysListData>) => createQueryKey('marketsHolidaysList', options);
@@ -446,181 +406,6 @@ export const newsListOptions = (options?: Options<NewsListData>) => {
             return data;
         },
         queryKey: newsListQueryKey(options)
-    });
-};
-
-export const notificationsListQueryKey = (options?: Options<NotificationsListData>) => createQueryKey('notificationsList', options);
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsListOptions = (options?: Options<NotificationsListData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await notificationsList({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: notificationsListQueryKey(options)
-    });
-};
-
-export const notificationsListInfiniteQueryKey = (options?: Options<NotificationsListData>): QueryKey<Options<NotificationsListData>> => createQueryKey('notificationsList', options, true);
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsListInfiniteOptions = (options?: Options<NotificationsListData>) => {
-    return infiniteQueryOptions<NotificationsListResponse, DefaultError, InfiniteData<NotificationsListResponse>, QueryKey<Options<NotificationsListData>>, number | Pick<QueryKey<Options<NotificationsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
-    // @ts-ignore
-    {
-        queryFn: async ({ pageParam, queryKey, signal }) => {
-            // @ts-ignore
-            const page: Pick<QueryKey<Options<NotificationsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
-                query: {
-                    page: pageParam
-                }
-            };
-            const params = createInfiniteParams(queryKey, page);
-            const { data } = await notificationsList({
-                ...options,
-                ...params,
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: notificationsListInfiniteQueryKey(options)
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsCreateMutation = (options?: Partial<Options<NotificationsCreateData>>): UseMutationOptions<NotificationsCreateResponse, DefaultError, Options<NotificationsCreateData>> => {
-    const mutationOptions: UseMutationOptions<NotificationsCreateResponse, DefaultError, Options<NotificationsCreateData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await notificationsCreate({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-export const notificationsRetrieveQueryKey = (options: Options<NotificationsRetrieveData>) => createQueryKey('notificationsRetrieve', options);
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsRetrieveOptions = (options: Options<NotificationsRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await notificationsRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: notificationsRetrieveQueryKey(options)
-    });
-};
-
-/**
- * API endpoint for retrieving and managing user notifications.
- *
- * Actions:
- * - list: Get all notifications for current user
- * - retrieve: Get a specific notification
- * - partial_update: Mark a notification as seen/unseen
- * - mark_all_as_seen (POST /api/notifications/mark_all_as_seen/): Mark all as seen
- * - unseen_count (GET /api/notifications/unseen_count/): Get count of unseen
- */
-export const notificationsPartialUpdateMutation = (options?: Partial<Options<NotificationsPartialUpdateData>>): UseMutationOptions<NotificationsPartialUpdateResponse, DefaultError, Options<NotificationsPartialUpdateData>> => {
-    const mutationOptions: UseMutationOptions<NotificationsPartialUpdateResponse, DefaultError, Options<NotificationsPartialUpdateData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await notificationsPartialUpdate({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * Mark all notifications as seen for the current user
- */
-export const notificationsMarkAllAsSeenCreateMutation = (options?: Partial<Options<NotificationsMarkAllAsSeenCreateData>>): UseMutationOptions<unknown, DefaultError, Options<NotificationsMarkAllAsSeenCreateData>> => {
-    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<NotificationsMarkAllAsSeenCreateData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await notificationsMarkAllAsSeenCreate({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-export const notificationsUnseenCountRetrieveQueryKey = (options?: Options<NotificationsUnseenCountRetrieveData>) => createQueryKey('notificationsUnseenCountRetrieve', options);
-
-/**
- * Get count of unseen notifications for the current user
- */
-export const notificationsUnseenCountRetrieveOptions = (options?: Options<NotificationsUnseenCountRetrieveData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await notificationsUnseenCountRetrieve({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: notificationsUnseenCountRetrieveQueryKey(options)
     });
 };
 
@@ -726,6 +511,32 @@ export const pricesListOptions = (options: Options<PricesListData>) => {
             return data;
         },
         queryKey: pricesListQueryKey(options)
+    });
+};
+
+export const pricesListInfiniteQueryKey = (options: Options<PricesListData>): QueryKey<Options<PricesListData>> => createQueryKey('pricesList', options, true);
+
+export const pricesListInfiniteOptions = (options: Options<PricesListData>) => {
+    return infiniteQueryOptions<PricesListResponse, DefaultError, InfiniteData<PricesListResponse>, QueryKey<Options<PricesListData>>, number | Pick<QueryKey<Options<PricesListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<PricesListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await pricesList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: pricesListInfiniteQueryKey(options)
     });
 };
 

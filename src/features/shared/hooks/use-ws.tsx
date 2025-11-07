@@ -1,32 +1,30 @@
-import { useContext, useEffect, useMemo } from 'react';
-import { generateUUID } from '../utils/pseudo-crypto';
+import { use, useEffect, useMemo } from 'react';
 import { WSContext } from '../providers/ws-provider';
+import { generateUUID } from '../utils/pseudo-crypto';
 
 export function useWS(events: Array<string>) {
-  const wsContext = useContext(WSContext);
+  const wsContext = use(WSContext);
 
   if (wsContext === undefined) {
-    throw new Error('useWS must be used within a WSProvider');
+    throw new Error('useWSProvider must be used within a WSProvider');
   }
 
   const handlerId = useMemo(generateUUID, []);
 
   useEffect(() => {
-    wsContext.updateHandler(channel, {
+    wsContext.updateHandler({
       handlerId,
       events: new Set(events),
     });
-  }, [channel, events, handlerId, wsContext]);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps --
+    We only want to update the handler when events change */
+  }, [events, handlerId]);
 
   useEffect(() => {
-    return () => wsContext.removeHandler(channel, handlerId);
-  }, [channel, handlerId, wsContext]);
+    return () => wsContext.removeHandler(handlerId);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps --
+    We only want to remove the handler on unmount */
+  }, []);
 
-  if (channel === 'prices') {
-    return wsContext.pricesWs;
-  }
-  if (channel === 'chat') {
-    return wsContext.chatWs;
-  }
-  return wsContext.notificationsWs;
+  return wsContext.ws;
 }
