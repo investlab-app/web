@@ -155,85 +155,57 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               variant="outline"
               aria-label="Toggle chart type"
             >
-              {tooltipsEnabled ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <ToggleGroupItem value="line" aria-label="Line chart">
-                      <LineChartIcon strokeWidth={1.5} />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ToggleGroupItem value="line" aria-label="Line chart">
+                    <LineChartIcon strokeWidth={1.5} />
+                  </ToggleGroupItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.line_chart',
+                      'Display price data as a simple line chart'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <ToggleGroupItem
+                      value="candle"
+                      aria-label="Candlestick chart"
+                    >
+                      <CandlestickChartIcon strokeWidth={1.5} />
                     </ToggleGroupItem>
-                  </TooltipTrigger>
-
-                  <TooltipContent>
-                    <p>
-                      {t(
-                        'common.tooltips.charts.line_chart',
-
-                        'Display price data as a simple line chart'
-                      )}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                <ToggleGroupItem value="line" aria-label="Line chart">
-                  <LineChartIcon strokeWidth={1.5} />
-                </ToggleGroupItem>
-              )}
-
-              {tooltipsEnabled ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div>
-                      <ToggleGroupItem
-                        value="candle"
-                        aria-label="Candlestick chart"
-                      >
-                        <CandlestickChartIcon strokeWidth={1.5} />
-                      </ToggleGroupItem>
-                    </div>
-                  </TooltipTrigger>
-
-                  <TooltipContent>
-                    <p>
-                      {t(
-                        'common.tooltips.charts.candlestick_chart',
-
-                        'Display detailed candlestick chart with open, high, low, close data'
-                      )}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                <ToggleGroupItem value="candle" aria-label="Candlestick chart">
-                  <CandlestickChartIcon strokeWidth={1.5} />
-                </ToggleGroupItem>
-              )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {t(
+                      'common.tooltips.charts.candlestick_chart',
+                      'Display detailed candlestick chart with open, high, low, close data'
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </ToggleGroup>
             <Select
               value={interval}
               onValueChange={(value) => setInterval(value as TimeInterval)}
             >
-              {tooltipsEnabled ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SelectTrigger
-                      className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
-                      aria-label="Select interval"
-                    >
-                      <SelectValue placeholder={t('common.select_interval')} />
-                    </SelectTrigger>
-                  </TooltipTrigger>
-
-                  <TooltipContent>{t('common.select_interval')}</TooltipContent>
-                </Tooltip>
-              ) : (
-                <SelectTrigger
-                  className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
-                  aria-label="Select interval"
-                >
-                  <SelectValue placeholder={t('common.select_interval')} />
-                </SelectTrigger>
-              )}
-
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <SelectTrigger
+                    className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
+                    aria-label="Select interval"
+                  >
+                    <SelectValue placeholder={t('common.select_interval')} />
+                  </SelectTrigger>
+                </TooltipTrigger>
+                <TooltipContent>{t('common.select_interval')}</TooltipContent>
+              </Tooltip>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>{t('common.interval')}</SelectLabel>

@@ -17,14 +17,9 @@ interface UseLiveChartUpdateProps {
   date?: string;
 }
 
-/**
- * Provides live updates to an ECharts line chart and renders a radiating
- * filled-circle animation on the latest point:
- * - Circles are true circles (symbol: 'circle')
- * - Circles are filled and expand while fading out
- * - Circles are anchored using xAxis/yAxis coordinates (no 'pin' effect)
- * - Center dot remains visible permanently
- */
+/* A React hook that provides live updates to an ECharts instance 
+   by adding or updating the latest data point with the provided 
+   value and date. */
 export function useLiveChartUpdate({
   chartRef,
   value,
@@ -52,7 +47,6 @@ export function useLiveChartUpdate({
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (currentOption?.xAxis as Array<EChartXAxis>)[0]?.data ?? [];
 
-    // Update or initialize last point
     if (seriesData.length > 0 && xAxisData.length > 0) {
       seriesData[seriesData.length - 1] = value;
     } else {
@@ -60,8 +54,9 @@ export function useLiveChartUpdate({
       xAxisData.push(date);
     }
 
-    // Commit data update
-    // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
+    /* eslint-disable-next-line
+       react-you-might-not-need-an-effect/no-pass-data-to-parent 
+       -- imperative chart update, not passing data to parent */
     chartInstance.setOption({
       series: [{ data: seriesData }],
       xAxis: { data: xAxisData },

@@ -31,7 +31,6 @@ export function useLineChartOptions({
   const dates = chartData.map((item) => item.date);
   const seriesData = chartData.map((item) => item.close);
 
-  // Call hooks at top level (not conditionally)
   const primaryColor = useCssVar('--color-primary-hex');
   const cardColor = useCssVar('--color-card-hex');
 
