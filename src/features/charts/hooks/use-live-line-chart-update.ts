@@ -17,17 +17,16 @@ interface UseLiveLineChartUpdateProps {
   date?: string;
 }
 
-/* A React hook that provides live updates to an ECharts instance 
-   by adding or updating the latest data point with the provided 
-   value and date. */
+/**
+ * Updates ECharts line charts with live data points and expanding circle animations.
+ * Used for real-time stock price charts and other streaming data visualizations.
+ */
 export function useLiveLineChartUpdate({
   chartRef,
   value,
   date,
 }: UseLiveLineChartUpdateProps) {
   const animationFrameRef = useRef<number | null>(null);
-
-  // Get primary color once at the component level
   const primaryColor = useCssVar('--color-primary-hex');
 
   useEffect(() => {
@@ -68,23 +67,20 @@ export function useLiveLineChartUpdate({
       animationFrameRef.current = null;
     }
 
-    // Resolve axis coordinates for anchoring the circles
-    const xValue = xAxisData[xAxisData.length - 1]; // date string on x-axis
-    // In our current usage (line chart), value is a number (close price).
-    // If an array is provided (OHLC), fallback to the second element or first if missing.
+    // Calculate chart coordinates for new data point
+    const xValue = xAxisData[xAxisData.length - 1]; // date on x-axis
     const yValue =
       typeof value === 'number'
         ? value
         : Array.isArray(value)
-          ? value[1] || value[0]
+          ? value[1] || value[0] // OHLC fallback: close price, then open
           : (undefined as unknown as number);
 
-    // Animation config
+    // Animation timing and sizing
     const expandDurationMs = 800;
     const startTs = Date.now();
     const centerDotSize = 6;
 
-    // Set initial mark point with center dot visible
     // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent
     chartInstance.setOption({
       series: [
@@ -117,7 +113,7 @@ export function useLiveLineChartUpdate({
       const elapsed = Date.now() - startTs;
       const expandProgress = Math.min(elapsed / expandDurationMs, 1);
 
-      // Three filled circles that expand and fade
+      // Three expanding circles with different sizes and fade rates
       const discs = [
         { maxGrow: 30, opacityFactor: 1.2 },
         { maxGrow: 22, opacityFactor: 0.9 },
@@ -128,30 +124,26 @@ export function useLiveLineChartUpdate({
         const size = centerDotSize + disc.maxGrow * expandProgress;
         const opacity = Math.max(0, 1 - expandProgress * disc.opacityFactor);
 
-        // Convert opacity (0-1) to hex alpha
+        // Convert opacity to hex for color string
         const hexAlpha = Math.round(opacity * 255)
           .toString(16)
           .padStart(2, '0');
 
         return {
-          // Use axis-based positioning to avoid "pin" effects and ensure true center anchoring
           xAxis: xValue,
           yAxis: yValue,
-          // Filled circle with fading opacity
           itemStyle: {
-            color: `${primaryColor}${hexAlpha}`, // primary color with dynamic opacity
+            color: `${primaryColor}${hexAlpha}`, // primary color with alpha
             borderWidth: 0,
           },
           symbolSize: [size, size] as [number, number],
-          // Ensure circle symbol, not pin
           symbol: 'circle' as const,
-          // Force anchor at exact center
-          symbolOffset: [0, 0] as [number, number],
+          symbolOffset: [0, 0] as [number, number], // center anchor
         };
       });
 
+      // Combine static center dot with expanding rings
       const markPointData = [
-        // Solid center dot (always visible)
         {
           xAxis: xValue,
           yAxis: yValue,
@@ -161,10 +153,9 @@ export function useLiveLineChartUpdate({
           },
           symbol: 'circle' as const,
           symbolSize: [centerDotSize, centerDotSize] as [number, number],
-          // Force anchor at exact center
           symbolOffset: [0, 0] as [number, number],
         },
-        // Expanding filled circles (only during expand phase)
+        // Show expanding rings only during animation
         ...(expandProgress < 1 ? discDataItems : []),
       ];
 
@@ -174,12 +165,10 @@ export function useLiveLineChartUpdate({
             markPoint: {
               symbol: 'circle',
               symbolKeepAspect: true,
-              // Ensure all mark points are centered (no pin-like offset)
-              symbolOffset: [0, 0],
+              symbolOffset: [0, 0], // prevent pin-style offset
               label: { show: false },
               data: markPointData,
-              // Avoid hover styles shifting visuals
-              emphasis: { disabled: true },
+              emphasis: { disabled: true }, // prevent hover effects
             },
           },
         ],
