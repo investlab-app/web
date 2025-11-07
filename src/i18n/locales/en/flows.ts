@@ -6,6 +6,18 @@ const enFlows = {
       'To view and edit a strategy, click the arrow next to the strategy name.',
     add_strategy: 'Add new strategy',
   },
+  errors: {
+    flow_name_empty: 'Flow name cannot be empty',
+    flow_invalid: 'Flow is invalid. Please fix the errors before saving.',
+    cannot_rename_new_strategy: "Cannot rename a new strategy",
+    cannot_delete_new_strategy: "Cannot delete a new strategy",
+    delete_failed: 'Failed to delete flow: {{message}}',
+    create_failed: 'Failed to create flow: {{message}}',
+    update_failed: 'Failed to update flow: {{message}}',
+    update_name_failed: 'Failed to update flow name',
+    edit_restricted:
+      'You are in mobile view. You can delete or rename your strategy, but to edit it, you need a larger device.',
+  },
   placeholders: {
     buy_sell: 'buy/sell',
     check_periodically: 'check periodically',
@@ -18,6 +30,7 @@ const enFlows = {
     greater_less: 'greater/less',
     above_below_threshold: 'above/below threshold',
     risen_fallen: 'risen/fallen',
+    new_strategy: 'New Strategy',
   },
   sidebar: {
     logical: 'Logical operators',
@@ -106,6 +119,7 @@ const enFlows = {
     week: 'weeks',
     month: 'months',
     check_every: 'check every',
+    new_strategy: 'New Strategy',
   },
 };
 

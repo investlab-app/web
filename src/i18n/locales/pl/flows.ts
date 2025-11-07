@@ -6,6 +6,19 @@ const plFlows = {
       'Aby zobaczyć oraz edytować strategię, kliknij w strzałkę przy nazwie strategii.',
     add_strategy: 'Dodaj nową strategię',
   },
+  errors: {
+    flow_name_empty: 'Nazwa strategii nie może być pusta',
+    flow_invalid:
+      'Strategia jest nieprawidłowa. Popraw błędy przed zapisaniem.',
+    cannot_rename_new_strategy: 'Nie można zmienić nazwy nowej strategii',
+    cannot_delete_new_strategy: 'Nie można usunąć nowej strategii',
+    delete_failed: 'Usuwanie strategii nie powiodło się: {{message}}',
+    create_failed: 'Tworzenie strategii nie powiodło się: {{message}}',
+    update_failed: 'Aktualizacja strategii nie powiodła się: {{message}}',
+    update_name_failed: 'Aktualizacja nazwy strategii nie powiodła się',
+    edit_restricted:
+      'Jesteś na urządzeniu mobilnym. Możesz usunąć lub zmienić nazwę strategii, ale aby ją edytować, potrzebujesz większego urządzenia.',
+  },
   placeholders: {
     buy_sell: 'kup/sprzedaj',
     check_periodically: 'sprawdzaj okresowo',
@@ -18,6 +31,7 @@ const plFlows = {
     time: '',
     shares: 'akcje',
     above_below_threshold: 'powyżej/poniżej progu',
+     new_strategy: 'Nowa Strategia',
   },
   sidebar: {
     logical: 'Operatory logiczne',
@@ -106,6 +120,7 @@ const plFlows = {
     week: 'tygodni',
     month: 'miesięcy',
     check_every: 'sprawdzaj co',
+    new_strategy: 'Nowa strategia',
   },
 };
 

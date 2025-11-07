@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import {
   graphLangCreateMutation,
   graphLangDestroyMutation,
@@ -11,6 +12,7 @@ import {
 } from '@/client/@tanstack/react-query.gen';
 
 export function useStrategyMutations() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -24,8 +26,8 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      console.error('Failed to delete flow:', error);
-      toast.error('Failed to delete flow');
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(t('flows.errors.delete_failed', { message }));
     },
   });
 
@@ -39,8 +41,8 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      console.error('Failed to create flow:', error);
-      toast.error('Failed to create flow');
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(t('flows.errors.create_failed', { message }));
     },
   });
 
@@ -54,8 +56,8 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
-      console.error('Failed to update flow:', error);
-      toast.error('Failed to update flow');
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(t('flows.errors.update_failed', { message }));
     },
   });
 
@@ -69,7 +71,7 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: () => {
-      toast.error('Failed to update flow name');
+      toast.error(t('flows.errors.update_name_failed'));
     },
   });
 
