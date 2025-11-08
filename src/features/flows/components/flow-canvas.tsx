@@ -57,15 +57,14 @@ export const FlowCanvas = memo(
           colorMode={theme}
           nodes={nodes}
           edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           nodeExtent={NODE_EXTENT}
           translateExtent={TRANSLATE_EXTENT}
           nodeTypes={nodeTypes}
           onInit={onInit}
           zoomOnScroll={false}
           panOnDrag={false}
-          zoomOnPinch={false}
-          zoomOnDoubleClick={false}
-          panOnScroll={false}
           elementsSelectable={false}
           nodesDraggable={false}
         >

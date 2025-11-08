@@ -41,7 +41,7 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : String(error);
+     const message = error.message;
       toast.error(t('flows.errors.create_failed', { message }));
     },
   });
@@ -56,7 +56,7 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : String(error);
+      const message = error.message;
       toast.error(t('flows.errors.update_failed', { message }));
     },
   });
