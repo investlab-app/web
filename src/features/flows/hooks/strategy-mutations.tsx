@@ -41,7 +41,7 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-     const message = error.message;
+      const message = error.message;
       toast.error(t('flows.errors.create_failed', { message }));
     },
   });

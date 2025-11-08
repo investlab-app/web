@@ -64,7 +64,6 @@ export const FlowCanvas = memo(
           nodeTypes={nodeTypes}
           onInit={onInit}
           zoomOnScroll={false}
-          panOnDrag={false}
           elementsSelectable={false}
           nodesDraggable={false}
         >

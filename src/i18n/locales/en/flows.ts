@@ -1,4 +1,3 @@
-
 const enFlows = {
   listview: {
     title: 'Your Strategies',
@@ -12,8 +11,8 @@ const enFlows = {
   errors: {
     flow_name_empty: 'Flow name cannot be empty',
     flow_invalid: 'Flow is invalid. Please fix the errors before saving.',
-    cannot_rename_new_strategy: "Cannot rename a new strategy",
-    cannot_delete_new_strategy: "Cannot delete a new strategy",
+    cannot_rename_new_strategy: 'Cannot rename a new strategy',
+    cannot_delete_new_strategy: 'Cannot delete a new strategy',
     delete_failed: 'Failed to delete flow: {{message}}',
     create_failed: 'Failed to create flow: {{message}}',
     update_failed: 'Failed to update flow: {{message}}',
