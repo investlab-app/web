@@ -56,7 +56,8 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
-      const message = error.message;
+      console.log(error);
+      const message = error.non_field_errors;
       toast.error(t('flows.errors.update_failed', { message }));
     },
   });
