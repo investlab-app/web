@@ -5,6 +5,8 @@ const plFlows = {
     description2:
       'Aby zobaczyć oraz edytować strategię, kliknij w strzałkę przy nazwie strategii.',
     add_strategy: 'Dodaj nową strategię',
+    active_strategies: 'Aktywne strategie',
+    closed_strategies: 'Zamknięte strategie',
   },
   errors: {
     flow_name_empty: 'Nazwa strategii nie może być pusta',
@@ -40,7 +42,9 @@ const plFlows = {
     numbers: 'Węzły wartości',
     math: 'Matematyka',
     actions: 'Akcje',
-    save_flow: 'Zapisz strategię',
+     delete: 'Usuń strategię',
+     edit: 'Edytuj nazwę',
+    save: 'Zapisz strategię',
     predicates: 'Predykaty',
   },
   ghosts: {
