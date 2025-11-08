@@ -44,7 +44,9 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [nodeType, setNodeType] = useState<string | null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [editedFlowName, setEditedFlowName] = useState<string | undefined>(undefined);
+  const [editedFlowName, setEditedFlowName] = useState<string | undefined>(
+    undefined
+  );
 
   const { data: flowData } = useQuery({
     ...graphLangRetrieveOptions({
@@ -56,7 +58,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const flowName =
     editedFlowName !== undefined
       ? editedFlowName
-      : flowData?.name ?? (isNewStrategy ? t('flows.placeholders.new_strategy') : '');
+      : (flowData?.name ??
+        (isNewStrategy ? t('flows.placeholders.new_strategy') : ''));
 
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
