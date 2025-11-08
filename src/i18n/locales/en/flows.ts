@@ -1,3 +1,4 @@
+
 const enFlows = {
   listview: {
     title: 'Your Strategies',
@@ -5,6 +6,8 @@ const enFlows = {
     description2:
       'To view and edit a strategy, click the arrow next to the strategy name.',
     add_strategy: 'Add new strategy',
+    active_strategies: 'Active strategies',
+    closed_strategies: 'Closed strategies',
   },
   errors: {
     flow_name_empty: 'Flow name cannot be empty',
@@ -38,7 +41,9 @@ const enFlows = {
     triggers: 'Triggers',
     numbers: 'Value nodes',
     actions: 'Actions',
-    save_flow: 'Save Strategy',
+    delete: 'Delete Strategy',
+    edit: 'Edit Name',
+    save: 'Save Strategy',
     math: 'Math',
     predicates: 'Predicates',
   },

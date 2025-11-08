@@ -12,7 +12,7 @@ export function SaveButton({ onSave }: SaveButtonProps) {
       onClick={onSave}
       className="px-4 mb-4 bg-[var(--primary)] text-white rounded"
     >
-      {t('flows.sidebar.save_flow')}
+      {t('flows.sidebar.save')}
     </Button>
   );
 }

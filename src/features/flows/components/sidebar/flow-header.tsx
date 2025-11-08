@@ -57,7 +57,7 @@ export function FlowHeader({
         onChange={handleChange}
         disabled={canRename && !isEditing}
         className="flex-1 border-0 text-lg font-semibold focus-visible:ring-0 disabled:opacity-100 disabled:cursor-default dark:bg-transparent"
-        placeholder={t('flows.header.title_placeholder')}
+        placeholder={t('flows.placeholders.new_strategy')}
       />
       <div className="flex items-center gap-1">
         {canRename && (
@@ -68,7 +68,7 @@ export function FlowHeader({
                 size="icon"
                 onClick={handleSave}
                 className="size-8"
-                aria-label={t('flows.header.save')}
+                aria-label={t('flows.sidebar.save')}
                 disabled={!tempTitle.trim()}
               >
                 <Save className="size-4" />
@@ -79,7 +79,7 @@ export function FlowHeader({
                 size="icon"
                 onClick={handleEdit}
                 className="size-8"
-                aria-label={t('flows.header.edit')}
+                aria-label={t('flows.sidebar.edit')}
               >
                 <Pencil className="size-4" />
               </Button>
@@ -91,7 +91,7 @@ export function FlowHeader({
           size="icon"
           onClick={onDelete}
           className="size-8 text-destructive hover:text-destructive"
-          aria-label={t('flows.header.delete')}
+          aria-label={t('flows.sidebar.delete')}
         >
           <Trash2 className="size-4" />
         </Button>
