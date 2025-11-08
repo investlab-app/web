@@ -54,9 +54,9 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
             <Button
               variant="ghost"
               size="icon"
+              aria-label={t('common.edit')}
               onClick={() => navigate({ to: `/strategies/${id}` })}
               className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
-              asChild
             >
               <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
