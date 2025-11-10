@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
+import { FlowListRowPlaceholder } from './flow-list-row-placeholder';
 import { FlowListRow } from './flow-list-row';
 import { Button } from '@/features/shared/components/ui/button';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
+import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
 
 interface FlowsListProps {
   strategies: ReadonlyArray<{ id: string; name: string }>;
@@ -20,6 +22,10 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
       {strategies.map((strategy) => (
         <FlowListRow key={strategy.id} id={strategy.id} name={strategy.name} />
       ))}
+
+      {strategies.length === 0 && (
+        <FlowListRowPlaceholder active={isActive ?? false} />
+      )}
 
       {isActive && !isMobile && (
         <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
@@ -38,6 +44,13 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
             </span>
           </Button>
         </div>
+      )}
+      {isActive && isMobile && (
+        <Alert className="border-warning bg-warning/10">
+          <AlertDescription>
+            {t('flows.errors.add_restricted')}
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );

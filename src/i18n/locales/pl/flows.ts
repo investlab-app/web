@@ -20,6 +20,14 @@ const plFlows = {
     update_name_failed: 'Aktualizacja nazwy strategii nie powiodła się',
     edit_restricted:
       'Jesteś na urządzeniu mobilnym. Możesz usunąć lub zmienić nazwę strategii, ale aby ją edytować, potrzebujesz większego urządzenia.',
+    add_restricted:
+      'Dodawanie nowych strategii jest niedostępne na urządzeniach mobilnych.',
+  },
+  success: {
+    flow_deleted: 'Strategia została pomyślnie usunięta',
+    flow_created: 'Strategia została pomyślnie utworzona',
+    flow_updated: 'Strategia została pomyślnie zaktualizowana',
+    flow_name_updated: 'Nazwa strategii została pomyślnie zaktualizowana',
   },
   placeholders: {
     buy_sell: 'kup/sprzedaj',
@@ -34,6 +42,10 @@ const plFlows = {
     shares: 'akcje',
     above_below_threshold: 'powyżej/poniżej progu',
     new_strategy: 'Nowa Strategia',
+    no_active_strategies:
+      'Brak aktywnych strategii do wyświetlenia. Dodaj nową strategię, aby wyświetlić ją tutaj.',
+    no_history_strategies:
+      'Historia strategii jest pusta. Zamknięte strategie pojawią się tutaj.',
   },
   sidebar: {
     logical: 'Operatory logiczne',

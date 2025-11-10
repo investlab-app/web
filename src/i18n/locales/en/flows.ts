@@ -9,16 +9,23 @@ const enFlows = {
     closed_strategies: 'Closed strategies',
   },
   errors: {
-    flow_name_empty: 'Flow name cannot be empty',
-    flow_invalid: 'Flow is invalid. Please fix the errors before saving.',
+    flow_name_empty: 'Strategy name cannot be empty',
+    flow_invalid: 'Strategy is invalid. Please fix the errors before saving.',
     cannot_rename_new_strategy: 'Cannot rename a new strategy',
     cannot_delete_new_strategy: 'Cannot delete a new strategy',
-    delete_failed: 'Failed to delete flow: {{message}}',
-    create_failed: 'Failed to create flow: {{message}}',
-    update_failed: 'Failed to update flow: {{message}}',
-    update_name_failed: 'Failed to update flow name',
+    delete_failed: 'Failed to delete strategy: {{message}}',
+    create_failed: 'Failed to create strategy: {{message}}',
+    update_failed: 'Failed to update strategy: {{message}}',
+    update_name_failed: 'Failed to update strategy name',
     edit_restricted:
       'You are in mobile view. You can delete or rename your strategy, but to edit it, you need a larger device.',
+    add_restricted: 'Adding new strategies is not available on mobile devices.',
+  },
+  success: {
+    flow_deleted: 'Strategy deleted successfully',
+    flow_created: 'Strategy created successfully',
+    flow_updated: 'Strategy updated successfully',
+    flow_name_updated: 'Strategy name updated successfully',
   },
   placeholders: {
     buy_sell: 'buy/sell',
@@ -33,6 +40,10 @@ const enFlows = {
     above_below_threshold: 'above/below threshold',
     risen_fallen: 'risen/fallen',
     new_strategy: 'New Strategy',
+    no_active_strategies:
+      'No active strategies to display. Add a new strategy to see it here.',
+    no_history_strategies:
+      'The strategy history is empty. Closed strategies will appear here.',
   },
   sidebar: {
     logical: 'Logical operators',

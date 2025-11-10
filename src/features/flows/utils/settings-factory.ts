@@ -33,18 +33,14 @@ type SettingsFactory = (data: Record<string, unknown>) => NodeSettings;
 
 const settingsClassMap: Partial<Record<CustomNodeTypes, SettingsFactory>> = {
   // Logic Operator nodes
-  [CustomNodeTypes.Not]: (data) =>
-    Object.assign(new NotNodeSettings(), data),
-  [CustomNodeTypes.And]: (data) =>
-    Object.assign(new AndNodeSettings(), data),
-  [CustomNodeTypes.Or]: (data) =>
-    Object.assign(new OrNodeSettings(), data),
+  [CustomNodeTypes.Not]: (data) => Object.assign(new NotNodeSettings(), data),
+  [CustomNodeTypes.And]: (data) => Object.assign(new AndNodeSettings(), data),
+  [CustomNodeTypes.Or]: (data) => Object.assign(new OrNodeSettings(), data),
   [CustomNodeTypes.OccurredXTimes]: (data) =>
     Object.assign(new OccurredXTimesNodeSettings(), data),
 
   // Math nodes
-  [CustomNodeTypes.Add]: (data) =>
-    Object.assign(new AddNodeSettings(), data),
+  [CustomNodeTypes.Add]: (data) => Object.assign(new AddNodeSettings(), data),
   [CustomNodeTypes.Subtract]: (data) =>
     Object.assign(new SubtractNodeSettings(), data),
   [CustomNodeTypes.Multiply]: (data) =>
