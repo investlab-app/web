@@ -19,7 +19,7 @@ export function useStrategyMutations() {
   const deleteMutation = useMutation({
     ...graphLangDestroyMutation(),
     onSuccess: async () => {
-      toast.success('Flow deleted successfully');
+      toast.success(t('flows.success.flow_deleted'));
       await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
       navigate({
         to: '/strategies',
@@ -34,7 +34,7 @@ export function useStrategyMutations() {
   const createMutation = useMutation({
     ...graphLangCreateMutation(),
     onSuccess: async (data) => {
-      toast.success('Flow created successfully');
+      toast.success(t('flows.success.flow_created'));
       await queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
       navigate({
         to: `/strategies/${data.id}`,
@@ -49,7 +49,7 @@ export function useStrategyMutations() {
   const updateMutation = useMutation({
     ...graphLangUpdateMutation(),
     onSuccess: (data) => {
-      toast.success('Flow updated successfully');
+      toast.success(t('flows.success.flow_updated'));
       queryClient.refetchQueries({
         queryKey: graphLangRetrieveQueryKey({ path: { id: data.id } }),
       });
@@ -65,7 +65,7 @@ export function useStrategyMutations() {
   const patchNameMutation = useMutation({
     ...graphLangPartialUpdateMutation(),
     onSuccess: (data) => {
-      toast.success('Flow name updated successfully');
+      toast.success(t('flows.success.flow_name_updated'));
       queryClient.refetchQueries({
         queryKey: graphLangRetrieveQueryKey({ path: { id: data.id } }),
       });
