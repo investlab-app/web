@@ -1,3 +1,5 @@
+import { cn } from '../utils/styles';
+
 interface InvestLabLogoProps {
   className?: string;
   width?: number;
@@ -10,13 +12,17 @@ export function InvestLabLogo({
   height = 20,
 }: InvestLabLogoProps) {
   return (
-    <img
-      src="/favicon.svg"
-      alt="InvestLab Logo - Financial Analytics Platform"
-      width={width}
-      height={height}
-      className={className}
+    <div
       role="img"
+      area-label="InvestLab Logo - Financial Analytics Platform"
+      className={cn(
+        'bg-foreground mask-[url(/favicon.svg)] mask-no-repeat mask-center mask-contain',
+        className
+      )}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+      }}
     />
   );
 }
