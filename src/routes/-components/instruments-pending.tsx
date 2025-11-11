@@ -1,4 +1,5 @@
 import { Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import SearchInput from '@/features/shared/components/ui/search-input';
@@ -53,6 +54,8 @@ const InstrumentsTableSkeleton = () => {
 };
 
 export const InstrumentsPending = () => {
+  const { t } = useTranslation();
+
   return (
     <AppFrame>
       <div className="flex flex-col gap-2">
@@ -60,7 +63,7 @@ export const InstrumentsPending = () => {
           value=""
           onChange={() => {}}
           className="max-w-md"
-          placeholder="Search..."
+          placeholder={t('common.search')}
           disabled
         />
 
@@ -72,7 +75,7 @@ export const InstrumentsPending = () => {
             disabled
           >
             <Star className="size-4" />
-            <span>Watched</span>
+            <span>{t('common.watched')}</span>
           </Button>
         </div>
 
@@ -82,7 +85,7 @@ export const InstrumentsPending = () => {
 
         <div className="flex justify-center mt-4">
           <Button variant="outline" disabled>
-            Loading...
+            {t('common.loading')}
           </Button>
         </div>
       </div>
