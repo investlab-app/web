@@ -90,7 +90,6 @@ function useMarketStatus() {
 
     // Market hours
     const marketOpenET = convertETToLocal(9, 30);
-    console.log('marketOpenET:', marketOpenET);
     const marketCloseET = convertETToLocal(16, 0);
     const afterHoursCloseET = convertETToLocal(20, 0);
 
