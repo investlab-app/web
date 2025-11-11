@@ -85,6 +85,14 @@ const plCommon = {
   },
   notifications: 'Powiadomienia',
   no_notifications: 'Brak powiadomień',
+  unknown_date: 'Nieznana data',
+  time_ago: {
+    less_than_hour: 'Mniej niż godzinę temu',
+    hours: '{{count}} godzin temu',
+    hour: '1 godzinę temu',
+    days: '{{count}} dni temu',
+    day: '1 dzień temu',
+  },
 };
 
 export default plCommon;

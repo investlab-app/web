@@ -86,6 +86,14 @@ const enCommon = {
   chat: 'Czat',
   notifications: 'Notifications',
   no_notifications: 'No notifications yet',
+  unknown_date: 'Unknown date',
+  time_ago: {
+    less_than_hour: 'Less than an hour ago',
+    hours: '{{count}} hours ago',
+    hour: '1 hour ago',
+    days: '{{count}} days ago',
+    day: '1 day ago',
+  },
 };
 
 export default enCommon;

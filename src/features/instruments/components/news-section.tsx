@@ -103,8 +103,8 @@ export function NewsSection({ ticker, className }: NewsSectionProps) {
                         </p>
                         <span className="text-xs text-muted-foreground block">
                           {newsItem.published_utc
-                            ? formatTimeAgo(newsItem.published_utc)
-                            : 'Unknown date'}
+                            ? formatTimeAgo(newsItem.published_utc, t)
+                            : t('common.unknown_date')}
                           <span className="mx-2">|</span>
                           {newsItem.author}
                         </span>
@@ -129,17 +129,18 @@ function NewsHeader() {
   );
 }
 
-function formatTimeAgo(dateString: string) {
+function formatTimeAgo(dateString: string, t: (key: string, options?: any) => string) {
   const date = new Date(dateString);
   const now = new Date();
   const diffInHours = Math.floor(
     (now.getTime() - date.getTime()) / (1000 * 60 * 60)
   );
 
-  if (diffInHours < 1) return 'Less than an hour ago';
-  if (diffInHours < 24)
-    return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+  if (diffInHours < 1) return t('common.time_ago.less_than_hour');
+  if (diffInHours < 24) {
+    return t(diffInHours === 1 ? 'common.time_ago.hour' : 'common.time_ago.hours', { count: diffInHours });
+  }
 
   const diffInDays = Math.floor(diffInHours / 24);
-  return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+  return t(diffInDays === 1 ? 'common.time_ago.day' : 'common.time_ago.days', { count: diffInDays });
 }
