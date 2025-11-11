@@ -86,11 +86,12 @@ export type Graph = {
     readonly id: string;
     name: string;
     raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type GraphEffect = {
     readonly created_at: string;
-    effect_type: number;
     effect: GraphEffectDetail;
     success: boolean;
 };
@@ -104,11 +105,14 @@ export type GraphEffectDetail = ({
 export type GraphNotificationEffect = {
     message: string;
     format: FormatEnum;
+    readonly effect_type: string;
 };
 
 export type GraphRequest = {
     name: string;
     raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type GraphResult = {
@@ -119,11 +123,14 @@ export type GraphTransactionEffect = {
     instrument: InstrumentName;
     is_buy: boolean;
     amount: string;
+    readonly effect_type: string;
 };
 
 export type GraphUpdateRequest = {
     name?: string;
     raw_graph_data?: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type HistoryEntry = {
@@ -528,6 +535,8 @@ export type PaginatedPriceAlertList = {
 export type PatchedGraphUpdateRequest = {
     name?: string;
     raw_graph_data?: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type PatchedInvestorRequest = {
@@ -758,11 +767,23 @@ export type AccountValueSnapshotDailyWritable = {
 export type GraphWritable = {
     name: string;
     raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type GraphEffectWritable = {
-    effect_type: number;
     success: boolean;
+};
+
+export type GraphNotificationEffectWritable = {
+    message: string;
+    format: FormatEnum;
+};
+
+export type GraphTransactionEffectWritable = {
+    instrument: InstrumentName;
+    is_buy: boolean;
+    amount: string;
 };
 
 export type InstrumentListWritable = {
