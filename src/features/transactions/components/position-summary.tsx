@@ -6,7 +6,7 @@ import type { Position } from '@/client';
 import { InstrumentIconCircle } from '@/features/instruments/components/instrument-image-circle';
 import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { getProfabilityColor } from '@/features/shared/utils/colors';
+import { getProfitabilityColor } from '@/features/shared/utils/colors';
 import { dateToLocale } from '@/features/shared/utils/date';
 import { toFixedLocalized } from '@/features/shared/utils/numbers';
 import { cn } from '@/features/shared/utils/styles';
@@ -117,7 +117,7 @@ export function PositionSummary({
           <SummaryMetric
             label={t('common.gain')}
             value={toFixedLocalized(position.gain, i18n.language, 2)}
-            valueClassName={getProfabilityColor(position.gain)}
+            valueClassName={getProfitabilityColor(position.gain)}
             containerClassName="min-w-0 border-r"
           />
           <SummaryMetric
@@ -127,7 +127,7 @@ export function PositionSummary({
                 ? 'N/A'
                 : `${toFixedLocalized(position.gain_percentage, i18n.language, 2)}%`
             }
-            valueClassName={getProfabilityColor(position.gain_percentage)}
+            valueClassName={getProfitabilityColor(position.gain_percentage)}
             containerClassName="min-w-0"
           />
         </div>
