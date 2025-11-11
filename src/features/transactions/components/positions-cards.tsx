@@ -282,46 +282,6 @@ function SellCard({
                 : '—'}
             </span>
           </div>
-          {/* <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground flex items-center gap-1">
-              {t('transactions.cards.realized_gain_loss')}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="size-2.5 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>{t('transactions.tooltips.gain_loss')}</p>
-                </TooltipContent>
-              </Tooltip>
-            </span>
-            {gain !== null ? (
-              <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                {helpers.formatCurrency(gain, language)}
-              </span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground flex items-center gap-1">
-              {t('transactions.cards.realized_pct')}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="size-2.5 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>{t('transactions.tooltips.gain_loss_pct')}</p>
-                </TooltipContent>
-              </Tooltip>
-            </span>
-            {gainPct !== null ? (
-              <span className={`font-medium ${helpers.getGainColor(gainPct)}`}>
-                {helpers.formatPercentage(gainPct)}
-              </span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div> */}
         </div>
       </CardContent>
     </Card>
