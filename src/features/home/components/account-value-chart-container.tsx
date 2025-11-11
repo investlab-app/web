@@ -37,18 +37,7 @@ export const AccountValueChartContainer = () => {
   }
 
   if (isError) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-semibold">
-            {t('investor.account_value_over_time')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ErrorMessage message={t('common.error_loading_data')} />
-        </CardContent>
-      </Card>
-    );
+    return <AccountValueChartError />;
   }
 
   return (
@@ -96,3 +85,19 @@ export const AccountValueChartContainerSkeleton = () => {
     </Card>
   );
 };
+
+function AccountValueChartError() {
+  const { t } = useTranslation();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
+          {t('investor.account_value_over_time')}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ErrorMessage message={t('common.error_loading_data')} />
+      </CardContent>
+    </Card>
+  );
+}
