@@ -61,8 +61,6 @@ function useMarketStatus() {
       Date.UTC(1970, 0, 1, etHour + etOffset, etMinute, 0)
     );
 
-    console.log('utcDate:', utcDate);
-
     return utcDate.toLocaleString(i18n.language, {
       timeZone: localTimeZone,
       hour: '2-digit',
