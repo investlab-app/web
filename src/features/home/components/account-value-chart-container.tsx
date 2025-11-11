@@ -91,7 +91,7 @@ function AccountValueChartError() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">
+        <CardTitle>
           {t('investor.account_value_over_time')}
         </CardTitle>
       </CardHeader>
