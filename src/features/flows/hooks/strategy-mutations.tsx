@@ -11,6 +11,8 @@ import {
   graphLangUpdateMutation,
 } from '@/client/@tanstack/react-query.gen';
 
+
+// Parsing the erros at the moment is non-existent, as I didn't yet consult error types with krzyzan
 export function useStrategyMutations() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : String(error);
+      const message = error;
       toast.error(t('flows.errors.delete_failed', { message }));
     },
   });
@@ -41,7 +43,7 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      const message = error.message;
+      const message = error.non_field_errors;
       toast.error(t('flows.errors.create_failed', { message }));
     },
   });
@@ -56,7 +58,6 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
-      console.log(error);
       const message = error.non_field_errors;
       toast.error(t('flows.errors.update_failed', { message }));
     },
