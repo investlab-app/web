@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangRetrieve, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMePartialUpdate, investorsMeRetrieve, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangRetrieveData, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -196,6 +196,63 @@ export const graphLangUpdateMutation = (options?: Partial<Options<GraphLangUpdat
     const mutationOptions: UseMutationOptions<GraphLangUpdateResponse, DefaultError, Options<GraphLangUpdateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await graphLangUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const graphLangResultsListQueryKey = (options: Options<GraphLangResultsListData>) => createQueryKey('graphLangResultsList', options);
+
+export const graphLangResultsListOptions = (options: Options<GraphLangResultsListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await graphLangResultsList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: graphLangResultsListQueryKey(options)
+    });
+};
+
+export const graphLangResultsListInfiniteQueryKey = (options: Options<GraphLangResultsListData>): QueryKey<Options<GraphLangResultsListData>> => createQueryKey('graphLangResultsList', options, true);
+
+export const graphLangResultsListInfiniteOptions = (options: Options<GraphLangResultsListData>) => {
+    return infiniteQueryOptions<GraphLangResultsListResponse, DefaultError, InfiniteData<GraphLangResultsListResponse>, QueryKey<Options<GraphLangResultsListData>>, number | Pick<QueryKey<Options<GraphLangResultsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<GraphLangResultsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await graphLangResultsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: graphLangResultsListInfiniteQueryKey(options)
+    });
+};
+
+export const graphLangRunCreateMutation = (options?: Partial<Options<GraphLangRunCreateData>>): UseMutationOptions<GraphLangRunCreateResponse, DefaultError, Options<GraphLangRunCreateData>> => {
+    const mutationOptions: UseMutationOptions<GraphLangRunCreateResponse, DefaultError, Options<GraphLangRunCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await graphLangRunCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -415,6 +472,54 @@ export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMe
         },
         queryKey: investorsMeAccountValueListQueryKey(options)
     });
+};
+
+export const investorsMeNotificationsListQueryKey = (options?: Options<InvestorsMeNotificationsListData>) => createQueryKey('investorsMeNotificationsList', options);
+
+export const investorsMeNotificationsListOptions = (options?: Options<InvestorsMeNotificationsListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsMeNotificationsList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsMeNotificationsListQueryKey(options)
+    });
+};
+
+export const investorsMeWatchedTickersListQueryKey = (options?: Options<InvestorsMeWatchedTickersListData>) => createQueryKey('investorsMeWatchedTickersList', options);
+
+export const investorsMeWatchedTickersListOptions = (options?: Options<InvestorsMeWatchedTickersListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsMeWatchedTickersList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsMeWatchedTickersListQueryKey(options)
+    });
+};
+
+export const investorsMeWatchedTickersPartialUpdateMutation = (options?: Partial<Options<InvestorsMeWatchedTickersPartialUpdateData>>): UseMutationOptions<InvestorsMeWatchedTickersPartialUpdateResponse, DefaultError, Options<InvestorsMeWatchedTickersPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsMeWatchedTickersPartialUpdateResponse, DefaultError, Options<InvestorsMeWatchedTickersPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await investorsMeWatchedTickersPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const marketsHolidaysListQueryKey = (options?: Options<MarketsHolidaysListData>) => createQueryKey('marketsHolidaysList', options);

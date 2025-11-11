@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, GraphLangCreateData, GraphLangCreateResponses, GraphLangDestroyData, GraphLangDestroyResponses, GraphLangListData, GraphLangListResponses, GraphLangPartialUpdateData, GraphLangPartialUpdateResponses, GraphLangRetrieveData, GraphLangRetrieveResponses, GraphLangUpdateData, GraphLangUpdateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsDepositCreateData, InvestorsDepositCreateResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatisticsAssetAllocationRetrieveData, StatisticsAssetAllocationRetrieveResponses, StatisticsCurrentAccountValueRetrieveData, StatisticsCurrentAccountValueRetrieveResponses, StatisticsOwnedSharesListData, StatisticsOwnedSharesListResponses, StatisticsStatisticsMostTradedListData, StatisticsStatisticsMostTradedListResponses, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatisticsTradingOverviewRetrieveResponses, StatisticsStatsRetrieveData, StatisticsStatsRetrieveResponses, StatisticsTransactionsHistoryListData, StatisticsTransactionsHistoryListResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
-import { zAuthSignInCreateData, zGraphLangCreateData, zGraphLangCreateResponse, zGraphLangDestroyData, zGraphLangDestroyResponse, zGraphLangListData, zGraphLangListResponse, zGraphLangPartialUpdateData, zGraphLangPartialUpdateResponse, zGraphLangRetrieveData, zGraphLangRetrieveResponse, zGraphLangUpdateData, zGraphLangUpdateResponse, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsDepositCreateData, zInvestorsDepositCreateResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMePartialUpdateData, zInvestorsMePartialUpdateResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatisticsAssetAllocationRetrieveData, zStatisticsAssetAllocationRetrieveResponse, zStatisticsCurrentAccountValueRetrieveData, zStatisticsCurrentAccountValueRetrieveResponse, zStatisticsOwnedSharesListData, zStatisticsOwnedSharesListResponse, zStatisticsStatisticsMostTradedListData, zStatisticsStatisticsMostTradedListResponse, zStatisticsStatisticsTradingOverviewRetrieveData, zStatisticsStatisticsTradingOverviewRetrieveResponse, zStatisticsStatsRetrieveData, zStatisticsStatsRetrieveResponse, zStatisticsTransactionsHistoryListData, zStatisticsTransactionsHistoryListResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
+import type { AuthSignInCreateData, AuthSignInCreateErrors, AuthSignInCreateResponses, GraphLangCreateData, GraphLangCreateResponses, GraphLangDestroyData, GraphLangDestroyResponses, GraphLangListData, GraphLangListResponses, GraphLangPartialUpdateData, GraphLangPartialUpdateResponses, GraphLangResultsListData, GraphLangResultsListResponses, GraphLangRetrieveData, GraphLangRetrieveResponses, GraphLangRunCreateData, GraphLangRunCreateResponses, GraphLangUpdateData, GraphLangUpdateResponses, InstrumentsDetailRetrieveData, InstrumentsDetailRetrieveResponses, InstrumentsListData, InstrumentsListResponses, InstrumentsWithPricesListData, InstrumentsWithPricesListResponses, InvestorsDepositCreateData, InvestorsDepositCreateResponses, InvestorsMeAccountValueListData, InvestorsMeAccountValueListResponses, InvestorsMeNotificationsListData, InvestorsMeNotificationsListResponses, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponses, InvestorsMeRetrieveData, InvestorsMeRetrieveResponses, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersListResponses, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponses, InvestorsPartialUpdateData, InvestorsPartialUpdateResponses, InvestorsRetrieveData, InvestorsRetrieveResponses, MarketsHolidaysListData, MarketsHolidaysListResponses, MarketsStatusRetrieveData, MarketsStatusRetrieveResponses, NewsListData, NewsListResponses, NotificationsVapidPublicKeyRetrieveData, NotificationsVapidPublicKeyRetrieveResponses, OrdersCancelDestroyData, OrdersCancelDestroyResponses, OrdersListData, OrdersListResponses, OrdersMarketCreateData, OrdersMarketCreateResponses, PricesBarsData, PricesBarsResponses, PricesListData, PricesListResponses, PricesPriceAlertCreateData, PricesPriceAlertCreateResponses, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponses, PricesPriceAlertListData, PricesPriceAlertListResponses, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponses, PricesPriceAlertRetrieveData, PricesPriceAlertRetrieveResponses, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponses, PricesRetrieveData, PricesRetrieveResponses, StatisticsAssetAllocationRetrieveData, StatisticsAssetAllocationRetrieveResponses, StatisticsCurrentAccountValueRetrieveData, StatisticsCurrentAccountValueRetrieveResponses, StatisticsOwnedSharesListData, StatisticsOwnedSharesListResponses, StatisticsStatisticsMostTradedListData, StatisticsStatisticsMostTradedListResponses, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatisticsTradingOverviewRetrieveResponses, StatisticsStatsRetrieveData, StatisticsStatsRetrieveResponses, StatisticsTransactionsHistoryListData, StatisticsTransactionsHistoryListResponses, StatusRetrieveData, StatusRetrieveResponses, TestAdminTestRetrieveData, TestAdminTestRetrieveResponses, TestAllTestRetrieveData, TestAllTestRetrieveResponses, TestAlpacaTestRetrieveData, TestAlpacaTestRetrieveResponses, TestPolygonTestRetrieveData, TestPolygonTestRetrieveResponses, TestUsersTestRetrieveData, TestUsersTestRetrieveResponses } from './types.gen';
+import { zAuthSignInCreateData, zGraphLangCreateData, zGraphLangCreateResponse, zGraphLangDestroyData, zGraphLangDestroyResponse, zGraphLangListData, zGraphLangListResponse, zGraphLangPartialUpdateData, zGraphLangPartialUpdateResponse, zGraphLangResultsListData, zGraphLangResultsListResponse, zGraphLangRetrieveData, zGraphLangRetrieveResponse, zGraphLangRunCreateData, zGraphLangRunCreateResponse, zGraphLangUpdateData, zGraphLangUpdateResponse, zInstrumentsDetailRetrieveData, zInstrumentsDetailRetrieveResponse, zInstrumentsListData, zInstrumentsListResponse, zInstrumentsWithPricesListData, zInstrumentsWithPricesListResponse, zInvestorsDepositCreateData, zInvestorsDepositCreateResponse, zInvestorsMeAccountValueListData, zInvestorsMeAccountValueListResponse, zInvestorsMeNotificationsListData, zInvestorsMeNotificationsListResponse, zInvestorsMePartialUpdateData, zInvestorsMePartialUpdateResponse, zInvestorsMeRetrieveData, zInvestorsMeRetrieveResponse, zInvestorsMeWatchedTickersListData, zInvestorsMeWatchedTickersListResponse, zInvestorsMeWatchedTickersPartialUpdateData, zInvestorsMeWatchedTickersPartialUpdateResponse, zInvestorsPartialUpdateData, zInvestorsPartialUpdateResponse, zInvestorsRetrieveData, zInvestorsRetrieveResponse, zMarketsHolidaysListData, zMarketsHolidaysListResponse, zMarketsStatusRetrieveData, zMarketsStatusRetrieveResponse, zNewsListData, zNewsListResponse, zNotificationsVapidPublicKeyRetrieveData, zNotificationsVapidPublicKeyRetrieveResponse, zOrdersCancelDestroyData, zOrdersCancelDestroyResponse, zOrdersListData, zOrdersListResponse, zOrdersMarketCreateData, zOrdersMarketCreateResponse, zPricesBarsData, zPricesBarsResponse, zPricesListData, zPricesListResponse, zPricesPriceAlertCreateData, zPricesPriceAlertCreateResponse, zPricesPriceAlertDestroyData, zPricesPriceAlertDestroyResponse, zPricesPriceAlertListData, zPricesPriceAlertListResponse, zPricesPriceAlertPartialUpdateData, zPricesPriceAlertPartialUpdateResponse, zPricesPriceAlertRetrieveData, zPricesPriceAlertRetrieveResponse, zPricesPriceAlertUpdateData, zPricesPriceAlertUpdateResponse, zPricesRetrieveData, zPricesRetrieveResponse, zStatisticsAssetAllocationRetrieveData, zStatisticsAssetAllocationRetrieveResponse, zStatisticsCurrentAccountValueRetrieveData, zStatisticsCurrentAccountValueRetrieveResponse, zStatisticsOwnedSharesListData, zStatisticsOwnedSharesListResponse, zStatisticsStatisticsMostTradedListData, zStatisticsStatisticsMostTradedListResponse, zStatisticsStatisticsTradingOverviewRetrieveData, zStatisticsStatisticsTradingOverviewRetrieveResponse, zStatisticsStatsRetrieveData, zStatisticsStatsRetrieveResponse, zStatisticsTransactionsHistoryListData, zStatisticsTransactionsHistoryListResponse, zStatusRetrieveData, zStatusRetrieveResponse, zTestAdminTestRetrieveData, zTestAdminTestRetrieveResponse, zTestAllTestRetrieveData, zTestAllTestRetrieveResponse, zTestAlpacaTestRetrieveData, zTestAlpacaTestRetrieveResponse, zTestPolygonTestRetrieveData, zTestPolygonTestRetrieveResponse, zTestUsersTestRetrieveData, zTestUsersTestRetrieveResponse } from './zod.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -161,6 +161,48 @@ export const graphLangUpdate = <ThrowOnError extends boolean = false>(options: O
             }
         ],
         url: '/api/graph_lang/{id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+export const graphLangResultsList = <ThrowOnError extends boolean = false>(options: Options<GraphLangResultsListData, ThrowOnError>) => {
+    return (options.client ?? client).get<GraphLangResultsListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zGraphLangResultsListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zGraphLangResultsListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/graph_lang/{id}/results/',
+        ...options
+    });
+};
+
+export const graphLangRunCreate = <ThrowOnError extends boolean = false>(options: Options<GraphLangRunCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<GraphLangRunCreateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zGraphLangRunCreateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zGraphLangRunCreateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/graph_lang/{id}/run/',
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -364,6 +406,67 @@ export const investorsMeAccountValueList = <ThrowOnError extends boolean = false
         ],
         url: '/api/investors/me/account-value/',
         ...options
+    });
+};
+
+export const investorsMeNotificationsList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeNotificationsListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeNotificationsListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMeNotificationsListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMeNotificationsListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/notifications/',
+        ...options
+    });
+};
+
+export const investorsMeWatchedTickersList = <ThrowOnError extends boolean = false>(options?: Options<InvestorsMeWatchedTickersListData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InvestorsMeWatchedTickersListResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersListData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersListResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/watched-tickers/',
+        ...options
+    });
+};
+
+export const investorsMeWatchedTickersPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<InvestorsMeWatchedTickersPartialUpdateData, ThrowOnError>) => {
+    return (options.client ?? client).patch<InvestorsMeWatchedTickersPartialUpdateResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersPartialUpdateData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInvestorsMeWatchedTickersPartialUpdateResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/investors/me/watched-tickers/{instrument_id}/',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
     });
 };
 
