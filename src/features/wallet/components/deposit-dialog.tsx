@@ -32,11 +32,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
     },
     onSubmit: ({ value }) => {
       if (value.amount <= 1 || value.amount > 100) {
-        toast.error(
-          t('wallet.invalid_amount', {
-            defaultValue: 'Amount must be between $1 and $100',
-          })
-        );
+        toast.error(t('wallet.invalid_amount'));
         return;
       }
 
@@ -53,7 +49,6 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
         typeof data.amount === 'string' ? parseFloat(data.amount) : data.amount;
       toast.success(
         t('wallet.deposit_success', {
-          defaultValue: `Successfully deposited $${amount.toFixed(2)}`,
           amount: amount.toFixed(2),
         })
       );
@@ -85,9 +80,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
         <DialogHeader>
           <DialogTitle>{t('wallet.deposit_funds')}</DialogTitle>
           <DialogDescription>
-            {t('wallet.deposit_description', {
-              defaultValue: 'Add funds to your paper trading account.',
-            })}
+            {t('wallet.deposit_description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -98,7 +91,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
               children={(field) => (
                 <div className="space-y-2">
                   <Label htmlFor="deposit-amount">
-                    {t('wallet.amount', { defaultValue: 'Amount' })}
+                    {t('wallet.amount')}
                   </Label>
                   <field.NumberInput
                     id="deposit-amount"
@@ -106,9 +99,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
                     max={100}
                     decimalScale={2}
                     fixedDecimalScale
-                    placeholder={t('wallet.enter_amount', {
-                      defaultValue: 'Enter amount',
-                    })}
+                    placeholder={t('wallet.enter_amount')}
                     className="w-full"
                   />
                   <p className="text-xs text-muted-foreground">
@@ -125,10 +116,10 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
                 onClick={() => handleOpenChange(false)}
                 disabled={depositMutation.isPending}
               >
-                {t('common.cancel', { defaultValue: 'Cancel' })}
+                {t('common.cancel')}
               </Button>
               <form.SubmitButton>
-                {t('wallet.deposit', { defaultValue: 'Deposit' })}
+                {t('wallet.deposit')}
               </form.SubmitButton>
             </DialogFooter>
           </div>
