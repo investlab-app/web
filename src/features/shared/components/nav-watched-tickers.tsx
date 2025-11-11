@@ -29,7 +29,7 @@ export function NavWatchedTickers() {
       <SidebarGroup>
         <SidebarGroupLabel className="flex items-center gap-2 leading-none">
           <Star className="h-4 w-4 flex-shrink-0" />
-          {t('common.watched', 'Watched')}
+          {t('common.watched')}
         </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
@@ -48,7 +48,7 @@ export function NavWatchedTickers() {
     <SidebarGroup>
       <SidebarGroupLabel className="flex items-center gap-2 leading-none">
         <Star className="h-4 w-4 flex-shrink-0" />
-        {t('common.watched', 'Watched')}
+        {t('common.watched')}
       </SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
@@ -58,7 +58,7 @@ export function NavWatchedTickers() {
                 state === 'collapsed' ? 'opacity-0' : 'opacity-100'
               }`}
             >
-              {t('common.no_watched_instruments', 'brak obserwowanych')}
+              {t('common.no_watched_instruments')}
             </div>
           ) : (
             watchedTickers.map((ticker) => {
@@ -80,7 +80,7 @@ export function NavWatchedTickers() {
                         symbol={ticker.ticker}
                         icon={ticker.icon ?? null}
                         name={ticker.name}
-                        className="h-5 w-5 rounded-full"
+                        className="h-4 w-4 rounded-full border-none outline-muted"
                       />
                       <span>{ticker.ticker}</span>
                     </Link>
