@@ -36,6 +36,9 @@ const RenderSkeletonRows = (skeletonRowCount = 5) => {
       <TableCell className="text-right h-10">
         <Skeleton className="h-4 w-16 ml-auto" />
       </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
     </TableRow>
   ));
 };
@@ -78,6 +81,9 @@ const MostTradedOverview = () => {
                     {t('statistics.buys_sells')}
                   </TableHead>
                   <TableHead className="text-right">
+                    {t('statistics.gain')}
+                  </TableHead>
+                  <TableHead className="text-right">
                     {t('statistics.avg_gain')}
                   </TableHead>
                 </TableRow>
@@ -97,10 +103,34 @@ const MostTradedOverview = () => {
                         <TableCell
                           className={cn(
                             'text-right',
-                            instrumentOverview.gain == 0 ? '' : 'text-green-500'
+                            instrumentOverview.gain > 0
+                              ? 'text-green-500'
+                              : instrumentOverview.gain < 0
+                                ? 'text-red-500'
+                                : ''
                           )}
                         >
-                          {instrumentOverview.gain.toFixed(2)}%
+                          {instrumentOverview.gain >= 0 ? '+' : ''}
+                          {instrumentOverview.gain.toFixed(2)}
+                        </TableCell>
+                        <TableCell
+                          className={cn(
+                            'text-right',
+                            instrumentOverview.gain_percentage
+                              ? instrumentOverview.gain_percentage > 0
+                                ? 'text-green-500'
+                                : instrumentOverview.gain_percentage < 0
+                                  ? 'text-red-500'
+                                  : ''
+                              : ''
+                          )}
+                        >
+                          {instrumentOverview.gain_percentage === null
+                            ? 'N/A'
+                            : (instrumentOverview.gain_percentage > 0
+                                ? '+'
+                                : '') +
+                              instrumentOverview.gain_percentage.toFixed(2)}
                         </TableCell>
                       </TableRow>
                     ))}
