@@ -31,8 +31,13 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
       amount: 5,
     },
     onSubmit: ({ value }) => {
-      if (value.amount <= 1 || value.amount > 100) {
-        toast.error(t('wallet.invalid_amount'));
+      if (value.amount <= 1) {
+        toast.error(t('wallet.invalid_amount_minimum', { amount: 1 }));
+        return;
+      }
+
+      if (value.amount > 100) {
+        toast.error(t('wallet.invalid_amount_maximum', { amount: 100 }));
         return;
       }
 
