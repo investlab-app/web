@@ -133,12 +133,14 @@ export const zInstrumentName = z.object({
 export const zGraphTransactionEffect = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
-    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
+    effect_type: z.string().readonly()
 });
 
 export const zGraphNotificationEffect = z.object({
     message: z.string(),
-    format: zFormatEnum
+    format: zFormatEnum,
+    effect_type: z.string().readonly()
 });
 
 export const zGraphEffectDetail = z.union([
@@ -154,7 +156,6 @@ export const zGraphEffect = z.object({
     created_at: z.iso.datetime({
         offset: true
     }).readonly(),
-    effect_type: z.int(),
     effect: zGraphEffectDetail,
     success: z.boolean()
 });
@@ -1012,8 +1013,18 @@ export const zGraphTransactionEffectWritable = z.object({
 });
 
 export const zGraphEffectWritable = z.object({
-    effect_type: z.int(),
     success: z.boolean()
+});
+
+export const zGraphNotificationEffectWritable = z.object({
+    message: z.string(),
+    format: zFormatEnum
+});
+
+export const zGraphTransactionEffectWritable = z.object({
+    instrument: zInstrumentName,
+    is_buy: z.boolean(),
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
 });
 
 export const zInstrumentListWritable = z.object({
