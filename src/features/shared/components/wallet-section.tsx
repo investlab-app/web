@@ -6,7 +6,6 @@ import { withCurrency } from '../utils/numbers';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
@@ -44,16 +43,14 @@ export function WalletSection() {
               withCurrency(parseFloat(accountValue.balance), i18n.language, 2)}
           </div>
         </SidebarMenuButton>
-        <SidebarMenuAction>
-          <Button
-            size="icon"
-            className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear "
-            aria-label={t('common.add')}
-            onClick={() => setDepositDialogOpen(true)}
-          >
-            <Plus />
-          </Button>
-        </SidebarMenuAction>
+        <Button
+          size="icon"
+          className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear group-data-[collapsible=icon]:hidden"
+          aria-label={t('common.add')}
+          onClick={() => setDepositDialogOpen(true)}
+        >
+          <Plus />
+        </Button>
       </SidebarMenuItem>
 
       <DepositDialog
