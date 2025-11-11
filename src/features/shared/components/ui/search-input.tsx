@@ -23,7 +23,7 @@ function SearchInput({
       <div className="relative">
         <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50">
           <Search className="size-4" />
-          <span className="sr-only">User</span>
+          <span className="sr-only">Search Icon</span>
         </div>
         <Input
           type="text"
