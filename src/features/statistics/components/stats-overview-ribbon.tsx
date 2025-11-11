@@ -14,6 +14,8 @@ const StatsOverviewRibbon = () => {
     isError,
   } = useQuery(statisticsStatisticsTradingOverviewRetrieveOptions());
 
+  console.log('StatsOverviewRibbon stats:', stats);
+
   const tiles = [
     {
       title: t('statistics.total_trades'),
@@ -25,9 +27,10 @@ const StatsOverviewRibbon = () => {
     },
     {
       title: t('statistics.total_return'),
-      value: stats?.total_gain
-        ? withCurrency(stats.total_gain, i18n.language, 2)
-        : undefined,
+      value:
+        stats?.total_gain !== undefined
+          ? withCurrency(stats.total_gain, i18n.language, 2)
+          : undefined,
       coloring: stats
         ? stats.total_gain > 0
           ? StatTile.Coloring.POSITIVE
