@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, Clock } from 'lucide-react';
 
@@ -87,28 +87,24 @@ export function NotificationPanel() {
 
   const locale = i18n.language || 'en';
 
-  const normalizedNotifications = useMemo(
-    () =>
-      notifications.map((notification) => {
-        const typeKey = notification.type || 'system';
-        const meta =
-          NOTIFICATION_TYPE_META[typeKey] ?? NOTIFICATION_TYPE_META.system;
-        const fallbackMessage =
-          notification.message_en || notification.message_pl || '';
+  const normalizedNotifications = notifications.map((notification) => {
+    const typeKey = notification.type || 'system';
+    const meta =
+      NOTIFICATION_TYPE_META[typeKey] ?? NOTIFICATION_TYPE_META.system;
+    const fallbackMessage =
+      notification.message_en || notification.message_pl || '';
 
-        return {
-          id: notification.id,
-          title: t(meta.labelKey, meta.fallbackLabel),
-          message:
-            locale.startsWith('pl') && notification.message_pl
-              ? notification.message_pl
-              : notification.message_en || fallbackMessage,
-          sentAt: notification.sent_at,
-          meta,
-        };
-      }),
-    [notifications, locale, t]
-  );
+    return {
+      id: notification.id,
+      title: t(meta.labelKey, meta.fallbackLabel),
+      message:
+        locale.startsWith('pl') && notification.message_pl
+          ? notification.message_pl
+          : notification.message_en || fallbackMessage,
+      sentAt: notification.sent_at,
+      meta,
+    };
+  });
 
   const hasNotifications = normalizedNotifications.length > 0;
   const triggerLabel = hasNotifications
