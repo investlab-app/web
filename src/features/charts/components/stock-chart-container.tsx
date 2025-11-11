@@ -75,8 +75,6 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const {
     data: priceHistory,
     isPending,
-    isFetching,
-    isSuccess,
     isError,
   } = useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
@@ -126,7 +124,8 @@ export function StockChartContainer({ ticker }: StockChartProps) {
     }
   }, [lastJsonMessage, ticker]);
 
-  const appliedInterval = useFrozenValue(interval, isFetching);
+  const appliedInterval = useFrozenValue(interval, isPending);
+  const appliedPriceHistory = useFrozenValue(priceHistory, isPending);
   const isIntervalChanging = appliedInterval !== interval;
 
   const latestClosingPrice = currentPrice?.close || priceHistory?.at(-1)?.close;
@@ -134,7 +133,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
   // happens with yearly interval for polygon since it's capped to past 5 years
-  const zoom = Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100);
+  const zoom = useFrozenValue(Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100), isPending);
 
   return (
     <Card>
@@ -223,26 +222,27 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         </CardAction>
       </CardHeader>
       <CardContent className="h-96">
-        {isPending && <StockChartSkeleton />}
-        {isError && <ErrorMessage message={t('common.error_loading_data')} />}
-        {isSuccess &&
-          (priceHistory.length ? (
-            <StockChart
-              type={isCandlestick ? 'candlestick' : 'line'}
-              ticker={ticker}
-              priceHistory={priceHistory}
-              selectedInterval={appliedInterval}
-              zoom={zoom}
-              liveUpdatePoint={currentPrice}
-            />
-          ) : (
-            <EmptyMessage
-              message={t('instruments.history_empty', {
-                ticker,
-                interval: t(timeIntervals[interval]),
-              })}
-            />
-          ))}
+        {isError ? (
+          <ErrorMessage message={t('common.error_loading_data')} />
+        ) : appliedPriceHistory === undefined ? (
+          <StockChartSkeleton />
+        ) : appliedPriceHistory.length ? (
+          <StockChart
+            type={isCandlestick ? 'candlestick' : 'line'}
+            ticker={ticker}
+            priceHistory={appliedPriceHistory}
+            selectedInterval={appliedInterval}
+            liveUpdatePoint={currentPrice}
+            zoom={zoom}
+          />
+        ) : (
+          <EmptyMessage
+            message={t('instruments.history_empty', {
+              ticker,
+              interval: t(timeIntervals[interval]),
+            })}
+          />
+        )}
       </CardContent>
     </Card>
   );
