@@ -10,7 +10,7 @@ export enum NotificationType {
 
 export enum ComparisonDirection {
   Greater = 'greater',
-  Lesser = 'lesser',
+  Lesser = 'less',
 }
 
 export enum TrendDirection {

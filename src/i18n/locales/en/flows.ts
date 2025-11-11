@@ -7,6 +7,12 @@ const enFlows = {
     add_strategy: 'Add new strategy',
     active_strategies: 'Active strategies',
     closed_strategies: 'Closed strategies',
+    no_history: 'This strategy has not executed any transactions yet.',
+  },
+  card:{
+    fail: "Not executed",
+    success: "Executed successfully",
+    bought_instrument: "Bought instrument",
   },
   errors: {
     flow_name_empty: 'Strategy name cannot be empty',
