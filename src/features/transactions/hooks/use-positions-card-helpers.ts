@@ -58,15 +58,6 @@ export function usePositionsCardHelpers(history: Array<HistoryEntry>) {
     return (numericalGain / totalAcquisitionCost) * 100;
   };
 
-  const formatCurrency = (value: number, language: string): string => {
-    return new Intl.NumberFormat(language, {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
-  };
-
   const formatPercentage = (value: number): string => {
     return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
   };
@@ -80,7 +71,6 @@ export function usePositionsCardHelpers(history: Array<HistoryEntry>) {
   return {
     calculateNumericalGain,
     calculatePercentageGain,
-    formatCurrency,
     formatPercentage,
     getGainColor,
     calculateAverageBuyPrice,

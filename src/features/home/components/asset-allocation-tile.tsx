@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface AssetAllocationProps {
@@ -39,11 +39,11 @@ export const AssetAllocationTile = ({
           {t('investor.asset_allocation')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {toFixedLocalized(totalValue, i18n.language)}
+          {withCurrency(totalValue, i18n.language)}
         </div>
 
         <span className="text-gray-400 text-sm">
-          {toFixedLocalized(yearlyGain, i18n.language)}
+          {withCurrency(yearlyGain, i18n.language)}
           {t('investor.this_year')}
         </span>
       </CardHeader>
@@ -117,7 +117,7 @@ export const AssetAllocationTile = ({
                         <div className="text-muted-foreground text-sm">
                           {formatPercentage(value)}
                           {'% — '}
-                          {toFixedLocalized(value, i18n.language)}
+                          {withCurrency(value, i18n.language)}
                         </div>
                       </div>
                     </div>

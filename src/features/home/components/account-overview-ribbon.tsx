@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { StatTile } from '../../shared/components/stat-tile';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import {
   statisticsCurrentAccountValueRetrieveOptions,
   statisticsStatsRetrieveOptions,
@@ -76,7 +76,7 @@ const AccountOverviewRibbon = () => {
         <StatTile
           key={index}
           title={tile.title}
-          value={toFixedLocalized(tile.value, i18n.language, 2)}
+          value={withCurrency(tile.value, i18n.language, 2)}
           isProgress={tile.isProgress}
           coloring={
             tile.isProgress

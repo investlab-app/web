@@ -11,7 +11,7 @@ import type { useTranslation } from 'react-i18next';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
 import type { TimeInterval } from '../utils/time-ranges';
 import { useCssVar } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface UseCandlestickChartOptionsProps {
   ticker: string;
@@ -70,10 +70,10 @@ export function useCandlestickChartOptions({
 
       return `<div>
   <strong>${formattedDate}</strong><br />
-  Open: $${toFixedLocalized(candlestickData[1], i18n.language, 2)}<br />
-  Close: $${toFixedLocalized(candlestickData[2], i18n.language, 2)}<br />
-  High: $${toFixedLocalized(candlestickData[4], i18n.language, 2)}<br />
-  Low: $${toFixedLocalized(candlestickData[3], i18n.language, 2)}
+  Open: $${withCurrency(candlestickData[1], i18n.language, 2)}<br />
+  Close: $${withCurrency(candlestickData[2], i18n.language, 2)}<br />
+  High: $${withCurrency(candlestickData[4], i18n.language, 2)}<br />
+  Low: $${withCurrency(candlestickData[3], i18n.language, 2)}
   </div>`;
     },
     [i18n, selectedInterval]

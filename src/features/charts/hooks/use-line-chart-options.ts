@@ -11,7 +11,7 @@ import type { useTranslation } from 'react-i18next';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
 import type { TimeInterval } from '../utils/time-ranges';
 import { useCssVar } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface CreateLineChartOptionsProps {
   stockName: string;
@@ -61,7 +61,7 @@ export function useLineChartOptions({
       return `<div>
 <strong>${formattedDate}</strong>
 <br />
-${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
+${t('instruments.price')}: $${withCurrency(value, i18n.language, 2)}
 </div>`;
     },
     [selectedInterval, i18n, t]

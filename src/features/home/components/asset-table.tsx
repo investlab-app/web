@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/features/shared/components/ui/table';
 import { cn } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 type AssetTableProps = {
   data: Array<OwnedShare>;
@@ -50,10 +50,10 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
               </TableCell>
               <TableCell>{asset.symbol}</TableCell>
               <TableCell className="text-right">
-                {toFixedLocalized(asset.volume, i18n.language, 5)}
+                {withCurrency(asset.volume, i18n.language, 5)}
               </TableCell>
               <TableCell className="text-right">
-                {toFixedLocalized(asset.value, i18n.language, 2)}{' '}
+                {withCurrency(asset.value, i18n.language, 2)}{' '}
               </TableCell>
               <TableCell
                 className={cn(
@@ -61,7 +61,7 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
                   asset.gain < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
                 )}
               >
-                {toFixedLocalized(asset.gain, i18n.language, 2)}{' '}
+                {withCurrency(asset.gain, i18n.language, 2)}{' '}
               </TableCell>
               <TableCell
                 className={cn(
@@ -74,7 +74,7 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
                 )}
               >
                 {asset.gain_percentage
-                  ? `${toFixedLocalized(asset.gain_percentage, i18n.language, 2)}%`
+                  ? `${withCurrency(asset.gain_percentage, i18n.language, 2)}%`
                   : 'N/A'}
               </TableCell>
             </TableRow>

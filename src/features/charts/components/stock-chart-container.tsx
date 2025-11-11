@@ -32,7 +32,7 @@ import {
 import { useWS } from '@/features/shared/hooks/use-ws';
 import { livePrice } from '@/features/charts/types/live-price';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -143,7 +143,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         {latestClosingPrice && (
           <CardDescription>
             {t('instruments.current_price')}: $
-            {toFixedLocalized(latestClosingPrice, i18n.language, 2)}
+            {withCurrency(latestClosingPrice, i18n.language, 2)}
           </CardDescription>
         )}
         <CardAction>

@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
@@ -47,7 +47,7 @@ export const AccountValueChartContainer = () => {
           {t('investor.account_value_over_time')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {toFixedLocalized(currentValue, i18n.language)}
+          {withCurrency(currentValue, i18n.language)}
         </div>
       </CardHeader>
       <CardContent className="h-96">

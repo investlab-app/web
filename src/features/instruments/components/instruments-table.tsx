@@ -9,7 +9,7 @@ import type {
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
 import { cn, cssVar } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
@@ -193,7 +193,7 @@ export const InstrumentTable = ({
               <div className="text-muted-foreground text-right">N/A</div>
             ) : (
               <div className="text-right">
-                {toFixedLocalized(currentPrice, i18n.language, 2)}{' '}
+                {withCurrency(currentPrice, i18n.language, 2)}{' '}
               </div>
             )}
           </div>
@@ -267,7 +267,7 @@ export const InstrumentTable = ({
           {row.original.volume === null ? (
             <div className="text-muted-foreground">N/A</div>
           ) : (
-            toFixedLocalized(row.original.volume, i18n.language, 1)
+            withCurrency(row.original.volume, i18n.language, 1)
           )}
         </div>
       ),
@@ -312,7 +312,7 @@ export const InstrumentTable = ({
           row.original.marketCap === undefined ? (
             <div className="text-muted-foreground">N/A</div>
           ) : (
-            toFixedLocalized(row.original.marketCap, i18n.language, 0, 'USD')
+            withCurrency(row.original.marketCap, i18n.language, 0, 'USD')
           )}
         </div>
       ),

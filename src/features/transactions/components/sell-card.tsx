@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { Badge } from '@/features/shared/components/ui/badge';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface SellCardProps {
   entry: HistoryEntry;
@@ -62,7 +63,7 @@ export function SellCard({
               {t('transactions.table.headers.share_price')}
             </span>
             <span className="font-medium">
-              {helpers.formatCurrency(entry.share_price, language)}
+              {withCurrency(entry.share_price, language)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
@@ -70,9 +71,7 @@ export function SellCard({
               {t('transactions.cards.avg_buy_price')}
             </span>
             <span className="font-medium">
-              {avgBuyPrice !== null
-                ? helpers.formatCurrency(avgBuyPrice, language)
-                : '—'}
+              {avgBuyPrice !== null ? withCurrency(avgBuyPrice, language) : '—'}
             </span>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Plus, Wallet } from 'lucide-react';
-import { toFixedLocalized } from '../utils/numbers';
+import { withCurrency } from '../utils/numbers';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
@@ -31,7 +31,7 @@ export function WalletSection() {
           asChild
           tooltip={
             isSuccess
-              ? `${t('common.wallet')}: ${toFixedLocalized(parseFloat(accountValue.balance), i18n.language, 2)}`
+              ? `${t('common.wallet')}: ${withCurrency(parseFloat(accountValue.balance), i18n.language, 2)}`
               : t('common.wallet')
           }
         >
@@ -40,7 +40,7 @@ export function WalletSection() {
             {isPending && <Skeleton className="h-6 w-24" />}
             {isError && <Skeleton className="h-6 w-24" />}
             {isSuccess &&
-              toFixedLocalized(
+              withCurrency(
                 parseFloat(accountValue.balance),
                 i18n.language,
                 2

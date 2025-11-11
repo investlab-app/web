@@ -15,6 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface BuyCardProps {
   entry: HistoryEntry;
@@ -70,7 +71,7 @@ export function BuyCard({
               {t('transactions.table.headers.share_price')}
             </span>
             <span className="font-medium">
-              {helpers.formatCurrency(entry.share_price, language)}
+              {withCurrency(entry.share_price, language)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
@@ -79,7 +80,7 @@ export function BuyCard({
             </span>
             <span className="font-medium">
               {currentPrice
-                ? helpers.formatCurrency(currentPrice, language)
+                ? withCurrency(currentPrice, language)
                 : '—'}
             </span>
           </div>
@@ -97,7 +98,7 @@ export function BuyCard({
             </span>
             {gain !== null ? (
               <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                {helpers.formatCurrency(gain, language)}
+                {withCurrency(gain, language)}
               </span>
             ) : (
               <span className="text-muted-foreground">—</span>

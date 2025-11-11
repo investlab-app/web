@@ -8,7 +8,7 @@ import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { getProfitabilityColor } from '@/features/shared/utils/colors';
 import { dateToLocale } from '@/features/shared/utils/date';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import { cn } from '@/features/shared/utils/styles';
 
 export function PositionSummary({
@@ -102,7 +102,7 @@ export function PositionSummary({
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <SummaryMetric
             label={t('common.quantity')}
-            value={toFixedLocalized(
+            value={withCurrency(
               Number(position.quantity),
               i18n.language,
               2
@@ -111,12 +111,12 @@ export function PositionSummary({
           />
           <SummaryMetric
             label={t('common.market_value')}
-            value={`${toFixedLocalized(Number(position.market_value), i18n.language, 2)}`}
+            value={`${withCurrency(Number(position.market_value), i18n.language, 2)}`}
             containerClassName="min-w-0 border-b md:border-b-0 md:border-r"
           />
           <SummaryMetric
             label={t('common.gain')}
-            value={toFixedLocalized(position.gain, i18n.language, 2)}
+            value={withCurrency(position.gain, i18n.language, 2)}
             valueClassName={getProfitabilityColor(position.gain)}
             containerClassName="min-w-0 border-r"
           />
@@ -125,7 +125,7 @@ export function PositionSummary({
             value={
               position.gain_percentage === null
                 ? 'N/A'
-                : `${toFixedLocalized(position.gain_percentage, i18n.language, 2)}%`
+                : `${withCurrency(position.gain_percentage, i18n.language, 2)}%`
             }
             valueClassName={getProfitabilityColor(position.gain_percentage)}
             containerClassName="min-w-0"

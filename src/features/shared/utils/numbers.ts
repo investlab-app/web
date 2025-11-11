@@ -1,4 +1,4 @@
-export const toFixedLocalized = (
+export const withCurrency = (
   val: number,
   locale: string,
   precision: number = 2,

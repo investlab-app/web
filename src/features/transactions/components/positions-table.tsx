@@ -12,18 +12,10 @@ import { dateToLocale } from '@/features/shared/utils/date';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 function usePositionsColumns() {
   const { t, i18n } = useTranslation();
-
-  const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat(i18n.language, {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
-  };
 
   return new Array<ColumnDef<HistoryEntry>>(
     {
@@ -93,7 +85,7 @@ function usePositionsColumns() {
       ),
       cell: ({ row }) => (
         <div className="text-end">
-          {formatCurrency(row.original.share_price)}
+          {withCurrency(row.original.share_price, i18n.language)}
         </div>
       ),
     },
@@ -115,7 +107,7 @@ function usePositionsColumns() {
       cell: ({ row }) => (
         <div className="text-end">
           {row.original.acquisition_price
-            ? formatCurrency(row.original.acquisition_price)
+            ? withCurrency(row.original.acquisition_price, i18n.language)
             : 'N/A'}
         </div>
       ),

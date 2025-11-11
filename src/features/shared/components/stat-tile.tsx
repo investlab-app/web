@@ -10,7 +10,7 @@ import { cn } from '@/features/shared/utils/styles';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import {
   decodeHtmlEntities,
-  toFixedLocalized,
+  withCurrency,
 } from '@/features/shared/utils/numbers';
 
 enum TileColoring {
@@ -64,7 +64,7 @@ export const StatTile = ({
               <TrendingDown className="size-4 " />
             )}
             <span className={cn('text-sm font-medium')}>
-              {toFixedLocalized(percentage, i18n.language, 2)}%
+              {withCurrency(percentage, i18n.language, 2)}%
             </span>
           </div>
         )}
