@@ -19,9 +19,7 @@ export function Positions({ type }: PositionsTableProps) {
   );
 
   if (isError) {
-    return (
-      <ErrorMessage message={t('transactions.error_loading')} />
-    );
+    return <ErrorMessage message={t('transactions.error_loading')} />;
   }
 
   if (isPending) {
@@ -37,9 +35,7 @@ export function Positions({ type }: PositionsTableProps) {
   // Safety check: ensure data is an array
   if (!Array.isArray(data)) {
     console.error('Expected array but got:', typeof data, data);
-    return (
-      <ErrorMessage message={t('transactions.error_invalid_data')} />
-    );
+    return <ErrorMessage message={t('transactions.error_invalid_data')} />;
   }
 
   if (data.length === 0) {

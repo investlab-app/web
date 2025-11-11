@@ -18,11 +18,7 @@ interface SellCardProps {
   helpers: PositionsCardHelpers;
 }
 
-export function SellCard({
-  entry,
-  entryIndex,
-  helpers,
-}: SellCardProps) {
+export function SellCard({ entry, entryIndex, helpers }: SellCardProps) {
   const { t, i18n } = useTranslation();
 
   const avgBuyPrice = helpers.calculateAverageBuyPrice(entryIndex);
@@ -70,7 +66,9 @@ export function SellCard({
               {t('transactions.cards.avg_buy_price')}
             </span>
             <span className="font-medium">
-              {avgBuyPrice !== null ? withCurrency(avgBuyPrice, i18n.language) : '—'}
+              {avgBuyPrice !== null
+                ? withCurrency(avgBuyPrice, i18n.language)
+                : '—'}
             </span>
           </div>
         </div>

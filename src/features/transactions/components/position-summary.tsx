@@ -102,11 +102,7 @@ export function PositionSummary({
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <SummaryMetric
             label={t('common.quantity')}
-            value={withCurrency(
-              Number(position.quantity),
-              i18n.language,
-              2
-            )}
+            value={withCurrency(Number(position.quantity), i18n.language, 2)}
             containerClassName="min-w-0 border-b border-r md:border-b-0 pl-4"
           />
           <SummaryMetric

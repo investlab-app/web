@@ -38,7 +38,8 @@ const enTransactions = {
     },
   },
   error_loading: 'Sorry, the transaction history could not be loaded.',
-  error_invalid_data: 'Invalid data format received from server. Please try again later.',
+  error_invalid_data:
+    'Invalid data format received from server. Please try again later.',
   no_open_positions: 'You have no open positions for this instrument.',
   end_of_history: 'End of transaction history',
   tooltips: {

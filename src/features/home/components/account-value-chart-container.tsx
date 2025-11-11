@@ -91,9 +91,7 @@ function AccountValueChartError() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          {t('investor.account_value_over_time')}
-        </CardTitle>
+        <CardTitle>{t('investor.account_value_over_time')}</CardTitle>
       </CardHeader>
       <CardContent>
         <ErrorMessage message={t('common.error_loading_data')} />

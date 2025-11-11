@@ -129,7 +129,10 @@ function NewsHeader() {
   );
 }
 
-function formatTimeAgo(dateString: string, t: (key: string, options?: any) => string) {
+function formatTimeAgo(
+  dateString: string,
+  t: ReturnType<typeof useTranslation>['t']
+) {
   const date = new Date(dateString);
   const now = new Date();
   const diffInHours = Math.floor(
@@ -138,9 +141,14 @@ function formatTimeAgo(dateString: string, t: (key: string, options?: any) => st
 
   if (diffInHours < 1) return t('common.time_ago.less_than_hour');
   if (diffInHours < 24) {
-    return t(diffInHours === 1 ? 'common.time_ago.hour' : 'common.time_ago.hours', { count: diffInHours });
+    return t(
+      diffInHours === 1 ? 'common.time_ago.hour' : 'common.time_ago.hours',
+      { count: diffInHours }
+    );
   }
 
   const diffInDays = Math.floor(diffInHours / 24);
-  return t(diffInDays === 1 ? 'common.time_ago.day' : 'common.time_ago.days', { count: diffInDays });
+  return t(diffInDays === 1 ? 'common.time_ago.day' : 'common.time_ago.days', {
+    count: diffInDays,
+  });
 }

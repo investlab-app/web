@@ -95,9 +95,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
               name="amount"
               children={(field) => (
                 <div className="space-y-2">
-                  <Label htmlFor="deposit-amount">
-                    {t('wallet.amount')}
-                  </Label>
+                  <Label htmlFor="deposit-amount">{t('wallet.amount')}</Label>
                   <field.NumberInput
                     id="deposit-amount"
                     min={1}
@@ -123,9 +121,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
               >
                 {t('common.cancel')}
               </Button>
-              <form.SubmitButton>
-                {t('wallet.deposit')}
-              </form.SubmitButton>
+              <form.SubmitButton>{t('wallet.deposit')}</form.SubmitButton>
             </DialogFooter>
           </div>
         </form.AppForm>

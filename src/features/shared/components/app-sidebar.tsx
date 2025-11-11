@@ -103,7 +103,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter className="px-0">
-        <div className={`px-2 ${state === 'collapsed' ? 'space-y-2' : 'space-y-0'}`}>
+        <div
+          className={`px-2 ${state === 'collapsed' ? 'space-y-2' : 'space-y-0'}`}
+        >
           <WalletSection />
           {user ? <NavUser user={user} /> : <NavUserSkeleton />}
         </div>

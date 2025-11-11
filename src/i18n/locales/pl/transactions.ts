@@ -41,7 +41,8 @@ const plTransactions = {
   },
   error_loading:
     'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
-  error_invalid_data: 'Nieprawidłowy format danych otrzymanych z serwera. Spróbuj ponownie później.',
+  error_invalid_data:
+    'Nieprawidłowy format danych otrzymanych z serwera. Spróbuj ponownie później.',
   no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
   end_of_history: 'Koniec historii transakcji',
   tooltips: {

@@ -9,8 +9,10 @@ const plWallet = {
   enter_amount: 'Wprowadź kwotę',
   minimum_deposit: 'Minimalna wpłata: ${{amount}}',
   deposit_success: 'Pomyślnie wpłacono ${{amount}}',
-  invalid_amount_minimum: 'Proszę wprowadzić prawidłową kwotę większą niż ${{amount}}',
-  invalid_amount_maximum: 'Proszę wprowadzić prawidłową kwotę mniejszą niż ${{amount}}',
+  invalid_amount_minimum:
+    'Proszę wprowadzić prawidłową kwotę większą niż ${{amount}}',
+  invalid_amount_maximum:
+    'Proszę wprowadzić prawidłową kwotę mniejszą niż ${{amount}}',
   deposit_error: 'Nie udało się przetworzyć wpłaty. Spróbuj ponownie.',
   balance: 'Saldo',
   total_balance: 'Saldo Całkowite',

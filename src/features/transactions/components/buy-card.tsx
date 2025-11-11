@@ -77,9 +77,7 @@ export function BuyCard({
               {t('transactions.cards.current_price')}
             </span>
             <span className="font-medium">
-              {currentPrice
-                ? withCurrency(currentPrice, i18n.language)
-                : '—'}
+              {currentPrice ? withCurrency(currentPrice, i18n.language) : '—'}
             </span>
           </div>
           <div className="flex justify-between text-xs">
