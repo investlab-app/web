@@ -20,7 +20,7 @@ export function Positions({ type }: PositionsTableProps) {
 
   if (isError) {
     return (
-      <ErrorMessage message="Error loading positions. Please try again later." />
+      <ErrorMessage message={t('transactions.error_loading')} />
     );
   }
 
@@ -38,7 +38,7 @@ export function Positions({ type }: PositionsTableProps) {
   if (!Array.isArray(data)) {
     console.error('Expected array but got:', typeof data, data);
     return (
-      <ErrorMessage message="Invalid data format received from server. Please try again later." />
+      <ErrorMessage message={t('transactions.error_invalid_data')} />
     );
   }
 
