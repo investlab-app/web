@@ -6,6 +6,7 @@ import { withCurrency } from '../utils/numbers';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/features/shared/components/ui/sidebar';
@@ -35,26 +36,24 @@ export function WalletSection() {
               : t('common.wallet')
           }
         >
-          <div className="flex items-center gap-2 h-12 ml-1">
+          <div className="flex items-center gap-2 h-12">
             <Wallet />
             {isPending && <Skeleton className="h-6 w-24" />}
             {isError && <Skeleton className="h-6 w-24" />}
             {isSuccess &&
-              withCurrency(
-                parseFloat(accountValue.balance),
-                i18n.language,
-                2
-              )}
+              withCurrency(parseFloat(accountValue.balance), i18n.language, 2)}
           </div>
         </SidebarMenuButton>
-        <Button
-          size="icon"
-          className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear"
-          aria-label={t('common.add')}
-          onClick={() => setDepositDialogOpen(true)}
-        >
-          <Plus />
-        </Button>
+        <SidebarMenuAction>
+          <Button
+            size="icon"
+            className="ml-auto size-8 group-data-[collapsible=icon]:bg-primary active:bg-primary/90 hover:bg-primary/90 duration-200 ease-linear "
+            aria-label={t('common.add')}
+            onClick={() => setDepositDialogOpen(true)}
+          >
+            <Plus />
+          </Button>
+        </SidebarMenuAction>
       </SidebarMenuItem>
 
       <DepositDialog
