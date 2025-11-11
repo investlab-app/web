@@ -4,7 +4,7 @@ const plInvestor = {
   invested: 'Zainwestowano',
   total_account_value: 'Całkowita wartość konta',
   asset_allocation: 'Rozkład środków',
-  this_year: 'w tym roku',
+  gained_this_year: 'Zarobiono {{amount}} w tym roku',
   distribution: 'Rozkład',
   unallocated: 'Nierozmieszczone',
   gain: 'Zysk',

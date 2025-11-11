@@ -43,8 +43,9 @@ export const AssetAllocationTile = ({
         </div>
 
         <span className="text-gray-400 text-sm">
-          {withCurrency(yearlyGain, i18n.language)}
-          {t('investor.this_year')}
+          {t('investor.gained_this_year', {
+            amount: withCurrency(yearlyGain, i18n.language),
+          })}
         </span>
       </CardHeader>
       <CardContent className="p-6 space-y-6">

@@ -4,7 +4,7 @@ const enInvestor = {
   invested: 'Invested',
   total_account_value: 'Total account value',
   asset_allocation: 'Asset allocation',
-  this_year: 'in this year',
+  gained_this_year: 'Gained {{amount}} this year',
   distribution: 'Distribution',
   unallocated: 'Unallocated',
   gain: 'Gain',
