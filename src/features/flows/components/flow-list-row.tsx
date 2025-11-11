@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowRight, ChevronRight, Trash2 } from 'lucide-react';
 import { useStrategyMutations } from '../hooks/strategy-mutations';
+import { FlowListRowHistoryRibbon } from './flow-list-row-history-ribbon';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
 
@@ -16,11 +17,14 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { deleteMutation } = useStrategyMutations();
+  
+
   const navigate = useNavigate();
 
   const handleDeleteFlow = () => {
     deleteMutation.mutate({ path: { id } });
   };
+
 
   return (
     <div className={cn('bg-muted/40', className)}>
@@ -76,11 +80,7 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
         </div>
 
         {!isCollapsed && (
-          <div className="p-4 border-b border-muted-foreground/10">
-            <p className="text-sm text-muted-foreground">
-              {t('flows.strategy_details_placeholder')}
-            </p>
-          </div>
+          <FlowListRowHistoryRibbon id={id} />
         )}
       </div>
     </div>

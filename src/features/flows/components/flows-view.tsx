@@ -26,10 +26,18 @@ export function FlowsView() {
     isError,
   } = useQuery(graphLangListOptions());
 
-  const strategies =
-    flowsData?.results.map((flow) => ({
+ 
+  const activeStrategies =
+    flowsData?.results.filter((r) => r.active).map((flow) => ({
       id: flow.id,
       name: flow.name,
+      repeat: flow.repeat,
+    })) ?? [];
+  const closedStrategies =
+    flowsData?.results.filter((r) => !r.active).map((flow) => ({
+      id: flow.id,
+      name: flow.name,
+      repeat: flow.repeat,
     })) ?? [];
 
   if (isPending) {
@@ -85,10 +93,10 @@ export function FlowsView() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value={FlowType.Active}>
-          <FlowsList isActive strategies={strategies} />
+          <FlowsList isActive strategies={activeStrategies} />
         </TabsContent>
         <TabsContent value={FlowType.Closed}>
-          <FlowsList strategies={[]} />
+          <FlowsList strategies={closedStrategies} />
         </TabsContent>
       </Tabs>
     </div>
