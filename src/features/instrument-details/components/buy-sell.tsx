@@ -10,7 +10,7 @@ import {
   ordersMarketCreateMutation,
   statisticsTransactionsHistoryListOptions,
 } from '@/client/@tanstack/react-query.gen';
-import { useLivePrice } from '@/features/shared/hooks/use-live-price';
+import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 
 interface BuySellProps {
