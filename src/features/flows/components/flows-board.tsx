@@ -119,6 +119,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         body: {
           name: flowName,
           raw_graph_data: flow,
+          active: true,
+          repeat: false
         },
       });
     } else {
@@ -126,6 +128,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         body: {
           name: flowName,
           raw_graph_data: flow,
+          active: true,
+          repeat: false
         },
       });
     }
