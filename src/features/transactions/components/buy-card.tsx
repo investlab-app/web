@@ -1,4 +1,5 @@
 import { Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { HistoryEntry } from '@/client';
 import type { PositionsCardHelpers } from '../hooks/use-positions-card-helpers';
 import { cn } from '@/features/shared/utils/styles';
@@ -22,8 +23,6 @@ interface BuyCardProps {
   entryIndex: number;
   currentPrice?: number;
   helpers: PositionsCardHelpers;
-  language: string;
-  t: (key: string) => string;
 }
 
 export function BuyCard({
@@ -31,9 +30,8 @@ export function BuyCard({
   entryIndex,
   currentPrice,
   helpers,
-  language,
-  t,
 }: BuyCardProps) {
+  const { t, i18n } = useTranslation();
   const gain = helpers.calculateNumericalGain(entry, entryIndex, currentPrice);
   const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
@@ -53,7 +51,7 @@ export function BuyCard({
               {t('transactions.badge.buy')}
             </Badge>
             <CardTitle className="text-xs text-muted-foreground">
-              {dateToLocale(entry.timestamp, language)}
+              {dateToLocale(entry.timestamp, i18n.language)}
             </CardTitle>
           </div>
         </div>
@@ -71,7 +69,7 @@ export function BuyCard({
               {t('transactions.table.headers.share_price')}
             </span>
             <span className="font-medium">
-              {withCurrency(entry.share_price, language)}
+              {withCurrency(entry.share_price, i18n.language)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
@@ -80,7 +78,7 @@ export function BuyCard({
             </span>
             <span className="font-medium">
               {currentPrice
-                ? withCurrency(currentPrice, language)
+                ? withCurrency(currentPrice, i18n.language)
                 : '—'}
             </span>
           </div>
@@ -98,7 +96,7 @@ export function BuyCard({
             </span>
             {gain !== null ? (
               <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                {withCurrency(gain, language)}
+                {withCurrency(gain, i18n.language)}
               </span>
             ) : (
               <span className="text-muted-foreground">—</span>

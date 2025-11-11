@@ -16,13 +16,12 @@ interface PositionsCardsProps {
   className?: string;
 }
 
-
 export function PositionsCards({
   history,
   currentPrice,
   className,
 }: PositionsCardsProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const helpers = usePositionsCardHelpers(history);
 
   if (history.length === 0) {
@@ -47,17 +46,9 @@ export function PositionsCards({
                 entryIndex={index}
                 currentPrice={currentPrice}
                 helpers={helpers}
-                language={i18n.language}
-                t={t}
               />
             ) : (
-              <SellCard
-                entry={entry}
-                entryIndex={index}
-                helpers={helpers}
-                language={i18n.language}
-                t={t}
-              />
+              <SellCard entry={entry} entryIndex={index} helpers={helpers} />
             )}
           </div>
         ))}

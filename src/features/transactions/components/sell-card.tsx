@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { HistoryEntry } from '@/client';
 import type { PositionsCardHelpers } from '../hooks/use-positions-card-helpers';
 import { cn } from '@/features/shared/utils/styles';
@@ -15,17 +16,15 @@ interface SellCardProps {
   entry: HistoryEntry;
   entryIndex: number;
   helpers: PositionsCardHelpers;
-  language: string;
-  t: (key: string) => string;
 }
 
 export function SellCard({
   entry,
   entryIndex,
   helpers,
-  language,
-  t,
 }: SellCardProps) {
+  const { t, i18n } = useTranslation();
+
   const avgBuyPrice = helpers.calculateAverageBuyPrice(entryIndex);
 
   return (
@@ -44,7 +43,7 @@ export function SellCard({
               {t('transactions.badge.sell')}
             </Badge>
             <CardTitle className="text-xs text-muted-foreground">
-              {dateToLocale(entry.timestamp, language)}
+              {dateToLocale(entry.timestamp, i18n.language)}
             </CardTitle>
           </div>
         </div>
@@ -63,7 +62,7 @@ export function SellCard({
               {t('transactions.table.headers.share_price')}
             </span>
             <span className="font-medium">
-              {withCurrency(entry.share_price, language)}
+              {withCurrency(entry.share_price, i18n.language)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
@@ -71,7 +70,7 @@ export function SellCard({
               {t('transactions.cards.avg_buy_price')}
             </span>
             <span className="font-medium">
-              {avgBuyPrice !== null ? withCurrency(avgBuyPrice, language) : '—'}
+              {avgBuyPrice !== null ? withCurrency(avgBuyPrice, i18n.language) : '—'}
             </span>
           </div>
         </div>
