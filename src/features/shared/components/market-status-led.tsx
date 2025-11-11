@@ -7,12 +7,13 @@ import {
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
 
-function PendingLED({ t }: { t: (key: string, fallback: string) => string }) {
+function PendingLED() {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2">
       <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse" />
       <span className="text-xs text-muted-foreground">
-        {t('common.loading', 'Loading')}
+        {t('common.loading')}
       </span>
     </div>
   );
@@ -71,7 +72,7 @@ function useMarketStatus() {
   const getMarketStatusInfo = () => {
     if (!marketStatus) {
       return {
-        status: t('common.loading', 'Loading'),
+        status: t('common.loading'),
         details: '',
       };
     }
@@ -99,7 +100,7 @@ function useMarketStatus() {
     if (marketStatus.market === 'open') {
       if (marketStatus.after_hours) {
         return {
-          status: t('common.after_hours', 'After Hours'),
+          status: t('common.after_hours'),
           details: t('marketStatus.after_hours_info', {
             closeTime: marketCloseET,
             afterHoursClose: afterHoursCloseET,
@@ -111,7 +112,7 @@ function useMarketStatus() {
 
       if (marketStatus.early_hours) {
         return {
-          status: t('common.pre_market', 'Pre-Market'),
+          status: t('common.pre_market'),
           details: t('marketStatus.pre_market_info', {
             openTime: marketOpenET,
             localTime: localServerTime,
@@ -121,7 +122,7 @@ function useMarketStatus() {
       }
 
       return {
-        status: t('common.market_open', 'Market Open'),
+        status: t('common.market_open'),
         details: t('marketStatus.regular_hours_info', {
           openTime: marketOpenET,
           closeTime: marketCloseET,
@@ -133,7 +134,7 @@ function useMarketStatus() {
 
     if (isWeekend) {
       return {
-        status: t('common.market_closed', 'Market Closed'),
+        status: t('common.market_closed'),
         details: t('marketStatus.weekend_closed', {
           openTime: marketOpenET,
           localTime: localServerTime,
@@ -152,7 +153,7 @@ function useMarketStatus() {
         minutesUntilOpen += 60;
       }
       return {
-        status: t('common.market_closed', 'Market Closed'),
+        status: t('common.market_closed'),
         details: t('marketStatus.opens_in', {
           openTime: marketOpenET,
           hours: hoursUntilOpen,
@@ -168,7 +169,7 @@ function useMarketStatus() {
     // Market already closed for the day (after 4:00 PM ET)
     if (hours >= 16) {
       return {
-        status: t('common.market_closed', 'Market Closed'),
+        status: t('common.market_closed'),
         details: t('marketStatus.opens_tomorrow', {
           openTime: marketOpenET,
           localTime: localServerTime,
@@ -179,7 +180,7 @@ function useMarketStatus() {
 
     // Default closed message (fallback case)
     return {
-      status: t('common.market_closed', 'Market Closed'),
+      status: t('common.market_closed'),
       details: t('marketStatus.market_closed_default', {
         localTime: localServerTime,
         timeZone: localTimeZone,
@@ -195,11 +196,22 @@ function useMarketStatus() {
 }
 
 export function MarketStatusLED() {
-  const { t } = useTranslation();
   const { isPending, isMarketOpen, marketStatusInfo } = useMarketStatus();
 
   if (isPending) {
-    return <PendingLED t={t} />;
+    return <PendingLED />;
+  }
+
+  // Don't show tooltip if there are no details
+  if (!marketStatusInfo.details) {
+    return (
+      <div>
+        <MarketLED
+          isMarketOpen={isMarketOpen}
+          status={marketStatusInfo.status}
+        />
+      </div>
+    );
   }
 
   return (
