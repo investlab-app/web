@@ -1,23 +1,32 @@
-import { useTranslation } from "react-i18next";
-import { Badge } from "@/features/shared/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/features/shared/components/ui/card";
-import { dateToLocale } from "@/features/shared/utils/date";
-import { cn } from "@/features/shared/utils/styles";
-
+import { useTranslation } from 'react-i18next';
+import { Badge } from '@/features/shared/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/features/shared/components/ui/card';
+import { dateToLocale } from '@/features/shared/utils/date';
+import { cn } from '@/features/shared/utils/styles';
 
 interface HistoryCardProps {
-    timestamp: string;
-    instrument: string;
-    quantity: string;
-    isBuy: boolean;
-    success: boolean;
+  timestamp: string;
+  instrument: string;
+  quantity: string;
+  isBuy: boolean;
+  success: boolean;
 }
 
-export function HistoryCard( { timestamp, instrument, quantity, isBuy, success }: HistoryCardProps ) {
-
-    const { t, i18n } = useTranslation();
-    const language = i18n.language;
-    return (
+export function HistoryCard({
+  timestamp,
+  instrument,
+  quantity,
+  isBuy,
+  success,
+}: HistoryCardProps) {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  return (
     <Card
       className={cn(
         'flex-shrink-0 snap-start transition-colors h-full rounded-none',
@@ -33,10 +42,12 @@ export function HistoryCard( { timestamp, instrument, quantity, isBuy, success }
               {dateToLocale(timestamp, language)}
             </CardTitle>
             <Badge variant="undecorated" className="mb-2 text-xs">
-            {isBuy ? t('transactions.badge.buy') : t('transactions.badge.sell')}
+              {isBuy
+                ? t('transactions.badge.buy')
+                : t('transactions.badge.sell')}
             </Badge>
             <Badge variant="default" className="mb-2 text-xs">
-            {success ? t('flows.card.success') : t('flows.card.fail')}
+              {success ? t('flows.card.success') : t('flows.card.fail')}
             </Badge>
           </div>
         </div>
@@ -59,11 +70,8 @@ export function HistoryCard( { timestamp, instrument, quantity, isBuy, success }
             <span className="text-muted-foreground">
               {t('transactions.table.headers.share_price')}
             </span>
-            <span className="font-medium">
-              424.00 USD
-            </span>
+            <span className="font-medium">424.00 USD</span>
           </div>
-         
         </div>
       </CardContent>
     </Card>

@@ -26,19 +26,22 @@ export function FlowsView() {
     isError,
   } = useQuery(graphLangListOptions());
 
- 
   const activeStrategies =
-    flowsData?.results.filter((r) => r.active).map((flow) => ({
-      id: flow.id,
-      name: flow.name,
-      repeat: flow.repeat,
-    })) ?? [];
+    flowsData?.results
+      .filter((r) => r.active)
+      .map((flow) => ({
+        id: flow.id,
+        name: flow.name,
+        repeat: flow.repeat,
+      })) ?? [];
   const closedStrategies =
-    flowsData?.results.filter((r) => !r.active).map((flow) => ({
-      id: flow.id,
-      name: flow.name,
-      repeat: flow.repeat,
-    })) ?? [];
+    flowsData?.results
+      .filter((r) => !r.active)
+      .map((flow) => ({
+        id: flow.id,
+        name: flow.name,
+        repeat: flow.repeat,
+      })) ?? [];
 
   if (isPending) {
     return (

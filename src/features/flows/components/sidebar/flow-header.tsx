@@ -24,8 +24,14 @@ export function FlowHeader({
   const [title, setTitle] = useState(initialTitle);
   const [tempTitle, setTempTitle] = useState(initialTitle);
 
+  // Without the effect, there are infinite re-renders when opening different flows.
+  // If I remove the title/SetTitle and use initialTitle directly, then when saving 
+  // a new name, before the refetch of new data, the name switches back to the old one
+  // - it lasts a second, but is visible nonetheless.
   useEffect(() => {
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-derived-state
     setTitle(initialTitle);
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-derived-state
     setTempTitle(initialTitle);
   }, [initialTitle]);
 
