@@ -126,11 +126,48 @@ export const zGraphEffect = z.object({
     success: z.boolean()
 });
 
+export const zInstrumentName = z.object({
+    ticker: z.string().max(20)
+});
+
+export const zGraphTransactionEffect = z.object({
+    instrument: zInstrumentName,
+    is_buy: z.boolean(),
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
+});
+
+export const zGraphNotificationEffect = z.object({
+    message: z.string(),
+    format: zFormatEnum
+});
+
+export const zGraphEffectDetail = z.union([
+    z.object({
+        effect_type: z.literal('transaction')
+    }).and(zGraphTransactionEffect),
+    z.object({
+        effect_type: z.literal('notification')
+    }).and(zGraphNotificationEffect)
+]);
+
+export const zGraphEffect = z.object({
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    effect_type: z.int(),
+    effect: zGraphEffectDetail,
+    success: z.boolean()
+});
+
 export const zGraphRequest = z.object({
     name: z.string().min(1).max(100),
     raw_graph_data: z.unknown(),
     active: z.optional(z.boolean()),
     repeat: z.optional(z.boolean())
+});
+
+export const zGraphResult = z.object({
+    action: z.unknown()
 });
 
 export const zGraphResult = z.object({
@@ -972,6 +1009,11 @@ export const zGraphTransactionEffectWritable = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
     amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
+});
+
+export const zGraphEffectWritable = z.object({
+    effect_type: z.int(),
+    success: z.boolean()
 });
 
 export const zInstrumentListWritable = z.object({

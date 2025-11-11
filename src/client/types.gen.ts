@@ -115,6 +115,24 @@ export type GraphNotificationEffect = {
     readonly effect_type: string;
 };
 
+export type GraphEffect = {
+    readonly created_at: string;
+    effect_type: number;
+    effect: GraphEffectDetail;
+    success: boolean;
+};
+
+export type GraphEffectDetail = ({
+    effect_type: 'transaction';
+} & GraphTransactionEffect) | ({
+    effect_type: 'notification';
+} & GraphNotificationEffect);
+
+export type GraphNotificationEffect = {
+    message: string;
+    format: FormatEnum;
+};
+
 export type GraphRequest = {
     name: string;
     raw_graph_data: unknown;
@@ -131,6 +149,16 @@ export type GraphTransactionEffect = {
     is_buy: boolean;
     amount: string;
     readonly effect_type: string;
+};
+
+export type GraphResult = {
+    action: unknown;
+};
+
+export type GraphTransactionEffect = {
+    instrument: InstrumentName;
+    is_buy: boolean;
+    amount: string;
 };
 
 export type GraphUpdateRequest = {
@@ -808,6 +836,11 @@ export type GraphTransactionEffectWritable = {
     instrument: InstrumentName;
     is_buy: boolean;
     amount: string;
+};
+
+export type GraphEffectWritable = {
+    effect_type: number;
+    success: boolean;
 };
 
 export type InstrumentListWritable = {
