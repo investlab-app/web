@@ -120,7 +120,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           name: flowName,
           raw_graph_data: flow,
           active: true,
-          repeat: false
+          repeat: false,
         },
       });
     } else {
@@ -129,7 +129,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           name: flowName,
           raw_graph_data: flow,
           active: true,
-          repeat: false
+          repeat: false,
         },
       });
     }

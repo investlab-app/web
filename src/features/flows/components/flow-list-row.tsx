@@ -17,14 +17,12 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { deleteMutation } = useStrategyMutations();
-  
 
   const navigate = useNavigate();
 
   const handleDeleteFlow = () => {
     deleteMutation.mutate({ path: { id } });
   };
-
 
   return (
     <div className={cn('bg-muted/40', className)}>
@@ -79,9 +77,7 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
           </div>
         </div>
 
-        {!isCollapsed && (
-          <FlowListRowHistoryRibbon id={id} />
-        )}
+        {!isCollapsed && <FlowListRowHistoryRibbon id={id} />}
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import {
   graphLangUpdateMutation,
 } from '@/client/@tanstack/react-query.gen';
 
-
 // Parsing the erros at the moment is non-existent, as I didn't yet consult error types with krzyzan
 export function useStrategyMutations() {
   const { t } = useTranslation();

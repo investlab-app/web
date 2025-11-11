@@ -9,10 +9,10 @@ const plFlows = {
     closed_strategies: 'Zamknięte strategie',
     no_history: 'Ta strategia nie wykonała jeszcze żadnych transakcji.',
   },
-  card:{
-    fail: "Nie wykonano",
-    success: "Pomyślnie wykonano",
-    bought_instrument: "Kupiony instrument",
+  card: {
+    fail: 'Nie wykonano',
+    success: 'Pomyślnie wykonano',
+    bought_instrument: 'Kupiony instrument',
   },
   errors: {
     flow_name_empty: 'Nazwa strategii nie może być pusta',
