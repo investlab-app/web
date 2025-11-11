@@ -103,7 +103,7 @@ export function useCandlestickChartOptions({
     axisPointerType: 'line',
     formatter,
     dates,
-    boundaryGap: false,
+    boundaryGap: true,
     zoom,
     series,
     interval: selectedInterval,
