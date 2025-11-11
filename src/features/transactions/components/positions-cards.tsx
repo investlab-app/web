@@ -233,8 +233,6 @@ function SellCard({
   t: (key: string) => string;
 }) {
   const avgBuyPrice = helpers.calculateAverageBuyPrice(entryIndex);
-  // const gain = helpers.calculateNumericalGain(entry, entryIndex);
-  // const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
   return (
     <Card
