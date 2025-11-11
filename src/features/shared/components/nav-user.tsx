@@ -6,6 +6,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 
 interface NavUserProps {
@@ -14,6 +15,7 @@ interface NavUserProps {
 
 export function NavUser({ user }: NavUserProps) {
   const userButtonRef = React.useRef<HTMLDivElement>(null);
+  const { state } = useSidebar();
 
   const name = user.firstName || user.fullName || 'User';
   const email = user.primaryEmailAddress?.emailAddress || '';
@@ -45,10 +47,15 @@ export function NavUser({ user }: NavUserProps) {
                   shimmer: false,
                 },
                 elements: {
-                  userButtonAvatarBox: {
-                    transform: 'scale(0.8)',
+                  userButtonBox: {
                     height: '32px',
-                    width: '32px',
+                    width: state === 'collapsed' ? '32px' : '28px',
+                    marginLeft: state === 'collapsed' ? '0px' : '-2px',
+                    justifyContent: 'center',
+                  },
+                  userButtonAvatarBox: {
+                    height: '28px',
+                    width: '28px',
                   },
                   userButtonPopoverCard: {
                     pointerEvents: 'initial', // Allow interaction on smaller screens
