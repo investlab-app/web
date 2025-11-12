@@ -13,7 +13,7 @@ export type OrNode = Node<
   {
     settings: OrNodeSettings;
   },
-  CustomNodeTypes.Or
+  typeof CustomNodeTypes.Or
 >;
 
 export const OrNode = (props: NodeProps<OrNode>) => {

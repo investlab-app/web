@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { EnumSelect } from '../../components/enum-select';
 import { BUY_SELL_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
-import type { BuySellAction } from '../../types/node-enums';
+import type { BuySellAction } from '../../types/input-options-types';
 import type { CustomNodeProps } from '../../types/node-props';
 import type { ChangeEvent } from 'react';
 

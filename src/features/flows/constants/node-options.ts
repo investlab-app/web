@@ -9,7 +9,7 @@ import {
   TimeUnit,
   TransactionAction,
   TrendDirection,
-} from '../types/node-enums';
+} from '../types/input-options-types';
 
 export const BUY_SELL_OPTIONS = [
   { value: BuySellAction.Buy, labelKey: 'flows.nodes.buy' },

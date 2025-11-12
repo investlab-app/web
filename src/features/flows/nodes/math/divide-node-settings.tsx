@@ -14,7 +14,7 @@ export type DivideNode = Node<
   {
     settings: DivideNodeSettings;
   },
-  CustomNodeTypes.Divide
+  typeof CustomNodeTypes.Divide
 >;
 
 export const DivideNode = (props: NodeProps<DivideNode>) => {

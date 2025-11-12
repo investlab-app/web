@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { BuySellAction } from '../../types/node-enums';
+import { BuySellAction } from '../../types/input-options-types';
 import { ActionNodeSettings } from './action-node-settings';
 import { BuySellPriceNodeUI } from './buy-sell-price-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -48,7 +48,7 @@ export type BuySellPriceNode = Node<
   {
     settings: BuySellPriceNodeSettings;
   },
-  CustomNodeTypes.BuySellPrice
+  typeof CustomNodeTypes.BuySellPrice
 >;
 
 export const BuySellPriceNode = (props: NodeProps<BuySellPriceNode>) => {

@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { PriceChangesNodeUI } from './price-changes-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { PriceDirection } from '../../types/node-enums';
+import type { PriceDirection } from '../../types/input-options-types';
 import type { CustomNodeTypes } from '../../types/node-types';
 
 export class PriceChangesNodeSettings extends TriggerNodeSettings {
@@ -48,7 +48,7 @@ export type PriceChangesNode = Node<
   {
     settings: PriceChangesNodeSettings;
   },
-  CustomNodeTypes.PriceChanges
+  typeof CustomNodeTypes.PriceChanges
 >;
 
 export const PriceChangesNode = (props: NodeProps<PriceChangesNode>) => {

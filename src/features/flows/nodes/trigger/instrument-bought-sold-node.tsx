@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { EnumSelect } from '../../components/enum-select';
 import { TRANSACTION_ACTION_OPTIONS } from '../../constants/node-options';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { TransactionAction } from '../../types/node-enums';
+import type { TransactionAction } from '../../types/input-options-types';
 import type { CustomNodeProps } from '../../types/node-props';
 
 interface InstrumentBoughtSoldNodeUIProps {

@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { TimeUnit } from '../../types/node-enums';
+import { TimeUnit } from '../../types/input-options-types';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import { StaysTheSameNodeUI } from './stays-the-same-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -42,7 +42,7 @@ export type StaysTheSameNode = Node<
   {
     settings: StaysTheSameNodeSettings;
   },
-  CustomNodeTypes.StaysTheSame
+  typeof CustomNodeTypes.StaysTheSame
 >;
 
 export const StaysTheSameNode = (props: NodeProps<StaysTheSameNode>) => {

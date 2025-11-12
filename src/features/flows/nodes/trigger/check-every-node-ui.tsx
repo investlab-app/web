@@ -4,7 +4,7 @@ import { EnumSelect } from '../../components/enum-select';
 import { TIME_UNIT_OPTIONS } from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { TriggerNodeUI } from './trigger-node-ui';
-import type { TimeUnit } from '../../types/node-enums';
+import type { TimeUnit } from '../../types/input-options-types';
 import type { CustomNodeProps } from '../../types/node-props';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';

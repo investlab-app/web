@@ -14,7 +14,7 @@ export type SubtractNode = Node<
   {
     settings: SubtractNodeSettings;
   },
-  CustomNodeTypes.Subtract
+  typeof CustomNodeTypes.Subtract
 >;
 
 export const SubtractNode = (props: NodeProps<SubtractNode>) => {

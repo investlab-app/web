@@ -4,7 +4,7 @@ import { EnumSelect } from '../../components/enum-select';
 import { COMPARISON_DIRECTION_OPTIONS } from '../../constants/node-options';
 import { PredicateNodeUI } from './predicate-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import type { ComparisonDirection } from '../../types/node-enums';
+import type { ComparisonDirection } from '../../types/input-options-types';
 
 interface IsGreaterLessNodeUIProps {
   direction?: ComparisonDirection;

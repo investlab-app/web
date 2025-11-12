@@ -32,7 +32,7 @@ export type NumberOfAssetsNode = Node<
   {
     settings: NumberOfAssetsNodeSettings;
   },
-  CustomNodeTypes.NumberOfAssets
+  typeof CustomNodeTypes.NumberOfAssets
 >;
 
 export const NumberOfAssetsNode = (props: NodeProps<NumberOfAssetsNode>) => {

@@ -8,7 +8,7 @@ import {
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { PredicateNodeUI } from './predicate-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import type { TimeUnit, TrendDirection } from '../../types/node-enums';
+import type { TimeUnit, TrendDirection } from '../../types/input-options-types';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
