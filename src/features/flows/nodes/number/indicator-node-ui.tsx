@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import {
   INDICATOR_TYPE_OPTIONS,
   TIME_UNIT_OPTIONS,
@@ -40,7 +40,7 @@ export function IndicatorNodeUI({
   return (
     <NumberNodeUI nodeId={nodeId} preview={preview}>
       {onIndicatorChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={indicator}
           onChange={onIndicatorChange}
           options={INDICATOR_TYPE_OPTIONS}
@@ -89,7 +89,7 @@ export function IndicatorNodeUI({
       )}
 
       {onUnitChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={unit}
           onChange={onUnitChange}
           options={TIME_UNIT_OPTIONS}

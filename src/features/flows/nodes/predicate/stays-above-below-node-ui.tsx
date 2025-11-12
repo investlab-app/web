@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import {
   POSITION_DIRECTION_OPTIONS,
   TIME_UNIT_OPTIONS,
@@ -44,7 +44,7 @@ export function StaysAboveBelowNodeUI({
        comparatorComponent={<div>
          {t('flows.nodes.stays')}
        {onDirectionChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={direction}
           onChange={onDirectionChange}
           options={POSITION_DIRECTION_OPTIONS}
@@ -78,7 +78,7 @@ export function StaysAboveBelowNodeUI({
       )}
 
       {onUnitChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={unit}
           onChange={onUnitChange}
           options={TIME_UNIT_OPTIONS}

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { NOTIFICATION_TYPE_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
@@ -22,7 +22,7 @@ export function SendNotificationNodeUI({
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       <div>{t('flows.nodes.send_notification')}</div>
       {onTypeChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={type}
           onChange={onTypeChange}
           options={NOTIFICATION_TYPE_OPTIONS}
