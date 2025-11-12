@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { ComparisonDirection } from '../../types/node-enums';
+import { ComparisonDirection } from '../../types/input-options-types';
 import { IsGreaterLessNodeUI } from './is-greater-less-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -25,7 +25,7 @@ export type IsGreaterLessNode = Node<
   {
     settings: IsGreaterLessNodeSettings;
   },
-  CustomNodeTypes.IsGreaterLesser
+  typeof CustomNodeTypes.IsGreaterLesser
 >;
 
 export const IsGreaterLessNode = (props: NodeProps<IsGreaterLessNode>) => {

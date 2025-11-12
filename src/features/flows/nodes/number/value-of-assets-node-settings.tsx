@@ -32,7 +32,7 @@ export type ValueOfAssetsNode = Node<
   {
     settings: ValueOfAssetsNodeSettings;
   },
-  CustomNodeTypes.ValueOfAssets
+  typeof CustomNodeTypes.ValueOfAssets
 >;
 
 export const ValueOfAssetsNode = (props: NodeProps<ValueOfAssetsNode>) => {

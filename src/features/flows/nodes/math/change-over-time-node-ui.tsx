@@ -7,7 +7,7 @@ import { TIME_UNIT_OPTIONS } from '../../constants/node-options';
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { NodeUI } from '../node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import type { TimeUnit } from '../../types/node-enums';
+import type { TimeUnit } from '../../types/input-options-types';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 

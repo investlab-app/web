@@ -41,7 +41,7 @@ export class FlowIfNodeSettings extends NodeSettings {
 
 export type FlowNode = Node<
   { settings: FlowIfNodeSettings },
-  CustomNodeTypes.FlowIf
+  typeof CustomNodeTypes.FlowIf
 >;
 
 export const FlowNode = (props: NodeProps<FlowNode>) => {

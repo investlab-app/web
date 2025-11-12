@@ -14,7 +14,7 @@ export type MultiplyNode = Node<
   {
     settings: MultiplyNodeSettings;
   },
-  CustomNodeTypes.Multiply
+  typeof CustomNodeTypes.Multiply
 >;
 
 export const MultiplyNode = (props: NodeProps<MultiplyNode>) => {

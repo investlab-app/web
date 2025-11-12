@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { IndicatorNodeUI } from './indicator-node-ui';
 import { NumberNodeSettings } from './number-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { IndicatorType, TimeUnit } from '../../types/node-enums';
+import type { IndicatorType, TimeUnit } from '../../types/input-options-types';
 import type { CustomNodeTypes } from '../../types/node-types';
 
 export class IndicatorNodeSettings extends NumberNodeSettings {
@@ -55,7 +55,7 @@ export type IndicatorNode = Node<
   {
     settings: IndicatorNodeSettings;
   },
-  CustomNodeTypes.Indicator
+  typeof CustomNodeTypes.Indicator
 >;
 
 export const IndicatorNode = (props: NodeProps<IndicatorNode>) => {

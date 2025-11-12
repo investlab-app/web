@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { TimeUnit, TrendDirection } from '../../types/node-enums';
+import { TimeUnit, TrendDirection } from '../../types/input-options-types';
 import { HasRisenFallenNodeUI } from './has-risen-fallen-node-ui';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -44,7 +44,7 @@ export type HasRisenFallenNode = Node<
   {
     settings: HasRisenFallenNodeSettings;
   },
-  CustomNodeTypes.HasRisenFallen
+  typeof CustomNodeTypes.HasRisenFallen
 >;
 
 export const HasRisenFallenNode = (props: NodeProps<HasRisenFallenNode>) => {

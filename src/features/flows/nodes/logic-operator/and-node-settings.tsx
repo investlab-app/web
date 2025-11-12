@@ -13,7 +13,7 @@ export type AndNode = Node<
   {
     settings: AndNodeSettings;
   },
-  CustomNodeTypes.And
+  typeof CustomNodeTypes.And
 >;
 
 export const AndNode = (props: NodeProps<AndNode>) => {

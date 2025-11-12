@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { InstrumentBoughtSoldNodeUI } from './instrument-bought-sold-node';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { TransactionAction } from '../../types/node-enums';
+import type { TransactionAction } from '../../types/input-options-types';
 import type { CustomNodeTypes } from '../../types/node-types';
 
 export class InstrumentBoughtSoldNodeSettings extends TriggerNodeSettings {
@@ -42,7 +42,7 @@ export type InstrumentBoughtSoldNode = Node<
   {
     settings: InstrumentBoughtSoldNodeSettings;
   },
-  CustomNodeTypes.InstrumentBoughtSold
+  typeof CustomNodeTypes.InstrumentBoughtSold
 >;
 
 export const InstrumentBoughtSoldNode = (

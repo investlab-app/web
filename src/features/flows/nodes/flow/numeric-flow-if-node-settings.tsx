@@ -42,7 +42,7 @@ export class NumericFlowIfNodeSettings extends NodeSettings {
 
 export type NumericFlowNode = Node<
   { settings: NumericFlowIfNodeSettings },
-  CustomNodeTypes.NumbericFlowIf
+  typeof CustomNodeTypes.NumbericFlowIf
 >;
 
 export const NumericFlowNode = (props: NodeProps<NumericFlowNode>) => {

@@ -32,7 +32,7 @@ export type PriceOfNode = Node<
   {
     settings: PriceOfNodeSettings;
   },
-  CustomNodeTypes.PriceOf
+  typeof CustomNodeTypes.PriceOf
 >;
 
 export const PriceOfNode = (props: NodeProps<PriceOfNode>) => {

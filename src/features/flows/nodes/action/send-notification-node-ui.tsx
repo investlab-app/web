@@ -4,7 +4,7 @@ import { EnumSelect } from '../../components/enum-select';
 import { NOTIFICATION_TYPE_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import type { NotificationType } from '../../types/node-enums';
+import type { NotificationType } from '../../types/input-options-types';
 
 interface SendNotificationNodeUIProps {
   type?: NotificationType;

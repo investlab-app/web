@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNodeData } from '../../hooks/use-node-data';
-import { TimeUnit } from '../../types/node-enums';
+import { TimeUnit } from '../../types/input-options-types';
 import { SuperNodeTypes } from '../../types/node-types';
 import { NodeSettings } from '../node-settings';
 import { ChangeOverTimeNodeUI } from './change-over-time-node-ui';
@@ -62,7 +62,7 @@ export type ChangeOverTime = Node<
   {
     settings: ChangeOverTimeNodeSettings;
   },
-  CustomNodeTypes.ChangeOverTime
+  typeof CustomNodeTypes.ChangeOverTime
 >;
 
 export const ChangeOverTime = (props: NodeProps<ChangeOverTime>) => {

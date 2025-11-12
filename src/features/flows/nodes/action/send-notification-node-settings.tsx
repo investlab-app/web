@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { NotificationType } from '../../types/node-enums';
+import { NotificationType } from '../../types/input-options-types';
 import { ActionNodeSettings } from './action-node-settings';
 import { SendNotificationNodeUI } from './send-notification-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -23,7 +23,7 @@ export type SendNotificationNode = Node<
   {
     settings: SendNotificationNodeSettings;
   },
-  CustomNodeTypes.SendNotification
+  typeof CustomNodeTypes.SendNotification
 >;
 
 export const SendNotificationNode = (

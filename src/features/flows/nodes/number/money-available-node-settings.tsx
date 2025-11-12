@@ -13,7 +13,7 @@ export type MoneyAvailableNode = Node<
   {
     settings: MoneyAvailableNodeSettings;
   },
-  CustomNodeTypes.MoneyAvailable
+  typeof CustomNodeTypes.MoneyAvailable
 >;
 
 export const MoneyAvailableNode = (props: NodeProps<MoneyAvailableNode>) => {

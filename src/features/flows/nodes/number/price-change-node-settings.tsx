@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { NumberNodeSettings } from './number-node-settings';
 import { PriceChangeNodeUI } from './price-change-node-ui';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { TimeUnit } from '../../types/node-enums';
+import type { TimeUnit } from '../../types/input-options-types';
 import type { CustomNodeTypes } from '../../types/node-types';
 
 export class PriceChangeNodeSettings extends NumberNodeSettings {
@@ -48,7 +48,7 @@ export type PriceChangeNode = Node<
   {
     settings: PriceChangeNodeSettings;
   },
-  CustomNodeTypes.PriceChange
+  typeof CustomNodeTypes.PriceChange
 >;
 
 export const PriceChangeNode = (props: NodeProps<PriceChangeNode>) => {

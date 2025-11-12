@@ -14,7 +14,7 @@ export type AddNode = Node<
   {
     settings: AddNodeSettings;
   },
-  CustomNodeTypes.Add
+  typeof CustomNodeTypes.Add
 >;
 
 export const AddNode = (props: NodeProps<AddNode>) => {

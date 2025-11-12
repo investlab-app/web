@@ -2,7 +2,7 @@ import { useNodeData } from '../../hooks/use-node-data';
 import { CheckEveryNodeUI } from './check-every-node-ui';
 import { TriggerNodeSettings } from './trigger-node-settings';
 import type { Node, NodeProps } from '@xyflow/react';
-import type { TimeUnit } from '../../types/node-enums';
+import type { TimeUnit } from '../../types/input-options-types';
 import type { CustomNodeTypes } from '../../types/node-types';
 
 export class CheckEveryNodeSettings extends TriggerNodeSettings {
@@ -37,7 +37,7 @@ export type CheckEveryNode = Node<
   {
     settings: CheckEveryNodeSettings;
   },
-  CustomNodeTypes.CheckEvery
+  typeof CustomNodeTypes.CheckEvery
 >;
 
 export const CheckEveryNode = (props: NodeProps<CheckEveryNode>) => {

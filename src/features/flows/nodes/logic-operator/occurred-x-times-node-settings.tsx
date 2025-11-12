@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { ShortTimeUnit, TimeUnit } from '../../types/node-enums';
+import { ShortTimeUnit, TimeUnit } from '../../types/input-options-types';
 import { LogicOperatorNodeSettings } from './logic-operator-node-settings';
 import { OccurredXTimesNodeUI } from './occurred-x-times-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -66,7 +66,7 @@ export type OccurredXTimesNode = Node<
   {
     settings: OccurredXTimesNodeSettings;
   },
-  CustomNodeTypes.OccurredXTimes
+  typeof CustomNodeTypes.OccurredXTimes
 >;
 
 export const OccurredXTimesNode = (props: NodeProps<OccurredXTimesNode>) => {

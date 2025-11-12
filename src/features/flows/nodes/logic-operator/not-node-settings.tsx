@@ -29,7 +29,7 @@ export type NotNode = Node<
   {
     settings: NotNodeSettings;
   },
-  CustomNodeTypes.Not
+  typeof CustomNodeTypes.Not
 >;
 
 export const NotNode = (props: NodeProps<NotNode>) => {

@@ -1,5 +1,5 @@
 import { useNodeData } from '../../hooks/use-node-data';
-import { PositionDirection, TimeUnit } from '../../types/node-enums';
+import { PositionDirection, TimeUnit } from '../../types/input-options-types';
 import { PredicateNodeSettings } from './predicate-node-settings';
 import { StaysAboveBelowNodeUI } from './stays-above-below-node-ui';
 import type { CustomNodeTypes } from '../../types/node-types';
@@ -46,7 +46,7 @@ export type StaysAboveBelowNode = Node<
   {
     settings: StaysAboveBelowNodeSettings;
   },
-  CustomNodeTypes.StaysAboveBelow
+  typeof CustomNodeTypes.StaysAboveBelow
 >;
 
 export const StaysAboveBelowNode = (props: NodeProps<StaysAboveBelowNode>) => {
