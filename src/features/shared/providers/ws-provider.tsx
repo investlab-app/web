@@ -1,6 +1,7 @@
 import { Store } from '@tanstack/react-store';
 import { createContext } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { useAuth } from '@clerk/clerk-react';
 import type { ReactNode } from 'react';
 
 export type HandlerId = string;
@@ -32,18 +33,24 @@ export function WSProvider({ children }: WSProviderParams) {
   const loc = window.location;
   const protocol = import.meta.env.PROD ? 'wss' : 'ws';
   const url = `${protocol}://${loc.host}/ws/`;
-  const ws = useWebSocket(url, {
-    onError: (event) => {
-      console.error('WebSocket error observed:', event);
+  const { isSignedIn } = useAuth();
+  const connect = isSignedIn;
+  const ws = useWebSocket(
+    url,
+    {
+      onError: (event) => {
+        console.error('WebSocket error observed:', event);
+      },
+      shouldReconnect: () => true,
+      heartbeat: {
+        message: 'ping',
+        returnMessage: 'pong',
+        timeout: 60000,
+        interval: 25000,
+      },
     },
-    shouldReconnect: () => true,
-    heartbeat: {
-      message: 'ping',
-      returnMessage: 'pong',
-      timeout: 60000,
-      interval: 25000,
-    },
-  });
+    connect
+  );
 
   function syncBackend() {
     const events = new Set(store.state.events.keys());
