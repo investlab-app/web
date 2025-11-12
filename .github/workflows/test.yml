@@ -29,10 +29,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ../backend/backend
-          gh api repos/investlab-app/backend/contents/backend/schema.yml \
-            --jq '.content' \
-            --raw-output \
-            -F ref=develop > ../backend/backend/schema.yml
+          gh api repos/investlab-app/backend/contents/backend/schema.yml?ref=develop --jq '.content' \
+          | base64 -d > ../backend/backend/schema.yml
         env:
           GH_TOKEN: ${{ secrets.BACKEND_READ_TOKEN }}
       - name: Generate OpenAPI types
