@@ -18,18 +18,24 @@ export const Route = createFileRoute('/')({
   validateSearch: z.object({
     initial_session: z.boolean().optional(),
   }),
-  loader: async ({ context: { i18n, queryClient } }) => {
-    try {
-      await Promise.all([
-        queryClient.ensureQueryData(statisticsStatsRetrieveOptions()),
-        queryClient.ensureQueryData(
-          statisticsCurrentAccountValueRetrieveOptions()
-        ),
-        queryClient.ensureQueryData(statisticsAssetAllocationRetrieveOptions()),
-        queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
-        queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
-      ]);
-    } catch {}
+  loader: async ({ context: { i18n, auth, queryClient } }) => {
+    if (auth.isSignedIn) {
+      try {
+        await Promise.all([
+          queryClient.ensureQueryData(statisticsStatsRetrieveOptions()),
+          queryClient.ensureQueryData(
+            statisticsCurrentAccountValueRetrieveOptions()
+          ),
+          queryClient.ensureQueryData(
+            statisticsAssetAllocationRetrieveOptions({
+              query: { instruments_number: 4 },
+            })
+          ),
+          queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
+          queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
+        ]);
+      } catch {}
+    }
 
     return {
       crumb: i18n.t('common.dashboard'),

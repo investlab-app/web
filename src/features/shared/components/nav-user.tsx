@@ -38,6 +38,7 @@ export function NavUser({ user }: NavUserProps) {
         >
           <div ref={userButtonRef} className="my-auto">
             <UserButton
+              fallback={<UserButtonSkeleton />}
               appearance={{
                 variables: {
                   colorBackground: 'var(--background)',
@@ -84,11 +85,7 @@ export function NavUserSkeleton() {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size="lg" className="cursor-pointer">
-          <div className="flex items-center">
-            <div className="animate-pulse">
-              <Skeleton className="w-8 h-8 rounded-full" />
-            </div>
-          </div>
+          <UserButtonSkeleton />
           <div className="grid flex-1 text-left text-sm leading-tight ml-2 gap-1">
             <Skeleton className="w-24 h-4" />
             <Skeleton className="w-32 h-3" />
@@ -96,5 +93,15 @@ export function NavUserSkeleton() {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
+  );
+}
+
+function UserButtonSkeleton() {
+  return (
+    <div className="flex items-center">
+      <div className="animate-pulse">
+        <Skeleton className="w-8 h-8 rounded-full" />
+      </div>
+    </div>
   );
 }

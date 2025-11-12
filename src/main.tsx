@@ -103,7 +103,7 @@ function App() {
     }
   }, [auth, isSessionCookie]);
 
-  if (isRestoring) {
+  if ((isOnline && !auth.isLoaded) || isRestoring) {
     return null;
   }
 
