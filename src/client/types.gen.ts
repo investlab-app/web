@@ -56,6 +56,13 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
+export type CreateLimitOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
+    limit_price: string;
+};
+
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
@@ -268,6 +275,14 @@ export type InvestorStats = {
     total_value: number;
 };
 
+export type LimitOrder = {
+    readonly detail_type: string;
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+    limit_price: string;
+};
+
 /**
  * * `us` - United States
  * * `global` - Global
@@ -420,9 +435,11 @@ export type Order = {
     detail: OrderDetail;
 };
 
-export type OrderDetail = {
+export type OrderDetail = ({
     detail_type: 'market';
-} & MarketOrder;
+} & MarketOrder) | ({
+    detail_type: 'limit';
+} & LimitOrder);
 
 export type OwnedShare = {
     name: string;
@@ -784,6 +801,13 @@ export type InvestorWritable = {
      */
     language?: string;
     watching_instruments?: Array<string>;
+};
+
+export type LimitOrderWritable = {
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+    limit_price: string;
 };
 
 export type MarketOrderWritable = {
@@ -1210,6 +1234,19 @@ export type OrdersCancelDestroyResponses = {
 };
 
 export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
+
+export type OrdersLimitCreateData = {
+    body: CreateLimitOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/orders/limit/';
+};
+
+export type OrdersLimitCreateResponses = {
+    201: Order;
+};
+
+export type OrdersLimitCreateResponse = OrdersLimitCreateResponses[keyof OrdersLimitCreateResponses];
 
 export type OrdersMarketCreateData = {
     body: CreateMarketOrderRequest;

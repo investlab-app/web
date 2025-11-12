@@ -45,6 +45,13 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
+export const zCreateLimitOrderRequest = z.object({
+    ticker: z.string().min(1),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
+});
+
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
     volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
@@ -323,6 +330,14 @@ export const zInvestorStats = z.object({
     total_value: z.number()
 });
 
+export const zLimitOrder = z.object({
+    detail_type: z.string().readonly(),
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
+});
+
 export const zMarketCurrencies = z.object({
     crypto: z.optional(z.union([
         z.string(),
@@ -518,9 +533,14 @@ export const zNotificationHistory = z.object({
     }).readonly()
 });
 
-export const zOrderDetail = z.object({
-    detail_type: z.literal('market')
-}).and(zMarketOrder);
+export const zOrderDetail = z.union([
+    z.object({
+        detail_type: z.literal('market')
+    }).and(zMarketOrder),
+    z.object({
+        detail_type: z.literal('limit')
+    }).and(zLimitOrder)
+]);
 
 export const zOrder = z.object({
     id: z.uuid().readonly(),
@@ -949,6 +969,13 @@ export const zInvestorWritable = z.object({
     watching_instruments: z.optional(z.array(z.uuid()))
 });
 
+export const zLimitOrderWritable = z.object({
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
+});
+
 export const zMarketOrderWritable = z.object({
     volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
     volume_processed: z.optional(z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/)),
@@ -1201,6 +1228,14 @@ export const zOrdersCancelDestroyData = z.object({
  * No response body
  */
 export const zOrdersCancelDestroyResponse = z.void();
+
+export const zOrdersLimitCreateData = z.object({
+    body: zCreateLimitOrderRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zOrdersLimitCreateResponse = zOrder;
 
 export const zOrdersMarketCreateData = z.object({
     body: zCreateMarketOrderRequest,
