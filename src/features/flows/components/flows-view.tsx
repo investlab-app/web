@@ -12,10 +12,10 @@ import { graphLangListOptions } from '@/client/@tanstack/react-query.gen';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { Message } from '@/features/shared/components/error-message';
 
-enum FlowType {
-  Active = 'active',
-  Closed = 'closed',
-}
+const FlowType = {
+  Active: 'active',
+  Closed:'closed',
+} as const;
 
 export function FlowsView() {
   const { t } = useTranslation();
