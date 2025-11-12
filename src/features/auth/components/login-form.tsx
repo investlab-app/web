@@ -46,9 +46,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
           password: value.password,
         }),
         (e) =>
-          e instanceof Error
-            ? t('auth.unknown_error', { cause: e.message })
-            : t('auth.could_not_verify_email')
+          e instanceof Error ? e.message : t('auth.could_not_verify_email')
       )
         .andThen((signInResource) => {
           switch (signInResource.status) {
@@ -76,10 +74,18 @@ export function LoginForm({ pageError }: LoginFormProps) {
             await navigate({ to: '/' });
           },
           (e) => {
+            let error: string;
+            switch (e.trim()) {
+              case "Couldn't find your account.":
+                error = t('auth.account_not_found');
+                break;
+              default:
+                error = e;
+            }
             navigate({
               to: '.',
               replace: true,
-              search: { error: e },
+              search: { error },
             });
           }
         );
@@ -100,7 +106,8 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlur: z.email(t('auth.invalid_email')),
+              onBlurAsync: z.email(t('auth.invalid_email')),
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -124,11 +131,12 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlur: ({ value }) => {
+              onBlurAsync: ({ value }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
               },
+              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>

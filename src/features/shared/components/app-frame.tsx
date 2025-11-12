@@ -10,7 +10,7 @@ interface AppFrameProps {
 }
 
 export default function AppFrame({ children, className }: AppFrameProps) {
-  const defaultOpen = getCookie('sidebar_state') === 'true';
+  const defaultOpen = getCookie('sidebar_state') !== 'false';
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar collapsible="icon" />

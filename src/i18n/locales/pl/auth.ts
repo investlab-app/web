@@ -59,6 +59,9 @@ const plAuth = {
     and: 'i',
     privacyPolicy: 'Politykę prywatności',
   },
+  password_min_length: 'Hasło musi mieć co najmniej {{min}} znaków',
+  account_not_found:
+    'Konto nie zostało znalezione. Sprawdź swoje dane logowania.',
 };
 
 export default plAuth;
