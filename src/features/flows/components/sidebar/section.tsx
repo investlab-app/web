@@ -35,7 +35,6 @@ export function SidebarSection({
   setGhostType,
 }: SidebarSectionProps) {
   return (
-    console.log(`Rendering SidebarSection: ${title}`),
     <div className="mb-4">
       <div className="font-medium mb-2">{title}</div>
       <div className="space-y-2">

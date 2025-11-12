@@ -23,6 +23,8 @@ const enCommon = {
   hour: 'hour',
   hours: 'hours',
   add: 'Add',
+  edit: 'Edit',
+  delete: 'Delete',
   help: 'Help',
   settings: 'Settings',
   loading: 'Loading...',

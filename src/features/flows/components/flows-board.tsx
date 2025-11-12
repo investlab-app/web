@@ -49,12 +49,9 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
-  // Track lastNodeId with a ref to avoid recalculating on every node position change
   const lastNodeIdRef = useRef(0);
 
-  // Update lastNodeId only when nodes are added/removed (length changes)
   useEffect(() => {
-    console.log('Updating lastNodeIdRef');
     if (nodes.length === 0) {
       lastNodeIdRef.current = 0;
     } else {
