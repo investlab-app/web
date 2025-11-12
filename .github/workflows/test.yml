@@ -37,6 +37,13 @@ jobs:
             | jq -r .content | base64 -d > ../backend/backend/schema.yml
       - name: Generate OpenAPI types
         run: pnpm openapi-ts
+      - name: Upload OpenAPI generation crash log
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: openapi-ts-crash-log
+          path: openapi-ts-error-*.log
+          retention-days: 30
       - name: Check type changes
         run: |
           if ! git diff --exit-code src/client/; then
