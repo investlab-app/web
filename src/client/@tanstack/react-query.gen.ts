@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsMeAccountValueList, investorsMeRetrieve, investorsPartialUpdate, investorsRetrieve, investorsUpdate, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsMeAccountValueListData, InvestorsMeRetrieveData, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, InvestorsUpdateData, InvestorsUpdateResponse, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, instrumentsDetailRetrieve, instrumentsList, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersList, ordersMarketCreate, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersListData, OrdersListResponse, OrdersMarketCreateData, OrdersMarketCreateResponse, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -227,10 +227,10 @@ export const investorsPartialUpdateMutation = (options?: Partial<Options<Investo
     return mutationOptions;
 };
 
-export const investorsUpdateMutation = (options?: Partial<Options<InvestorsUpdateData>>): UseMutationOptions<InvestorsUpdateResponse, DefaultError, Options<InvestorsUpdateData>> => {
-    const mutationOptions: UseMutationOptions<InvestorsUpdateResponse, DefaultError, Options<InvestorsUpdateData>> = {
+export const investorsDepositCreateMutation = (options?: Partial<Options<InvestorsDepositCreateData>>): UseMutationOptions<InvestorsDepositCreateResponse, DefaultError, Options<InvestorsDepositCreateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsDepositCreateResponse, DefaultError, Options<InvestorsDepositCreateData>> = {
         mutationFn: async (fnOptions) => {
-            const { data } = await investorsUpdate({
+            const { data } = await investorsDepositCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -262,6 +262,24 @@ export const investorsMeRetrieveOptions = (options?: Options<InvestorsMeRetrieve
     });
 };
 
+/**
+ * Update current investor
+ * Update the investor profile for the currently authenticated user.
+ */
+export const investorsMePartialUpdateMutation = (options?: Partial<Options<InvestorsMePartialUpdateData>>): UseMutationOptions<InvestorsMePartialUpdateResponse, DefaultError, Options<InvestorsMePartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsMePartialUpdateResponse, DefaultError, Options<InvestorsMePartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await investorsMePartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const investorsMeAccountValueListQueryKey = (options?: Options<InvestorsMeAccountValueListData>) => createQueryKey('investorsMeAccountValueList', options);
 
 /**
@@ -281,6 +299,54 @@ export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMe
         },
         queryKey: investorsMeAccountValueListQueryKey(options)
     });
+};
+
+export const investorsMeNotificationsListQueryKey = (options?: Options<InvestorsMeNotificationsListData>) => createQueryKey('investorsMeNotificationsList', options);
+
+export const investorsMeNotificationsListOptions = (options?: Options<InvestorsMeNotificationsListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsMeNotificationsList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsMeNotificationsListQueryKey(options)
+    });
+};
+
+export const investorsMeWatchedTickersListQueryKey = (options?: Options<InvestorsMeWatchedTickersListData>) => createQueryKey('investorsMeWatchedTickersList', options);
+
+export const investorsMeWatchedTickersListOptions = (options?: Options<InvestorsMeWatchedTickersListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsMeWatchedTickersList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsMeWatchedTickersListQueryKey(options)
+    });
+};
+
+export const investorsMeWatchedTickersPartialUpdateMutation = (options?: Partial<Options<InvestorsMeWatchedTickersPartialUpdateData>>): UseMutationOptions<InvestorsMeWatchedTickersPartialUpdateResponse, DefaultError, Options<InvestorsMeWatchedTickersPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<InvestorsMeWatchedTickersPartialUpdateResponse, DefaultError, Options<InvestorsMeWatchedTickersPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await investorsMeWatchedTickersPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const marketsHolidaysListQueryKey = (options?: Options<MarketsHolidaysListData>) => createQueryKey('marketsHolidaysList', options);
@@ -407,6 +473,20 @@ export const ordersCancelDestroyMutation = (options?: Partial<Options<OrdersCanc
     const mutationOptions: UseMutationOptions<OrdersCancelDestroyResponse, DefaultError, Options<OrdersCancelDestroyData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await ordersCancelDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const ordersLimitCreateMutation = (options?: Partial<Options<OrdersLimitCreateData>>): UseMutationOptions<OrdersLimitCreateResponse, DefaultError, Options<OrdersLimitCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrdersLimitCreateResponse, DefaultError, Options<OrdersLimitCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await ordersLimitCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

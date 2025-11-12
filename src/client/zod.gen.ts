@@ -45,14 +45,16 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
-export const zCreateMarketOrder = z.object({
-    id: z.uuid().readonly(),
-    investor: z.uuid().readonly()
+export const zCreateLimitOrderRequest = z.object({
+    ticker: z.string().min(1),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
 });
 
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
     is_buy: z.boolean()
 });
 
@@ -65,12 +67,20 @@ export const zCurrentAccountValue = z.object({
     ])
 });
 
+export const zDepositMoney = z.object({
+    amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
+});
+
+export const zDepositMoneyRequest = z.object({
+    amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
+});
+
 export const zHistoryEntry = z.object({
     timestamp: z.iso.datetime({
         offset: true
     }),
     is_buy: z.boolean(),
-    quantity: z.int(),
+    quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
     share_price: z.number(),
     acquisition_price: z.union([
         z.number(),
@@ -115,14 +125,14 @@ export const zInstrumentList = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -153,7 +163,7 @@ export const zInstrumentRetrieve = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     cik: z.optional(z.union([
         z.string().max(20),
@@ -168,7 +178,7 @@ export const zInstrumentRetrieve = z.object({
         z.string().max(20),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     locale: zLocaleEnum,
     primary_exchange: z.optional(z.union([
         z.string().max(50),
@@ -281,14 +291,14 @@ export const zInstrumentWithPrice = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -297,12 +307,16 @@ export const zInstrumentWithPrice = z.object({
         z.url(),
         z.null()
     ])),
-    price_info: zPriceDailySummary
+    price_info: zPriceDailySummary,
+    is_watched: z.boolean().readonly()
 });
 
 export const zInvestor = z.object({
     id: z.uuid().readonly(),
     clerk_id: z.string().readonly(),
+    balance: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly(),
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
+    language: z.optional(z.string().max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
 
@@ -316,16 +330,12 @@ export const zInvestorStats = z.object({
     total_value: z.number()
 });
 
-export const zInvestorUpdate = z.object({
-    id: z.uuid().readonly(),
-    clerk_id: z.string().readonly(),
-    language: z.optional(z.string().max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
-});
-
-export const zInvestorUpdateRequest = z.object({
-    language: z.optional(z.string().min(1).max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
+export const zLimitOrder = z.object({
+    detail_type: z.string().readonly(),
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
 });
 
 export const zMarketCurrencies = z.object({
@@ -425,8 +435,9 @@ export const zMarketIndices = z.object({
 });
 
 export const zMarketOrder = z.object({
-    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
-    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    detail_type: z.string().readonly(),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/)),
     is_buy: z.boolean()
 });
 
@@ -467,7 +478,10 @@ export const zMostTradedItem = z.object({
     buys: z.int(),
     sells: z.int(),
     gain: z.number(),
-    gain_percentage: z.number()
+    gain_percentage: z.union([
+        z.number(),
+        z.null()
+    ])
 });
 
 export const zNotificationConfig = z.object({
@@ -500,9 +514,33 @@ export const zNotificationConfigRequest = z.object({
     is_active: z.optional(z.boolean())
 });
 
-export const zOrderDetail = z.object({
-    detail_type: z.literal('market')
-}).and(zMarketOrder);
+/**
+ * Serializer for NotificationHistory model.
+ */
+export const zNotificationHistory = z.object({
+    id: z.uuid().readonly(),
+    type: z.string(),
+    message_en: z.string(),
+    message_pl: z.string(),
+    sent_at: z.iso.datetime({
+        offset: true
+    }),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly()
+});
+
+export const zOrderDetail = z.union([
+    z.object({
+        detail_type: z.literal('market')
+    }).and(zMarketOrder),
+    z.object({
+        detail_type: z.literal('limit')
+    }).and(zLimitOrder)
+]);
 
 export const zOrder = z.object({
     id: z.uuid().readonly(),
@@ -593,7 +631,8 @@ export const zPaginatedPriceAlertList = z.object({
     results: z.array(zPriceAlert)
 });
 
-export const zPatchedInvestorUpdateRequest = z.object({
+export const zPatchedInvestorRequest = z.object({
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
     language: z.optional(z.string().min(1).max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
@@ -604,12 +643,24 @@ export const zPatchedPriceAlertRequest = z.object({
     notification_config: z.optional(zNotificationConfigRequest)
 });
 
+export const zPatchedWatchedTickersTickerRequest = z.object({
+    is_watched: z.optional(z.boolean())
+});
+
 export const zPosition = z.object({
-    name: z.string().max(10),
-    quantity: z.int(),
+    symbol: z.string().max(10),
+    name: z.string().max(255),
+    icon: z.union([
+        z.url(),
+        z.null()
+    ]),
+    quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
     market_value: z.number(),
     gain: z.number(),
-    gain_percentage: z.number(),
+    gain_percentage: z.union([
+        z.number(),
+        z.null()
+    ]),
     history: z.array(zHistoryEntry)
 });
 
@@ -753,6 +804,26 @@ export const zVapidPublicKey = z.object({
 });
 
 /**
+ * Serializer for watched tickers with icon and ticker information.
+ */
+export const zWatchedTicker = z.object({
+    ticker: z.string().max(20),
+    name: z.string().max(255),
+    icon: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    logo: z.optional(z.union([
+        z.url(),
+        z.null()
+    ]))
+});
+
+export const zWatchedTickersTicker = z.object({
+    is_watched: z.boolean()
+});
+
+/**
  * Serializer for AccountValueSnapshot model.
  */
 export const zAccountValueSnapshotDailyWritable = z.object({
@@ -765,14 +836,14 @@ export const zInstrumentListWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -789,7 +860,7 @@ export const zInstrumentRetrieveWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     cik: z.optional(z.union([
         z.string().max(20),
@@ -804,7 +875,7 @@ export const zInstrumentRetrieveWritable = z.object({
         z.string().max(20),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     locale: zLocaleEnum,
     primary_exchange: z.optional(z.union([
         z.string().max(50),
@@ -874,14 +945,14 @@ export const zInstrumentWithPriceWritable = z.object({
         z.string().max(50),
         z.null()
     ])),
-    active: z.boolean(),
+    active: z.optional(z.boolean()),
     name: z.string().max(255),
     market: zMarketEnum,
     market_cap: z.optional(z.union([
         z.string().regex(/^-?\d{0,18}(?:\.\d{0,2})?$/),
         z.null()
     ])),
-    currency_name: z.string().max(50),
+    currency_name: z.optional(z.string().max(50)),
     icon: z.optional(z.union([
         z.url(),
         z.null()
@@ -893,12 +964,22 @@ export const zInstrumentWithPriceWritable = z.object({
 });
 
 export const zInvestorWritable = z.object({
+    blocked_funds: z.optional(z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)),
+    language: z.optional(z.string().max(10)),
     watching_instruments: z.optional(z.array(z.uuid()))
 });
 
-export const zInvestorUpdateWritable = z.object({
-    language: z.optional(z.string().max(10)),
-    watching_instruments: z.optional(z.array(z.uuid()))
+export const zLimitOrderWritable = z.object({
+    volume: z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,13}(?:\.\d{0,2})?$/)),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
+});
+
+export const zMarketOrderWritable = z.object({
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    volume_processed: z.optional(z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/)),
+    is_buy: z.boolean()
 });
 
 export const zNotificationConfigWritable = z.object({
@@ -913,6 +994,18 @@ export const zNotificationConfigCreateRequestWritable = z.object({
     is_push: z.boolean(),
     is_websocket: z.boolean(),
     push_subscription: z.optional(zPushNotificationRequest)
+});
+
+/**
+ * Serializer for NotificationHistory model.
+ */
+export const zNotificationHistoryWritable = z.object({
+    type: z.string(),
+    message_en: z.string(),
+    message_pl: z.string(),
+    sent_at: z.iso.datetime({
+        offset: true
+    })
 });
 
 export const zOrderWritable = z.object({
@@ -996,24 +1089,22 @@ export const zInvestorsRetrieveData = z.object({
 export const zInvestorsRetrieveResponse = zInvestor;
 
 export const zInvestorsPartialUpdateData = z.object({
-    body: z.optional(zPatchedInvestorUpdateRequest),
+    body: z.optional(zPatchedInvestorRequest),
     path: z.object({
         clerk_id: z.string()
     }),
     query: z.optional(z.never())
 });
 
-export const zInvestorsPartialUpdateResponse = zInvestorUpdate;
+export const zInvestorsPartialUpdateResponse = zInvestor;
 
-export const zInvestorsUpdateData = z.object({
-    body: z.optional(zInvestorUpdateRequest),
-    path: z.object({
-        clerk_id: z.string()
-    }),
+export const zInvestorsDepositCreateData = z.object({
+    body: zDepositMoneyRequest,
+    path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsUpdateResponse = zInvestorUpdate;
+export const zInvestorsDepositCreateResponse = zDepositMoney;
 
 export const zInvestorsMeRetrieveData = z.object({
     body: z.optional(z.never()),
@@ -1023,6 +1114,14 @@ export const zInvestorsMeRetrieveData = z.object({
 
 export const zInvestorsMeRetrieveResponse = zInvestor;
 
+export const zInvestorsMePartialUpdateData = z.object({
+    body: z.optional(zPatchedInvestorRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMePartialUpdateResponse = zInvestor;
+
 export const zInvestorsMeAccountValueListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
@@ -1030,6 +1129,32 @@ export const zInvestorsMeAccountValueListData = z.object({
 });
 
 export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
+
+export const zInvestorsMeNotificationsListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeNotificationsListResponse = z.array(zNotificationHistory);
+
+export const zInvestorsMeWatchedTickersListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeWatchedTickersListResponse = z.array(zWatchedTicker);
+
+export const zInvestorsMeWatchedTickersPartialUpdateData = z.object({
+    body: z.optional(zPatchedWatchedTickersTickerRequest),
+    path: z.object({
+        instrument_id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zInvestorsMeWatchedTickersPartialUpdateResponse = zWatchedTickersTicker;
 
 export const zMarketsHolidaysListData = z.object({
     body: z.optional(z.never()),
@@ -1104,13 +1229,21 @@ export const zOrdersCancelDestroyData = z.object({
  */
 export const zOrdersCancelDestroyResponse = z.void();
 
+export const zOrdersLimitCreateData = z.object({
+    body: zCreateLimitOrderRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zOrdersLimitCreateResponse = zOrder;
+
 export const zOrdersMarketCreateData = z.object({
     body: zCreateMarketOrderRequest,
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zOrdersMarketCreateResponse = zCreateMarketOrder;
+export const zOrdersMarketCreateResponse = zOrder;
 
 export const zPricesListData = z.object({
     body: z.optional(z.never()),
@@ -1120,7 +1253,7 @@ export const zPricesListData = z.object({
     })
 });
 
-export const zPricesListResponse = zPriceDailySummary;
+export const zPricesListResponse = z.array(zPriceDailySummary);
 
 export const zPricesRetrieveData = z.object({
     body: z.optional(z.never()),
@@ -1224,7 +1357,9 @@ export const zPricesPriceAlertUpdateResponse = zPriceAlert;
 export const zStatisticsAssetAllocationRetrieveData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
-    query: z.optional(z.never())
+    query: z.optional(z.object({
+        instruments_number: z.optional(z.int().gte(3).lte(30)).default(5)
+    }))
 });
 
 export const zStatisticsAssetAllocationRetrieveResponse = zAssetAllocation;

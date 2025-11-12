@@ -56,9 +56,11 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
-export type CreateMarketOrder = {
-    readonly id: string;
-    readonly investor: string;
+export type CreateLimitOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
+    limit_price: string;
 };
 
 export type CreateMarketOrderRequest = {
@@ -73,6 +75,14 @@ export type CurrentAccountValue = {
     gain_percentage: number | null;
 };
 
+export type DepositMoney = {
+    amount: string;
+};
+
+export type DepositMoneyRequest = {
+    amount: string;
+};
+
 export type HistoryEntry = {
     /**
      * Date of the transaction
@@ -85,7 +95,7 @@ export type HistoryEntry = {
     /**
      * Number of shares traded
      */
-    quantity: number;
+    quantity: string;
     /**
      * Price per share at the time of transaction
      */
@@ -115,11 +125,11 @@ export type InstrumentList = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };
@@ -144,7 +154,7 @@ export type InstrumentRetrieve = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     /**
      * Central Index Key assigned by the SEC.
@@ -156,7 +166,7 @@ export type InstrumentRetrieve = {
      * Composite Financial Instrument Global Identifier.
      */
     composite_figi?: string | null;
-    currency_name: string;
+    currency_name?: string;
     /**
      * Locale where the ticker is traded, e.g. 'US'.
      *
@@ -220,19 +230,26 @@ export type InstrumentWithPrice = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
     price_info: PriceDailySummary;
+    readonly is_watched: boolean;
 };
 
 export type Investor = {
     readonly id: string;
     readonly clerk_id: string;
+    readonly balance: string;
+    blocked_funds?: string;
+    /**
+     * User's preferred language (e.g., 'en', 'pl')
+     */
+    language?: string;
     watching_instruments?: Array<string>;
 };
 
@@ -258,22 +275,12 @@ export type InvestorStats = {
     total_value: number;
 };
 
-export type InvestorUpdate = {
-    readonly id: string;
-    readonly clerk_id: string;
-    /**
-     * User's preferred language (e.g., 'en', 'pl')
-     */
-    language?: string;
-    watching_instruments?: Array<string>;
-};
-
-export type InvestorUpdateRequest = {
-    /**
-     * User's preferred language (e.g., 'en', 'pl')
-     */
-    language?: string;
-    watching_instruments?: Array<string>;
+export type LimitOrder = {
+    readonly detail_type: string;
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+    limit_price: string;
 };
 
 /**
@@ -325,6 +332,7 @@ export type MarketIndices = {
 };
 
 export type MarketOrder = {
+    readonly detail_type: string;
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
@@ -346,7 +354,7 @@ export type MostTradedItem = {
     buys: number;
     sells: number;
     gain: number;
-    gain_percentage: number;
+    gain_percentage: number | null;
 };
 
 export type NotificationConfig = {
@@ -395,6 +403,31 @@ export type NotificationConfigRequest = {
     is_active?: boolean;
 };
 
+/**
+ * Serializer for NotificationHistory model.
+ */
+export type NotificationHistory = {
+    readonly id: string;
+    /**
+     * Type of the notification
+     */
+    type: string;
+    /**
+     * Notification message in English
+     */
+    message_en: string;
+    /**
+     * Notification message in Polish
+     */
+    message_pl: string;
+    /**
+     * When the notification was sent
+     */
+    sent_at: string;
+    readonly created_at: string;
+    readonly updated_at: string;
+};
+
 export type Order = {
     readonly id: string;
     ticker: InstrumentName;
@@ -402,9 +435,11 @@ export type Order = {
     detail: OrderDetail;
 };
 
-export type OrderDetail = {
+export type OrderDetail = ({
     detail_type: 'market';
-} & MarketOrder;
+} & MarketOrder) | ({
+    detail_type: 'limit';
+} & LimitOrder);
 
 export type OwnedShare = {
     name: string;
@@ -443,7 +478,8 @@ export type PaginatedPriceAlertList = {
     results: Array<PriceAlert>;
 };
 
-export type PatchedInvestorUpdateRequest = {
+export type PatchedInvestorRequest = {
+    blocked_funds?: string;
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
@@ -457,15 +493,27 @@ export type PatchedPriceAlertRequest = {
     notification_config?: NotificationConfigRequest;
 };
 
+export type PatchedWatchedTickersTickerRequest = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched?: boolean;
+};
+
 export type Position = {
     /**
      * Ticker symbol
      */
+    symbol: string;
+    /**
+     * Instrument name
+     */
     name: string;
+    icon: string | null;
     /**
      * Total quantity of shares
      */
-    quantity: number;
+    quantity: string;
     /**
      * Current market value
      */
@@ -477,7 +525,7 @@ export type Position = {
     /**
      * Total gain or loss percentage
      */
-    gain_percentage: number;
+    gain_percentage: number | null;
     /**
      * Transaction history
      */
@@ -607,6 +655,26 @@ export type VapidPublicKey = {
 };
 
 /**
+ * Serializer for watched tickers with icon and ticker information.
+ */
+export type WatchedTicker = {
+    /**
+     * Ticker Symbol
+     */
+    ticker: string;
+    name: string;
+    icon?: string | null;
+    logo?: string | null;
+};
+
+export type WatchedTickersTicker = {
+    /**
+     * Whether the instrument is now being watched
+     */
+    is_watched: boolean;
+};
+
+/**
  * Serializer for AccountValueSnapshot model.
  */
 export type AccountValueSnapshotDailyWritable = {
@@ -628,11 +696,11 @@ export type InstrumentListWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };
@@ -649,7 +717,7 @@ export type InstrumentRetrieveWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     /**
      * Central Index Key assigned by the SEC.
@@ -661,7 +729,7 @@ export type InstrumentRetrieveWritable = {
      * Composite Financial Instrument Global Identifier.
      */
     composite_figi?: string | null;
-    currency_name: string;
+    currency_name?: string;
     /**
      * Locale where the ticker is traded, e.g. 'US'.
      *
@@ -717,25 +785,35 @@ export type InstrumentWithPriceWritable = {
     /**
      * Indicates whether the ticker is actively traded.
      */
-    active: boolean;
+    active?: boolean;
     name: string;
     market: MarketEnum;
     market_cap?: string | null;
-    currency_name: string;
+    currency_name?: string;
     icon?: string | null;
     logo?: string | null;
 };
 
 export type InvestorWritable = {
-    watching_instruments?: Array<string>;
-};
-
-export type InvestorUpdateWritable = {
+    blocked_funds?: string;
     /**
      * User's preferred language (e.g., 'en', 'pl')
      */
     language?: string;
     watching_instruments?: Array<string>;
+};
+
+export type LimitOrderWritable = {
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
+    limit_price: string;
+};
+
+export type MarketOrderWritable = {
+    volume: string;
+    volume_processed?: string;
+    is_buy: boolean;
 };
 
 export type NotificationConfigWritable = {
@@ -759,6 +837,28 @@ export type NotificationConfigCreateRequestWritable = {
     is_push: boolean;
     is_websocket: boolean;
     push_subscription?: PushNotificationRequest;
+};
+
+/**
+ * Serializer for NotificationHistory model.
+ */
+export type NotificationHistoryWritable = {
+    /**
+     * Type of the notification
+     */
+    type: string;
+    /**
+     * Notification message in English
+     */
+    message_en: string;
+    /**
+     * Notification message in Polish
+     */
+    message_pl: string;
+    /**
+     * When the notification was sent
+     */
+    sent_at: string;
 };
 
 export type OrderWritable = {
@@ -924,7 +1024,7 @@ export type InvestorsRetrieveResponses = {
 export type InvestorsRetrieveResponse = InvestorsRetrieveResponses[keyof InvestorsRetrieveResponses];
 
 export type InvestorsPartialUpdateData = {
-    body?: PatchedInvestorUpdateRequest;
+    body?: PatchedInvestorRequest;
     path: {
         clerk_id: string;
     };
@@ -933,25 +1033,23 @@ export type InvestorsPartialUpdateData = {
 };
 
 export type InvestorsPartialUpdateResponses = {
-    200: InvestorUpdate;
+    200: Investor;
 };
 
 export type InvestorsPartialUpdateResponse = InvestorsPartialUpdateResponses[keyof InvestorsPartialUpdateResponses];
 
-export type InvestorsUpdateData = {
-    body?: InvestorUpdateRequest;
-    path: {
-        clerk_id: string;
-    };
+export type InvestorsDepositCreateData = {
+    body: DepositMoneyRequest;
+    path?: never;
     query?: never;
-    url: '/api/investors/{clerk_id}/';
+    url: '/api/investors/deposit/';
 };
 
-export type InvestorsUpdateResponses = {
-    200: InvestorUpdate;
+export type InvestorsDepositCreateResponses = {
+    200: DepositMoney;
 };
 
-export type InvestorsUpdateResponse = InvestorsUpdateResponses[keyof InvestorsUpdateResponses];
+export type InvestorsDepositCreateResponse = InvestorsDepositCreateResponses[keyof InvestorsDepositCreateResponses];
 
 export type InvestorsMeRetrieveData = {
     body?: never;
@@ -966,6 +1064,19 @@ export type InvestorsMeRetrieveResponses = {
 
 export type InvestorsMeRetrieveResponse = InvestorsMeRetrieveResponses[keyof InvestorsMeRetrieveResponses];
 
+export type InvestorsMePartialUpdateData = {
+    body?: PatchedInvestorRequest;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/';
+};
+
+export type InvestorsMePartialUpdateResponses = {
+    200: Investor;
+};
+
+export type InvestorsMePartialUpdateResponse = InvestorsMePartialUpdateResponses[keyof InvestorsMePartialUpdateResponses];
+
 export type InvestorsMeAccountValueListData = {
     body?: never;
     path?: never;
@@ -978,6 +1089,47 @@ export type InvestorsMeAccountValueListResponses = {
 };
 
 export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
+
+export type InvestorsMeNotificationsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/notifications/';
+};
+
+export type InvestorsMeNotificationsListResponses = {
+    200: Array<NotificationHistory>;
+};
+
+export type InvestorsMeNotificationsListResponse = InvestorsMeNotificationsListResponses[keyof InvestorsMeNotificationsListResponses];
+
+export type InvestorsMeWatchedTickersListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/investors/me/watched-tickers/';
+};
+
+export type InvestorsMeWatchedTickersListResponses = {
+    200: Array<WatchedTicker>;
+};
+
+export type InvestorsMeWatchedTickersListResponse = InvestorsMeWatchedTickersListResponses[keyof InvestorsMeWatchedTickersListResponses];
+
+export type InvestorsMeWatchedTickersPartialUpdateData = {
+    body?: PatchedWatchedTickersTickerRequest;
+    path: {
+        instrument_id: string;
+    };
+    query?: never;
+    url: '/api/investors/me/watched-tickers/{instrument_id}/';
+};
+
+export type InvestorsMeWatchedTickersPartialUpdateResponses = {
+    200: WatchedTickersTicker;
+};
+
+export type InvestorsMeWatchedTickersPartialUpdateResponse = InvestorsMeWatchedTickersPartialUpdateResponses[keyof InvestorsMeWatchedTickersPartialUpdateResponses];
 
 export type MarketsHolidaysListData = {
     body?: never;
@@ -1083,6 +1235,19 @@ export type OrdersCancelDestroyResponses = {
 
 export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
 
+export type OrdersLimitCreateData = {
+    body: CreateLimitOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/orders/limit/';
+};
+
+export type OrdersLimitCreateResponses = {
+    201: Order;
+};
+
+export type OrdersLimitCreateResponse = OrdersLimitCreateResponses[keyof OrdersLimitCreateResponses];
+
 export type OrdersMarketCreateData = {
     body: CreateMarketOrderRequest;
     path?: never;
@@ -1091,7 +1256,7 @@ export type OrdersMarketCreateData = {
 };
 
 export type OrdersMarketCreateResponses = {
-    201: CreateMarketOrder;
+    201: Order;
 };
 
 export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];
@@ -1109,7 +1274,7 @@ export type PricesListData = {
 };
 
 export type PricesListResponses = {
-    200: PriceDailySummary;
+    200: Array<PriceDailySummary>;
 };
 
 export type PricesListResponse = PricesListResponses[keyof PricesListResponses];
@@ -1259,7 +1424,12 @@ export type PricesPriceAlertUpdateResponse = PricesPriceAlertUpdateResponses[key
 export type StatisticsAssetAllocationRetrieveData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * Number of top instruments without `Other` position
+         */
+        instruments_number?: number;
+    };
     url: '/api/statistics/asset-allocation/';
 };
 
