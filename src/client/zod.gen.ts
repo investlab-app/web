@@ -1224,7 +1224,7 @@ export const zOrdersListResponse = z.array(zOrder);
 export const zOrdersCancelDestroyData = z.object({
     body: z.optional(z.never()),
     path: z.object({
-        id: z.string()
+        id: z.uuid()
     }),
     query: z.optional(z.never())
 });

@@ -420,7 +420,7 @@ export const ordersCancelDestroy = <ThrowOnError extends boolean = false>(option
                 type: 'http'
             }
         ],
-        url: '/api/orders/cancel/{id}',
+        url: '/api/orders/cancel/{id}/',
         ...options
     });
 };
