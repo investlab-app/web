@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
 import { CustomNodeTypes } from '../../types/node-types';
@@ -80,13 +80,6 @@ export function DnDSidebar({
   const { t } = useTranslation();
   const { onDragStart } = useDnD();
 
-  console.log("nodeid: ", startNodeId);
-
-  const nodeIdCounter = useRef(startNodeId);
-  const getId = () => {
-    console.log(nodeIdCounter.current);
-    return `node_${nodeIdCounter.current++}`;};
-
   const createAddNewNode = useCallback(
     (
       nodeType: string,
@@ -96,7 +89,7 @@ export function DnDSidebar({
         const flowPos = screenToFlowPosition(position);
 
         const newNode = {
-          id: getId(),
+          id: `node_${startNodeId}`,
           type: nodeType,
           position: flowPos,
           data: { settings: new settingsType() },
@@ -105,7 +98,7 @@ export function DnDSidebar({
         setNodeType(null);
       };
     },
-    [setNodeType, addNode, screenToFlowPosition]
+    [startNodeId,setNodeType, addNode, screenToFlowPosition]
   );
 
   return (
