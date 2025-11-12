@@ -77,14 +77,15 @@ export function StaysTheSameNodeUI({
               className="px-2 py-1 border rounded"
             />
           )}
-          {!preview && (
-            <div className="ml-2">{t('flows.nodes.with_tolerance')}</div>
-          )}
+         
         </div>
         {onValueChange && (
-          <div className="flex justify-end mt-2">
+          <div className="flex items-center justify-end mt-2">
+
+            <div className="mx-2">{t('flows.nodes.with_tolerance')}</div>
+
             <NumberInput
-              className="w-30 mt-2"
+              className="w-30"
               min={-9999}
               max={9999}
               stepper={1}
@@ -108,6 +109,7 @@ export function StaysTheSameNodeUI({
             id="in"
             nodeId={nodeId}
             position={Position.Right}
+            style={{top: '25%'}}
           />
         </>
       )}

@@ -41,6 +41,17 @@ export function StaysAboveBelowNodeUI({
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
+       comparatorComponent={<div>
+         {t('flows.nodes.stays')}
+       {onDirectionChange && (
+        <EnumSelect
+          value={direction}
+          onChange={onDirectionChange}
+          options={POSITION_DIRECTION_OPTIONS}
+          className="px-2 py-1 ml-2 border rounded"
+        />
+      )}
+      </div>}
       onValueChange={onThresholdChange}
       value={threshold}
     >
@@ -77,7 +88,7 @@ export function StaysAboveBelowNodeUI({
 
       {!preview ? (
         <div className="mx-2">
-          {t('flows.nodes.value')} {t('flows.nodes.stays')}
+          {t('flows.nodes.value')}
         </div>
       ) : (
         <div>
@@ -86,14 +97,7 @@ export function StaysAboveBelowNodeUI({
         </div>
       )}
 
-      {onDirectionChange && (
-        <EnumSelect
-          value={direction}
-          onChange={onDirectionChange}
-          options={POSITION_DIRECTION_OPTIONS}
-          className="px-2 py-1 mx-1 border rounded"
-        />
-      )}
+      
     </PredicateNodeUI>
   );
 }

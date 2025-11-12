@@ -27,6 +27,9 @@ export function IsGreaterLessNodeUI({
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
+      comparatorComponent={<div>
+        {t('flows.nodes.than')}
+      </div>}
       onValueChange={onValueChange}
       value={value}
     >
@@ -37,13 +40,11 @@ export function IsGreaterLessNodeUI({
           value={direction}
           onChange={onDirectionChange}
           options={COMPARISON_DIRECTION_OPTIONS}
-          className="px-2 py-1 mx-2 border rounded"
+          className="px-2 py-1 ml-2 border rounded"
         />
       ) : (
         <div className="mx-1">{t('flows.placeholders.greater_less')}</div>
       )}
-
-      <div>{t('flows.nodes.than')}</div>
     </PredicateNodeUI>
   );
 }
