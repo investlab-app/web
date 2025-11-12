@@ -56,6 +56,13 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
+export type CreateLimitOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
+    limit_price: string;
+};
+
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
