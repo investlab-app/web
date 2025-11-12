@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import {
   TIME_UNIT_OPTIONS,
   TREND_DIRECTION_OPTIONS,
@@ -54,7 +54,7 @@ export function HasRisenFallenNodeUI({
       )}
 
       {onDirectionChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={direction}
           onChange={onDirectionChange}
           options={TREND_DIRECTION_OPTIONS}
@@ -90,7 +90,7 @@ export function HasRisenFallenNodeUI({
       )}
 
       {onUnitChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={unit}
           onChange={onUnitChange}
           options={TIME_UNIT_OPTIONS}

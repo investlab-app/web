@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { BUY_SELL_OPTIONS } from '../../constants/node-options';
 import { ActionNodeUI } from './action-node-ui';
 import type { BuySellAction } from '../../types/input-options-types';
@@ -32,7 +32,7 @@ export function BuySellPriceNodeUI({
   return (
     <ActionNodeUI preview={preview} nodeId={nodeId}>
       {onActionChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={action}
           onChange={onActionChange}
           options={BUY_SELL_OPTIONS}

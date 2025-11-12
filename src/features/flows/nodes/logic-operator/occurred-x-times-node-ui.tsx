@@ -1,7 +1,7 @@
 import { Position } from '@xyflow/react';
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { ValidatedHandle } from '../../components/validated-handle';
 import {
   SHORT_TIME_UNIT_OPTIONS,
@@ -86,7 +86,7 @@ export function OccurredXTimesNodeUI({
         />
       )}
       {onTimeUnitChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={timeUnit}
           onChange={onTimeUnitChange}
           options={TIME_UNIT_OPTIONS}
@@ -114,7 +114,7 @@ export function OccurredXTimesNodeUI({
         />
       )}
       {onIntervalUnitChange && (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={intervalUnit}
           onChange={onIntervalUnitChange}
           options={SHORT_TIME_UNIT_OPTIONS}

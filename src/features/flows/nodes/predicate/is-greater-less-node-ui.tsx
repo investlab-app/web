@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { COMPARISON_DIRECTION_OPTIONS } from '../../constants/node-options';
 import { PredicateNodeUI } from './predicate-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
@@ -36,7 +36,7 @@ export function IsGreaterLessNodeUI({
       <div>{t('flows.nodes.is')}</div>
 
       {onDirectionChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={direction}
           onChange={onDirectionChange}
           options={COMPARISON_DIRECTION_OPTIONS}

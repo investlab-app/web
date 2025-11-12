@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { PRICE_DIRECTION_OPTIONS } from '../../constants/node-options';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { PriceDirection } from '../../types/input-options-types';
@@ -41,7 +41,7 @@ export function PriceChangesNodeUI({
         />
       )}
       {onDirectionChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={direction}
           onChange={onDirectionChange}
           options={PRICE_DIRECTION_OPTIONS}

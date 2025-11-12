@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { EnumSelect } from '../../components/enum-select';
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
 import { TRANSACTION_ACTION_OPTIONS } from '../../constants/node-options';
 import { TriggerNodeUI } from './trigger-node-ui';
 import type { TransactionAction } from '../../types/input-options-types';
@@ -36,7 +36,7 @@ export function InstrumentBoughtSoldNodeUI({
         <div>{t('flows.placeholders.instrument')}</div>
       )}
       {onActionChange ? (
-        <EnumSelect
+        <PredefinedOptionsSelect
           value={action}
           onChange={onActionChange}
           options={TRANSACTION_ACTION_OPTIONS}
