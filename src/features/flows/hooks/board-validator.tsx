@@ -1,4 +1,4 @@
-import { useValidators } from '../hooks/use-validators';
+import { useValidators } from './use-validators';
 import type { Edge, Node, NodeConnection } from '@xyflow/react';
 
 /**

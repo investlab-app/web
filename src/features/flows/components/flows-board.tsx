@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useEdgesState, useNodesState } from '@xyflow/react';
 import { useDnD } from '../hooks/use-dnd';
-import { useValidateBoard } from '../utils/board-validator';
+import { useValidateBoard } from '../hooks/board-validator';
 import { restoreBoard } from '../utils/board-restoration';
 import { useStrategyMutations } from '../hooks/strategy-mutations';
 import { useValidators } from '../hooks/use-validators';
