@@ -35,6 +35,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/investlab-app/backend/contents/backend/schema.yml?ref=develop \
             | jq -r .content | tr -d '\r\n' | base64 -d > ../backend/backend/schema.yml
+          cat ../backend/backend/schema.yml
       - name: Generate OpenAPI types
         run: pnpm openapi-ts
       - name: Check type changes
