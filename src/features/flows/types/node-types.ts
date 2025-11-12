@@ -2,15 +2,15 @@ export const SuperNodeTypes = {
   Action: 'action',
   Flow: 'flow',
   LogicOperator: 'logicOperator',
-  Math :'math',
+  Math: 'math',
   Number: 'number',
   NumericFlow: 'numericFlow',
   Predicate: 'predicate',
-  Trigger :'trigger',
+  Trigger: 'trigger',
 } as const;
 
 export type SuperNodeTypes =
-  typeof SuperNodeTypes[keyof typeof SuperNodeTypes];
+  (typeof SuperNodeTypes)[keyof typeof SuperNodeTypes];
 
 export const CustomNodeTypes = {
   // Action
@@ -59,4 +59,4 @@ export const CustomNodeTypes = {
 } as const;
 
 export type CustomNodeTypes =
-  typeof CustomNodeTypes[keyof typeof CustomNodeTypes];
+  (typeof CustomNodeTypes)[keyof typeof CustomNodeTypes];

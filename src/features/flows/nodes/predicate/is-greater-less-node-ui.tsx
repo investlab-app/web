@@ -27,9 +27,7 @@ export function IsGreaterLessNodeUI({
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
-      comparatorComponent={<div>
-        {t('flows.nodes.than')}
-      </div>}
+      comparatorComponent={<div>{t('flows.nodes.than')}</div>}
       onValueChange={onValueChange}
       value={value}
     >

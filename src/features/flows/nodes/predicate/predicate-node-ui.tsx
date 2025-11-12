@@ -8,7 +8,7 @@ import { NumberInput } from '@/features/shared/components/ui/number-input';
 interface PredicateNodeUIProps {
   value?: number;
   onValueChange?: (value: number | undefined) => void;
-comparatorComponent: ReactNode;
+  comparatorComponent: ReactNode;
 }
 
 export function PredicateNodeUI({
@@ -36,9 +36,7 @@ export function PredicateNodeUI({
 
         {onValueChange && (
           <div className="flex items-center justify-end mt-2">
-            <div className='mr-2'>
-              {comparatorComponent}
-              </div>
+            <div className="mr-2">{comparatorComponent}</div>
             <NumberInput
               disabled={connections.length > 0}
               className="w-30"

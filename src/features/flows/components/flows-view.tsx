@@ -14,7 +14,7 @@ import { Message } from '@/features/shared/components/error-message';
 
 const FlowType = {
   Active: 'active',
-  Closed:'closed',
+  Closed: 'closed',
 } as const;
 
 export function FlowsView() {
