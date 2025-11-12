@@ -1,5 +1,5 @@
 import { PanelRightIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -49,6 +49,22 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
+  // Track lastNodeId with a ref to avoid recalculating on every node position change
+  const lastNodeIdRef = useRef(0);
+
+  // Update lastNodeId only when nodes are added/removed (length changes)
+  useEffect(() => {
+    console.log('Updating lastNodeIdRef');
+    if (nodes.length === 0) {
+      lastNodeIdRef.current = 0;
+    } else {
+      lastNodeIdRef.current = Math.max(
+        ...nodes.map(n => parseInt(n.id.replace('node_', '') || '0'))
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes.length]);
+
   const { data: flowData } = useQuery({
     ...graphLangRetrieveOptions({
       path: { id },
@@ -68,9 +84,11 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   }, [flowData?.raw_graph_data, rfInstance]);
 
-  const addNode = (node: Node) => setNodes((nds) => nds.concat(node));
+  const addNode = useCallback((node: Node) => {
+    setNodes((nds) => nds.concat(node));
+  }, [setNodes]);
 
-  const handlePatchName = (newName: string) => {
+  const handlePatchName = useCallback((newName: string) => {
     if (!newName.trim()) {
       toast.error(t('flows.errors.flow_name_empty'));
       return;
@@ -86,9 +104,9 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     } else {
       toast.error(t('flows.errors.cannot_rename_new_strategy'));
     }
-  };
+  }, [isNewStrategy, id, patchNameMutation, t]);
 
-  const handleDeleteFlow = () => {
+  const handleDeleteFlow = useCallback(() => {
     if (!isNewStrategy) {
       deleteMutation.mutate({
         path: { id },
@@ -96,9 +114,9 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     } else {
       toast.error(t('flows.errors.cannot_delete_new_strategy'));
     }
-  };
+  }, [isNewStrategy, id, deleteMutation, t]);
 
-  const createOrUpdateFlow = () => {
+  const createOrUpdateFlow = useCallback(() => {
     if (!rfInstance) return;
     if (!flowName.trim()) {
       toast.error(t('flows.errors.flow_name_empty'));
@@ -132,7 +150,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         },
       });
     }
-  };
+  }, [rfInstance, flowName, validateBoard, isNewStrategy, updateMutation, id, createMutation, t]);
+
+  const screenToFlowPosition = useCallback(
+    (pos: { x: number; y: number }) => {
+      return rfInstance?.screenToFlowPosition(pos) ?? pos;
+    },
+    [rfInstance]
+  );
 
   if (isMobile) {
     return (
@@ -193,11 +218,11 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       </div>
 
       {rfInstance && (
-        <FlowsSidebar 
-          lastNodeId={rfInstance.getNodes().length > 0 ? Math.max(...rfInstance.getNodes().map(n => parseInt(n.id.replace('node_', '')))) : 0}
+        <FlowsSidebar
+          lastNodeId={lastNodeIdRef.current}
           setNodeType={setNodeType}
           addNode={addNode}
-          screenToFlowPosition={rfInstance.screenToFlowPosition}
+          screenToFlowPosition={screenToFlowPosition}
           onSave={createOrUpdateFlow}
           onDelete={handleDeleteFlow}
           name={flowName}
