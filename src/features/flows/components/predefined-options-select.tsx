@@ -30,7 +30,9 @@ export function PredefinedOptionsSelect<T extends string>({
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>{t(option.labelKey)}</SelectItem>
+          <SelectItem key={option.value} value={option.value}>
+            {t(option.labelKey)}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>

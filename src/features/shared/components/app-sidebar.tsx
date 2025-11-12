@@ -54,6 +54,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         tooltip: t('common.tooltips.navigation.instruments'),
       },
       {
+        title: t('common.strategies'),
+        to: '/strategies',
+        icon: Workflow,
+        tooltip: t(
+          'common.tooltips.navigation.strategies',
+          'See and edit your saved automated strategies'
+        ),
+      },
+      {
         title: t('common.transactions'),
         to: '/transactions',
         icon: History,
@@ -64,15 +73,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         to: '/statistics',
         icon: PieChart,
         tooltip: t('common.tooltips.navigation.statistics'),
-      },
-      {
-        title: t('common.strategies'),
-        to: '/strategies',
-        icon: Workflow,
-        tooltip: t(
-          'common.tooltips.navigation.strategies',
-          'See and edit your saved automated strategies'
-        ),
       },
     ],
     navSecondary: [

@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_authed/strategies/$flowId')({
 function RouteComponent() {
   const { flowId } = Route.useParams();
   return (
-    <AppFrame noXPadding>
+    <AppFrame className="px-0">
       <ReactFlowProvider>
         <DnDProvider>
           <div className="h-[calc(100vh-var(--header-height)-2rem)]">

@@ -10,7 +10,7 @@ import {
 } from '@/features/shared/components/ui/tabs';
 import { graphLangListOptions } from '@/client/@tanstack/react-query.gen';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 
 const FlowType = {
   Active: 'active',
@@ -66,7 +66,7 @@ export function FlowsView() {
         <div className="text-2xl font-semibold mb-2">
           {t('flows.listview.title')}
         </div>
-        <Message message={t('common.error_loading_data')} />
+        <ErrorMessage message={t('common.error_loading_data')} />
       </div>
     );
   }
