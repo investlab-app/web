@@ -39,7 +39,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     useStrategyMutations();
   const { isDragging } = useDnD();
 
-  const isNewStrategy = id === 'newstrategy';
+  const isNewStrategy = id === 'new';
   const flowCanvasRef = useRef<FlowCanvasRef>(null);
   const [nodeType, setNodeType] = useState<string | null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);

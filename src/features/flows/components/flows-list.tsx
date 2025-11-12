@@ -32,7 +32,7 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
           <Button
             variant="ghost"
             onClick={() => {
-              navigate({ to: `/strategies/newstrategy` });
+              navigate({ to: `/strategies/new` });
             }}
             className="w-full h-auto p-4 justify-start gap-3"
           >
