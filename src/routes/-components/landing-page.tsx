@@ -67,9 +67,11 @@ export function LandingPage() {
 
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
                 {t('hero.title_1')}
-                <span className="text-primary block">{t('hero.title_2')}</span>
+                <span className="text-primary-foreground block">
+                  {t('hero.title_2')}
+                </span>
               </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
+              <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto text-balance">
                 {t('hero.description')}
               </p>
               <div className="mt-10 flex items-center justify-center gap-4">
@@ -109,7 +111,7 @@ export function LandingPage() {
             <div className="relative rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/10 dark:to-secondary/10">
               <div className="aspect-[16/10] flex items-center justify-center bg-muted/30 backdrop-blur-sm">
                 <div className="text-center p-8">
-                  <BarChart3 className="h-16 w-16 text-primary mx-auto mb-4" />
+                  <BarChart3 className="h-16 w-16 mx-auto mb-4 text-primary-foreground" />
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     {t('hero.platform_preview')}
                   </h3>
@@ -177,10 +179,7 @@ export function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
-              <Button
-                size="lg"
-                className="h-12 px-8 bg-primary-foreground text-purple-900 hover:bg-primary-foreground/90"
-              >
+              <Button size="lg" className="h-12 px-8">
                 {t('hero.create_free_account')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

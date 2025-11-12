@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { withTimeout } from '../utils/promise';
 
 export interface PushSubscriptionData {
   endpoint: string;
@@ -106,15 +107,30 @@ export function usePushNotifications() {
         vapidPublicKey
       ) as BufferSource;
 
-      const newSub = await registration.pushManager.subscribe({
+      const subscribePromise = registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey,
       });
 
+      const newSub = await withTimeout(subscribePromise, 10000);
       setSubscription(newSub);
       return toData(newSub);
     } catch (err) {
-      console.error('Subscription failed:', err);
+      const browserInfo = {
+        userAgent: navigator.userAgent,
+        isHelium: navigator.userAgent.includes('Helium'),
+        pushManagerSupport: 'subscribe' in PushManager.prototype,
+      };
+
+      if (err instanceof Error && err.message.includes('timed out')) {
+        console.warn(
+          'Push subscription timeout - browser may not support push notifications',
+          browserInfo
+        );
+      } else {
+        console.error('Subscription failed:', err, browserInfo);
+      }
+
       return null;
     }
   };

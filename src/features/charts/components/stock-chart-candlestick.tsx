@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import { useCandlestickChartOptions } from '../hooks/use-candlestick-chart-options';
-import { useLiveChartUpdate } from '../hooks/use-live-chart-update';
+import { useLiveCandlestickChartUpdate } from '../hooks/use-live-candlestick-chart-update';
 import type { StockChartProps } from './stock-chart';
 
 export function StockChartCandlestick({
@@ -23,7 +23,7 @@ export function StockChartCandlestick({
     i18n,
   });
 
-  useLiveChartUpdate({
+  useLiveCandlestickChartUpdate({
     chartRef,
     value: liveUpdatePoint && [
       liveUpdatePoint.open,

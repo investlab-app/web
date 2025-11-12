@@ -1,231 +1,190 @@
 import { useTranslation } from 'react-i18next';
-import { Fragment } from 'react';
-import { ChevronDown, Info } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { PositionRow } from './position-row';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/features/shared/components/ui/table';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { investorsMeTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
+import { Info } from 'lucide-react';
+import { useState } from 'react';
+import type { ColumnDef, PaginationState } from '@tanstack/react-table';
+import type { HistoryEntry } from '@/client';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/features/shared/components/ui/tooltip';
-import { Button } from '@/features/shared/components/ui/button';
+import { dateToLocale } from '@/features/shared/utils/date';
+import { Badge } from '@/features/shared/components/ui/badge';
+import { DataTable } from '@/features/shared/components/ui/data-table';
+import { TableCell, TableRow } from '@/features/shared/components/ui/table';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
-type PositionsTableProps = {
-  type: 'open' | 'closed';
-};
+function usePositionsColumns() {
+  const { t, i18n } = useTranslation();
 
-export function PositionsTable({ type }: PositionsTableProps) {
-  const { data } = useQuery(
-    investorsMeTransactionsHistoryListOptions({ query: { type } })
-  );
-
-  return (
-    <Table className="rounded-md border">
-      <PositionsTableHeader />
-      <TableBody>
-        {!data ? (
-          <PositionRow
-            position={{
-              name: '',
-              quantity: 0,
-              market_value: 0,
-              gain_loss: 0,
-              gain_loss_pct: 0,
-              history: [],
-            }}
-          />
-        ) : (
-          data.map((pos) => <PositionRow key={pos.name} position={pos} />)
-        )}
-      </TableBody>
-    </Table>
-  );
-}
-
-export function PositionsTableHeader() {
-  const { t } = useTranslation();
-  return (
-    <TableHeader>
-      <TableRow>
-        <TableHead>
-          <div className="flex items-center gap-1">
-            <span>{t('transactions.table.headers.name')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.name')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead>
-          <div className="flex items-center gap-1">
-            <span>{t('transactions.table.headers.quantity')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.quantity')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.share_price')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.share_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="hidden xl:table-cell text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.acquisition_price')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.acquisition_price')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.market_value')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.market_value')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.gain_loss')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.gain_loss')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-        <TableHead className="text-right">
-          <div className="flex items-center gap-1 justify-end">
-            <span>{t('transactions.table.headers.gain_loss_pct')}</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('transactions.tooltips.gain_loss_pct')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TableHead>
-      </TableRow>
-    </TableHeader>
+  return new Array<ColumnDef<HistoryEntry>>(
+    {
+      accessorKey: 'timestamp',
+      header: () => (
+        <div className="flex items-center gap-1">
+          <span>{t('transactions.table.headers.transaction')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.transaction')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <Badge
+            aria-label={dateToLocale(row.original.timestamp, i18n.language)}
+            title={row.original.timestamp}
+            variant="secondary"
+            className="min-w-24"
+          >
+            {dateToLocale(row.original.timestamp, i18n.language)}
+          </Badge>
+          <Badge variant="outline" className="min-w-20">
+            {row.original.is_buy
+              ? t('transactions.badge.buy')
+              : t('transactions.badge.sell')}
+          </Badge>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'quantity',
+      header: () => (
+        <div className="flex items-center gap-1">
+          <span>{t('transactions.table.headers.quantity')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.quantity')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => row.original.quantity,
+    },
+    {
+      accessorKey: 'share_price',
+      header: () => (
+        <div className="flex items-center gap-1 justify-end">
+          <span>{t('transactions.table.headers.share_price')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.share_price')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="text-end">
+          {withCurrency(row.original.share_price, i18n.language)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'acquisition_price',
+      header: () => (
+        <div className="flex items-center gap-1 justify-end">
+          <span>{t('transactions.table.headers.acquisition_price')}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('transactions.tooltips.acquisition_price')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="text-end">
+          {row.original.acquisition_price
+            ? withCurrency(row.original.acquisition_price, i18n.language)
+            : 'N/A'}
+        </div>
+      ),
+      enableHiding: true,
+    }
   );
 }
 
-export function PositionsTableBodySkeleton({ length = 5 }) {
-  const { t } = useTranslation();
+export function PositionsTable({
+  history,
+  enablePagination = false,
+  className,
+}: {
+  history: Array<HistoryEntry>;
+  enablePagination?: boolean;
+  className?: string;
+}) {
+  const columns = usePositionsColumns();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  return (
+    <DataTable
+      className={className}
+      data={history}
+      columns={columns}
+      pagination={pagination}
+      onPaginationChange={setPagination}
+      enablePagination={enablePagination}
+      FetchingRowsSkeleton={<PositionsTableSkeleton />}
+    />
+  );
+}
+
+export function PositionsTableSkeleton({
+  enablePagination = false,
+  className,
+}: {
+  enablePagination?: boolean;
+  className?: string;
+}) {
+  const columns = usePositionsColumns();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
+  return (
+    <DataTable
+      data={[]}
+      columns={columns}
+      pagination={pagination}
+      onPaginationChange={setPagination}
+      enablePagination={enablePagination}
+      FetchingRowsSkeleton={<PositionsRowsSkeleton />}
+      isPending={true}
+      className={className}
+    />
+  );
+}
+
+function PositionsRowsSkeleton() {
   return (
     <>
-      {Array.from({ length }).map((_, idx) => (
-        <Fragment key={`skeleton-${idx}`}>
-          <TableRow>
-            <TableCell>
-              <div className="flex items-center gap-1">
-                <Button variant={'ghost'} className="size-8" disabled>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-                <button
-                  className="p-1 rounded border border-transparent"
-                  title={t('transactions.actions.instrument_details')}
-                >
-                  <Skeleton className="h-4 w-24" />
-                </button>
-              </div>
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-14" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-16 ml-auto" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-20 ml-auto" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-20 ml-auto" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-16 ml-auto" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-4 w-16 ml-auto" />
-            </TableCell>
-          </TableRow>
-          {Array.from({ length: Math.floor(Math.random() * 7) + 1 }).map(
-            (_value, childIdx) => (
-              <TableRow
-                className="bg-muted/5"
-                key={`skeleton-child-${idx}-${childIdx}`}
-              >
-                <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-24" />
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-14" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-16 ml-auto" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-20 ml-auto" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-20 ml-auto" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-16 ml-auto" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-16 ml-auto" />
-                </TableCell>
-              </TableRow>
-            )
-          )}
-        </Fragment>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <TableRow
+          key={index}
+          className="animate-pulse grid grid-cols-6 gap-4 py-2"
+        >
+          <TableCell className="h-4 bg-muted rounded col-span-2 w-3/4" />
+          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+        </TableRow>
       ))}
     </>
   );
