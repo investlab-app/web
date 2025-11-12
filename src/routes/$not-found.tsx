@@ -13,7 +13,7 @@ function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center text-center">
       <div>
-        <h1 className="text-4xl font-bold">404 - Not Found</h1>
+        <h1 className="text-4xl font-bold">{t('common.not_found')}</h1>
         <p className="text-muted-foreground">{t('common.page_doesnt_exist')}</p>
         <Button className="w-full mt-4" onClick={() => navigate({ to: '/' })}>
           {t('common.back_to_home')}

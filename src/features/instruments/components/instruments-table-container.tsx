@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Star } from 'lucide-react';
 import { useInstrumentsTable } from '../hooks/use-instruments-table';
 import { InstrumentTable } from './instruments-table';
 import type { Instrument } from '../types/instrument';
@@ -25,6 +26,7 @@ export const InstrumentsTableContainer = ({
   const [ordering, setOrdering] = useState<SortingState>([
     { id: 'symbol', desc: false },
   ]);
+  const [showWatchedOnly, setShowWatchedOnly] = useState(false);
 
   const {
     data,
@@ -54,9 +56,25 @@ export const InstrumentsTableContainer = ({
         className="max-w-md"
         placeholder={t('common.search')}
       />
+
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={() => setShowWatchedOnly(!showWatchedOnly)}
+          variant={showWatchedOnly ? 'default' : 'secondary'}
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Star
+            className="size-4"
+            fill={showWatchedOnly ? 'currentColor' : 'none'}
+          />
+          <span>{t('common.watched')}</span>
+        </Button>
+      </div>
+
       <ScrollableHorizontally>
         <InstrumentTable
-          data={data}
+          data={showWatchedOnly ? data.filter((i) => i.is_watched) : data}
           onInstrumentPressed={handleInstrumentPressed}
           rowCount={pageSize}
           sorting={ordering}

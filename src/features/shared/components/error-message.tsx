@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { AlertTriangle } from 'lucide-react';
 import { cn } from '../utils/styles';
 
-export const Message = ({
+export const ErrorMessage = ({
   message,
   className,
 }: {

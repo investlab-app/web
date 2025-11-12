@@ -1,20 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import AssetTable from './asset-table';
-import type { OwnedShareItem } from '@/client';
+import type { OwnedShare } from '@/client';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { ErrorMessage } from '@/features/shared/components/error-message';
+import { statisticsOwnedSharesListOptions } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
-import { investorsMeOwnedSharesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
-const AssetTableContainer = () => {
+export const AssetTableContainer = () => {
   const { t } = useTranslation();
-  const handleAssetPressed = (asset: OwnedShareItem) => {
+  const handleAssetPressed = (asset: OwnedShare) => {
     void asset;
     // noop
   };
@@ -23,36 +24,40 @@ const AssetTableContainer = () => {
     data: ownedSharesData,
     isPending,
     isError,
-  } = useQuery(investorsMeOwnedSharesRetrieveOptions());
-
-  if (isError) {
-    return <AssetTableContainer.Error />;
-  }
+    isSuccess,
+  } = useQuery(statisticsOwnedSharesListOptions());
 
   if (isPending) {
-    return <AssetTableContainer.Skeleton />;
+    return <AssetTableContainerSkeleton />;
   }
 
   return (
-    <Card className="text-xl">
+    <Card>
       <CardHeader>
         <CardTitle>{t('investor.owned_shares')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <AssetTable
-          data={ownedSharesData.owned_shares}
-          onAssetPressed={handleAssetPressed}
-        />
+        {isError && <ErrorMessage message={t('common.error_loading_data')} />}
+        {isSuccess && ownedSharesData.length === 0 && (
+          <EmptyMessage message={t('investor.no_owned_shares')} />
+        )}
+        {isSuccess && ownedSharesData.length > 0 && (
+          <AssetTable
+            data={ownedSharesData}
+            onAssetPressed={handleAssetPressed}
+            className="border border-muted"
+          />
+        )}
       </CardContent>
     </Card>
   );
 };
 
-function AssetTableContainerSkeleton() {
+export const AssetTableContainerSkeleton = () => {
   return (
-    <Card className="text-xl">
+    <Card>
       <CardHeader>
-        <Skeleton className="h-6 w-1/2" />
+        <CardTitle className="h-6 w-28 bg-muted rounded-md animate-pulse" />
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -64,23 +69,4 @@ function AssetTableContainerSkeleton() {
       </CardContent>
     </Card>
   );
-}
-
-function AssetTableContainerError() {
-  const { t } = useTranslation();
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('investor.owned_shares')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Message message={t('common.error_loading_data')} />
-      </CardContent>
-    </Card>
-  );
-}
-
-AssetTableContainer.Skeleton = AssetTableContainerSkeleton;
-AssetTableContainer.Error = AssetTableContainerError;
-
-export default AssetTableContainer;
+};

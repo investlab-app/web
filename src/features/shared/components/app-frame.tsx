@@ -6,10 +6,10 @@ import { getCookie } from '@/features/shared/utils/cookies';
 
 interface AppFrameProps {
   children: React.ReactNode;
-  noXPadding?: boolean;
+  className?: string;
 }
 
-export default function AppFrame({ children, noXPadding }: AppFrameProps) {
+export default function AppFrame({ children, className }: AppFrameProps) {
   const defaultOpen = getCookie('sidebar_state') === 'true';
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
@@ -18,8 +18,8 @@ export default function AppFrame({ children, noXPadding }: AppFrameProps) {
         <SiteHeader />
         <div
           className={cn(
-            'mt-[var(--header-height)] py-4 [--page-padding:--spacing(4)]',
-            noXPadding ? 'px-0' : 'px-(--page-padding)'
+            'mt-[var(--header-height)] py-4 px-(--page-padding) [--page-padding:--spacing(4)]',
+            className
           )}
         >
           {children}

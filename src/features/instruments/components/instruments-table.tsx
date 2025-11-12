@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, Info } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Info, Star } from 'lucide-react';
+import { useSetWatchedTicker } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
   ColumnDef,
@@ -7,8 +8,8 @@ import type {
   SortingState,
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
-import { cn } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { cn, cssVar } from '@/features/shared/utils/styles';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
@@ -37,6 +38,7 @@ export const InstrumentTable = ({
   isPending,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
+  const { mutate: setWatchedTicker } = useSetWatchedTicker();
 
   const columns: Array<ColumnDef<Instrument>> = [
     {
@@ -49,9 +51,11 @@ export const InstrumentTable = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
               <ArrowDown className="h-4 w-4" />
             ) : (
-              <ArrowUp className="h-4 w-4" />
+              <ArrowUpDown className="h-4 w-4" />
             )}
             {t('instruments.symbol')}
           </Button>
@@ -72,7 +76,60 @@ export const InstrumentTable = ({
       ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
+          <div className="group/heart hidden group-hover:flex items-center">
+            {row.original.is_watched && (
+              <>
+                <Star
+                  className="inline-flex group-hover/heart:hidden cursor-pointer"
+                  fill={cssVar('--foreground')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: !row.original.is_watched,
+                    });
+                  }}
+                />
+                <Star
+                  className="hidden group-hover/heart:inline-flex cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: !row.original.is_watched,
+                    });
+                  }}
+                />
+              </>
+            )}
+            {!row.original.is_watched && (
+              <>
+                <Star
+                  className="inline-flex group-hover/heart:hidden cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: true,
+                    });
+                  }}
+                />
+                <Star
+                  className="hidden group-hover/heart:inline-flex cursor-pointer"
+                  fill={cssVar('--foreground')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setWatchedTicker({
+                      instrument_id: row.original.id,
+                      is_watched: true,
+                    });
+                  }}
+                />
+              </>
+            )}
+          </div>
           <InstrumentIconCircle
+            className="inline-flex group-hover:hidden"
             symbol={row.original.symbol}
             name={row.original.name}
             icon={row.original.icon}
@@ -136,8 +193,7 @@ export const InstrumentTable = ({
               <div className="text-muted-foreground text-right">N/A</div>
             ) : (
               <div className="text-right">
-                {toFixedLocalized(currentPrice, i18n.language, 2)}{' '}
-                {t('common.currency')}
+                {withCurrency(currentPrice, i18n.language, 2)}{' '}
               </div>
             )}
           </div>
@@ -178,7 +234,7 @@ export const InstrumentTable = ({
                 )}
               >
                 {dayChange < 0 ? '-' : '+'}
-                {toFixedLocalized(Math.abs(dayChange), i18n.language, 2)}%
+                {Math.abs(dayChange).toFixed(2)}%
               </div>
             )}
           </div>
@@ -211,11 +267,56 @@ export const InstrumentTable = ({
           {row.original.volume === null ? (
             <div className="text-muted-foreground">N/A</div>
           ) : (
-            toFixedLocalized(row.original.volume, i18n.language, 0)
+            withCurrency(row.original.volume, i18n.language, 1)
           )}
         </div>
       ),
       enableSorting: false,
+    },
+    {
+      accessorKey: 'marketCap',
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 justify-end not-sm:hidden">
+          <Button
+            variant="ghost"
+            className="-mx-1.5! px-1.5!"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="h-4 w-4" />
+            )}
+            {t('instruments.market_cap')}
+          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {t(
+                  'instruments.tooltips.market_cap',
+                  'Total market capitalization of the company'
+                )}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="text-right not-sm:hidden">
+          {row.original.marketCap === null ||
+          row.original.marketCap === undefined ? (
+            <div className="text-muted-foreground">N/A</div>
+          ) : (
+            withCurrency(row.original.marketCap, i18n.language, 0, 'USD')
+          )}
+        </div>
+      ),
+      enableSorting: true,
     },
   ];
 
@@ -229,6 +330,7 @@ export const InstrumentTable = ({
       onRowClick={(row) => onInstrumentPressed(row.original)}
       isPending={isPending}
       FetchingRowsSkeleton={<InstrumentTableBodySkeleton rowCount={rowCount} />}
+      className="rounded-lg border border-muted"
     />
   );
 };
@@ -244,13 +346,24 @@ function InstrumentTableBodySkeleton({ rowCount = 5 }) {
         <Skeleton className="h-4 w-32" />
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-20" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-20" />
+        </div>
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-16" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-16" />
+        </div>
       </TableCell>
       <TableCell className="h-10">
-        <Skeleton className="h-4 w-16" />
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </TableCell>
+      <TableCell className="h-10 not-sm:hidden">
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-24" />
+        </div>
       </TableCell>
     </TableRow>
   ));

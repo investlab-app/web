@@ -6,8 +6,11 @@ const plInstruments = {
   price: 'Cena',
   name: 'Nazwa',
   market_capital: 'Kapitał rynkowy',
+  market_cap: 'Kapitalizacja rynkowa',
   exchange: 'Giełda',
   sector: 'Sektor',
+  cik: 'CIK',
+  website: 'Strona internetowa',
   symbol: 'Symbol',
   day_change: 'Dzienna zmiana',
   news: 'Wiadomości',
@@ -24,6 +27,9 @@ const plInstruments = {
     info_loading:
       'Przepraszamy, informacje o instrumencie nie mogły zostać załadowane.',
     news_unavailable: 'Wiadomości są obecnie niedostępne dla tego instrumentu.',
+  },
+  watch: {
+    toggle_error: 'Nie udało się zmienić statusu obserwowania',
   },
   price_alert_invalid_threshold: 'Proszę wprowadzić prawidłową wartość progową',
   price_alert: {
@@ -53,8 +59,11 @@ const plInstruments = {
     current_price: 'Aktualna cena rynkowa za akcję',
     day_change: 'Procentowa zmiana ceny od poprzedniego dnia handlowego',
     volume: 'Liczba akcji handlowanych dzisiaj',
+    market_cap: 'Całkowita kapitalizacja rynkowa spółki',
     load_more: 'Załaduj więcej instrumentów z listy',
   },
+  browse_instruments: 'Przeglądaj instrumenty',
+  no_instruments_found: 'Nie znaleziono instrumentów',
 };
 
 export default plInstruments;

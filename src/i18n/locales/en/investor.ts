@@ -4,7 +4,7 @@ const enInvestor = {
   invested: 'Invested',
   total_account_value: 'Total account value',
   asset_allocation: 'Asset allocation',
-  this_year: 'in this year',
+  gained_this_year: 'Gained {{amount}} this year',
   distribution: 'Distribution',
   unallocated: 'Unallocated',
   gain: 'Gain',
@@ -12,6 +12,10 @@ const enInvestor = {
   value: 'Value',
   owned_shares: 'Owned assets',
   account_value_over_time: 'Account value over time',
+  no_asset_allocation_data: 'No asset allocation data available',
+  no_account_value_data: 'No account value data available',
+  no_owned_shares: 'No owned shares data available',
+  other_assets: 'Other assets',
 };
 
 export default enInvestor;

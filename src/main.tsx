@@ -2,7 +2,12 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { QueryClient } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  useIsRestoring,
+} from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
@@ -17,6 +22,7 @@ import {
   POSTHOG_KEY,
 } from './features/shared/utils/constants.ts';
 import { ErrorComponent } from './features/shared/components/error-component.tsx';
+import { RouterLoading } from './features/shared/components/router-loading.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
 import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
 import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
@@ -29,13 +35,27 @@ import '@fontsource-variable/spline-sans';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes - consider data fresh for 5 minutes
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
       meta: {
         persist: true,
       },
     },
   },
+  queryCache: new QueryCache({
+    onError: (error: Error) => {
+      if (import.meta.env.DEV) {
+        console.error(`API Error: ${error.message}`);
+      }
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error: Error) => {
+      if (import.meta.env.DEV) {
+        console.error(`API Error: ${error.message}`);
+      }
+    },
+  }),
 });
 
 export type RouterContext = {
@@ -46,6 +66,7 @@ export type RouterContext = {
 };
 
 export const router = createRouter({
+  defaultPreload: 'intent',
   routeTree,
   context: {
     queryClient,
@@ -56,6 +77,7 @@ export const router = createRouter({
   defaultErrorComponent: ({ error }) => {
     return <ErrorComponent error={error} />;
   },
+  defaultPendingComponent: () => <RouterLoading />,
 });
 
 function App() {
@@ -65,6 +87,7 @@ function App() {
   const clerk = useClerk();
   const isSessionCookie = document.cookie.includes('__session=');
   const isLoggedInBefore = isSessionCookie || auth.isSignedIn;
+  const isRestoring = useIsRestoring();
 
   useEffect(() => {
     // ensure session is fresh when back online
@@ -79,6 +102,10 @@ function App() {
       auth.signOut();
     }
   }, [auth, isSessionCookie]);
+
+  if ((isOnline && !auth.isLoaded) || isRestoring) {
+    return null;
+  }
 
   return (
     <WSProvider>

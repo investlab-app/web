@@ -6,6 +6,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 
 interface NavUserProps {
@@ -14,6 +15,7 @@ interface NavUserProps {
 
 export function NavUser({ user }: NavUserProps) {
   const userButtonRef = React.useRef<HTMLDivElement>(null);
+  const { state } = useSidebar();
 
   const name = user.firstName || user.fullName || 'User';
   const email = user.primaryEmailAddress?.emailAddress || '';
@@ -36,6 +38,7 @@ export function NavUser({ user }: NavUserProps) {
         >
           <div ref={userButtonRef} className="my-auto">
             <UserButton
+              fallback={<UserButtonSkeleton />}
               appearance={{
                 variables: {
                   colorBackground: 'var(--background)',
@@ -45,10 +48,15 @@ export function NavUser({ user }: NavUserProps) {
                   shimmer: false,
                 },
                 elements: {
-                  userButtonAvatarBox: {
-                    transform: 'scale(0.8)',
+                  userButtonBox: {
                     height: '32px',
-                    width: '32px',
+                    width: state === 'collapsed' ? '32px' : '28px',
+                    marginLeft: state === 'collapsed' ? '0px' : '-2px',
+                    justifyContent: 'center',
+                  },
+                  userButtonAvatarBox: {
+                    height: '28px',
+                    width: '28px',
                   },
                   userButtonPopoverCard: {
                     pointerEvents: 'initial', // Allow interaction on smaller screens
@@ -77,11 +85,7 @@ export function NavUserSkeleton() {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size="lg" className="cursor-pointer">
-          <div className="flex items-center">
-            <div className="animate-pulse">
-              <Skeleton className="w-8 h-8 rounded-full" />
-            </div>
-          </div>
+          <UserButtonSkeleton />
           <div className="grid flex-1 text-left text-sm leading-tight ml-2 gap-1">
             <Skeleton className="w-24 h-4" />
             <Skeleton className="w-32 h-3" />
@@ -89,5 +93,15 @@ export function NavUserSkeleton() {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
+  );
+}
+
+function UserButtonSkeleton() {
+  return (
+    <div className="flex items-center">
+      <div className="animate-pulse">
+        <Skeleton className="w-8 h-8 rounded-full" />
+      </div>
+    </div>
   );
 }

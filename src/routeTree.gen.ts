@@ -20,6 +20,7 @@ import { Route as LegalFaqRouteImport } from './routes/_legal/faq'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSsoCallbackRouteImport } from './routes/_auth/sso-callback'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as AuthLogoutRouteImport } from './routes/_auth/logout'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedTransactionsRouteRouteImport } from './routes/_authed/transactions/route'
 import { Route as AuthedStrategiesRouteRouteImport } from './routes/_authed/strategies/route'
@@ -82,6 +83,11 @@ const AuthSsoCallbackRoute = AuthSsoCallbackRouteImport.update({
 const AuthSignupRoute = AuthSignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthLogoutRoute = AuthLogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/strategies': typeof AuthedStrategiesRouteRouteWithChildren
   '/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
+  '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$not-found': typeof NotFoundRoute
   '/login': typeof AuthLoginRoute
+  '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '/sso-callback': typeof AuthSsoCallbackRoute
   '/verify-email': typeof AuthVerifyEmailRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/_authed/strategies': typeof AuthedStrategiesRouteRouteWithChildren
   '/_authed/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
+  '/_auth/logout': typeof AuthLogoutRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/sso-callback': typeof AuthSsoCallbackRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/strategies'
     | '/transactions'
     | '/login'
+    | '/logout'
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/login'
+    | '/logout'
     | '/signup'
     | '/sso-callback'
     | '/verify-email'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/_authed/strategies'
     | '/_authed/transactions'
     | '/_auth/login'
+    | '/_auth/logout'
     | '/_auth/signup'
     | '/_auth/sso-callback'
     | '/_auth/verify-email'
@@ -356,6 +368,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/logout': {
+      id: '/_auth/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof AuthLogoutRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -438,6 +457,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthLogoutRoute: typeof AuthLogoutRoute
   AuthSignupRoute: typeof AuthSignupRoute
   AuthSsoCallbackRoute: typeof AuthSsoCallbackRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
@@ -445,6 +465,7 @@ interface AuthRouteRouteChildren {
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
+  AuthLogoutRoute: AuthLogoutRoute,
   AuthSignupRoute: AuthSignupRoute,
   AuthSsoCallbackRoute: AuthSsoCallbackRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,

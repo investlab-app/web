@@ -6,6 +6,7 @@ import {
   History,
   LayoutDashboardIcon,
   List,
+  Network,
   PieChart,
   Workflow,
 } from 'lucide-react';
@@ -15,11 +16,11 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar';
 import { Separator } from './ui/separator';
+import { WalletSection } from './wallet-section';
 import type { NavItem } from '@/features/shared/components/nav-main';
 import { NavMain } from '@/features/shared/components/nav-main';
 import {
@@ -27,6 +28,7 @@ import {
   NavUserSkeleton,
 } from '@/features/shared/components/nav-user';
 import { NavSecondary } from '@/features/shared/components/nav-secondary';
+import { NavWatchedTickers } from '@/features/shared/components/nav-watched-tickers';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
@@ -44,37 +46,31 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.dashboard'),
         to: '/',
         icon: LayoutDashboardIcon,
-        tooltip: t(
-          'common.tooltips.navigation.dashboard',
-          'View your portfolio overview and account summary'
-        ),
+        tooltip: t('common.tooltips.navigation.dashboard'),
+      },
+      {
+        title: t('common.flows'),
+        to: '/flows',
+        icon: Network,
+        tooltip: t('common.tooltips.navigation.flows'),
       },
       {
         title: t('common.stocks'),
         to: '/instruments',
         icon: List,
-        tooltip: t(
-          'common.tooltips.navigation.instruments',
-          'Browse and analyze available financial instruments'
-        ),
+        tooltip: t('common.tooltips.navigation.instruments'),
       },
       {
         title: t('common.transactions'),
         to: '/transactions',
         icon: History,
-        tooltip: t(
-          'common.tooltips.navigation.transactions',
-          'View your trading history and portfolio positions'
-        ),
+        tooltip: t('common.tooltips.navigation.transactions'),
       },
       {
         title: t('common.statistics'),
         to: '/statistics',
         icon: PieChart,
-        tooltip: t(
-          'common.tooltips.navigation.statistics',
-          'Analyze your portfolio performance and trends'
-        ),
+        tooltip: t('common.tooltips.navigation.statistics'),
       },
       {
         title: t('common.strategies'),
@@ -100,23 +96,27 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="border-b border-sidebar-border h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link to="/" className="flex items-center gap-2">
-                <InvestLabLogo />
-                <span className="translate-y-[2px] font-black text-[16px]">
+            <div className="flex items-center gap-2 pointer-events-none select-none">
+              <InvestLabLogo className="ml-1.5" />
+              {state !== 'collapsed' && (
+                <span className="translate-y-[1px] font-black text-[16px]">
                   {t('common.app_name')}
                 </span>
-              </Link>
-            </SidebarMenuButton>
+              )}
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavWatchedTickers />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter className="px-0">
-        <div className="px-2">
+        <div
+          className={`px-2 ${state === 'collapsed' ? 'space-y-2' : 'space-y-0'}`}
+        >
+          <WalletSection />
           {user ? <NavUser user={user} /> : <NavUserSkeleton />}
         </div>
         <div className={state === 'collapsed' ? 'hidden' : ''}>

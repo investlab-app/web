@@ -30,6 +30,7 @@ export function ClerkThemedProvider({
 
   return (
     <ClerkProvider
+      afterSignOutUrl={'/logout'}
       publishableKey={publicKey}
       appearance={{
         baseTheme: theme === 'dark' ? dark : undefined,

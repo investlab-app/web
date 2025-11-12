@@ -1,9 +1,12 @@
 import { Search } from 'lucide-react';
+import { cn } from '../../utils/styles';
+import { Input } from './input';
 import type { ChangeEvent } from 'react';
 
 type SearchInputProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
   placeholder?: string;
   className?: string;
 };
@@ -11,21 +14,26 @@ type SearchInputProps = {
 function SearchInput({
   value,
   onChange,
+  disabled = false,
   placeholder = 'Search',
   className = '',
 }: SearchInputProps) {
   return (
-    <div
-      className={`flex items-center gap-2 border border-input bg-background rounded-md px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${className}`}
-    >
-      <Search className="text-muted-foreground w-4 h-4" />
-      <input
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="bg-transparent outline-none flex-1 placeholder:text-muted-foreground"
-      />
+    <div className={cn('w-full max-w-xs space-y-2', className)}>
+      <div className="relative">
+        <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50">
+          <Search className="size-4" />
+          <span className="sr-only">Search Icon</span>
+        </div>
+        <Input
+          type="text"
+          placeholder={placeholder}
+          className="peer pl-9"
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 }

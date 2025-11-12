@@ -7,7 +7,11 @@ import { IS_PROD } from '@/features/shared/utils/constants';
 import '@/i18n/config';
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  component: () => (
+  component: () => <RootComponent />,
+});
+
+function RootComponent() {
+  return (
     <>
       <Outlet />
       {!IS_PROD && (
@@ -25,5 +29,5 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         />
       )}
     </>
-  ),
-});
+  );
+}

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import { useLineChartOptions } from '../hooks/use-line-chart-options';
-import { useLiveChartUpdate } from '../hooks/use-live-chart-update';
+import { useLiveLineChartUpdate } from '../hooks/use-live-line-chart-update';
 import type { StockChartProps } from './stock-chart';
 
 export function StockChartLine({
@@ -23,7 +23,7 @@ export function StockChartLine({
     translation: { t, i18n },
   });
 
-  useLiveChartUpdate({
+  useLiveLineChartUpdate({
     chartRef,
     value: liveUpdatePoint?.close,
     date: liveUpdatePoint?.date,

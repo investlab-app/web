@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { Message } from '../../shared/components/error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import type { InstrumentPricePoint } from '../../charts/types/instrument-price-point';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { StockChart } from '@/features/charts/components/stock-chart';
 import {
   Card,
@@ -9,19 +10,19 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
-import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+import { withCurrency } from '@/features/shared/utils/numbers';
+import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
   const { data, isPending, isError } = useQuery(
-    investorsMeAccountValueRetrieveOptions()
+    investorsMeAccountValueListOptions()
   );
 
   const chartData: Array<InstrumentPricePoint> =
-    data?.data.map((point) => ({
+    data?.map((point) => ({
       date: new Date(point.date).toISOString(),
       open: point.value,
       close: point.value,
@@ -32,11 +33,11 @@ export const AccountValueChartContainer = () => {
   const currentValue = chartData[chartData.length - 1]?.close ?? 0;
 
   if (isPending) {
-    return <AccountValueChartContainer.Skeleton />;
+    return <AccountValueChartContainerSkeleton />;
   }
 
   if (isError) {
-    return <AccountValueChartContainer.Error />;
+    return <AccountValueChartError />;
   }
 
   return (
@@ -46,37 +47,46 @@ export const AccountValueChartContainer = () => {
           {t('investor.account_value_over_time')}
         </CardTitle>
         <div className="text-4xl font-bold tabular-nums">
-          {toFixedLocalized(currentValue, i18n.language)} {t('common.currency')}
+          {withCurrency(currentValue, i18n.language)}
         </div>
       </CardHeader>
       <CardContent className="h-96">
-        <StockChart
-          type="line"
-          ticker="Account Value"
-          priceHistory={chartData}
-          selectedInterval="WEEK"
-        />
+        {chartData.length === 0 ? (
+          <EmptyMessage
+            message={t('investor.no_account_value_data')}
+            cta={{
+              to: '/instruments',
+              label: t('instruments.browse_instruments'),
+            }}
+          />
+        ) : (
+          <StockChart
+            type="line"
+            ticker="Account Value"
+            priceHistory={chartData}
+            selectedInterval="WEEK"
+          />
+        )}
       </CardContent>
     </Card>
   );
 };
 
-function AccountValueChartContainerSkeleton() {
+export const AccountValueChartContainerSkeleton = () => {
   return (
     <Card>
       <CardHeader>
-        <Skeleton className="h-6 w-1/2" />
+        <CardTitle className="h-6 w-40 bg-muted rounded-md animate-pulse" />
+        <div className="h-10 w-32 bg-muted rounded-md animate-pulse mt-2" />
       </CardHeader>
       <CardContent className="h-96">
         <Skeleton className="w-full h-full" />
       </CardContent>
     </Card>
   );
-}
+};
 
-AccountValueChartContainer.Skeleton = AccountValueChartContainerSkeleton;
-
-function AccountValueChartContainerError() {
+function AccountValueChartError() {
   const { t } = useTranslation();
   return (
     <Card>
@@ -84,10 +94,8 @@ function AccountValueChartContainerError() {
         <CardTitle>{t('investor.account_value_over_time')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Message message={t('common.error_loading_data')} />
+        <ErrorMessage message={t('common.error_loading_data')} />
       </CardContent>
     </Card>
   );
 }
-
-AccountValueChartContainer.Error = AccountValueChartContainerError;

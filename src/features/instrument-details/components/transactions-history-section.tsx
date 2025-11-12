@@ -1,24 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { BuySellContainer } from './buy-sell-action';
 import {
-  PositionsTableBodySkeleton,
-  PositionsTableHeader,
+  PositionsTable,
+  PositionsTableSkeleton,
 } from '@/features/transactions/components/positions-table';
-import { PositionRow } from '@/features/transactions/components/position-row';
-import { Message } from '@/features/shared/components/error-message';
+import { ErrorMessage } from '@/features/shared/components/error-message';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Table, TableBody } from '@/features/shared/components/ui/table';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import {
-  investorsMeTransactionsHistoryListOptions,
-  pricesRetrieveOptions,
-} from '@/client/@tanstack/react-query.gen';
+import { statisticsTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -32,64 +27,38 @@ export function TransactionsHistorySection({
   const { t } = useTranslation();
 
   const {
-    data: tickerPrice,
-    isError: tickerPriceIsError,
-    isPending: tickerPriceIsPending,
-  } = useQuery(
-    pricesRetrieveOptions({
-      path: {
-        ticker: instrumentId,
-      },
-    })
-  );
-
-  const {
     data: tickerTransactions,
     isError: tickerTransactionsIsError,
     isPending: tickerTransactionsIsPending,
   } = useQuery(
-    investorsMeTransactionsHistoryListOptions({
+    statisticsTransactionsHistoryListOptions({
       query: {
         type: 'open',
-        ticker: instrumentId,
+        tickers: [instrumentId],
       },
     })
   );
 
-  const isPending = tickerPriceIsPending || tickerTransactionsIsPending;
-  const isError = tickerPriceIsError || tickerTransactionsIsError;
+  const isPending = tickerTransactionsIsPending;
+  const isError = tickerTransactionsIsError;
 
   return (
     <Card className={className}>
       <CardHeader>
         <CardTitle>{t('transactions.tabs.open_positions')}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="h-full">
         {isPending ? (
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (
-          <Message message={t('transactions.error_loading')} />
+          <ErrorMessage message={t('transactions.error_loading')} />
         ) : !tickerTransactions.length ? (
-          <Message message={t('transactions.no_open_positions')} />
+          <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
-          <>
-            <BuySellContainer
-              currentPrice={parseFloat(tickerPrice.current_price)}
-              onlySell={true}
-            />
-            <Table>
-              <PositionsTableHeader />
-              <TableBody>
-                {tickerTransactions.map((position) => (
-                  <PositionRow
-                    key={position.name}
-                    position={position}
-                    isNavigable={false}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </>
+          <PositionsTable
+            history={tickerTransactions[0].history}
+            enablePagination
+          />
         )}
       </CardContent>
     </Card>
@@ -100,12 +69,7 @@ function TransactionsHistorySectionSkeleton() {
   return (
     <div>
       <Skeleton className="h-20 mb-4" />
-      <Table>
-        <PositionsTableHeader />
-        <TableBody>
-          <PositionsTableBodySkeleton length={1} />
-        </TableBody>
-      </Table>
+      <PositionsTableSkeleton />
     </div>
   );
 }

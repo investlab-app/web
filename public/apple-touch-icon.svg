@@ -1,13 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
-    <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#7c3aed"/>
-            <stop offset="100%" style="stop-color:#a855f7"/>
-        </linearGradient>
-    </defs>
-    <rect width="192" height="192" fill="url(#grad)" rx="24"/>
-    <rect x="24" y="144" width="24" height="48" fill="#c084fc" rx="5.76"/>
-    <rect x="60" y="120" width="24" height="72" fill="#c084fc" rx="5.76"/>
-    <rect x="96" y="96" width="24" height="96" fill="#c084fc" rx="5.76"/>
-    <rect x="132" y="72" width="24" height="120" fill="#c084fc" rx="5.76"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 160 160">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Gradient_bez_nazwy_139-5);
+      }
+
+      .cls-2 {
+        fill: url(#Gradient_bez_nazwy_139-2);
+      }
+
+      .cls-3 {
+        fill: url(#Gradient_bez_nazwy_139-4);
+      }
+
+      .cls-4 {
+        fill: url(#Gradient_bez_nazwy_139-3);
+      }
+
+      .cls-5 {
+        fill: url(#Gradient_bez_nazwy_139-6);
+      }
+
+      .cls-6 {
+        fill: url(#Gradient_bez_nazwy_139);
+      }
+    </style>
+    <radialGradient id="Gradient_bez_nazwy_139" data-name="Gradient bez nazwy 139" cx="83.32" cy="12.75" fx="83.32" fy="12.75" r="128.17" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#522cab"/>
+      <stop offset="1" stop-color="#9b59d4"/>
+    </radialGradient>
+    <radialGradient id="Gradient_bez_nazwy_139-2" data-name="Gradient bez nazwy 139" cx="83.32" fx="83.32" r="128.17" xlink:href="#Gradient_bez_nazwy_139"/>
+    <radialGradient id="Gradient_bez_nazwy_139-3" data-name="Gradient bez nazwy 139" cx="83.32" fx="83.32" r="128.17" xlink:href="#Gradient_bez_nazwy_139"/>
+    <radialGradient id="Gradient_bez_nazwy_139-4" data-name="Gradient bez nazwy 139" cx="83.32" fx="83.32" r="128.17" xlink:href="#Gradient_bez_nazwy_139"/>
+    <radialGradient id="Gradient_bez_nazwy_139-5" data-name="Gradient bez nazwy 139" cx="83.32" fx="83.32" r="128.17" xlink:href="#Gradient_bez_nazwy_139"/>
+    <radialGradient id="Gradient_bez_nazwy_139-6" data-name="Gradient bez nazwy 139" cx="83.32" fx="83.32" r="128.17" xlink:href="#Gradient_bez_nazwy_139"/>
+  </defs>
+  <path class="cls-6" d="M100.15,85.51c-.04-.12-.08-.23-.12-.35-.74,2.78-3.28,4.83-6.28,4.83-3.36,0-6.12-2.56-6.47-5.82-.02.09-.03.18-.04.27,0-.05,0-.19.02-.24l-2.15-1.67-2.77,3.5c.06.52.12.99.12,1.32,0,.48-.05,1.06-.14,1.49v.02c-.64,2.93-3.24,5.13-6.35,5.13-3.59,0-6.5-2.92-6.5-6.5,0-.13,0-.26.02-.38-.78.32-1.63.51-2.53.51-2.67,0-4.96-1.62-5.96-3.93l-19.49,31.25c-2.49,4-.99,7.62-.22,9,.76,1.37,3.04,4.56,7.75,4.56h61.92c4.71,0,6.99-3.19,7.76-4.56.76-1.38,2.26-5-.23-9l-18.34-29.43ZM63.5,121.06c0,.63-.51,1.15-1.15,1.15h-5.7c-.63,0-1.15-.51-1.15-1.15v-8.01c0-.63.51-1.15,1.15-1.15h5.7c.63,0,1.15.51,1.15,1.15v8.01ZM77.17,120.91c0,.63-.51,1.15-1.15,1.15h-5.7c-.63,0-1.15-.51-1.15-1.15v-18.65c0-.63.51-1.15,1.15-1.15h5.7c.63,0,1.15.51,1.15,1.15v18.65ZM90.83,120.76c0,.63-.51,1.15-1.15,1.15h-5.7c-.63,0-1.15-.51-1.15-1.15v-26.28c0-.63.51-1.15,1.15-1.15h5.7c.63,0,1.15.51,1.15,1.15v26.28ZM104.5,120.62c0,.63-.51,1.15-1.15,1.15h-5.7c-.63,0-1.15-.51-1.15-1.15v-15.92c0-.63.51-1.15,1.15-1.15h5.7c.63,0,1.15.51,1.15,1.15v15.92Z"/>
+  <circle class="cls-2" cx="83.52" cy="55.38" r="4"/>
+  <circle class="cls-4" cx="77.52" cy="35.38" r="4.5"/>
+  <path class="cls-3" d="M128.67,108.59l-28.92-46.39c-1.05-1.68-1.6-3.61-1.6-5.59v-31.12h4.31c1.66,0,3-1.34,3-3s-1.34-3-3-3h-44.94c-1.66,0-3,1.34-3,3s1.34,3,3,3h4.31v31.12c0,1.98-.55,3.91-1.6,5.59l-28.92,46.39c-4.07,6.53-4.27,14.44-.54,21.17,3.73,6.73,10.55,10.74,18.25,10.74h61.92c7.69,0,14.51-4.02,18.25-10.74,3.73-6.73,3.53-14.64-.54-21.17ZM123.96,126.85c-2.66,4.79-7.52,7.65-13,7.65h-61.92c-5.48,0-10.34-2.86-13-7.65-2.66-4.79-2.52-10.43.38-15.08l28.92-46.39c1.64-2.63,2.51-5.66,2.51-8.76v-31.12h24.31v31.12c0,3.1.87,6.13,2.51,8.76l28.92,46.39c2.9,4.65,3.04,10.29.38,15.08Z"/>
+  <circle class="cls-1" cx="75.52" cy="66.38" r="3.5"/>
+  <path class="cls-5" d="M66.96,84.62c.87,0,1.65-.33,2.27-.85l3.42,2.66c-.11.34-.18.69-.18,1.07,0,1.93,1.57,3.5,3.5,3.5s3.5-1.57,3.5-3.5c0-.46-.09-.9-.26-1.3l5.02-6.37c.17.02.33.05.5.05.74,0,1.42-.23,1.99-.63l3.7,3.18c-.11.34-.18.69-.18,1.06,0,1.93,1.57,3.5,3.5,3.5s3.5-1.57,3.5-3.5-1.57-3.5-3.5-3.5c-.64,0-1.24.19-1.75.49l-3.85-3.31c.06-.25.1-.52.1-.79,0-1.93-1.57-3.5-3.5-3.5s-3.5,1.57-3.5,3.5c0,.84.31,1.6.8,2.2l-4.55,5.77c-.46-.22-.97-.36-1.51-.36-.64,0-1.23.18-1.75.48l-3.8-2.95c.02-.14.04-.27.04-.41,0-1.93-1.57-3.5-3.5-3.5s-3.5,1.57-3.5,3.5,1.57,3.5,3.5,3.5Z"/>
 </svg>

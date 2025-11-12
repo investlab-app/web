@@ -11,7 +11,7 @@ import type { useTranslation } from 'react-i18next';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
 import type { TimeInterval } from '../utils/time-ranges';
 import { useCssVar } from '@/features/shared/utils/styles';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface CreateLineChartOptionsProps {
   stockName: string;
@@ -30,6 +30,9 @@ export function useLineChartOptions({
 }: CreateLineChartOptionsProps) {
   const dates = chartData.map((item) => item.date);
   const seriesData = chartData.map((item) => item.close);
+
+  const primaryColor = useCssVar('--color-primary-hex');
+  const cardColor = useCssVar('--color-card-hex');
 
   const formatter = useCallback(
     (params: TooltipComponentFormatterCallbackParams) => {
@@ -58,7 +61,7 @@ export function useLineChartOptions({
       return `<div>
 <strong>${formattedDate}</strong>
 <br />
-${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
+${t('instruments.price')}: $${withCurrency(value, i18n.language, 2)}
 </div>`;
     },
     [selectedInterval, i18n, t]
@@ -79,14 +82,37 @@ ${t('instruments.price')}: $${toFixedLocalized(value, i18n.language, 2)}
           x2: 0,
           y2: 1,
           colorStops: [
-            { offset: 0, color: useCssVar('--color-card-foreground-hex') },
-            { offset: 1, color: useCssVar('--color-card-hex') },
+            { offset: 0, color: primaryColor },
+            { offset: 1, color: cardColor },
           ],
         },
       },
       lineStyle: {
-        color: useCssVar('--color-card-foreground-hex'),
+        color: primaryColor,
         width: 1,
+      },
+      markPoint: {
+        symbol: 'circle',
+        symbolKeepAspect: true,
+        symbolOffset: [0, 0],
+        label: { show: false },
+        data:
+          seriesData.length > 0 && dates.length > 0
+            ? [
+                {
+                  name: 'Last Value',
+                  xAxis: dates[dates.length - 1],
+                  yAxis: seriesData[seriesData.length - 1],
+                  itemStyle: {
+                    color: primaryColor,
+                    borderWidth: 0,
+                  },
+                  symbol: 'circle',
+                  symbolSize: 6,
+                },
+              ]
+            : [],
+        emphasis: { disabled: true },
       },
     },
   ];
