@@ -41,9 +41,7 @@ export function HasRisenFallenNodeUI({
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
-        comparatorComponent={<div>
-        {t('flows.nodes.by')}
-      </div>}
+      comparatorComponent={<div>{t('flows.nodes.by')}</div>}
       onValueChange={onValueChange}
       value={value}
     >

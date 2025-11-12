@@ -1,8 +1,4 @@
-import {
-  Background,
-  ReactFlow,
-  addEdge,
-} from '@xyflow/react';
+import { Background, ReactFlow, addEdge } from '@xyflow/react';
 import { memo } from 'react';
 import { nodeTypes } from '../types/node-types-to-settings';
 import type {

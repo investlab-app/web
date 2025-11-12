@@ -8,7 +8,10 @@ import {
 import { getMaxValue } from '../../utils/get-max-value-for-interval';
 import { PredicateNodeUI } from './predicate-node-ui';
 import type { CustomNodeProps } from '../../types/node-props';
-import type { PositionDirection, TimeUnit } from '../../types/input-options-types';
+import type {
+  PositionDirection,
+  TimeUnit,
+} from '../../types/input-options-types';
 
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
@@ -41,17 +44,19 @@ export function StaysAboveBelowNodeUI({
     <PredicateNodeUI
       nodeId={nodeId}
       preview={preview}
-       comparatorComponent={<div>
-         {t('flows.nodes.stays')}
-       {onDirectionChange && (
-        <PredefinedOptionsSelect
-          value={direction}
-          onChange={onDirectionChange}
-          options={POSITION_DIRECTION_OPTIONS}
-          className="px-2 py-1 ml-2 border rounded"
-        />
-      )}
-      </div>}
+      comparatorComponent={
+        <div>
+          {t('flows.nodes.stays')}
+          {onDirectionChange && (
+            <PredefinedOptionsSelect
+              value={direction}
+              onChange={onDirectionChange}
+              options={POSITION_DIRECTION_OPTIONS}
+              className="px-2 py-1 ml-2 border rounded"
+            />
+          )}
+        </div>
+      }
       onValueChange={onThresholdChange}
       value={threshold}
     >
@@ -87,17 +92,13 @@ export function StaysAboveBelowNodeUI({
       )}
 
       {!preview ? (
-        <div className="mx-2">
-          {t('flows.nodes.value')}
-        </div>
+        <div className="mx-2">{t('flows.nodes.value')}</div>
       ) : (
         <div>
           {t('flows.nodes.stays')}{' '}
           {t('flows.placeholders.above_below_threshold')}
         </div>
       )}
-
-      
     </PredicateNodeUI>
   );
 }

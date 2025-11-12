@@ -1,5 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/features/shared/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/features/shared/components/ui/select';
 import { cn } from '@/features/shared/utils/styles';
 
 interface PredefinedOptionsSelectProps<T extends string> {
@@ -18,22 +24,15 @@ export function PredefinedOptionsSelect<T extends string>({
   const { t } = useTranslation();
 
   return (
-   <Select
-                value={value}
-                onValueChange={(v) =>
-                  onChange?.(v as T)
-                }
-              >
-                <SelectTrigger className={cn(className, 'min-w-[100px]')}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {options.map((option) => (
-                    <SelectItem value={option.value}>
-                      {t(option.labelKey)}
-                    </SelectItem>
-                  ))} 
-                </SelectContent>
-              </Select>
+    <Select value={value} onValueChange={(v) => onChange?.(v as T)}>
+      <SelectTrigger className={cn(className, 'min-w-[100px]')}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem value={option.value}>{t(option.labelKey)}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

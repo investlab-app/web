@@ -56,7 +56,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       lastNodeIdRef.current = 0;
     } else {
       lastNodeIdRef.current = Math.max(
-        ...nodes.map(n => parseInt(n.id.replace('node_', '') || '0'))
+        ...nodes.map((n) => parseInt(n.id.replace('node_', '') || '0'))
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,27 +81,33 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   }, [flowData?.raw_graph_data, rfInstance]);
 
-  const addNode = useCallback((node: Node) => {
-    setNodes((nds) => nds.concat(node));
-  }, [setNodes]);
+  const addNode = useCallback(
+    (node: Node) => {
+      setNodes((nds) => nds.concat(node));
+    },
+    [setNodes]
+  );
 
-  const handlePatchName = useCallback((newName: string) => {
-    if (!newName.trim()) {
-      toast.error(t('flows.errors.flow_name_empty'));
-      return;
-    }
+  const handlePatchName = useCallback(
+    (newName: string) => {
+      if (!newName.trim()) {
+        toast.error(t('flows.errors.flow_name_empty'));
+        return;
+      }
 
-    if (!isNewStrategy) {
-      patchNameMutation.mutate({
-        path: { id },
-        body: {
-          name: newName,
-        },
-      });
-    } else {
-      toast.error(t('flows.errors.cannot_rename_new_strategy'));
-    }
-  }, [isNewStrategy, id, patchNameMutation, t]);
+      if (!isNewStrategy) {
+        patchNameMutation.mutate({
+          path: { id },
+          body: {
+            name: newName,
+          },
+        });
+      } else {
+        toast.error(t('flows.errors.cannot_rename_new_strategy'));
+      }
+    },
+    [isNewStrategy, id, patchNameMutation, t]
+  );
 
   const handleDeleteFlow = useCallback(() => {
     if (!isNewStrategy) {
@@ -147,7 +153,16 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         },
       });
     }
-  }, [rfInstance, flowName, validateBoard, isNewStrategy, updateMutation, id, createMutation, t]);
+  }, [
+    rfInstance,
+    flowName,
+    validateBoard,
+    isNewStrategy,
+    updateMutation,
+    id,
+    createMutation,
+    t,
+  ]);
 
   const screenToFlowPosition = useCallback(
     (pos: { x: number; y: number }) => {
