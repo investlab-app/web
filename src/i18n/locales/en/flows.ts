@@ -88,6 +88,7 @@ const enFlows = {
     divide: 'divide',
 
     occured: 'occurred',
+    with_message: 'with message',
     times: 'times',
     with_events: 'with events every',
     change_of_value: 'change of value',

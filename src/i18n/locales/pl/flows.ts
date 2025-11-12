@@ -91,6 +91,7 @@ const plFlows = {
 
     occured: 'wystąpiło',
     times: 'razy',
+    with_message: 'z wiadomością',
     with_events: 'z wydarzeniami co',
     change_of_value: 'zmiana wartości',
     number: 'liczba',
