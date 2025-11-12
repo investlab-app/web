@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CandlestickChartIcon, LineChartIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { intervalToStartDate, timeIntervals } from '../utils/time-ranges';
-import { Message } from '../../shared/components/error-message';
+import { ErrorMessage } from '../../shared/components/error-message';
 import { StockChart, StockChartSkeleton } from './stock-chart';
 import type { TimeInterval } from '../utils/time-ranges';
 import type { InstrumentPricePoint } from '../types/instrument-price-point';
@@ -32,7 +32,7 @@ import {
 import { useWS } from '@/features/shared/hooks/use-ws';
 import { livePrice } from '@/features/charts/types/live-price';
 import { useFrozenValue } from '@/features/shared/hooks/use-frozen';
-import { toFixedLocalized } from '@/features/shared/utils/numbers';
+import { withCurrency } from '@/features/shared/utils/numbers';
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -40,6 +40,7 @@ import {
 import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
 import { pricesBars } from '@/client';
 import { roundDateToMinute, serialize } from '@/features/shared/utils/date';
+import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface StockChartProps {
   ticker: string;
@@ -74,11 +75,16 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const {
     data: priceHistory,
     isPending,
-    isFetching,
-    isSuccess,
     isError,
   } = useQuery({
-    queryKey: pricesBarsQueryKey({ query }),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: pricesBarsQueryKey({
+      query: {
+        ticker,
+        interval,
+        start_date: '',
+      },
+    }),
     queryFn: async () => {
       const bars = await pricesBars({ query });
 
@@ -95,7 +101,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         low: parseFloat(item.low),
       }));
     },
-    gcTime: 60_000, // 1 minute
+    staleTime: 60_000, // 1 minute
   });
 
   const { lastJsonMessage } = useWS([ticker]);
@@ -118,7 +124,8 @@ export function StockChartContainer({ ticker }: StockChartProps) {
     }
   }, [lastJsonMessage, ticker]);
 
-  const appliedInterval = useFrozenValue(interval, isFetching);
+  const appliedInterval = useFrozenValue(interval, isPending);
+  const appliedPriceHistory = useFrozenValue(priceHistory, isPending);
   const isIntervalChanging = appliedInterval !== interval;
 
   const latestClosingPrice = currentPrice?.close || priceHistory?.at(-1)?.close;
@@ -126,7 +133,10 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
   // happens with yearly interval for polygon since it's capped to past 5 years
-  const zoom = Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100);
+  const zoom = useFrozenValue(
+    Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100),
+    isPending
+  );
 
   return (
     <Card>
@@ -135,7 +145,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         {latestClosingPrice && (
           <CardDescription>
             {t('instruments.current_price')}: $
-            {toFixedLocalized(latestClosingPrice, i18n.language, 2)}
+            {withCurrency(latestClosingPrice, i18n.language, 2)}
           </CardDescription>
         )}
         <CardAction>
@@ -164,14 +174,12 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div>
-                    <ToggleGroupItem
-                      value="candle"
-                      aria-label="Candlestick chart"
-                    >
-                      <CandlestickChartIcon strokeWidth={1.5} />
-                    </ToggleGroupItem>
-                  </div>
+                  <ToggleGroupItem
+                    value="candle"
+                    aria-label="Candlestick chart"
+                  >
+                    <CandlestickChartIcon strokeWidth={1.5} />
+                  </ToggleGroupItem>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
@@ -217,26 +225,27 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         </CardAction>
       </CardHeader>
       <CardContent className="h-96">
-        {isPending && <StockChartSkeleton />}
-        {isError && <Message message={t('common.error_loading_data')} />}
-        {isSuccess &&
-          (priceHistory.length ? (
-            <StockChart
-              type={isCandlestick ? 'candlestick' : 'line'}
-              ticker={ticker}
-              priceHistory={priceHistory}
-              selectedInterval={appliedInterval}
-              zoom={zoom}
-              liveUpdatePoint={currentPrice}
-            />
-          ) : (
-            <Message
-              message={t('instruments.history_empty', {
-                ticker,
-                interval: t(timeIntervals[interval]),
-              })}
-            />
-          ))}
+        {isError ? (
+          <ErrorMessage message={t('common.error_loading_data')} />
+        ) : appliedPriceHistory === undefined ? (
+          <StockChartSkeleton />
+        ) : appliedPriceHistory.length ? (
+          <StockChart
+            type={isCandlestick ? 'candlestick' : 'line'}
+            ticker={ticker}
+            priceHistory={appliedPriceHistory}
+            selectedInterval={appliedInterval}
+            liveUpdatePoint={currentPrice}
+            zoom={zoom}
+          />
+        ) : (
+          <EmptyMessage
+            message={t('instruments.history_empty', {
+              ticker,
+              interval: t(timeIntervals[interval]),
+            })}
+          />
+        )}
       </CardContent>
     </Card>
   );

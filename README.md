@@ -60,4 +60,3 @@ This project uses [Prettier](https://prettier.io/) for code formatting. You can 
 ```bash
 pnpm format
 ```
-

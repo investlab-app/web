@@ -1,9 +1,8 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { BuySellContainer } from './buy-sell-action';
-import { StopLimitContainer } from './stop-limit-action';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
+import { StopLimit } from './stop-limit';
+import { BuySell } from './buy-sell';
+import { StopLossTakeProfit } from './stop-loss-take-profit';
 import {
   Card,
   CardContent,
@@ -11,12 +10,12 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/features/shared/components/ui/tabs';
-import { pricesRetrieveOptions } from '@/client/@tanstack/react-query.gen';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/features/shared/components/ui/select';
 
 interface OrdersSectionProps {
   ticker: string;
@@ -28,62 +27,46 @@ export function OrdersSection({
   className,
 }: OrdersSectionProps) {
   const { t } = useTranslation();
+  const [orderType, setOrderType] = useState('market');
 
-  const { data, isError, isPending } = useQuery(
-    pricesRetrieveOptions({
-      path: { ticker: instrumentId },
-      throwOnError: true,
-    })
-  );
+  const OrderForm = () => {
+    switch (orderType) {
+      case 'market':
+        return <BuySell ticker={instrumentId} />;
+      case 'limit':
+        return <StopLimit ticker={instrumentId} />;
+      case 'sl_tp':
+        return <StopLossTakeProfit ticker={instrumentId} />;
+      default:
+        console.error(`Unknown order type: ${orderType}`);
+        return null;
+    }
+  };
 
   return (
     <Card className={className}>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t('orders.place_order')}</CardTitle>
+        <Select value={orderType} onValueChange={setOrderType}>
+          <SelectTrigger className="w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="market">
+              {t('orders.tabs.market_order')}
+            </SelectItem>
+            <SelectItem value="limit">
+              {t('orders.tabs.stop_limit_order')}
+            </SelectItem>
+            <SelectItem value="sl_tp">
+              {t('orders.tabs.stop_loss_take_profit')}
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
       <CardContent>
-        {isError ? (
-          <Message message={t('orders.current_price_error')} />
-        ) : isPending ? (
-          <OrderSectionSkeleton />
-        ) : (
-          <Tabs defaultValue="market">
-            <TabsList>
-              <TabsTrigger value="market" className="cursor-pointer text-xs">
-                {t('orders.tabs.market_order')}
-              </TabsTrigger>
-              <TabsTrigger value="limit" className="cursor-pointer text-xs">
-                {t('orders.tabs.stop_limit_order')}
-              </TabsTrigger>
-              <TabsTrigger value="sl_tp" className="cursor-pointer text-xs">
-                {t('orders.tabs.stop_loss_take_profit')}
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="market">
-              <BuySellContainer currentPrice={parseFloat(data.current_price)} />
-            </TabsContent>
-            <TabsContent value="limit">
-              <StopLimitContainer
-                currentPrice={parseFloat(data.current_price)}
-              />
-            </TabsContent>
-            <TabsContent value="sl_tp"></TabsContent>
-          </Tabs>
-        )}
+        <OrderForm />
       </CardContent>
     </Card>
-  );
-}
-
-function OrderSectionSkeleton() {
-  return (
-    <div className="space-y-4">
-      <div className="flex gap-4">
-        <Skeleton className="h-6 w-24 " />
-        <Skeleton className="h-6 w-36 " />
-        <Skeleton className="h-6 w-48" />
-      </div>
-      <Skeleton className="h-40 " />
-    </div>
   );
 }

@@ -5,6 +5,7 @@ const enInstruments = {
   volume: 'Volume',
   price: 'Price',
   market_capital: 'Market capital',
+  market_cap: 'Market Cap',
   exchange: 'Exchange',
   sector: 'Sector',
   name: 'Name',
@@ -15,6 +16,8 @@ const enInstruments = {
   instrument_details: 'Instrument details',
   see_details: 'See details',
   general_info: 'General info',
+  website: 'Website',
+  cik: 'CIK',
   no_description_available: 'No description available',
   history_empty:
     "History couldn't be found for ticker {{ticker}} for interval {{interval}}",
@@ -23,6 +26,9 @@ const enInstruments = {
       'Sorry, the information for this time range could not be loaded.',
     info_loading: 'Sorry, the instrument information could not be loaded.',
     news_unavailable: 'News are currently unavailable for this instrument.',
+  },
+  watch: {
+    toggle_error: 'Failed to toggle watch status',
   },
   price_alert_invalid_threshold: 'Please enter a valid threshold value',
   price_alert: {
@@ -52,8 +58,11 @@ const enInstruments = {
     current_price: 'Current market price per share',
     day_change: 'Price change percentage from previous trading day',
     volume: 'Number of shares traded today',
+    market_cap: 'Total market capitalization of the company',
     load_more: 'Load more instruments from the list',
   },
+  browse_instruments: 'Browse Instruments',
+  no_instruments_found: 'No instruments found',
 };
 
 export default enInstruments;

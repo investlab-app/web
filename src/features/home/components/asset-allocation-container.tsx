@@ -7,76 +7,100 @@ import {
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
+import { ErrorMessage } from '@/features/shared/components/error-message';
+import { statisticsAssetAllocationRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
-import { Message } from '@/features/shared/components/error-message';
-import { investorsMeAssetAllocationRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 
-const AssetAllocationContainer = () => {
+export const AssetAllocationContainer = () => {
   const { t } = useTranslation();
 
-  const {
-    data: assetAllocation,
-    isPending,
-    isError,
-  } = useQuery(investorsMeAssetAllocationRetrieveOptions());
+  const { data, isPending, isSuccess } = useQuery(
+    statisticsAssetAllocationRetrieveOptions({
+      query: {
+        instruments_number: 4,
+      },
+    })
+  );
 
-  if (isPending) {
-    return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-10 w-48" />
-          <Skeleton className="h-5 w-40" />
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <Skeleton className="h-5 w-18" />
-            <Skeleton className="h-4 w-full" />
-            <div className="space-y-4">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="w-4 h-4 rounded-full" />
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-3 w-10" />
-                    </div>
-                  </div>
-                  <Skeleton className="h-5 w-24" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (isError) {
+  if (!isSuccess) {
+    if (isPending) {
+      return <AssetAllocationContainerSkeleton />;
+    }
     return (
       <Card>
         <CardHeader>
           <CardTitle>{t('investor.asset_allocation')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Message message={t('common.error_loading_data')} />
+          <ErrorMessage message={t('common.error_loading_data')} />
         </CardContent>
       </Card>
     );
   }
 
-  const assets: Array<[string, number]> = assetAllocation.allocations.map(
-    (item) => [item.asset_class_display_name, item.value]
-  );
+  const allocations = data.allocations.map((allocation) => {
+    if (allocation.instrument_name === 'Other') {
+      return {
+        ...allocation,
+        instrument_name: '',
+        instrument_ticker: t('investor.other_assets'),
+      };
+    }
+    return allocation;
+  });
 
   return (
     <AssetAllocationTile
-      totalValue={assetAllocation.total_value}
-      yearlyGain={assetAllocation.total_return_this_year}
-      currency={t('common.currency')}
-      assets={assets}
+      totalValue={data.total_value}
+      yearlyGain={data.total_gain_this_year}
+      assets={allocations}
     />
   );
 };
 
-export default AssetAllocationContainer;
+export const AssetAllocationContainerSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="h-7 w-40 bg-muted rounded-md animate-pulse" />
+        <div className="h-10 w-32 bg-muted rounded-md animate-pulse mt-2" />
+        <div className="h-4 w-24 bg-muted rounded-md animate-pulse mt-1" />
+      </CardHeader>
+      <CardContent className="p-6 space-y-6">
+        <div className="space-y-4">
+          {/* Distribution section title */}
+          <div className="h-6 w-32 bg-muted rounded-md animate-pulse" />
+
+          {/* Distribution chart */}
+          <div className="flex w-full gap-1 h-8 rounded-lg">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-md h-4 bg-muted animate-pulse"
+                style={{ width: `${Math.random() * 30 + 10}%` }}
+              />
+            ))}
+          </div>
+
+          {/* Asset list */}
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-4 rounded-full" />
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-4 w-12" />
+                      <Skeleton className="h-4 w-20" />
+                    </div>
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};

@@ -20,7 +20,7 @@ export const ContinueWithGoogle = () => {
 
   const handler = async () => {
     if (!isLoaded) {
-      navigate({
+      await navigate({
         to: '/signup',
         params: { error: 'Not loaded' },
       });
@@ -40,7 +40,7 @@ export const ContinueWithGoogle = () => {
     );
 
     if (result.isErr()) {
-      navigate({
+      await navigate({
         to: '/signup',
         params: { error: result.error },
       });

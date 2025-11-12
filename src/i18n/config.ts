@@ -20,12 +20,20 @@ import enStatistics from './locales/en/statistics';
 import plStatistics from './locales/pl/statistics';
 import enOrders from './locales/en/orders';
 import plOrders from './locales/pl/orders';
+import enWallet from './locales/en/wallet';
+import plWallet from './locales/pl/wallet';
 import enFaq from './locales/en/legal/faq';
 import plFaq from './locales/pl/legal/faq';
 import plPrivacyPolicy from './locales/pl/legal/privacy-policy';
 import plTermsOfService from './locales/pl/legal/terms-of-service';
 import enPrivacyPolicy from './locales/en/legal/privacy-policy';
 import enTermsOfService from './locales/en/legal/terms-of-service';
+import enTable from './locales/en/table';
+import plTable from './locales/pl/table';
+import enMarketStatus from './locales/en/marketStatus';
+import plMarketStatus from './locales/pl/marketStatus';
+import enNotifications from './locales/en/notifications';
+import plNotifications from './locales/pl/notifications';
 
 i18n
   .use(LanguageDetector)
@@ -56,11 +64,15 @@ i18n
           settings: enSettings,
           statistics: enStatistics,
           transactions: enTransactions,
+          wallet: enWallet,
           legal: {
             faq: enFaq,
             privacyPolicy: enPrivacyPolicy,
             termsOfService: enTermsOfService,
           },
+          table: enTable,
+          marketStatus: enMarketStatus,
+          notifications: enNotifications,
         },
       },
       pl: {
@@ -74,11 +86,15 @@ i18n
           settings: plSettings,
           statistics: plStatistics,
           transactions: plTransactions,
+          wallet: plWallet,
           legal: {
             faq: plFaq,
             privacyPolicy: plPrivacyPolicy,
             termsOfService: plTermsOfService,
           },
+          table: plTable,
+          marketStatus: plMarketStatus,
+          notifications: plNotifications,
         },
       },
     },

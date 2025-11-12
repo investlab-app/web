@@ -71,9 +71,9 @@ export function LoginForm({ pageError }: LoginFormProps) {
           }
         })
         .match(
-          (sessionId) => {
-            setActive({ session: sessionId });
-            navigate({ to: '/' });
+          async (sessionId) => {
+            await setActive({ session: sessionId });
+            await navigate({ to: '/' });
           },
           (e) => {
             navigate({

@@ -13,3 +13,10 @@ export function getCookie(name: string): string {
 export function deleteCookie(name: string): void {
   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
 }
+
+export function clearCookies(): void {
+  document.cookie
+    .split(';')
+    .map((cookie) => cookie.split('=')[0].trim())
+    .forEach((name) => deleteCookie(name));
+}
