@@ -42,7 +42,7 @@ export const ValidatedHandle = ({
         connections.length,
         overrideAllowedConnections ?? getAllowedConnections(nodeId, type, id)
       )}
-      style={style}
+      style={{ ...style, scale: '1.3' }}
     />
   );
 };
