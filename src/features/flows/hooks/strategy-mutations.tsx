@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { parseErrorResponse } from '../utils/parse-error-response';
 import {
   graphLangCreateMutation,
   graphLangDestroyMutation,
@@ -11,7 +12,6 @@ import {
   graphLangUpdateMutation,
 } from '@/client/@tanstack/react-query.gen';
 
-// Parsing the erros at the moment is non-existent, as I didn't yet consult error types with krzyzan
 export function useStrategyMutations() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,8 +27,9 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      const message = error;
-      toast.error(t('flows.errors.delete_failed', { message }));
+      toast.error(
+        t('flows.errors.delete_failed', { message: parseErrorResponse(error) })
+      );
     },
   });
 
@@ -42,8 +43,9 @@ export function useStrategyMutations() {
       });
     },
     onError: (error) => {
-      const message = error.non_field_errors;
-      toast.error(t('flows.errors.create_failed', { message }));
+      toast.error(
+        t('flows.errors.create_failed', { message: parseErrorResponse(error) })
+      );
     },
   });
 
@@ -57,8 +59,9 @@ export function useStrategyMutations() {
       queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
     },
     onError: (error) => {
-      const message = error.non_field_errors;
-      toast.error(t('flows.errors.update_failed', { message }));
+      toast.error(
+        t('flows.errors.update_failed', { message: parseErrorResponse(error) })
+      );
     },
   });
 
