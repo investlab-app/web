@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDnD } from '../../hooks/use-dnd';
 import { CustomNodeTypes } from '../../types/node-types';
@@ -64,22 +64,28 @@ import type { OnDropAction } from '../../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
 import type { NodeSettings } from '../../nodes/node-settings';
 
-let nodeid = 0;
-const getId = () => `node_${nodeid++}`;
-
 interface DnDSidebarProps {
+  startNodeId: number;
   addNode: (node: Node) => void;
   setNodeType: (type: string | null) => void;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
 }
 
 export function DnDSidebar({
+  startNodeId,
   addNode,
   screenToFlowPosition,
   setNodeType,
 }: DnDSidebarProps) {
   const { t } = useTranslation();
   const { onDragStart } = useDnD();
+
+  console.log("nodeid: ", startNodeId);
+
+  const nodeIdCounter = useRef(startNodeId);
+  const getId = () => {
+    console.log(nodeIdCounter.current);
+    return `node_${nodeIdCounter.current++}`;};
 
   const createAddNewNode = useCallback(
     (
