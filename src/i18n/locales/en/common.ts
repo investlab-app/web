@@ -13,6 +13,8 @@ const enCommon = {
   strategies: 'Strategies',
   wallet: 'Wallet',
   add: 'Add',
+  edit: 'Edit',
+  delete: 'Delete',
   help: 'Help',
   settings: 'Settings',
   loading: 'Loading...',

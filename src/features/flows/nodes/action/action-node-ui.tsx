@@ -4,7 +4,6 @@ import type { CustomNodeProps } from '../../types/node-props';
 import { ValidatedHandle } from '@/features/flows/components/validated-handle';
 
 export function ActionNodeUI({ children, preview, nodeId }: CustomNodeProps) {
-  console.log('Rendering ActionNodeUI', nodeId);
   return (
     <NodeUI
       nodeId={nodeId}

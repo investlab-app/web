@@ -13,6 +13,8 @@ const plCommon = {
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   add: 'Dodaj',
+  edit: 'Edytuj',
+  delete: 'Usuń',
   help: 'Pomoc',
   settings: 'Ustawienia',
   loading: 'Ładowanie...',
