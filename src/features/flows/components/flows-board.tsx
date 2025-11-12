@@ -1,8 +1,9 @@
 import { PanelRightIcon } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useEdgesState, useNodesState } from '@xyflow/react';
 import { useDnD } from '../hooks/use-dnd';
 import { useValidateBoard } from '../utils/board-validator';
 import { restoreBoard } from '../utils/board-restoration';
@@ -12,8 +13,7 @@ import { DragGhost } from './drag-ghost';
 import { FlowsSidebar } from './sidebar/flows-sidebar';
 import { FlowHeader } from './sidebar/flow-header';
 import { FlowCanvas } from './flow-canvas';
-import type { FlowCanvasRef } from './flow-canvas';
-import type { Node, ReactFlowInstance } from '@xyflow/react';
+import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
 import { useTheme } from '@/features/shared/components/theme-provider';
 import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
@@ -40,13 +40,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { isDragging } = useDnD();
 
   const isNewStrategy = id === 'new';
-  const flowCanvasRef = useRef<FlowCanvasRef>(null);
   const [nodeType, setNodeType] = useState<string | null>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [editedFlowName, setEditedFlowName] = useState<string | undefined>(
     undefined
   );
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   const { data: flowData } = useQuery({
     ...graphLangRetrieveOptions({
@@ -67,9 +68,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   }, [flowData?.raw_graph_data, rfInstance]);
 
-  const addNode = (node: Node) => {
-    flowCanvasRef.current?.addNode(node);
-  };
+  const addNode = (node: Node) => setNodes((nds) => nds.concat(node));
 
   const handlePatchName = (newName: string) => {
     if (!newName.trim()) {
@@ -151,7 +150,11 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
         </Alert>
         <div className="flex-1">
           <FlowCanvas
-            ref={flowCanvasRef}
+            nodes={nodes}
+            edges={edges}
+            setEdges={setEdges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
             theme={theme}
             validateConnection={validateConnection}
             onInit={setRfInstance}
@@ -172,7 +175,11 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
 
       <div className="flex-1 ml-4">
         <FlowCanvas
-          ref={flowCanvasRef}
+          nodes={nodes}
+          edges={edges}
+          setEdges={setEdges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           theme={theme}
           validateConnection={validateConnection}
           onInit={setRfInstance}
@@ -186,7 +193,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       </div>
 
       {rfInstance && (
-        <FlowsSidebar
+        <FlowsSidebar 
+          lastNodeId={rfInstance.getNodes().length > 0 ? Math.max(...rfInstance.getNodes().map(n => parseInt(n.id.replace('node_', '')))) : 0}
           setNodeType={setNodeType}
           addNode={addNode}
           screenToFlowPosition={rfInstance.screenToFlowPosition}

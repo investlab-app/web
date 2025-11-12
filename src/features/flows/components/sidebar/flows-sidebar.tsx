@@ -10,6 +10,7 @@ import {
 } from '@/features/shared/components/ui/sidebar';
 
 interface FlowsSidebarProps {
+  lastNodeId: number;
   addNode: (node: Node) => void;
   setNodeType: (type: string | null) => void;
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
@@ -21,6 +22,7 @@ interface FlowsSidebarProps {
 
 export const FlowsSidebar = memo(function FlowsSidebar({
   addNode,
+  lastNodeId,
   screenToFlowPosition,
   onSave,
   setNodeType,
@@ -47,6 +49,7 @@ export const FlowsSidebar = memo(function FlowsSidebar({
       </SidebarHeader>
       <SidebarContent>
         <DnDSidebar
+          startNodeId={lastNodeId + 1}
           addNode={addNode}
           screenToFlowPosition={screenToFlowPosition}
           setNodeType={setNodeType}
