@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StopLimit } from './stop-limit';
-import { BuySell } from './buy-sell';
-import { StopLossTakeProfit } from './stop-loss-take-profit';
+
+import { MarketOrder } from './market-order';
+import { LimitOrder } from './limit-order';
+import { PendingLimitOrders } from './pending-limit-orders';
+import { PendingMarketOrders } from './pending-market-orders';
 import {
   Card,
   CardContent,
@@ -32,11 +34,19 @@ export function OrdersSection({
   const OrderForm = () => {
     switch (orderType) {
       case 'market':
-        return <BuySell ticker={instrumentId} />;
+        return (
+          <div className="space-y-4">
+            <MarketOrder ticker={instrumentId} />
+            <PendingMarketOrders ticker={instrumentId} />
+          </div>
+        );
       case 'limit':
-        return <StopLimit ticker={instrumentId} />;
-      case 'sl_tp':
-        return <StopLossTakeProfit ticker={instrumentId} />;
+        return (
+          <div className="space-y-4">
+            <LimitOrder ticker={instrumentId} />
+            <PendingLimitOrders ticker={instrumentId} />
+          </div>
+        );
       default:
         console.error(`Unknown order type: ${orderType}`);
         return null;
@@ -57,9 +67,6 @@ export function OrdersSection({
             </SelectItem>
             <SelectItem value="limit">
               {t('orders.tabs.stop_limit_order')}
-            </SelectItem>
-            <SelectItem value="sl_tp">
-              {t('orders.tabs.stop_loss_take_profit')}
             </SelectItem>
           </SelectContent>
         </Select>

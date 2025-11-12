@@ -55,7 +55,7 @@ export const SellOpenSection = ({
         >
           <ArrowUpDown />
         </Button>
-        <Button className="bg-red-600 hover:bg-red-700 w-1/3">
+        <Button variant="red" className="w-1/3">
           {t('instruments.sell')}
         </Button>
       </div>
