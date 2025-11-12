@@ -1,18 +1,21 @@
 import { Position, useNodeConnections } from '@xyflow/react';
 import { ValidatedHandle } from '../../components/validated-handle';
 import { NodeUI } from '../node-ui';
+import type { ReactNode } from 'react';
 import type { CustomNodeProps } from '../../types/node-props';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 
 interface PredicateNodeUIProps {
   value?: number;
   onValueChange?: (value: number | undefined) => void;
+comparatorComponent: ReactNode;
 }
 
 export function PredicateNodeUI({
   nodeId,
   preview,
   children,
+  comparatorComponent,
   value,
   onValueChange,
 }: PredicateNodeUIProps & CustomNodeProps) {
@@ -28,14 +31,17 @@ export function PredicateNodeUI({
       preview={preview}
       className={`bg-[var(--node-predicate)]`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col items-end">
         <div className="flex flex-row items-center">{children}</div>
 
         {onValueChange && (
-          <div className="flex justify-end mt-2">
+          <div className="flex items-center justify-end mt-2">
+            <div className='mr-2'>
+              {comparatorComponent}
+              </div>
             <NumberInput
               disabled={connections.length > 0}
-              className="w-30 mt-2"
+              className="w-30"
               min={-9999}
               max={9999}
               stepper={1}
