@@ -86,7 +86,7 @@ runs:
     - name: Create temporary backend directory
       shell: bash
       run: |
-        mkdir -p /tmp/backend-ci
+        mkdir -p /tmp/backend
 
     - name: Download docker-compose.yml from backend repository
       shell: bash
@@ -95,7 +95,7 @@ runs:
           -H "Accept: application/vnd.github.raw" \
           -H "Authorization: Bearer ${{ inputs.github-token }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -o /tmp/backend-ci/docker-compose.yml \
+          -o /tmp/backend/docker-compose.yml \
           "https://raw.githubusercontent.com/${{ inputs.backend-repo }}/${{ inputs.backend-repo-ref }}/docker-compose.yml"
 
     - name: Create environment file for docker-compose
