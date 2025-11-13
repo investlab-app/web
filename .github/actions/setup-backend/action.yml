@@ -1,87 +1,87 @@
-name: 'Setup Backend Services'
-description: 'Sets up and starts backend services for E2E tests using docker-compose'
+name: "Setup Backend Services"
+description: "Sets up and starts backend services for E2E tests using docker-compose"
 
 inputs:
   backend-tag:
-    description: 'Backend image tag to pull from GHCR'
+    description: "Backend image tag to pull from GHCR"
     required: false
-    default: 'latest'
+    default: "latest"
   backend-repo:
-    description: 'Backend repository name'
+    description: "Backend repository name"
     required: false
-    default: 'investlab-app/backend'
+    default: "investlab-app/backend"
   backend-repo-ref:
-    description: 'Backend repository branch/tag'
+    description: "Backend repository branch/tag"
     required: false
-    default: 'develop'
+    default: "develop"
   github-token:
-    description: 'GitHub token for authentication (used for GHCR and repo access)'
+    description: "GitHub token for authentication (used for GHCR and repo access)"
     required: true
   django-secret-key:
-    description: 'Django secret key'
+    description: "Django secret key"
     required: true
   clerk-jwt-key:
-    description: 'Clerk JWT key'
+    description: "Clerk JWT key"
     required: true
   clerk-secret-key:
-    description: 'Clerk secret key'
+    description: "Clerk secret key"
     required: true
   clerk-issuer:
-    description: 'Clerk issuer URL'
+    description: "Clerk issuer URL"
     required: true
   polygon-secret-key:
-    description: 'Polygon API secret key'
+    description: "Polygon API secret key"
     required: true
   alpaca-public-key:
-    description: 'Alpaca public key'
+    description: "Alpaca public key"
     required: true
   alpaca-secret-key:
-    description: 'Alpaca secret key'
+    description: "Alpaca secret key"
     required: true
   admin-email:
-    description: 'Admin email address'
+    description: "Admin email address"
     required: true
   from-email:
-    description: 'From email address'
+    description: "From email address"
     required: true
   email-backend:
-    description: 'Email backend configuration'
+    description: "Email backend configuration"
     required: true
   email-file-path:
-    description: 'Email file path'
+    description: "Email file path"
     required: true
   vapid-private-key:
-    description: 'VAPID private key'
+    description: "VAPID private key"
     required: true
   vapid-public-key:
-    description: 'VAPID public key'
+    description: "VAPID public key"
     required: true
   redis-host:
-    description: 'Redis host'
+    description: "Redis host"
     required: true
   redis-port:
-    description: 'Redis port'
+    description: "Redis port"
     required: true
   redis-password:
-    description: 'Redis password'
+    description: "Redis password"
     required: true
   openai-api-key:
-    description: 'OpenAI API key'
+    description: "OpenAI API key"
     required: true
   openai-api-url:
-    description: 'OpenAI API URL'
+    description: "OpenAI API URL"
     required: true
   openai-translating-model:
-    description: 'OpenAI translating model'
+    description: "OpenAI translating model"
     required: true
 
 outputs:
   backend-url:
-    description: 'URL of the backend service'
-    value: 'http://localhost:8000'
+    description: "URL of the backend service"
+    value: "http://localhost:8000"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Create temporary backend directory
       shell: bash
@@ -97,6 +97,16 @@ runs:
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -o /tmp/backend/docker-compose.yml \
           "https://raw.githubusercontent.com/${{ inputs.backend-repo }}/${{ inputs.backend-repo-ref }}/docker-compose.yml"
+
+    - name: Download backend/entrypoint.sh from backend repository
+      shell: bash
+      run: |
+        curl -L \
+          -H "Accept: application/vnd.github.raw" \
+          -H "Authorization: Bearer ${{ inputs.github-token }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          -o /tmp/backend/backend/entrypoint.sh \
+          "https://raw.githubusercontent.com/${{ inputs.backend-repo }}/${{ inputs.backend-repo-ref }}/backend/entrypoint.sh"
 
     - name: Create environment file for docker-compose
       shell: bash
@@ -142,7 +152,7 @@ runs:
       shell: bash
       run: |
         cd /tmp/backend
-        docker compose --profile ci up -d --wait 
+        docker compose --profile ci up -d --wait
 
     - name: If failed show logs
       if: failure()
