@@ -95,7 +95,7 @@ runs:
       shell: bash
       run: |
         cat > backend/.env << EOF
-        DEBUG=false
+        DEBUG=fals
         SECRET_KEY=${{ inputs.django-secret-key }}
         ALLOWED_HOSTS=*
         POSTGRES_HOST=postgres
@@ -106,7 +106,7 @@ runs:
         CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
         CLERK_JWT_KEY=${{ inputs.clerk-jwt-key }}
         CLERK_SECRET_KEY=${{ inputs.clerk-secret-key }}
-        CLERK_ISSUER=${{ inputs.clerk-issuer }}
+        CLERK_ISSUER='${{ inputs.clerk-issuer }}'
         POLYGON_SECRET_KEY=${{ inputs.polygon-secret-key }}
         ALPACA_PUBLIC_KEY=${{ inputs.alpaca-public-key }}
         ALPACA_SECRET_KEY=${{ inputs.alpaca-secret-key }}
