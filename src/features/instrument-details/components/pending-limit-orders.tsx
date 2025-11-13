@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { RotateCw } from 'lucide-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { RotateCw, X } from 'lucide-react';
+import { toast } from 'sonner';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import type { LimitOrder } from '@/client';
@@ -9,7 +10,10 @@ import { Badge } from '@/features/shared/components/ui/badge';
 import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
-import { ordersLimitListOptions } from '@/client/@tanstack/react-query.gen';
+import {
+  ordersCancelDestroyMutation,
+  ordersLimitListOptions,
+} from '@/client/@tanstack/react-query.gen';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
@@ -27,10 +31,6 @@ export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
     ...ordersLimitListOptions({ query: { ticker } }),
     refetchInterval: REFETCH_INTERVAL_MS,
   });
-
-  if (isSuccess && data.length === 0) {
-    return <EmptyMessage message={t('orders.no_pending_limit_orders')} />;
-  }
 
   return (
     <section className="space-y-3">
@@ -52,8 +52,14 @@ export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
 
       {isError ? (
         <ErrorMessage message={t('orders.pending_orders_error')} />
+      ) : isSuccess && data.length === 0 ? (
+        <EmptyMessage message={t('orders.no_pending_limit_orders')} />
       ) : (
-        <PendingLimitOrdersTable data={data} isPending={isPending} />
+        <PendingLimitOrdersTable
+          data={data}
+          isPending={isPending}
+          ticker={ticker}
+        />
       )}
     </section>
   );
@@ -62,11 +68,27 @@ export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
 function PendingLimitOrdersTable({
   data,
   isPending,
+  ticker,
 }: {
   data: Array<LimitOrder> | undefined;
   isPending: boolean;
+  ticker: string;
 }) {
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const { mutate: cancelOrder, isPending: isCancelling } = useMutation({
+    ...ordersCancelDestroyMutation(),
+    onSuccess: () => {
+      toast.success(t('orders.cancel_order_success'));
+      queryClient.invalidateQueries({
+        queryKey: ordersLimitListOptions({ query: { ticker } }).queryKey,
+      });
+    },
+    onError: () => {
+      toast.error(t('orders.cancel_order_failed'));
+    },
+  });
 
   const columns: Array<ColumnDef<LimitOrder>> = [
     {
@@ -111,6 +133,24 @@ function PendingLimitOrdersTable({
         );
       },
     },
+    {
+      id: 'actions',
+      header: t('orders.table.actions'),
+      cell: ({ row }) => {
+        return (
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => cancelOrder({ path: { id: row.original.id } })}
+            disabled={isCancelling}
+            title={t('orders.cancel_order')}
+            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        );
+      },
+    },
   ];
 
   return (
@@ -138,6 +178,9 @@ function PendingLimitOrdersRowsSkeleton() {
       </TableCell>
       <TableCell className="h-10">
         <Skeleton className="h-4 w-20" />
+      </TableCell>
+      <TableCell className="h-10">
+        <Skeleton className="h-4 w-8" />
       </TableCell>
     </TableRow>
   ));

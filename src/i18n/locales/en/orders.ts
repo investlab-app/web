@@ -27,7 +27,11 @@ const enOrders = {
     limit_price: 'Limit price',
     limit: 'Limit',
     market: 'Market',
+    actions: 'Actions',
   },
+  cancel_order: 'Cancel order',
+  cancel_order_success: 'Order cancelled successfully',
+  cancel_order_failed: 'Failed to cancel order. Please try again.',
 };
 
 export default enOrders;

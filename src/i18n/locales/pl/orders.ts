@@ -30,7 +30,11 @@ const plOrders = {
     limit_price: 'Cena limit',
     limit: 'Limit',
     market: 'Rynek',
+    actions: 'Akcje',
   },
+  cancel_order: 'Anuluj zlecenie',
+  cancel_order_success: 'Zlecenie anulowane pomyślnie',
+  cancel_order_failed: 'Nie udało się anulować zlecenia. Spróbuj ponownie.',
 };
 
 export default plOrders;
