@@ -89,7 +89,9 @@ export class InstrumentsPage extends BasePage {
       .locator('table tbody tr[data-testid="empty-state-data-table-row"]')
       .count();
 
-    console.log(`All Rows: ${allRows}, Pending Rows: ${pendingRows}, Empty Rows: ${emptyRows}`);
+    console.log(
+      `All Rows: ${allRows}, Pending Rows: ${pendingRows}, Empty Rows: ${emptyRows}`
+    );
 
     const realRowCount = allRows - pendingRows - emptyRows;
 
