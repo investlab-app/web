@@ -10,7 +10,7 @@ const plCommon = {
   search: 'Wyszukaj...',
   dashboard: 'Strona główna',
   statistics: 'Statystyki',
-  flows: 'Strategie',
+  strategies: 'Strategie',
   stocks: 'Instrumenty',
   wallet: 'Portfel',
   watch: 'Obserwuj',
@@ -23,6 +23,8 @@ const plCommon = {
   hour: 'godzina',
   hours: 'godziny',
   add: 'Dodaj',
+  edit: 'Edytuj',
+  delete: 'Usuń',
   help: 'Pomoc',
   settings: 'Ustawienia',
   loading: 'Ładowanie...',
@@ -63,7 +65,7 @@ const plCommon = {
   tooltips: {
     navigation: {
       dashboard: 'Strona główna',
-      flows: 'Strategie',
+      strategies: 'Strategie',
       instruments: 'Instrumenty',
       transactions: 'Transakcje',
       statistics: 'Statystyki',

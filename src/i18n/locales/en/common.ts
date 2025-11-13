@@ -11,7 +11,7 @@ const enCommon = {
   dashboard: 'Dashboard',
   stocks: 'Stocks',
   statistics: 'Statistics',
-  flows: 'Strategies',
+  strategies: 'Strategies',
   wallet: 'Wallet',
   watch: 'Watch',
   watched: 'Watched',
@@ -23,6 +23,8 @@ const enCommon = {
   hour: 'hour',
   hours: 'hours',
   add: 'Add',
+  edit: 'Edit',
+  delete: 'Delete',
   help: 'Help',
   settings: 'Settings',
   loading: 'Loading...',
@@ -63,7 +65,7 @@ const enCommon = {
   tooltips: {
     navigation: {
       dashboard: 'Dashboard',
-      flows: 'strategies',
+      strategies: 'strategies',
       instruments: 'Stocks',
       transactions: 'Transactions',
       statistics: 'Statistics',

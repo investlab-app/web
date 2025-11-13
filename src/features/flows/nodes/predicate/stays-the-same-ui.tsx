@@ -1,0 +1,116 @@
+import { useTranslation } from 'react-i18next';
+import { Position } from '@xyflow/react';
+
+import { PredefinedOptionsSelect } from '../../components/predefined-options-select';
+import { ValidatedHandle } from '../../components/validated-handle';
+import { TIME_UNIT_OPTIONS } from '../../constants/node-options';
+import { getMaxValue } from '../../utils/get-max-value-for-interval';
+import { NodeUI } from '../node-ui';
+import type { CustomNodeProps } from '../../types/node-props';
+import type { TimeUnit } from '../../types/input-options-types';
+
+import { NumberInput } from '@/features/shared/components/ui/number-input';
+
+interface StaysTheSameNodeUIProps {
+  value?: number;
+  period?: number;
+  unit?: TimeUnit;
+  onValueChange?: (value: number | undefined) => void;
+  onPeriodChange?: (value: number | undefined) => void;
+  onUnitChange?: (value: TimeUnit) => void;
+}
+
+export function StaysTheSameNodeUI({
+  value,
+  period,
+  unit,
+  onValueChange,
+  onPeriodChange,
+  onUnitChange,
+  nodeId,
+  preview,
+}: StaysTheSameNodeUIProps & CustomNodeProps) {
+  const { t } = useTranslation();
+
+  return (
+    <NodeUI
+      nodeId={nodeId}
+      preview={preview}
+      className={`bg-[var(--node-predicate)]`}
+    >
+      <div className="flex flex-col">
+        <div className="flex flex-row items-center">
+          <div>
+            {t('flows.nodes.value')} {t('flows.nodes.stays')}{' '}
+            {t('flows.nodes.the_same')}
+          </div>
+
+          {!preview && (
+            <div className="ml-1">{t('flows.nodes.for_duration')}</div>
+          )}
+
+          {onPeriodChange && (
+            <NumberInput
+              className="w-20 mx-2"
+              min={1}
+              max={unit ? getMaxValue(unit) : 99}
+              defaultValue={1}
+              stepper={1}
+              value={period}
+              onValueChange={(val) => {
+                const maxValue = unit ? getMaxValue(unit) : 99;
+                if (val && val > maxValue) {
+                  onPeriodChange(maxValue);
+                } else {
+                  onPeriodChange(val);
+                }
+              }}
+              decimalScale={0}
+            />
+          )}
+
+          {onUnitChange && (
+            <PredefinedOptionsSelect
+              value={unit}
+              onChange={onUnitChange}
+              options={TIME_UNIT_OPTIONS}
+              className="px-2 py-1 border rounded"
+            />
+          )}
+        </div>
+        {onValueChange && (
+          <div className="flex items-center justify-end mt-2">
+            <div className="mx-2">{t('flows.nodes.with_tolerance')}</div>
+
+            <NumberInput
+              className="w-30"
+              min={-9999}
+              max={9999}
+              stepper={1}
+              value={value}
+              onValueChange={onValueChange}
+              decimalScale={3}
+            />
+          </div>
+        )}
+      </div>
+      {!preview && (
+        <>
+          <ValidatedHandle
+            type="target"
+            id="out"
+            nodeId={nodeId}
+            position={Position.Left}
+          />
+          <ValidatedHandle
+            type="source"
+            id="in"
+            nodeId={nodeId}
+            position={Position.Right}
+            style={{ top: '25%' }}
+          />
+        </>
+      )}
+    </NodeUI>
+  );
+}

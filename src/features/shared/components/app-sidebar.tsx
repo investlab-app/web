@@ -6,8 +6,8 @@ import {
   History,
   LayoutDashboardIcon,
   List,
-  Network,
   PieChart,
+  Workflow,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -48,16 +48,19 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         tooltip: t('common.tooltips.navigation.dashboard'),
       },
       {
-        title: t('common.flows'),
-        to: '/flows',
-        icon: Network,
-        tooltip: t('common.tooltips.navigation.flows'),
-      },
-      {
         title: t('common.stocks'),
         to: '/instruments',
         icon: List,
         tooltip: t('common.tooltips.navigation.instruments'),
+      },
+      {
+        title: t('common.strategies'),
+        to: '/strategies',
+        icon: Workflow,
+        tooltip: t(
+          'common.tooltips.navigation.strategies',
+          'See and edit your saved automated strategies'
+        ),
       },
       {
         title: t('common.transactions'),

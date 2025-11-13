@@ -28,6 +28,8 @@ import plPrivacyPolicy from './locales/pl/legal/privacy-policy';
 import plTermsOfService from './locales/pl/legal/terms-of-service';
 import enPrivacyPolicy from './locales/en/legal/privacy-policy';
 import enTermsOfService from './locales/en/legal/terms-of-service';
+import enFlows from './locales/en/flows';
+import plFlows from './locales/pl/flows';
 import enTable from './locales/en/table';
 import plTable from './locales/pl/table';
 import enMarketStatus from './locales/en/marketStatus';
@@ -57,6 +59,7 @@ i18n
         translation: {
           auth: enAuth,
           common: enCommon,
+          flows: enFlows,
           hero: enHero,
           instruments: enInstruments,
           investor: enInvestor,
@@ -79,6 +82,7 @@ i18n
         translation: {
           auth: plAuth,
           common: plCommon,
+          flows: plFlows,
           hero: plHero,
           instruments: plInstruments,
           investor: plInvestor,
