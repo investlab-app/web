@@ -27,6 +27,7 @@ interface InstrumentTableProps {
   sorting?: SortingState;
   onSortingChange?: OnChangeFn<SortingState>;
   isPending?: boolean;
+  isFetching?: boolean;
 }
 
 export const InstrumentTable = ({
@@ -36,6 +37,7 @@ export const InstrumentTable = ({
   sorting: controlledSorting,
   onSortingChange,
   isPending,
+  isFetching,
 }: InstrumentTableProps) => {
   const { t, i18n } = useTranslation();
   const { mutate: setWatchedTicker } = useSetWatchedTicker();
@@ -321,17 +323,25 @@ export const InstrumentTable = ({
   ];
 
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      rowCount={rowCount}
-      sorting={controlledSorting}
-      onSortingChange={onSortingChange}
-      onRowClick={(row) => onInstrumentPressed(row.original)}
-      isPending={isPending}
-      FetchingRowsSkeleton={<InstrumentTableBodySkeleton rowCount={rowCount} />}
-      className="rounded-lg border border-muted"
-    />
+    <div
+      data-testid={
+        isFetching ? 'instrument-table-loading' : 'instrument-table-ready'
+      }
+    >
+      <DataTable
+        columns={columns}
+        data={data}
+        rowCount={rowCount}
+        sorting={controlledSorting}
+        onSortingChange={onSortingChange}
+        onRowClick={(row) => onInstrumentPressed(row.original)}
+        isPending={isPending}
+        FetchingRowsSkeleton={
+          <InstrumentTableBodySkeleton rowCount={rowCount} />
+        }
+        className="rounded-lg border border-muted"
+      />
+    </div>
   );
 };
 
