@@ -124,7 +124,7 @@ jobs:
     steps:
       - name: Run database migrations
         run: |
-          docker ps
+          docker ps -a --format "{{.ID}}: {{.Names}}: {{.Labels}}"
           BACKEND_CONTAINER_ID=$(docker ps -q --filter "label=com.docker.compose.service=backend")
           docker exec $BACKEND_CONTAINER_ID python manage.py migrate
       - name: Checkout repository
