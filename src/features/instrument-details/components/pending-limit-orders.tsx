@@ -22,7 +22,7 @@ interface PendingLimitOrdersProps {
   ticker: string;
 }
 
-const REFETCH_INTERVAL_MS = 5000;
+const REFETCH_INTERVAL_MS = 1000;
 
 export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
   const { t } = useTranslation();

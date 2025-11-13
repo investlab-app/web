@@ -21,7 +21,7 @@ interface PendingMarketOrdersProps {
   ticker: string;
 }
 
-const REFETCH_INTERVAL_MS = 5000;
+const REFETCH_INTERVAL_MS = 1000;
 
 export function PendingMarketOrders({ ticker }: PendingMarketOrdersProps) {
   const { t } = useTranslation();
