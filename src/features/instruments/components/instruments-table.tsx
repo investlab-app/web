@@ -337,7 +337,7 @@ export const InstrumentTable = ({
 
 function InstrumentTableBodySkeleton({ rowCount = 5 }) {
   return Array.from({ length: rowCount }).map((_, idx) => (
-    <TableRow key={`skeleton-${idx}`}>
+    <TableRow key={`skeleton-${idx}`} data-testid="pending-state-data-table-row">
       <TableCell className="h-10 flex items-center gap-2">
         <Skeleton className="h-6 w-6 rounded-full" />
         <Skeleton className="h-4 w-8" />
