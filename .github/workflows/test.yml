@@ -122,8 +122,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Seed database
-        run: docker compose exec backend python manage.py seed_test_data --investor-id=user_2zgsgKHXMItpEbTLdBdaJR7YaZh
+      - name: Run database migrations
+        run: |
+          BACKEND_CONTAINER_ID=$(docker ps -q --filter "label=com.docker.compose.service=backend")
+          docker exec $BACKEND_CONTAINER_ID python manage.py migrate
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup and build frontend
