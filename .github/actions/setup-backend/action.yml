@@ -87,6 +87,7 @@ runs:
       shell: bash
       run: |
         mkdir -p /tmp/backend
+        mkdir -p /tmp/backend/backend
 
     - name: Download docker-compose.yml from backend repository
       shell: bash
