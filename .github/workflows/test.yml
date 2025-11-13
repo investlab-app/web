@@ -71,6 +71,26 @@ jobs:
         uses: ./.github/actions/setup-backend
         with:
           backend-tag: ${{ github.event.inputs.backend_tag || 'latest' }}
+          backend-read-token: ${{ secrets.BACKEND_READ_TOKEN }}
+          django-secret-key: ${{ secrets.DJANGO_SECRET_KEY }}
+          clerk-jwt-key: ${{ secrets.CLERK_JWT_KEY }}
+          clerk-secret-key: ${{ secrets.CLERK_SECRET_KEY }}
+          clerk-issuer: ${{ secrets.CLERK_ISSUER }}
+          polygon-secret-key: ${{ secrets.POLYGON_SECRET_KEY }}
+          alpaca-public-key: ${{ secrets.ALPACA_PUBLIC_KEY }}
+          alpaca-secret-key: ${{ secrets.ALPACA_SECRET_KEY }}
+          admin-email: ${{ secrets.ADMIN_EMAIL }}
+          from-email: ${{ secrets.FROM_EMAIL }}
+          email-backend: ${{ secrets.EMAIL_BACKEND }}
+          email-file-path: ${{ secrets.EMAIL_FILE_PATH }}
+          vapid-private-key: ${{ secrets.VAPID_PRIVATE_KEY }}
+          vapid-public-key: ${{ secrets.VAPID_PUBLIC_KEY }}
+          redis-host: ${{ secrets.REDIS_HOST }}
+          redis-port: ${{ secrets.REDIS_PORT }}
+          redis-password: ${{ secrets.REDIS_PASSWORD }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          openai-api-url: ${{ secrets.OPENAI_API_URL }}
+          openai-translating-model: ${{ secrets.OPENAI_TRANSLATING_MODEL }}
       - name: Setup and build frontend
         uses: ./.github/actions/setup-and-build
         with:
