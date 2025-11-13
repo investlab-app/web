@@ -18,7 +18,9 @@ export const ErrorMessage = ({
       )}
     >
       <AlertTriangle className="w-10 h-10 mb-2" />
-      <p>{message || t('common.error_loading_data')}</p>
+      <p className="text-balance">
+        {message || t('common.error_loading_data')}
+      </p>
     </div>
   );
 };

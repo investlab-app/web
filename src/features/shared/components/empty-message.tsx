@@ -20,7 +20,7 @@ export const EmptyMessage = ({
         className
       )}
     >
-      <p>{message}</p>
+      <p className="text-balance">{message}</p>
       {cta && (
         <Button variant="link" asChild>
           <Link {...cta}>

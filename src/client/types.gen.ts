@@ -134,13 +134,6 @@ export type InstrumentList = {
     logo?: string | null;
 };
 
-export type InstrumentName = {
-    /**
-     * Ticker Symbol
-     */
-    ticker: string;
-};
-
 export type InstrumentRetrieve = {
     readonly id: string;
     /**
@@ -276,6 +269,13 @@ export type InvestorStats = {
 };
 
 export type LimitOrder = {
+    readonly id: string;
+    readonly ticker: string;
+    detail_type: number;
+    detail: LimitOrderDetails;
+};
+
+export type LimitOrderDetails = {
     readonly detail_type: string;
     volume: string;
     volume_processed?: string;
@@ -332,6 +332,13 @@ export type MarketIndices = {
 };
 
 export type MarketOrder = {
+    readonly id: string;
+    readonly ticker: string;
+    detail_type: number;
+    detail: MarketOrderDetails;
+};
+
+export type MarketOrderDetails = {
     readonly detail_type: string;
     volume: string;
     volume_processed?: string;
@@ -430,16 +437,16 @@ export type NotificationHistory = {
 
 export type Order = {
     readonly id: string;
-    ticker: InstrumentName;
+    readonly ticker: string;
     detail_type: number;
     detail: OrderDetail;
 };
 
 export type OrderDetail = ({
     detail_type: 'market';
-} & MarketOrder) | ({
+} & MarketOrderDetails) | ({
     detail_type: 'limit';
-} & LimitOrder);
+} & LimitOrderDetails);
 
 export type OwnedShare = {
     name: string;
@@ -462,13 +469,6 @@ export type PaginatedInstrumentWithPriceList = {
     next?: string | null;
     previous?: string | null;
     results: Array<InstrumentWithPrice>;
-};
-
-export type PaginatedOrderList = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: Array<Order>;
 };
 
 export type PaginatedPriceAlertList = {
@@ -804,6 +804,11 @@ export type InvestorWritable = {
 };
 
 export type LimitOrderWritable = {
+    detail_type: number;
+    detail: LimitOrderDetailsWritable;
+};
+
+export type LimitOrderDetailsWritable = {
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
@@ -811,6 +816,11 @@ export type LimitOrderWritable = {
 };
 
 export type MarketOrderWritable = {
+    detail_type: number;
+    detail: MarketOrderDetailsWritable;
+};
+
+export type MarketOrderDetailsWritable = {
     volume: string;
     volume_processed?: string;
     is_buy: boolean;
@@ -862,7 +872,6 @@ export type NotificationHistoryWritable = {
 };
 
 export type OrderWritable = {
-    ticker: InstrumentName;
     detail_type: number;
 };
 
@@ -1200,19 +1209,15 @@ export type OrdersListData = {
     path?: never;
     query?: {
         /**
-         * A page number within the paginated result set.
+         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
          */
-        page?: number;
-        /**
-         * Number of results to return per page.
-         */
-        page_size?: number;
+        ticker?: string;
     };
     url: '/api/orders/';
 };
 
 export type OrdersListResponses = {
-    200: PaginatedOrderList;
+    200: Array<Order>;
 };
 
 export type OrdersListResponse = OrdersListResponses[keyof OrdersListResponses];
@@ -1223,7 +1228,7 @@ export type OrdersCancelDestroyData = {
         id: string;
     };
     query?: never;
-    url: '/api/orders/cancel/{id}';
+    url: '/api/orders/cancel/{id}/';
 };
 
 export type OrdersCancelDestroyResponses = {
@@ -1235,6 +1240,24 @@ export type OrdersCancelDestroyResponses = {
 
 export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
 
+export type OrdersLimitListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         */
+        ticker?: string;
+    };
+    url: '/api/orders/limit/';
+};
+
+export type OrdersLimitListResponses = {
+    200: Array<LimitOrder>;
+};
+
+export type OrdersLimitListResponse = OrdersLimitListResponses[keyof OrdersLimitListResponses];
+
 export type OrdersLimitCreateData = {
     body: CreateLimitOrderRequest;
     path?: never;
@@ -1243,10 +1266,28 @@ export type OrdersLimitCreateData = {
 };
 
 export type OrdersLimitCreateResponses = {
-    201: Order;
+    201: LimitOrder;
 };
 
 export type OrdersLimitCreateResponse = OrdersLimitCreateResponses[keyof OrdersLimitCreateResponses];
+
+export type OrdersMarketListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         */
+        ticker?: string;
+    };
+    url: '/api/orders/market/';
+};
+
+export type OrdersMarketListResponses = {
+    200: Array<MarketOrder>;
+};
+
+export type OrdersMarketListResponse = OrdersMarketListResponses[keyof OrdersMarketListResponses];
 
 export type OrdersMarketCreateData = {
     body: CreateMarketOrderRequest;
@@ -1256,7 +1297,7 @@ export type OrdersMarketCreateData = {
 };
 
 export type OrdersMarketCreateResponses = {
-    201: Order;
+    201: MarketOrder;
 };
 
 export type OrdersMarketCreateResponse = OrdersMarketCreateResponses[keyof OrdersMarketCreateResponses];

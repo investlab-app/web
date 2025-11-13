@@ -2,8 +2,7 @@ const enOrders = {
   place_order: 'Place order',
   tabs: {
     market_order: 'Market order',
-    stop_limit_order: 'Stop / Limit order',
-    stop_loss_take_profit: 'Stop Loss / Take Profit',
+    stop_limit_order: 'Limit order',
   },
   switch_to_price: 'Switch to price',
   switch_to_volume: 'Switch to volume',
@@ -11,6 +10,28 @@ const enOrders = {
   order_success: 'Order placed successfully!',
   order_failed:
     'Failed to place order. Check if you have sufficient funds and try again.',
+  pending_orders: 'Pending orders',
+  pending_market_orders: 'Pending market orders',
+  pending_limit_orders: 'Pending limit orders',
+  refresh_orders: 'Refresh pending orders',
+  pending_orders_error:
+    'Pending orders could not be loaded. Please try again later.',
+  no_pending_orders: 'No pending orders for this instrument.',
+  no_pending_market_orders: 'No pending market orders for this instrument.',
+  no_pending_limit_orders: 'No pending limit orders for this instrument.',
+  table: {
+    type: 'Type',
+    side: 'Side',
+    volume: 'Volume',
+    processed: 'Processed',
+    limit_price: 'Limit price',
+    limit: 'Limit',
+    market: 'Market',
+    actions: 'Actions',
+  },
+  cancel_order: 'Cancel order',
+  cancel_order_success: 'Order cancelled successfully',
+  cancel_order_failed: 'Failed to cancel order. Please try again.',
 };
 
 export default enOrders;

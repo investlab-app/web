@@ -56,6 +56,7 @@ export function TransactionsHistorySection({
           <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
           <PositionsTable
+            className="border"
             history={tickerTransactions[0].history}
             enablePagination
           />
