@@ -142,4 +142,11 @@ runs:
       shell: bash
       run: |
         cd /tmp/backend
-        docker compose --profile ci up -d --wait
+        docker compose --profile ci up -d --wait 
+
+    - name: If failed show logs
+      if: failure()
+      shell: bash
+      run: |
+        cd /tmp/backend
+        docker compose --profile ci logs
