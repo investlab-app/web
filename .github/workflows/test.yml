@@ -123,7 +123,7 @@ jobs:
           --health-retries 5
     steps:
       - name: Seed database
-        run: docker exec backend python manage.py seed_test_data
+        run: docker exec backend python manage.py seed_test_data --investor-id=user_2zgsgKHXMItpEbTLdBdaJR7YaZh
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup and build frontend
