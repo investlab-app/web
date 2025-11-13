@@ -14,8 +14,8 @@ inputs:
     description: 'Backend repository branch/tag'
     required: false
     default: 'develop'
-  backend-read-token:
-    description: 'GitHub token with read access to backend repository'
+  github-token:
+    description: 'GitHub token for authentication (used for GHCR and repo access)'
     required: true
   django-secret-key:
     description: 'Django secret key'
@@ -88,7 +88,7 @@ runs:
       with:
         repository: ${{ inputs.backend-repo }}
         path: backend
-        token: ${{ inputs.backend-read-token }}
+        token: ${{ inputs.github-token }}
         ref: ${{ inputs.backend-repo-ref }}
 
     - name: Create environment file for docker-compose
@@ -128,6 +128,7 @@ runs:
       shell: bash
       run: |
         cd backend
+        echo ${{ inputs.github-token }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         docker pull ghcr.io/${{ inputs.backend-repo }}:${{ inputs.backend-tag }}
         docker tag ghcr.io/${{ inputs.backend-repo }}:${{ inputs.backend-tag }} investlab-backend:latest
 

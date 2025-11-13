@@ -71,7 +71,7 @@ jobs:
         uses: ./.github/actions/setup-backend
         with:
           backend-tag: ${{ github.event.inputs.backend_tag || 'latest' }}
-          backend-read-token: ${{ secrets.BACKEND_READ_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           django-secret-key: ${{ secrets.DJANGO_SECRET_KEY }}
           clerk-jwt-key: ${{ secrets.CLERK_JWT_KEY }}
           clerk-secret-key: ${{ secrets.CLERK_SECRET_KEY }}
