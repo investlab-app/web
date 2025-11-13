@@ -83,19 +83,14 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Create temporary backend directory
+    - name: Download backend repository
       shell: bash
       run: |
-        mkdir -p /tmp/backend
-        mkdir -p /tmp/backend/backend
-
-    - name: Checkout backend repository
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ inputs.backend-repo }}
-        path: /tmp/backend
-        token: ${{ inputs.github-token }}
-        ref: ${{ inputs.backend-repo-ref }}
+        curl -L \
+          -H "Authorization: Bearer ${{ inputs.github-token }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ inputs.backend-repo }}/tarball/${{ inputs.backend-repo-ref }}" \
+          | tar -xz --strip-components=1 -C /tmp/backend/
 
     - name: Create environment file for docker-compose
       shell: bash
