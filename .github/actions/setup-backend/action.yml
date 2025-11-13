@@ -86,6 +86,7 @@ runs:
     - name: Download backend repository
       shell: bash
       run: |
+        mkdir -p /tmp/backend
         curl -L \
           -H "Authorization: Bearer ${{ inputs.github-token }}" \
           -H "Accept: application/vnd.github.v3+json" \
