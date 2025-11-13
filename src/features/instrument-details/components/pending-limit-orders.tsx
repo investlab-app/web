@@ -29,7 +29,8 @@ export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
 
   const { data, isPending, isError, isSuccess, refetch } = useQuery({
     ...ordersLimitListOptions({ query: { ticker } }),
-    refetchInterval: REFETCH_INTERVAL_MS,
+    refetchInterval: ({ state }) =>
+      (state.data?.length || 0) > 0 ? REFETCH_INTERVAL_MS : false,
   });
 
   return (

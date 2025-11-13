@@ -34,7 +34,8 @@ export function PendingMarketOrders({ ticker }: PendingMarketOrdersProps) {
     refetch: refetchOrders,
   } = useQuery({
     ...ordersMarketListOptions({ query: { ticker } }),
-    refetchInterval: REFETCH_INTERVAL_MS,
+    refetchInterval: ({ state }) =>
+      (state.data?.length || 0) > 0 ? REFETCH_INTERVAL_MS : false,
   });
 
   return (
