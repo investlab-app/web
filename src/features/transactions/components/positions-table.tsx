@@ -176,6 +176,7 @@ function PositionsRowsSkeleton() {
     <>
       {Array.from({ length: 3 }).map((_, index) => (
         <TableRow
+          data-testid="pending-state-data-table-row"
           key={index}
           className="animate-pulse grid grid-cols-6 gap-4 py-2"
         >

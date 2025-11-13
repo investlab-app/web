@@ -10,7 +10,10 @@ import AppFrame from '@/features/shared/components/app-frame';
 
 const InstrumentTableBodySkeleton = ({ rowCount = 5 }) => {
   return Array.from({ length: rowCount }).map((_, idx) => (
-    <TableRow key={`skeleton-${idx}`}>
+    <TableRow
+      key={`skeleton-${idx}`}
+      data-testid="pending-state-data-table-row"
+    >
       <TableCell>
         <div className="flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-full" />
