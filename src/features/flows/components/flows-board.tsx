@@ -35,8 +35,13 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const { appTheme: theme } = useTheme();
   const { validateConnection } = useValidators();
   const { validateBoard } = useValidateBoard();
-  const { deleteMutation, createMutation, updateMutation, patchNameMutation } =
-    useStrategyMutations();
+  const {
+    deleteMutation,
+    createMutation,
+    updateMutation,
+    patchNameMutation,
+    patchRepeatMutation,
+  } = useStrategyMutations();
   const { isDragging } = useDnD();
 
   const isNewStrategy = id === 'new';
@@ -46,6 +51,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
   const [editedFlowName, setEditedFlowName] = useState<string | undefined>(
     undefined
   );
+  const [shouldRepeat, setShouldRepeat] = useState<boolean>(false);
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
@@ -74,6 +80,11 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
       ? editedFlowName
       : (flowData?.name ??
         (isNewStrategy ? t('flows.placeholders.new_strategy') : ''));
+
+  useEffect(() => {
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-derived-state
+    setShouldRepeat(flowData?.repeat ?? false);
+  }, [flowData?.repeat]);
 
   useEffect(() => {
     if (flowData?.raw_graph_data && rfInstance) {
@@ -119,6 +130,18 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     }
   }, [isNewStrategy, id, deleteMutation, t]);
 
+  const toggleRepetition = useCallback(
+    (repeat: boolean) => {
+      patchRepeatMutation.mutate({
+        path: { id },
+        body: {
+          repeat: repeat,
+        },
+      });
+    },
+    [id, patchRepeatMutation]
+  );
+
   const createOrUpdateFlow = useCallback(() => {
     if (!rfInstance) return;
     if (!flowName.trim()) {
@@ -140,7 +163,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           name: flowName,
           raw_graph_data: flow,
           active: true,
-          repeat: false,
+          repeat: shouldRepeat,
         },
       });
     } else {
@@ -149,13 +172,14 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           name: flowName,
           raw_graph_data: flow,
           active: true,
-          repeat: false,
+          repeat: shouldRepeat,
         },
       });
     }
   }, [
     rfInstance,
     flowName,
+    shouldRepeat,
     validateBoard,
     isNewStrategy,
     updateMutation,
@@ -178,6 +202,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           initialTitle={flowName}
           onSave={handlePatchName}
           onDelete={handleDeleteFlow}
+          repeat={shouldRepeat}
+          onToggleRepeat={toggleRepetition}
           canRename={true}
         />
         <Alert className="border-warning bg-warning/10 my-4">
@@ -239,6 +265,8 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           onDelete={handleDeleteFlow}
           name={flowName}
           onNameChange={setEditedFlowName}
+          repeat={shouldRepeat}
+          onToggleRepeat={setShouldRepeat}
         />
       )}
     </SidebarProvider>
