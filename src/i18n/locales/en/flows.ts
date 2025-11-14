@@ -8,6 +8,8 @@ const enFlows = {
     active_strategies: 'Active strategies',
     closed_strategies: 'Closed strategies',
     no_history: 'This strategy has not executed any transactions yet.',
+    single: 'Run once',
+    repeat: 'Repeat',
   },
   card: {
     fail: 'Not executed',
@@ -26,12 +28,15 @@ const enFlows = {
     edit_restricted:
       'You are in mobile view. You can delete or rename your strategy, but to edit it, you need a larger device.',
     add_restricted: 'Adding new strategies is not available on mobile devices.',
+    update_repetition_failed: 'Failed to update strategy repetition',
   },
   success: {
     flow_deleted: 'Strategy deleted successfully',
     flow_created: 'Strategy created successfully',
     flow_updated: 'Strategy updated successfully',
     flow_name_updated: 'Strategy name updated successfully',
+    flow_set_to_single: 'Strategy set to run once',
+    flow_set_to_repeat: 'Strategy set to repeat',
   },
   placeholders: {
     buy_sell: 'buy/sell',

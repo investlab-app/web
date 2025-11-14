@@ -6,22 +6,36 @@ import { useStrategyMutations } from '../hooks/strategy-mutations';
 import { FlowListRowHistoryRibbon } from './flow-list-row-history-ribbon';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@/features/shared/components/ui/toggle-group';
 
 interface FlowListRowProps {
   id: string;
   name: string;
   className?: string;
+  repeat: boolean | undefined;
 }
 
-export function FlowListRow({ id, name, className }: FlowListRowProps) {
+export function FlowListRow({ id, name, className, repeat }: FlowListRowProps) {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const { deleteMutation } = useStrategyMutations();
+  const { deleteMutation, patchRepeatMutation } = useStrategyMutations();
 
   const navigate = useNavigate();
 
   const handleDeleteFlow = () => {
     deleteMutation.mutate({ path: { id } });
+  };
+
+  const toggleRepetition = (value: string) => {
+    patchRepeatMutation.mutate({
+      path: { id },
+      body: {
+        repeat: value === 'repeat' ? true : false,
+      },
+    });
   };
 
   return (
@@ -51,6 +65,21 @@ export function FlowListRow({ id, name, className }: FlowListRowProps) {
               {name}
             </span>
           </div>
+
+          <ToggleGroup
+            type="single"
+            value={repeat ? 'repeat' : 'single'}
+            onValueChange={toggleRepetition}
+            variant="outline"
+            aria-label="Toggle strategy repetition"
+          >
+            <ToggleGroupItem value="single" aria-label="Single">
+              {t('flows.listview.single')}
+            </ToggleGroupItem>
+            <ToggleGroupItem value="repeat" aria-label="Repeat">
+              {t('flows.listview.repeat')}
+            </ToggleGroupItem>
+          </ToggleGroup>
 
           <div className="flex items-center gap-2">
             <Button

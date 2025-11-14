@@ -18,10 +18,10 @@ export const Route = createFileRoute('/_authed/strategies/$flowId')({
       );
       return { crumb: data.name || `${flowId}` };
     } catch {
-    return {
-      crumb: `${flowId}`,
-    };
-  }
+      return {
+        crumb: `${flowId}`,
+      };
+    }
   },
 });
 

@@ -79,5 +79,29 @@ export function useStrategyMutations() {
     },
   });
 
-  return { deleteMutation, createMutation, updateMutation, patchNameMutation };
+  const patchRepeatMutation = useMutation({
+    ...graphLangPartialUpdateMutation(),
+    onSuccess: (data) => {
+      toast.success(
+        data.repeat
+          ? t('flows.success.flow_set_to_repeat')
+          : t('flows.success.flow_set_to_single')
+      );
+      queryClient.refetchQueries({
+        queryKey: graphLangRetrieveQueryKey({ path: { id: data.id } }),
+      });
+      queryClient.refetchQueries({ queryKey: graphLangListQueryKey() });
+    },
+    onError: () => {
+      toast.error(t('flows.errors.update_repetition_failed'));
+    },
+  });
+
+  return {
+    deleteMutation,
+    createMutation,
+    updateMutation,
+    patchNameMutation,
+    patchRepeatMutation,
+  };
 }

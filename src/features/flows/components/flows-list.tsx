@@ -8,7 +8,11 @@ import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 import { Alert, AlertDescription } from '@/features/shared/components/ui/alert';
 
 interface FlowsListProps {
-  strategies: ReadonlyArray<{ id: string; name: string }>;
+  strategies: ReadonlyArray<{
+    id: string;
+    name: string;
+    repeat: boolean | undefined;
+  }>;
   isActive?: boolean;
 }
 
@@ -19,8 +23,13 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      {strategies.map((strategy) => (
-        <FlowListRow key={strategy.id} id={strategy.id} name={strategy.name} />
+      {strategies.toSorted().map((strategy) => (
+        <FlowListRow
+          key={strategy.id}
+          id={strategy.id}
+          name={strategy.name}
+          repeat={strategy.repeat}
+        />
       ))}
 
       {strategies.length === 0 && (
