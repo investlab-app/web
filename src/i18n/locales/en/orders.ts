@@ -34,7 +34,7 @@ const enOrders = {
   cancel_order_failed: 'Failed to cancel order. Please try again.',
   modal: {
     title: 'Confirm operation',
-    subtitle: 'You are about to place a {{orderType}}.',
+    subtitle: 'You are about to place a {{orderType}} order.',
     buy: 'Buy',
     sell: 'Sell',
     ticker_label: 'Ticker: {{ticker}}',
