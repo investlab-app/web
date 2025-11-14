@@ -8,6 +8,8 @@ const plFlows = {
     active_strategies: 'Aktywne strategie',
     closed_strategies: 'Zamknięte strategie',
     no_history: 'Ta strategia nie wykonała jeszcze żadnych transakcji.',
+    single: 'Run once',
+    repeat: 'Repeat',
   },
   card: {
     fail: 'Nie wykonano',
@@ -28,12 +30,16 @@ const plFlows = {
       'Jesteś na urządzeniu mobilnym. Możesz usunąć lub zmienić nazwę strategii, ale aby ją edytować, potrzebujesz większego urządzenia.',
     add_restricted:
       'Dodawanie nowych strategii jest niedostępne na urządzeniach mobilnych.',
+    update_repetition_failed:
+      'Aktualizacja powtarzania strategii nie powiodła się',
   },
   success: {
     flow_deleted: 'Strategia została pomyślnie usunięta',
     flow_created: 'Strategia została pomyślnie utworzona',
     flow_updated: 'Strategia została pomyślnie zaktualizowana',
     flow_name_updated: 'Nazwa strategii została pomyślnie zaktualizowana',
+    flow_set_to_single: 'Strategia ustawiona na jednokrotne uruchomienie',
+    flow_set_to_repeat: 'Strategia ustawiona na powtarzanie',
   },
   placeholders: {
     buy_sell: 'kup/sprzedaj',
