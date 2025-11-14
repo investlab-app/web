@@ -1,4 +1,5 @@
 import { getOutgoers, useReactFlow } from '@xyflow/react';
+import { useValidTickers } from '../utils/ticker-validation-context';
 import type {
   Connection,
   Edge,
@@ -9,6 +10,7 @@ import type {
 import type { NodeSettings } from '../nodes/node-settings';
 
 export const useValidators = () => {
+  const { isValidTicker } = useValidTickers();
   const { getNodes, getEdges, getNode } = useReactFlow();
 
   function _getConnectionCountsPerHandle(
@@ -97,6 +99,10 @@ export const useValidators = () => {
     );
 
     const obj = node.data.settings as NodeSettings;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ('ticker' in obj && !isValidTicker((obj as any).ticker)) {
+      return false;
+    }
 
     return obj.isValid(connectionsInCounts, connectionsOutCounts);
   };

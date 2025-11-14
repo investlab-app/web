@@ -18,6 +18,10 @@ export type AccountValueSnapshotDaily = {
     value: number;
 };
 
+export type AllTickers = {
+    tickers: Array<string>;
+};
+
 export type AssetAllocation = {
     total_value: number;
     total_gain_this_year: number;
@@ -54,13 +58,6 @@ export type AuthTestResponse = {
 export type ClerkLoginRequest = {
     email: string;
     password: string;
-};
-
-export type CreateLimitOrderRequest = {
-    ticker: string;
-    volume: string;
-    is_buy: boolean;
-    limit_price: string;
 };
 
 export type CreateMarketOrderRequest = {
@@ -332,14 +329,6 @@ export type InvestorStats = {
     total_value: number;
 };
 
-export type LimitOrder = {
-    readonly detail_type: string;
-    volume: string;
-    volume_processed?: string;
-    is_buy: boolean;
-    limit_price: string;
-};
-
 /**
  * * `us` - United States
  * * `global` - Global
@@ -492,11 +481,9 @@ export type Order = {
     detail: OrderDetail;
 };
 
-export type OrderDetail = ({
+export type OrderDetail = {
     detail_type: 'market';
-} & MarketOrder) | ({
-    detail_type: 'limit';
-} & LimitOrder);
+} & MarketOrder;
 
 export type OwnedShare = {
     name: string;
@@ -922,13 +909,6 @@ export type InvestorWritable = {
     watching_instruments?: Array<string>;
 };
 
-export type LimitOrderWritable = {
-    volume: string;
-    volume_processed?: string;
-    is_buy: boolean;
-    limit_price: string;
-};
-
 export type MarketOrderWritable = {
     volume: string;
     volume_processed?: string;
@@ -1234,6 +1214,19 @@ export type InstrumentsDetailRetrieveResponses = {
 
 export type InstrumentsDetailRetrieveResponse = InstrumentsDetailRetrieveResponses[keyof InstrumentsDetailRetrieveResponses];
 
+export type InstrumentsTickersRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/instruments/tickers/';
+};
+
+export type InstrumentsTickersRetrieveResponses = {
+    200: AllTickers;
+};
+
+export type InstrumentsTickersRetrieveResponse = InstrumentsTickersRetrieveResponses[keyof InstrumentsTickersRetrieveResponses];
+
 export type InstrumentsWithPricesListData = {
     body?: never;
     path?: never;
@@ -1490,19 +1483,6 @@ export type OrdersCancelDestroyResponses = {
 };
 
 export type OrdersCancelDestroyResponse = OrdersCancelDestroyResponses[keyof OrdersCancelDestroyResponses];
-
-export type OrdersLimitCreateData = {
-    body: CreateLimitOrderRequest;
-    path?: never;
-    query?: never;
-    url: '/api/orders/limit/';
-};
-
-export type OrdersLimitCreateResponses = {
-    201: Order;
-};
-
-export type OrdersLimitCreateResponse = OrdersLimitCreateResponses[keyof OrdersLimitCreateResponses];
 
 export type OrdersMarketCreateData = {
     body: CreateMarketOrderRequest;
