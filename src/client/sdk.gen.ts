@@ -252,6 +252,28 @@ export const instrumentsDetailRetrieve = <ThrowOnError extends boolean = false>(
     });
 };
 
+/**
+ * Retrieve all instrument tickers as an object with a list of strings.
+ */
+export const instrumentsTickersRetrieve = <ThrowOnError extends boolean = false>(options?: Options<InstrumentsTickersRetrieveData, ThrowOnError>) => {
+    return (options?.client ?? client).get<InstrumentsTickersRetrieveResponses, unknown, ThrowOnError>({
+        requestValidator: async (data) => {
+            return await zInstrumentsTickersRetrieveData.parseAsync(data);
+        },
+        responseValidator: async (data) => {
+            return await zInstrumentsTickersRetrieveResponse.parseAsync(data);
+        },
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/instruments/tickers/',
+        ...options
+    });
+};
+
 export const instrumentsWithPricesList = <ThrowOnError extends boolean = false>(options?: Options<InstrumentsWithPricesListData, ThrowOnError>) => {
     return (options?.client ?? client).get<InstrumentsWithPricesListResponses, unknown, ThrowOnError>({
         requestValidator: async (data) => {

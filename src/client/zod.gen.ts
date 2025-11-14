@@ -10,6 +10,10 @@ export const zAccountValueSnapshotDaily = z.object({
     value: z.number()
 });
 
+export const zAllTickers = z.object({
+    tickers: z.array(z.string())
+});
+
 export const zAssetAllocationItem = z.object({
     instrument_name: z.string().max(255),
     instrument_ticker: z.string().max(20),
@@ -43,13 +47,6 @@ export const zAuthTestResponse = z.object({
 export const zClerkLoginRequest = z.object({
     email: z.email().min(1),
     password: z.string().min(1)
-});
-
-export const zCreateLimitOrderRequest = z.object({
-    ticker: z.string().min(1),
-    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
-    is_buy: z.boolean(),
-    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
 });
 
 export const zCreateMarketOrderRequest = z.object({
@@ -1355,6 +1352,14 @@ export const zInstrumentsDetailRetrieveData = z.object({
 });
 
 export const zInstrumentsDetailRetrieveResponse = zInstrumentRetrieve;
+
+export const zInstrumentsTickersRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zInstrumentsTickersRetrieveResponse = zAllTickers;
 
 export const zInstrumentsWithPricesListData = z.object({
     body: z.optional(z.never()),

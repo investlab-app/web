@@ -326,6 +326,26 @@ export const instrumentsDetailRetrieveOptions = (options?: Options<InstrumentsDe
     });
 };
 
+export const instrumentsTickersRetrieveQueryKey = (options?: Options<InstrumentsTickersRetrieveData>) => createQueryKey('instrumentsTickersRetrieve', options);
+
+/**
+ * Retrieve all instrument tickers as an object with a list of strings.
+ */
+export const instrumentsTickersRetrieveOptions = (options?: Options<InstrumentsTickersRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await instrumentsTickersRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: instrumentsTickersRetrieveQueryKey(options)
+    });
+};
+
 export const instrumentsWithPricesListQueryKey = (options?: Options<InstrumentsWithPricesListData>) => createQueryKey('instrumentsWithPricesList', options);
 
 export const instrumentsWithPricesListOptions = (options?: Options<InstrumentsWithPricesListData>) => {

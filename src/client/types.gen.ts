@@ -18,6 +18,10 @@ export type AccountValueSnapshotDaily = {
     value: number;
 };
 
+export type AllTickers = {
+    tickers: Array<string>;
+};
+
 export type AssetAllocation = {
     total_value: number;
     total_gain_this_year: number;
@@ -54,13 +58,6 @@ export type AuthTestResponse = {
 export type ClerkLoginRequest = {
     email: string;
     password: string;
-};
-
-export type CreateLimitOrderRequest = {
-    ticker: string;
-    volume: string;
-    is_buy: boolean;
-    limit_price: string;
 };
 
 export type CreateMarketOrderRequest = {
@@ -535,7 +532,7 @@ export type Order = {
     detail: OrderDetail;
 };
 
-export type OrderDetail = ({
+export type OrderDetail = {
     detail_type: 'market';
 } & MarketOrderDetails) | ({
     detail_type: 'limit';
@@ -1294,6 +1291,19 @@ export type InstrumentsDetailRetrieveResponses = {
 };
 
 export type InstrumentsDetailRetrieveResponse = InstrumentsDetailRetrieveResponses[keyof InstrumentsDetailRetrieveResponses];
+
+export type InstrumentsTickersRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/instruments/tickers/';
+};
+
+export type InstrumentsTickersRetrieveResponses = {
+    200: AllTickers;
+};
+
+export type InstrumentsTickersRetrieveResponse = InstrumentsTickersRetrieveResponses[keyof InstrumentsTickersRetrieveResponses];
 
 export type InstrumentsWithPricesListData = {
     body?: never;
