@@ -32,6 +32,18 @@ const enOrders = {
   cancel_order: 'Cancel order',
   cancel_order_success: 'Order cancelled successfully',
   cancel_order_failed: 'Failed to cancel order. Please try again.',
+  modal: {
+    title: 'Confirm operation',
+    subtitle: 'You are about to place a {{orderType}}.',
+    buy: 'Buy',
+    sell: 'Sell',
+    ticker: 'Ticker',
+    volume: 'Volume',
+    approx_price: 'Approximate price',
+    price: 'Price',
+    confirm: 'Confirm',
+    close: 'Close',
+  },
 };
 
 export default enOrders;

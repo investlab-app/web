@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { OrderConfirmationModalWrapper } from './order-confirmation-modal-wrapper';
 
 import {
   investorsMeRetrieveOptions,
@@ -146,24 +147,52 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
       </div>
 
       <div className="flex gap-2">
-        <Button
-          size="lg"
-          variant="green"
-          className="flex-1"
-          disabled={isPending || !limitPrice || !volume}
-          onClick={() => handleSubmit('buy')}
+        <OrderConfirmationModalWrapper
+          isBuy={true}
+          isLimitOrder={true}
+          ticker={ticker}
+          price={limitPrice!}
+          volume={volume}
+          onConfirm={() => handleSubmit('buy')}
         >
-          {t('instruments.buy')}
-        </Button>
-        <Button
-          size="lg"
-          variant="red"
-          className="flex-1"
-          disabled={isPending || !limitPrice || !volume}
-          onClick={() => handleSubmit('sell')}
+          <Button
+            size="lg"
+            variant="green"
+            className="flex-1"
+            disabled={
+              isPending ||
+              !limitPrice ||
+              !volume ||
+              limitPrice <= 0 ||
+              volume <= 0
+            }
+          >
+            {t('instruments.buy')}
+          </Button>
+        </OrderConfirmationModalWrapper>
+        <OrderConfirmationModalWrapper
+          isBuy={false}
+          isLimitOrder={true}
+          ticker={ticker}
+          price={limitPrice!}
+          volume={volume}
+          onConfirm={() => handleSubmit('sell')}
         >
-          {t('instruments.sell')}
-        </Button>
+          <Button
+            size="lg"
+            variant="red"
+            className="flex-1"
+            disabled={
+              isPending ||
+              !limitPrice ||
+              !volume ||
+              limitPrice <= 0 ||
+              volume <= 0
+            }
+          >
+            {t('instruments.sell')}
+          </Button>
+        </OrderConfirmationModalWrapper>
       </div>
     </div>
   );
