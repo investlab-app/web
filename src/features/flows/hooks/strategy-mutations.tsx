@@ -87,6 +87,9 @@ export function useStrategyMutations() {
           ? t('flows.success.flow_set_to_repeat')
           : t('flows.success.flow_set_to_single')
       );
+      queryClient.invalidateQueries({
+        queryKey: graphLangRetrieveQueryKey({ path: { id: data.id } }),
+      });
       queryClient.refetchQueries({
         queryKey: graphLangRetrieveQueryKey({ path: { id: data.id } }),
       });

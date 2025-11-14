@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { RepetitionToggle } from '../repetition-toggle';
 import { FlowHeader } from './flow-header';
 import { SaveButton } from './save-button';
 import { DnDSidebar } from './dnd-sidebar';
@@ -16,6 +17,8 @@ interface FlowsSidebarProps {
   screenToFlowPosition: (pos: XYPosition) => XYPosition;
   onSave: () => void;
   onDelete: () => void;
+  repeat: boolean;
+  onToggleRepeat: (repeat: boolean) => void;
   name: string;
   onNameChange: (newName: string) => void;
 }
@@ -27,6 +30,8 @@ export const FlowsSidebar = memo(function FlowsSidebar({
   onSave,
   setNodeType,
   onDelete,
+  repeat,
+  onToggleRepeat,
   name,
   onNameChange,
 }: FlowsSidebarProps) {
@@ -44,6 +49,11 @@ export const FlowsSidebar = memo(function FlowsSidebar({
           onDelete={onDelete}
           canRename={false}
           onNameChange={onNameChange}
+        />
+        <RepetitionToggle
+          repeat={repeat}
+          onToggle={onToggleRepeat}
+          className="w-full"
         />
         <SaveButton onSave={onSave} />
       </SidebarHeader>

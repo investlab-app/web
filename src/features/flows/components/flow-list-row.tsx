@@ -3,13 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowRight, ChevronRight, Trash2 } from 'lucide-react';
 import { useStrategyMutations } from '../hooks/strategy-mutations';
+import { RepetitionToggle } from './repetition-toggle';
 import { FlowListRowHistoryRibbon } from './flow-list-row-history-ribbon';
 import { cn } from '@/features/shared/utils/styles';
 import { Button } from '@/features/shared/components/ui/button';
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from '@/features/shared/components/ui/toggle-group';
 
 interface FlowListRowProps {
   id: string;
@@ -29,11 +26,11 @@ export function FlowListRow({ id, name, className, repeat }: FlowListRowProps) {
     deleteMutation.mutate({ path: { id } });
   };
 
-  const toggleRepetition = (value: string) => {
+  const toggleRepetition = (shouldRepeat: boolean) => {
     patchRepeatMutation.mutate({
       path: { id },
       body: {
-        repeat: value === 'repeat' ? true : false,
+        repeat: shouldRepeat,
       },
     });
   };
@@ -66,20 +63,10 @@ export function FlowListRow({ id, name, className, repeat }: FlowListRowProps) {
             </span>
           </div>
 
-          <ToggleGroup
-            type="single"
-            value={repeat ? 'repeat' : 'single'}
-            onValueChange={toggleRepetition}
-            variant="outline"
-            aria-label="Toggle strategy repetition"
-          >
-            <ToggleGroupItem value="single" aria-label="Single">
-              {t('flows.listview.single')}
-            </ToggleGroupItem>
-            <ToggleGroupItem value="repeat" aria-label="Repeat">
-              {t('flows.listview.repeat')}
-            </ToggleGroupItem>
-          </ToggleGroup>
+          <RepetitionToggle
+            repeat={repeat ?? false}
+            onToggle={toggleRepetition}
+          />
 
           <div className="flex items-center gap-2">
             <Button

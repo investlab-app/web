@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pencil, Save, Trash2 } from 'lucide-react';
+import { RepetitionToggle } from '../repetition-toggle';
 import { Button } from '@/features/shared/components/ui/button';
 import { Input } from '@/features/shared/components/ui/input';
 
@@ -10,6 +11,8 @@ interface FlowHeaderProps {
   canRename: boolean;
   onSave?: (newTitle: string) => void;
   onNameChange?: (newName: string) => void;
+  repeat?: boolean;
+  onToggleRepeat?: (repeat: boolean) => void;
 }
 
 export function FlowHeader({
@@ -18,6 +21,8 @@ export function FlowHeader({
   onDelete,
   canRename,
   onNameChange,
+  repeat,
+  onToggleRepeat,
 }: FlowHeaderProps) {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -101,6 +106,13 @@ export function FlowHeader({
         >
           <Trash2 className="size-4" />
         </Button>
+
+        {onToggleRepeat && (
+          <RepetitionToggle
+            repeat={repeat ?? false}
+            onToggle={onToggleRepeat}
+          />
+        )}
       </div>
     </div>
   );
