@@ -1209,7 +1209,7 @@ export type OrdersListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
@@ -1245,7 +1245,7 @@ export type OrdersLimitListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
@@ -1276,7 +1276,7 @@ export type OrdersMarketListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
