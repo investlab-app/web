@@ -34,13 +34,15 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
     setMode((prev) => (prev === 'price' ? 'volume' : 'price'));
 
   const currentPrice = useLivePrice(ticker);
+  // this is here, so that the values don't keep updating while the modal is open
+  const [freeze, setFreeze] = useState(false);
   const [price, setPrice] = useState(currentPrice);
   const [volume, setVolume] = useState(
     currentPrice && price ? price / currentPrice : undefined
   );
 
   useEffect(() => {
-    if (currentPrice === undefined) return;
+    if (freeze || currentPrice === undefined) return;
     switch (mode) {
       case 'price':
         if (price === undefined) {
@@ -196,6 +198,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
           price={price}
           volume={volume}
           onConfirm={() => handleOrder('buy')}
+          onClose={() => setFreeze(false)}
         >
           <Button
             size="lg"
@@ -204,6 +207,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
             disabled={
               isPending || !price || !volume || price <= 0 || volume <= 0
             }
+            onClick={() => setFreeze(true)}
           >
             {t('instruments.buy')}
           </Button>
@@ -215,6 +219,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
           price={price}
           volume={volume}
           onConfirm={() => handleOrder('sell')}
+          onClose={() => setFreeze(false)}
         >
           <Button
             size="lg"
@@ -223,6 +228,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
             disabled={
               isPending || !price || !volume || price <= 0 || volume <= 0
             }
+            onClick={() => setFreeze(true)}
           >
             {t('instruments.sell')}
           </Button>

@@ -20,6 +20,7 @@ interface OrderConfirmationModalWrapperProps {
   volume: number;
   ticker: string;
   onConfirm: () => void;
+  onClose?: () => void;
 }
 
 export function OrderConfirmationModalWrapper({
@@ -30,6 +31,7 @@ export function OrderConfirmationModalWrapper({
   volume,
   price,
   onConfirm,
+  onClose,
 }: OrderConfirmationModalWrapperProps) {
   const { t } = useTranslation();
   return (
@@ -50,27 +52,36 @@ export function OrderConfirmationModalWrapper({
           </p>
           <div className="space-y-1">
             <p>
-              <span className="font-medium">{t('orders.modal.ticker')}:</span>{' '}
-              {ticker.toUpperCase()}
-            </p>
-            <p>
-              <span className="font-medium">{t('orders.modal.volume')}:</span>{' '}
-              {volume}
+              <span className="font-medium">
+                {t('orders.modal.ticker_label', {
+                  ticker: ticker.toUpperCase(),
+                })}
+              </span>
             </p>
             <p>
               <span className="font-medium">
-                {isLimitOrder
-                  ? t('orders.modal.price')
-                  : t('orders.modal.approx_price')}
-                :
-              </span>{' '}
-              {price}
+                {t('orders.modal.volume_label', {
+                  volume: volume.toFixed(5),
+                })}
+              </span>
+            </p>
+            <p>
+              <span className="font-medium">
+                {t(
+                  isLimitOrder
+                    ? 'orders.modal.price_label'
+                    : 'orders.modal.approx_price_label',
+                  {
+                    price: price.toFixed(2),
+                  }
+                )}
+              </span>
             </p>
           </div>
         </CredenzaBody>
         <CredenzaFooter>
           <CredenzaClose asChild>
-            <Button>{t('orders.modal.close')}</Button>
+            <Button onClick={onClose}>{t('orders.modal.close')}</Button>
           </CredenzaClose>
           <CredenzaClose asChild>
             <Button onClick={onConfirm}>{t('orders.modal.confirm')}</Button>

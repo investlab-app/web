@@ -92,7 +92,7 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
             id={`limit-price-${ticker}`}
             value={limitPrice}
             onValueChange={setLimitPrice}
-            decimalScale={4}
+            decimalScale={2}
             fixedDecimalScale={false}
             prefix="$"
             min={0}
@@ -151,7 +151,7 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
           isBuy={true}
           isLimitOrder={true}
           ticker={ticker}
-          price={limitPrice!}
+          price={limitPrice ?? 0}
           volume={volume}
           onConfirm={() => handleSubmit('buy')}
         >
@@ -174,7 +174,7 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
           isBuy={false}
           isLimitOrder={true}
           ticker={ticker}
-          price={limitPrice!}
+          price={limitPrice ?? 0}
           volume={volume}
           onConfirm={() => handleSubmit('sell')}
         >
