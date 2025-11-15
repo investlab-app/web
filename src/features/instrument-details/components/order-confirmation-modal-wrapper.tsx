@@ -81,7 +81,9 @@ export function OrderConfirmationModalWrapper({
         </CredenzaBody>
         <CredenzaFooter>
           <CredenzaClose asChild>
-            <Button onClick={onClose}>{t('orders.modal.close')}</Button>
+            <Button variant={'outline'} onClick={onClose}>
+              {t('orders.modal.close')}
+            </Button>
           </CredenzaClose>
           <CredenzaClose asChild>
             <Button onClick={onConfirm} autoFocus={true}>
