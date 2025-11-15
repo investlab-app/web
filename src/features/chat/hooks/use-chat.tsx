@@ -247,10 +247,35 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
         id: msg.id,
         role: msg.role,
         content: msg.content,
-        createdAt: msg.created_at ? new Date(msg.created_at) : undefined,
+        createdAt: msg.createdAt ? new Date(msg.createdAt) : undefined,
         // experimental_attachments: msg.experimental_attachments,
         // toolInvocations: msg.tool_invocations,
-        // parts: msg.parts,
+        parts: msg.parts
+          ?.map((part) => {
+            switch (part.type) {
+              case 'text':
+                return {
+                  type: 'text' as const,
+                  text: part.text,
+                };
+              case 'file':
+                return {
+                  type: 'file' as const,
+                  mimeType: part.mimeType,
+                  data: part.data,
+                };
+              case 'tool-invocation':
+                return undefined;
+              case 'reasoning':
+                return {
+                  type: 'reasoning' as const,
+                  reasoning: part.reasoning,
+                };
+              default:
+                return undefined;
+            }
+          })
+          .filter((x) => x !== undefined),
       }) satisfies Message
   );
 

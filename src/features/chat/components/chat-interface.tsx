@@ -15,6 +15,8 @@ export function ChatInterface({ chatId }: ChatInterfaceProps) {
     isLoading,
     stop,
   } = useChat({ chatId });
+  
+  console.log("MESSAGES", messages)
 
   // TODO: i18n of suggestions
   return (
@@ -28,7 +30,7 @@ export function ChatInterface({ chatId }: ChatInterfaceProps) {
       stop={stop}
       append={append}
       suggestions={[
-        'How is my portfolio performing?',
+        'Generate a random bar chart png',
         'What assets do I own?',
         'Give me investment advice.',
         'What is the current market trend?',

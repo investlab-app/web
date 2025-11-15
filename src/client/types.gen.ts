@@ -73,7 +73,25 @@ export type ChatDetail = {
     title: string;
     readonly created_at: string;
     readonly updated_at: string;
-    readonly messages: Array<Message>;
+    readonly messages: Array<{
+        id: string;
+        role: 'user' | 'assistant';
+        content: string;
+        createdAt?: string | null;
+        parts?: Array<{
+            type: 'text';
+            text: string;
+        } | {
+            type: 'reasoning';
+            reasoning: string;
+        } | {
+            type: 'tool-invocation';
+        } | {
+            type: 'file';
+            mimeType: string;
+            data: string;
+        }>;
+    }>;
 };
 
 export type ChatDetailRequest = {
@@ -465,16 +483,6 @@ export type MarketStatus = {
     indicesGroups?: MarketIndices | null;
     market?: string | null;
     server_time?: string | null;
-};
-
-export type Message = {
-    id: string;
-    role: string;
-    content: string;
-    created_at?: string;
-    experimental_attachments?: Array<unknown>;
-    tool_invocations?: Array<unknown>;
-    parts?: Array<unknown>;
 };
 
 export type MostTradedItem = {

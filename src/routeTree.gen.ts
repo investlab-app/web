@@ -32,7 +32,10 @@ import { Route as AuthedStrategiesIndexRouteImport } from './routes/_authed/stra
 import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
 import { Route as AuthedInstrumentsIndexRouteImport } from './routes/_authed/instruments/index'
 import { Route as AuthedAssistantIndexRouteImport } from './routes/_authed/assistant/index'
+<<<<<<< HEAD
 import { Route as AuthedStrategiesFlowIdRouteImport } from './routes/_authed/strategies/$flowId'
+=======
+>>>>>>> fe7bbb59 (save)
 import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_authed/instruments/$instrumentId'
 import { Route as AuthedAssistantChatIdRouteImport } from './routes/_authed/assistant/$chatId'
 
@@ -148,11 +151,14 @@ const AuthedAssistantIndexRoute = AuthedAssistantIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedAssistantRouteRoute,
 } as any)
+<<<<<<< HEAD
 const AuthedStrategiesFlowIdRoute = AuthedStrategiesFlowIdRouteImport.update({
   id: '/$flowId',
   path: '/$flowId',
   getParentRoute: () => AuthedStrategiesRouteRoute,
 } as any)
+=======
+>>>>>>> fe7bbb59 (save)
 const AuthedInstrumentsInstrumentIdRoute =
   AuthedInstrumentsInstrumentIdRouteImport.update({
     id: '/$instrumentId',
@@ -183,7 +189,10 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+<<<<<<< HEAD
   '/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
+=======
+>>>>>>> fe7bbb59 (save)
   '/assistant/': typeof AuthedAssistantIndexRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
   '/statistics/': typeof AuthedStatisticsIndexRoute
@@ -203,7 +212,10 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+<<<<<<< HEAD
   '/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
+=======
+>>>>>>> fe7bbb59 (save)
   '/assistant': typeof AuthedAssistantIndexRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
@@ -232,7 +244,10 @@ export interface FileRoutesById {
   '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
   '/_authed/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+<<<<<<< HEAD
   '/_authed/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
+=======
+>>>>>>> fe7bbb59 (save)
   '/_authed/assistant/': typeof AuthedAssistantIndexRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
   '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
@@ -259,7 +274,10 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/assistant/$chatId'
     | '/instruments/$instrumentId'
+<<<<<<< HEAD
     | '/strategies/$flowId'
+=======
+>>>>>>> fe7bbb59 (save)
     | '/assistant/'
     | '/instruments/'
     | '/statistics/'
@@ -279,7 +297,10 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/assistant/$chatId'
     | '/instruments/$instrumentId'
+<<<<<<< HEAD
     | '/strategies/$flowId'
+=======
+>>>>>>> fe7bbb59 (save)
     | '/assistant'
     | '/instruments'
     | '/statistics'
@@ -307,7 +328,10 @@ export interface FileRouteTypes {
     | '/_legal/terms-of-service'
     | '/_authed/assistant/$chatId'
     | '/_authed/instruments/$instrumentId'
+<<<<<<< HEAD
     | '/_authed/strategies/$flowId'
+=======
+>>>>>>> fe7bbb59 (save)
     | '/_authed/assistant/'
     | '/_authed/instruments/'
     | '/_authed/statistics/'
@@ -486,6 +510,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedAssistantIndexRouteImport
       parentRoute: typeof AuthedAssistantRouteRoute
     }
+<<<<<<< HEAD
     '/_authed/strategies/$flowId': {
       id: '/_authed/strategies/$flowId'
       path: '/$flowId'
@@ -493,6 +518,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedStrategiesFlowIdRouteImport
       parentRoute: typeof AuthedStrategiesRouteRoute
     }
+=======
+>>>>>>> fe7bbb59 (save)
     '/_authed/instruments/$instrumentId': {
       id: '/_authed/instruments/$instrumentId'
       path: '/$instrumentId'
