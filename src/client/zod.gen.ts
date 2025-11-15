@@ -40,9 +40,68 @@ export const zAuthTestResponse = z.object({
     user_id: z.int()
 });
 
+export const zChat = z.object({
+    id: z.uuid().readonly(),
+    title: z.string().max(255),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    message_count: z.int().readonly()
+});
+
+export const zMessage = z.object({
+    id: z.string(),
+    role: z.string(),
+    content: z.string(),
+    created_at: z.optional(z.iso.datetime({
+        offset: true
+    })),
+    experimental_attachments: z.optional(z.array(z.unknown())),
+    tool_invocations: z.optional(z.array(z.unknown())),
+    parts: z.optional(z.array(z.unknown()))
+});
+
+export const zChatDetail = z.object({
+    id: z.uuid().readonly(),
+    title: z.string().max(255),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    messages: z.array(zMessage).readonly()
+});
+
+export const zChatDetailRequest = z.object({
+    title: z.string().min(1).max(255)
+});
+
 export const zClerkLoginRequest = z.object({
     email: z.email().min(1),
     password: z.string().min(1)
+});
+
+/**
+ * * `user` - user
+ * * `assistant` - assistant
+ */
+export const zRoleEnum = z.enum([
+    'user',
+    'assistant'
+]);
+
+export const zCreateChatMessageRequest = z.object({
+    content: z.string().min(1).max(10000),
+    role: z.optional(zRoleEnum)
+});
+
+export const zCreateChatRequest = z.object({
+    title: z.optional(z.string().min(1).max(255)),
+    first_message: z.string().min(1).max(10000)
 });
 
 export const zCreateLimitOrderRequest = z.object({
@@ -73,6 +132,75 @@ export const zDepositMoney = z.object({
 
 export const zDepositMoneyRequest = z.object({
     amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
+});
+
+/**
+ * * `push` - push
+ * * `mail` - mail
+ */
+export const zFormatEnum = z.enum([
+    'push',
+    'mail'
+]);
+
+export const zGraph = z.object({
+    id: z.uuid().readonly(),
+    name: z.string().max(100),
+    raw_graph_data: z.unknown(),
+    active: z.optional(z.boolean()),
+    repeat: z.optional(z.boolean())
+});
+
+export const zInstrumentName = z.object({
+    ticker: z.string().max(20)
+});
+
+export const zGraphTransactionEffect = z.object({
+    instrument: zInstrumentName,
+    is_buy: z.boolean(),
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
+    effect_type: z.string().readonly()
+});
+
+export const zGraphNotificationEffect = z.object({
+    message: z.string(),
+    format: zFormatEnum,
+    effect_type: z.string().readonly()
+});
+
+export const zGraphEffectDetail = z.union([
+    z.object({
+        effect_type: z.literal('transaction')
+    }).and(zGraphTransactionEffect),
+    z.object({
+        effect_type: z.literal('notification')
+    }).and(zGraphNotificationEffect)
+]);
+
+export const zGraphEffect = z.object({
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    effect: zGraphEffectDetail,
+    success: z.boolean()
+});
+
+export const zGraphRequest = z.object({
+    name: z.string().min(1).max(100),
+    raw_graph_data: z.unknown(),
+    active: z.optional(z.boolean()),
+    repeat: z.optional(z.boolean())
+});
+
+export const zGraphResult = z.object({
+    action: z.unknown()
+});
+
+export const zGraphUpdateRequest = z.object({
+    name: z.optional(z.string().min(1).max(100)),
+    raw_graph_data: z.optional(z.unknown()),
+    active: z.optional(z.boolean()),
+    repeat: z.optional(z.boolean())
 });
 
 export const zHistoryEntry = z.object({
@@ -571,6 +699,32 @@ export const zOwnedShare = z.object({
     ])
 });
 
+export const zPaginatedGraphEffectList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zGraphEffect)
+});
+
+export const zPaginatedGraphList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zGraph)
+});
+
 export const zPaginatedInstrumentListList = z.object({
     count: z.int(),
     next: z.optional(z.union([
@@ -626,6 +780,17 @@ export const zPaginatedPriceAlertList = z.object({
         z.null()
     ])),
     results: z.array(zPriceAlert)
+});
+
+export const zPatchedChatDetailRequest = z.object({
+    title: z.optional(z.string().min(1).max(255))
+});
+
+export const zPatchedGraphUpdateRequest = z.object({
+    name: z.optional(z.string().min(1).max(100)),
+    raw_graph_data: z.optional(z.unknown()),
+    active: z.optional(z.boolean()),
+    repeat: z.optional(z.boolean())
 });
 
 export const zPatchedInvestorRequest = z.object({
@@ -699,6 +864,13 @@ export const zPriceBar = z.object({
     ]))
 });
 
+export const zPriceTimestampRequest = z.object({
+    price: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
+    timestamp: z.iso.datetime({
+        offset: true
+    })
+});
+
 export const zPublisher = z.object({
     favicon_url: z.optional(z.union([
         z.string(),
@@ -722,6 +894,22 @@ export const zPushNotificationRequest = z.object({
     endpoint: z.url().min(1),
     p256dh: z.string().min(1).max(255),
     auth: z.string().min(1).max(255)
+});
+
+export const zTickerPricesRequest = z.object({
+    ticker: z.string().min(1),
+    prices: z.array(zPriceTimestampRequest)
+});
+
+export const zRunGraphRequest = z.object({
+    time_at: z.optional(z.iso.datetime({
+        offset: true
+    })),
+    prices: z.optional(z.array(zTickerPricesRequest))
+});
+
+export const zRunGraphResult = z.object({
+    results: z.array(zGraphResult)
 });
 
 /**
@@ -825,6 +1013,36 @@ export const zWatchedTickersTicker = z.object({
  */
 export const zAccountValueSnapshotDailyWritable = z.object({
     value: z.number()
+});
+
+export const zChatWritable = z.object({
+    title: z.string().max(255)
+});
+
+export const zChatDetailWritable = z.object({
+    title: z.string().max(255)
+});
+
+export const zGraphWritable = z.object({
+    name: z.string().max(100),
+    raw_graph_data: z.unknown(),
+    active: z.optional(z.boolean()),
+    repeat: z.optional(z.boolean())
+});
+
+export const zGraphEffectWritable = z.object({
+    success: z.boolean()
+});
+
+export const zGraphNotificationEffectWritable = z.object({
+    message: z.string(),
+    format: zFormatEnum
+});
+
+export const zGraphTransactionEffectWritable = z.object({
+    instrument: zInstrumentName,
+    is_buy: z.boolean(),
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
 });
 
 export const zInstrumentListWritable = z.object({
@@ -1043,6 +1261,162 @@ export const zAuthSignInCreateData = z.object({
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
+
+export const zChatsListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zChatsListResponse = z.array(zChat);
+
+export const zChatsCreateData = z.object({
+    body: zCreateChatRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zChatsCreateResponse = zChat;
+
+export const zChatsDestroyData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+/**
+ * No response body
+ */
+export const zChatsDestroyResponse = z.void();
+
+export const zChatsRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsRetrieveResponse = zChatDetail;
+
+export const zChatsPartialUpdateData = z.object({
+    body: z.optional(zPatchedChatDetailRequest),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsPartialUpdateResponse = zChatDetail;
+
+export const zChatsUpdateData = z.object({
+    body: zChatDetailRequest,
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsUpdateResponse = zChatDetail;
+
+export const zChatsMessagesCreateData = z.object({
+    body: zCreateChatMessageRequest,
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsMessagesCreateResponse = z.object({
+    status: z.optional(z.string())
+});
+
+export const zGraphLangListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
+});
+
+export const zGraphLangListResponse = zPaginatedGraphList;
+
+export const zGraphLangCreateData = z.object({
+    body: zGraphRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zGraphLangCreateResponse = zGraph;
+
+export const zGraphLangDestroyData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+/**
+ * No response body
+ */
+export const zGraphLangDestroyResponse = z.void();
+
+export const zGraphLangRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGraphLangRetrieveResponse = zGraph;
+
+export const zGraphLangPartialUpdateData = z.object({
+    body: z.optional(zPatchedGraphUpdateRequest),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGraphLangPartialUpdateResponse = zGraph;
+
+export const zGraphLangUpdateData = z.object({
+    body: z.optional(zGraphUpdateRequest),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGraphLangUpdateResponse = zGraph;
+
+export const zGraphLangResultsListData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
+});
+
+export const zGraphLangResultsListResponse = zPaginatedGraphEffectList;
+
+export const zGraphLangRunCreateData = z.object({
+    body: z.optional(zRunGraphRequest),
+    path: z.object({
+        id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGraphLangRunCreateResponse = zRunGraphResult;
 
 export const zInstrumentsListData = z.object({
     body: z.optional(z.never()),

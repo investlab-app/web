@@ -49,9 +49,7 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
                 {asset.name}
               </TableCell>
               <TableCell>{asset.symbol}</TableCell>
-              <TableCell className="text-right">
-                {withCurrency(asset.volume, i18n.language, 5)}
-              </TableCell>
+              <TableCell className="text-right">{asset.volume}</TableCell>
               <TableCell className="text-right">
                 {withCurrency(asset.value, i18n.language, 2)}{' '}
               </TableCell>

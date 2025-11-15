@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { useUser } from '@clerk/clerk-react';
 import {
+  BotMessageSquare,
   History,
   LayoutDashboardIcon,
   List,
@@ -70,6 +71,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         to: '/statistics',
         icon: PieChart,
         tooltip: t('common.tooltips.navigation.statistics'),
+      },
+      {
+        title: t('common.assistant'),
+        to: '/assistant',
+        icon: BotMessageSquare,
+        tooltip: t('common.tooltips.navigation.assistant'),
       },
     ],
     navSecondary: [
