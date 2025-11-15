@@ -1,7 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-  input: '../backend/backend/schema.yml',
+  input: '../backend/src/schema.yml',
   output: {
     path: 'src/client',
   },
