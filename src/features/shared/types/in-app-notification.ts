@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const inAppNotification = z.object({
-  notification: z.object({
+  type: z.literal('notification'),
+  data: z.object({
     type: z.string(),
     title: z.string(),
     body: z.string(),

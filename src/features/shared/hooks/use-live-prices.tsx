@@ -29,7 +29,7 @@ export function useLivePrices(...tickers: Array<string>) {
   }, [data]);
 
   useEffect(() => {
-    if (!lastJsonMessage) return;
+    if (!lastJsonMessage || lastJsonMessage.type !== 'prices') return;
 
     const out = livePrice.safeParse(lastJsonMessage);
 
@@ -38,7 +38,7 @@ export function useLivePrices(...tickers: Array<string>) {
     }
 
     const pricesRecord = Object.fromEntries(
-      out.data.prices.map((p) => [p.symbol, p.close])
+      out.data.data.map((p) => [p.symbol, p.close])
     );
 
     setPrices((prev) => ({

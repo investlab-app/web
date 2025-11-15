@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const livePrice = z.object({
-  prices: z.array(
+  type: z.literal('prices'),
+  data: z.array(
     z.object({
       symbol: z.string(),
       volume: z.number(),

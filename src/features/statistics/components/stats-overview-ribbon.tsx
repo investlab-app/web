@@ -14,8 +14,6 @@ const StatsOverviewRibbon = () => {
     isError,
   } = useQuery(statisticsStatisticsTradingOverviewRetrieveOptions());
 
-  console.log('StatsOverviewRibbon stats:', stats);
-
   const tiles = [
     {
       title: t('statistics.total_trades'),

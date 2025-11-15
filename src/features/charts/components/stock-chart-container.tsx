@@ -111,7 +111,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
       const out = livePrice.safeParse(lastJsonMessage);
       if (!out.success) return;
 
-      const tickerData = out.data.prices.find((item) => item.symbol === ticker);
+      const tickerData = out.data.data.find((item) => item.symbol === ticker);
       if (!tickerData) return;
 
       setCurrentPrice({
