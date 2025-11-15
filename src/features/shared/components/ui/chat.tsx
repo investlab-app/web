@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
@@ -211,11 +211,7 @@ export function Chat({
         </ChatMessages>
       ) : null}
 
-      <ChatForm
-        className="mt-auto"
-        isPending={isGenerating || isTyping}
-        handleSubmit={handleSubmit}
-      >
+      <ChatForm className="mt-auto" handleSubmit={handleSubmit}>
         {({ files, setFiles }) => (
           <MessageInput
             value={input}
@@ -295,7 +291,6 @@ ChatContainer.displayName = 'ChatContainer';
 
 interface ChatFormProps {
   className?: string;
-  isPending: boolean;
   handleSubmit: (
     event?: { preventDefault?: () => void },
     options?: { experimental_attachments?: FileList }
@@ -307,7 +302,7 @@ interface ChatFormProps {
 }
 
 export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
-  ({ children, handleSubmit, isPending, className }, ref) => {
+  ({ children, handleSubmit, className }, ref) => {
     const [files, setFiles] = useState<Array<File> | null>(null);
 
     const onSubmit = (event: React.FormEvent) => {

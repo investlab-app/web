@@ -1,20 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable react-you-might-not-need-an-effect/no-chain-state-updates */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import {
-  ArrowUp,
-  Info,
-  Loader2,
-  Mic,
-  Paperclip,
-  Square,
-  X,
-} from 'lucide-react';
+import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from 'lucide-react';
 import { omit } from 'remeda';
 
 import { cn } from '@/features/shared/utils/styles';

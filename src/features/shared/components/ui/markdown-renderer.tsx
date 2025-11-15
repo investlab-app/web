@@ -186,11 +186,12 @@ const COMPONENTS = {
   hr: withClass('hr', 'border-foreground/20'),
 };
 
-function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
+function withClass(Tag: React.ElementType, classes: string) {
   const Component = ({ node, ...props }: any) => (
     <Tag className={classes} {...props} />
   );
-  Component.displayName = Tag;
+  Component.displayName =
+    typeof Tag === 'string' ? Tag : Tag.displayName || Tag.name || 'Component';
   return Component;
 }
 
