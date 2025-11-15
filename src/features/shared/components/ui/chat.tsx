@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 
 import type { Message } from '@/features/shared/components/ui/chat-message';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/features/shared/utils/styles';
 import { useAutoScroll } from '@/features/shared/hooks/use-auto-scroll';
 import { Button } from '@/features/shared/components/ui/button';
@@ -15,6 +16,13 @@ import { CopyButton } from '@/features/shared/components/ui/copy-button';
 import { MessageInput } from '@/features/shared/components/ui/message-input';
 import { MessageList } from '@/features/shared/components/ui/message-list';
 import { PromptSuggestions } from '@/features/shared/components/ui/prompt-suggestions';
+import { ChatHistory } from '@/features/shared/components/ui/chat-history';
+import { useSidebar } from '@/features/shared/components/ui/sidebar';
+
+interface Suggestion {
+  text: string;
+  icon?: LucideIcon;
+}
 
 interface ChatPropsBase {
   handleSubmit: (
@@ -42,7 +50,7 @@ interface ChatPropsWithoutSuggestions extends ChatPropsBase {
 
 interface ChatPropsWithSuggestions extends ChatPropsBase {
   append: (message: { role: 'user'; content: string }) => void;
-  suggestions: Array<string>;
+  suggestions: Array<Suggestion | string>;
 }
 
 export type ChatProps = ChatPropsWithoutSuggestions | ChatPropsWithSuggestions;
@@ -62,6 +70,7 @@ export function Chat({
   transcribeAudio,
 }: ChatProps) {
   const { t } = useTranslation();
+  const { open } = useSidebar();
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === 'user';
@@ -191,13 +200,16 @@ export function Chat({
   );
 
   return (
-    <ChatContainer className={className}>
+    <ChatContainer className={cn('mx-auto px-4', className)}>
       {isEmpty && append && suggestions ? (
-        <PromptSuggestions
-          label="Try these prompts ✨"
-          append={append}
-          suggestions={suggestions}
-        />
+        <div className="flex flex-col gap-8 py-8">
+          <PromptSuggestions
+            label={t('chat.suggestions_label')}
+            append={append}
+            suggestions={suggestions}
+          />
+          <ChatHistory label={t('chat.history_label')} />
+        </div>
       ) : null}
 
       {messages.length > 0 ? (
@@ -210,22 +222,32 @@ export function Chat({
         </ChatMessages>
       ) : null}
 
-      <ChatForm className="mt-auto" handleSubmit={handleSubmit}>
-        {({ files, setFiles }) => (
-          <MessageInput
-            value={input}
-            onChange={handleInputChange}
-            placeholder={t('chat.input_placeholder')}
-            // TODO: Enable sending attachments
-            // allowAttachments
-            files={files}
-            setFiles={setFiles}
-            stop={handleStop}
-            isGenerating={isGenerating}
-            transcribeAudio={transcribeAudio}
-          />
-        )}
-      </ChatForm>
+      <div
+        className="fixed bottom-0 left-0 right-0"
+        style={{
+          marginLeft: open
+            ? 'var(--sidebar-width)'
+            : 'var(--sidebar-width-icon)',
+          transitionTimingFunction: 'var(--ease-out)',
+          transitionDuration: '200ms',
+          transitionProperty: 'margin',
+        }}
+      >
+        <ChatForm className="max-w-3xl mx-auto" handleSubmit={handleSubmit}>
+          {({ files, setFiles }) => (
+            <MessageInput
+              value={input}
+              onChange={handleInputChange}
+              placeholder={t('chat.input_placeholder')}
+              files={files}
+              setFiles={setFiles}
+              stop={handleStop}
+              isGenerating={isGenerating}
+              transcribeAudio={transcribeAudio}
+            />
+          )}
+        </ChatForm>
+      </div>
     </ChatContainer>
   );
 }
@@ -233,9 +255,11 @@ Chat.displayName = 'Chat';
 
 export function ChatMessages({
   messages,
+  className,
   children,
 }: React.PropsWithChildren<{
   messages: Array<Message>;
+  className?: string;
 }>) {
   const {
     containerRef,
@@ -247,7 +271,7 @@ export function ChatMessages({
 
   return (
     <div
-      className="grid grid-cols-1 overflow-y-auto pb-4"
+      className={cn('grid grid-cols-1 pb-24', className)}
       ref={containerRef}
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}

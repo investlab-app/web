@@ -73,11 +73,18 @@ export type ChatDetail = {
     title: string;
     readonly created_at: string;
     readonly updated_at: string;
-    readonly messages: Array<Message>;
+    readonly messages: Array<ChatMessage>;
 };
 
 export type ChatDetailRequest = {
     title: string;
+};
+
+export type ChatMessage = {
+    readonly id: string;
+    role: RoleEnum;
+    readonly content: string;
+    readonly createdAt: string | null;
 };
 
 export type ClerkLoginRequest = {
@@ -91,7 +98,6 @@ export type CreateChatMessageRequest = {
 };
 
 export type CreateChatRequest = {
-    title?: string;
     first_message: string;
 };
 
@@ -467,16 +473,6 @@ export type MarketStatus = {
     server_time?: string | null;
 };
 
-export type Message = {
-    id: string;
-    role: string;
-    content: string;
-    created_at?: string;
-    experimental_attachments?: Array<unknown>;
-    tool_invocations?: Array<unknown>;
-    parts?: Array<unknown>;
-};
-
 export type MostTradedItem = {
     symbol: string;
     no_trades: number;
@@ -740,8 +736,8 @@ export type PriceDaily = {
 };
 
 export type PriceDailySummary = {
+    readonly current_price: string;
     ticker: string;
-    current_price: string;
     daily_summary: PriceDaily;
     todays_change: string;
     todays_change_percent: string;
@@ -1120,6 +1116,14 @@ export type PriceAlertCreateRequestWritable = {
     threshold_type: ThresholdTypeEnum;
     threshold_value: string;
     notification_config: NotificationConfigCreateRequestWritable;
+};
+
+export type PriceDailySummaryWritable = {
+    ticker: string;
+    daily_summary: PriceDaily;
+    todays_change: string;
+    todays_change_percent: string;
+    last_updated: string;
 };
 
 export type AuthSignInCreateData = {

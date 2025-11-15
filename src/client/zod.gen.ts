@@ -61,16 +61,25 @@ export const zChat = z.object({
     message_count: z.int().readonly()
 });
 
-export const zMessage = z.object({
-    id: z.string(),
-    role: z.string(),
-    content: z.string(),
-    created_at: z.optional(z.iso.datetime({
-        offset: true
-    })),
-    experimental_attachments: z.optional(z.array(z.unknown())),
-    tool_invocations: z.optional(z.array(z.unknown())),
-    parts: z.optional(z.array(z.unknown()))
+/**
+ * * `user` - user
+ * * `assistant` - assistant
+ */
+export const zRoleEnum = z.enum([
+    'user',
+    'assistant'
+]);
+
+export const zChatMessage = z.object({
+    id: z.string().readonly().default(''),
+    role: zRoleEnum,
+    content: z.string().readonly().default(''),
+    createdAt: z.union([
+        z.iso.datetime({
+            offset: true
+        }).readonly(),
+        z.null()
+    ]).readonly()
 });
 
 export const zChatDetail = z.object({
@@ -82,7 +91,7 @@ export const zChatDetail = z.object({
     updated_at: z.iso.datetime({
         offset: true
     }).readonly(),
-    messages: z.array(zMessage).readonly()
+    messages: z.array(zChatMessage).readonly()
 });
 
 export const zChatDetailRequest = z.object({
@@ -94,22 +103,12 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
-/**
- * * `user` - user
- * * `assistant` - assistant
- */
-export const zRoleEnum = z.enum([
-    'user',
-    'assistant'
-]);
-
 export const zCreateChatMessageRequest = z.object({
     content: z.string().min(1).max(10000),
     role: z.optional(zRoleEnum)
 });
 
 export const zCreateChatRequest = z.object({
-    title: z.optional(z.string().min(1).max(255)),
     first_message: z.string().min(1).max(10000)
 });
 
@@ -415,8 +414,8 @@ export const zPriceDaily = z.object({
 });
 
 export const zPriceDailySummary = z.object({
+    current_price: z.string().readonly(),
     ticker: z.string(),
-    current_price: z.string(),
     daily_summary: zPriceDaily,
     todays_change: z.string(),
     todays_change_percent: z.string(),
@@ -1313,6 +1312,16 @@ export const zPriceAlertCreateRequestWritable = z.object({
     threshold_type: zThresholdTypeEnum,
     threshold_value: z.string().regex(/^-?\d{0,8}(?:\.\d{0,2})?$/),
     notification_config: zNotificationConfigCreateRequestWritable
+});
+
+export const zPriceDailySummaryWritable = z.object({
+    ticker: z.string(),
+    daily_summary: zPriceDaily,
+    todays_change: z.string(),
+    todays_change_percent: z.string(),
+    last_updated: z.iso.datetime({
+        offset: true
+    })
 });
 
 export const zAuthSignInCreateData = z.object({

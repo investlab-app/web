@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { cva } from 'class-variance-authority';
 import { motion } from 'motion/react';
 import { Ban, ChevronRight, Code2, Loader2, Terminal } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/features/shared/utils/styles';
@@ -144,7 +145,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   content,
   createdAt,
   showTimeStamp = false,
-  animation = 'scale',
+  animation = 'none',
   actions,
   experimental_attachments,
   toolInvocations,
@@ -160,9 +161,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     });
   }, [experimental_attachments]);
 
+  const { i18n } = useTranslation();
+
   const isUser = role === 'user';
 
-  const formattedTime = createdAt?.toLocaleTimeString('en-US', {
+  const formattedTime = createdAt?.toLocaleTimeString(i18n.language, {
     hour: '2-digit',
     minute: '2-digit',
   });

@@ -53,7 +53,6 @@ function RouteComponent() {
     return {
       validTickers,
       isValidTicker: (ticker: string) => {
-        console.log('Validating ticker:', ticker);
         return validTickers.has(ticker.toUpperCase());
       },
     };

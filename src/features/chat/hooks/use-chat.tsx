@@ -3,9 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
 import { useNavigate } from '@tanstack/react-router';
 import type { Message } from '@/features/shared/components/ui/chat-message';
-import type { ChatDetail } from '@/client/types.gen';
+import type { ChatDetail, ChatMessage } from '@/client/types.gen';
 import {
   chatsCreateMutation,
+  chatsListOptions,
   chatsMessagesCreateMutation,
   chatsRetrieveOptions,
 } from '@/client/@tanstack/react-query.gen';
@@ -29,13 +30,13 @@ const chatSchema = z.object({
 
 type LastChatMessageState = 'idle' | 'streaming' | 'done';
 interface UseLastChatMessageReturn {
-  message: Message | null;
+  message: ChatMessage | null;
   state: LastChatMessageState;
   reset: () => void;
 }
 
 function useLastChatMessage(): UseLastChatMessageReturn {
-  const [message, setMessage] = useState<Message | null>(null);
+  const [message, setMessage] = useState<ChatMessage | null>(null);
   const [state, setState] = useState<LastChatMessageState>('idle');
   const ws = useWS([]);
 
@@ -68,6 +69,7 @@ function useLastChatMessage(): UseLastChatMessageReturn {
               id: 'streaming-message' as const,
               role: 'assistant' as const,
               content: data.chunk,
+              createdAt: new Date().toISOString(),
             };
           }
 
@@ -75,6 +77,7 @@ function useLastChatMessage(): UseLastChatMessageReturn {
             id: 'streaming-message' as const,
             role: 'assistant' as const,
             content: currentMessage.content + data.chunk,
+            createdAt: new Date().toISOString(),
           };
         });
         break;
@@ -97,15 +100,19 @@ interface UseChatReturn {
   handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleSubmit: (event?: { preventDefault?: () => void }) => void;
   isLoading: boolean;
-  stop: () => void;
+  stop?: () => void;
   append: (message: { role: 'user'; content: string }) => void;
 }
 
 export function useChat({ chatId }: UseChatParams): UseChatReturn {
   const [input, setInput] = useState('');
+  const [pendingMessage, setPendingMessage] = useState<ChatMessage | null>(
+    null
+  );
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // Only use the query when we have a chatId
   const { data: history } = useQuery({
     ...chatsRetrieveOptions({ path: { id: chatId! } }),
     enabled: !!chatId,
@@ -114,6 +121,7 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
   const { mutate: createChatMutation } = useMutation({
     ...chatsCreateMutation(),
     onSuccess: async (data, variables) => {
+      queryClient.invalidateQueries(chatsListOptions());
       queryClient.setQueryData(
         chatsRetrieveOptions({ path: { id: data.id } }).queryKey,
         (old: ChatDetail | undefined) => {
@@ -126,14 +134,10 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
               ...(old?.messages ?? []),
               {
                 id: 'optimistic-user-message-' + Date.now(),
-                role: 'user',
+                role: 'user' as const,
                 content: variables.body.first_message,
-                createdAt: new Date(),
-                // TODO: Implement these
-                // experimental_attachments: variables.body.experimental_attachments,
-                // toolInvocations: [],
-                // parts: [],
-              } satisfies Message,
+                createdAt: new Date().toISOString(),
+              },
             ],
           };
         }
@@ -170,14 +174,10 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
               ...old.messages,
               {
                 id: 'optimistic-user-message-' + Date.now(),
-                role: 'user',
+                role: 'user' as const,
                 content: variables.body.content,
-                createdAt: new Date(),
-                // TODO: Implement these
-                // experimental_attachments: variables.body.experimental_attachments,
-                // toolInvocations: [],
-                // parts: [],
-              } satisfies Message,
+                createdAt: new Date().toISOString(),
+              },
             ],
           };
         }
@@ -218,12 +218,13 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
 
   const sendMessage = async (message: string) => {
     if (!chatId) {
-      createChatMutation({
-        body: {
-          first_message: message,
-          title: 'New Chat',
-        },
+      setPendingMessage({
+        id: 'optimistic-creation-' + Date.now(),
+        role: 'user',
+        content: message,
+        createdAt: new Date().toISOString(),
       });
+      createChatMutation({ body: { first_message: message } });
       return;
     }
     await sendMessageMutation({
@@ -232,41 +233,29 @@ export function useChat({ chatId }: UseChatParams): UseChatReturn {
     });
   };
 
-  // TODO: Implement stop functionality
-  const handleStop = () => {
-    setInput('');
-  };
-
-  const append = (message: { role: 'user'; content: string }) => {
-    sendMessage(message.content);
-  };
-
-  const internalHistoryMessages = history?.messages.map(
-    (msg) =>
-      ({
-        id: msg.id,
-        role: msg.role,
-        content: msg.content,
-        createdAt: msg.created_at ? new Date(msg.created_at) : undefined,
-        // experimental_attachments: msg.experimental_attachments,
-        // toolInvocations: msg.tool_invocations,
-        // parts: msg.parts,
-      }) satisfies Message
-  );
+  const messages = [
+    ...(history?.messages ?? []),
+    ...(pendingMessage && !chatId ? [pendingMessage] : []),
+    ...(lastChatMessage ? [lastChatMessage] : []),
+  ].map((msg) => ({
+    ...msg,
+    createdAt: msg.createdAt ? new Date(msg.createdAt) : undefined,
+  }));
 
   return {
-    messages: lastChatMessage
-      ? [...(internalHistoryMessages ?? []), lastChatMessage]
-      : (internalHistoryMessages ?? []),
-    append,
+    messages,
+    append: (message: { role: 'user'; content: string }) => {
+      sendMessage(message.content);
+    },
     input,
-    handleInputChange: (event) => setInput(event.target.value),
+    handleInputChange: (event) => {
+      setInput(event.target.value);
+    },
     handleSubmit: (event) => {
       event?.preventDefault?.();
       sendMessage(input);
       setInput('');
     },
     isLoading: lastChatMessageState === 'streaming',
-    stop: handleStop,
   };
 }

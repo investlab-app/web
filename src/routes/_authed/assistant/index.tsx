@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_authed/assistant/')({
 
 function ChatPage() {
   return (
-    <AppFrame className="h-[calc(100vh-var(--header-height))] pb-2">
+    <AppFrame>
       <ChatInterface />
     </AppFrame>
   );

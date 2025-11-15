@@ -1,3 +1,5 @@
+import { BarChart3, PieChart, Search, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Chat } from '@/features/shared/components/ui/chat';
 import { useChat } from '@/features/chat/hooks/use-chat';
 
@@ -15,11 +17,11 @@ export function ChatInterface({ chatId }: ChatInterfaceProps) {
     isLoading,
     stop,
   } = useChat({ chatId });
+  const { t } = useTranslation();
 
-  // TODO: i18n of suggestions
   return (
     <Chat
-      className="h-full"
+      className="max-w-2xl"
       messages={messages}
       input={input}
       handleInputChange={handleInputChange}
@@ -28,10 +30,10 @@ export function ChatInterface({ chatId }: ChatInterfaceProps) {
       stop={stop}
       append={append}
       suggestions={[
-        'How is my portfolio performing?',
-        'What assets do I own?',
-        'Give me investment advice.',
-        'What is the current market trend?',
+        { text: t('chat.suggestionVisualizeAllocations'), icon: PieChart },
+        { text: t('chat.suggestionTredningStatistics'), icon: BarChart3 },
+        { text: t('chat.suggestionIsAppleUndervalued'), icon: Search },
+        { text: t('chat.suggestionTop5Gainers'), icon: TrendingUp },
       ]}
     />
   );
