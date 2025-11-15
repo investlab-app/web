@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowUpDown } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { OrderConfirmationModalWrapper } from './order-confirmation-modal-wrapper';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 
@@ -33,13 +34,15 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
     setMode((prev) => (prev === 'price' ? 'volume' : 'price'));
 
   const currentPrice = useLivePrice(ticker);
+  // this is here, so that the values don't keep updating while the modal is open
+  const [freeze, setFreeze] = useState(false);
   const [price, setPrice] = useState(currentPrice);
   const [volume, setVolume] = useState(
     currentPrice && price ? price / currentPrice : undefined
   );
 
   useEffect(() => {
-    if (currentPrice === undefined) return;
+    if (freeze || currentPrice === undefined) return;
     switch (mode) {
       case 'price':
         if (price === undefined) {
@@ -188,24 +191,48 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button
-          size="lg"
-          variant="green"
-          className="flex-1"
-          onClick={() => handleOrder('buy')}
-          disabled={isPending || volume === 0}
+        <OrderConfirmationModalWrapper
+          isBuy={true}
+          isLimitOrder={false}
+          ticker={ticker}
+          price={price}
+          volume={volume}
+          onConfirm={() => handleOrder('buy')}
+          onClose={() => setFreeze(false)}
         >
-          {t('instruments.buy')}
-        </Button>
-        <Button
-          size="lg"
-          variant="red"
-          className="flex-1"
-          onClick={() => handleOrder('sell')}
-          disabled={isPending || volume === 0}
+          <Button
+            size="lg"
+            variant="green"
+            className="flex-1"
+            disabled={
+              isPending || !price || !volume || price <= 0 || volume <= 0
+            }
+            onClick={() => setFreeze(true)}
+          >
+            {t('instruments.buy')}
+          </Button>
+        </OrderConfirmationModalWrapper>
+        <OrderConfirmationModalWrapper
+          isBuy={false}
+          isLimitOrder={false}
+          ticker={ticker}
+          price={price}
+          volume={volume}
+          onConfirm={() => handleOrder('sell')}
+          onClose={() => setFreeze(false)}
         >
-          {t('instruments.sell')}
-        </Button>
+          <Button
+            size="lg"
+            variant="red"
+            className="flex-1"
+            disabled={
+              isPending || !price || !volume || price <= 0 || volume <= 0
+            }
+            onClick={() => setFreeze(true)}
+          >
+            {t('instruments.sell')}
+          </Button>
+        </OrderConfirmationModalWrapper>
       </div>
     </div>
   );

@@ -35,6 +35,18 @@ const plOrders = {
   cancel_order: 'Anuluj zlecenie',
   cancel_order_success: 'Zlecenie anulowane pomyślnie',
   cancel_order_failed: 'Nie udało się anulować zlecenia. Spróbuj ponownie.',
+  modal: {
+    title: 'Potwierdź wykonanie operacji',
+    subtitle: 'Masz zamiar złożyć zlecenie {{orderType}}.',
+    buy: 'Kupno',
+    sell: 'Sprzedaż',
+    ticker_label: 'Ticker: {{ticker}}',
+    volume_label: 'Wolumen: {{volume}}',
+    approx_price_label: 'Przybliżona cena: {{price}} USD',
+    price_label: 'Cena: {{price}} USD',
+    confirm: 'Potwierdź',
+    close: 'Zamknij',
+  },
 };
 
 export default plOrders;

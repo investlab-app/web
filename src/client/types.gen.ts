@@ -83,6 +83,63 @@ export type DepositMoneyRequest = {
     amount: string;
 };
 
+/**
+ * * `push` - push
+ * * `mail` - mail
+ */
+export type FormatEnum = 'push' | 'mail';
+
+export type Graph = {
+    readonly id: string;
+    name: string;
+    raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
+};
+
+export type GraphEffect = {
+    readonly created_at: string;
+    effect: GraphEffectDetail;
+    success: boolean;
+};
+
+export type GraphEffectDetail = ({
+    effect_type: 'transaction';
+} & GraphTransactionEffect) | ({
+    effect_type: 'notification';
+} & GraphNotificationEffect);
+
+export type GraphNotificationEffect = {
+    message: string;
+    format: FormatEnum;
+    readonly effect_type: string;
+};
+
+export type GraphRequest = {
+    name: string;
+    raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
+};
+
+export type GraphResult = {
+    action: unknown;
+};
+
+export type GraphTransactionEffect = {
+    instrument: InstrumentName;
+    is_buy: boolean;
+    amount: string;
+    readonly effect_type: string;
+};
+
+export type GraphUpdateRequest = {
+    name?: string;
+    raw_graph_data?: unknown;
+    active?: boolean;
+    repeat?: boolean;
+};
+
 export type HistoryEntry = {
     /**
      * Date of the transaction
@@ -132,6 +189,13 @@ export type InstrumentList = {
     currency_name?: string;
     icon?: string | null;
     logo?: string | null;
+};
+
+export type InstrumentName = {
+    /**
+     * Ticker Symbol
+     */
+    ticker: string;
 };
 
 export type InstrumentRetrieve = {
@@ -457,6 +521,20 @@ export type OwnedShare = {
     gain_percentage: number | null;
 };
 
+export type PaginatedGraphEffectList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<GraphEffect>;
+};
+
+export type PaginatedGraphList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Graph>;
+};
+
 export type PaginatedInstrumentListList = {
     count: number;
     next?: string | null;
@@ -476,6 +554,13 @@ export type PaginatedPriceAlertList = {
     next?: string | null;
     previous?: string | null;
     results: Array<PriceAlert>;
+};
+
+export type PatchedGraphUpdateRequest = {
+    name?: string;
+    raw_graph_data?: unknown;
+    active?: boolean;
+    repeat?: boolean;
 };
 
 export type PatchedInvestorRequest = {
@@ -589,6 +674,11 @@ export type PriceDailySummary = {
     last_updated: string;
 };
 
+export type PriceTimestampRequest = {
+    price: string;
+    timestamp: string;
+};
+
 export type Publisher = {
     favicon_url?: string | null;
     homepage_url?: string | null;
@@ -600,6 +690,15 @@ export type PushNotificationRequest = {
     endpoint: string;
     p256dh: string;
     auth: string;
+};
+
+export type RunGraphRequest = {
+    time_at?: string;
+    prices?: Array<TickerPricesRequest>;
+};
+
+export type RunGraphResult = {
+    results: Array<GraphResult>;
 };
 
 /**
@@ -643,6 +742,11 @@ export type TickerNews = {
     title?: string | null;
 };
 
+export type TickerPricesRequest = {
+    ticker: string;
+    prices: Array<PriceTimestampRequest>;
+};
+
 export type TradingOverview = {
     total_trades: number;
     buys: number;
@@ -682,6 +786,28 @@ export type AccountValueSnapshotDailyWritable = {
      * Account value on this date
      */
     value: number;
+};
+
+export type GraphWritable = {
+    name: string;
+    raw_graph_data: unknown;
+    active?: boolean;
+    repeat?: boolean;
+};
+
+export type GraphEffectWritable = {
+    success: boolean;
+};
+
+export type GraphNotificationEffectWritable = {
+    message: string;
+    format: FormatEnum;
+};
+
+export type GraphTransactionEffectWritable = {
+    instrument: InstrumentName;
+    is_buy: boolean;
+    amount: string;
 };
 
 export type InstrumentListWritable = {
@@ -922,6 +1048,143 @@ export type AuthSignInCreateResponses = {
      */
     200: unknown;
 };
+
+export type GraphLangListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/graph_lang/';
+};
+
+export type GraphLangListResponses = {
+    200: PaginatedGraphList;
+};
+
+export type GraphLangListResponse = GraphLangListResponses[keyof GraphLangListResponses];
+
+export type GraphLangCreateData = {
+    body: GraphRequest;
+    path?: never;
+    query?: never;
+    url: '/api/graph_lang/';
+};
+
+export type GraphLangCreateResponses = {
+    201: Graph;
+};
+
+export type GraphLangCreateResponse = GraphLangCreateResponses[keyof GraphLangCreateResponses];
+
+export type GraphLangDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/graph_lang/{id}/';
+};
+
+export type GraphLangDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type GraphLangDestroyResponse = GraphLangDestroyResponses[keyof GraphLangDestroyResponses];
+
+export type GraphLangRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/graph_lang/{id}/';
+};
+
+export type GraphLangRetrieveResponses = {
+    200: Graph;
+};
+
+export type GraphLangRetrieveResponse = GraphLangRetrieveResponses[keyof GraphLangRetrieveResponses];
+
+export type GraphLangPartialUpdateData = {
+    body?: PatchedGraphUpdateRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/graph_lang/{id}/';
+};
+
+export type GraphLangPartialUpdateResponses = {
+    200: Graph;
+};
+
+export type GraphLangPartialUpdateResponse = GraphLangPartialUpdateResponses[keyof GraphLangPartialUpdateResponses];
+
+export type GraphLangUpdateData = {
+    body?: GraphUpdateRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/graph_lang/{id}/';
+};
+
+export type GraphLangUpdateResponses = {
+    200: Graph;
+};
+
+export type GraphLangUpdateResponse = GraphLangUpdateResponses[keyof GraphLangUpdateResponses];
+
+export type GraphLangResultsListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/graph_lang/{id}/results/';
+};
+
+export type GraphLangResultsListResponses = {
+    200: PaginatedGraphEffectList;
+};
+
+export type GraphLangResultsListResponse = GraphLangResultsListResponses[keyof GraphLangResultsListResponses];
+
+export type GraphLangRunCreateData = {
+    body?: RunGraphRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/graph_lang/{id}/run/';
+};
+
+export type GraphLangRunCreateResponses = {
+    200: RunGraphResult;
+};
+
+export type GraphLangRunCreateResponse = GraphLangRunCreateResponses[keyof GraphLangRunCreateResponses];
 
 export type InstrumentsListData = {
     body?: never;
@@ -1209,7 +1472,7 @@ export type OrdersListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
@@ -1245,7 +1508,7 @@ export type OrdersLimitListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
@@ -1276,7 +1539,7 @@ export type OrdersMarketListData = {
     path?: never;
     query?: {
         /**
-         * ("Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.",)
+         * Filter orders by instrument ticker (e.g., 'AAPL'). If not provided, returns orders for all instruments.
          */
         ticker?: string;
     };
