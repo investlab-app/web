@@ -10,3 +10,16 @@
       url: 'https://github.com/posthog/posthog-js'
       revision: 'main'
     concluded_license: 'Apache-2.0'
+
+- id: 'NPM::khroma'
+  curations:
+    declared_license_mapping:
+      'NOASSERTION': 'MIT'
+    comment: 'Based on GitHub repository, this package is MIT License'
+    homepage_url: 'https://github.com/fabiospampinato/khroma'
+    is_modified: false
+    vcs:
+      type: 'Git'
+      url: 'https://github.com/fabiospampinato/khroma'
+      revision: 'master'
+    concluded_license: 'MIT'
