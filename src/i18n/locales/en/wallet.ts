@@ -13,6 +13,7 @@ const enWallet = {
   invalid_amount_maximum: 'Please enter a valid amount less than ${{amount}}',
   deposit_error: 'Failed to process deposit. Please try again.',
   balance: 'Balance',
+  blocked_funds: 'Blocked Funds: ',
   total_balance: 'Total Balance',
   available_balance: 'Available Balance',
   transaction_history: 'Transaction History',
