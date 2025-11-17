@@ -18,6 +18,10 @@ export type AccountValueSnapshotDaily = {
     value: number;
 };
 
+export type AllTickers = {
+    tickers: Array<string>;
+};
+
 export type AssetAllocation = {
     total_value: number;
     total_gain_this_year: number;
@@ -73,6 +77,15 @@ export type CurrentAccountValue = {
     total_account_value: number;
     gain: number;
     gain_percentage: number | null;
+};
+
+export type DepositHistory = {
+    readonly id: string;
+    /**
+     * Deposit Amount
+     */
+    readonly amount: string;
+    readonly deposited_at: string;
 };
 
 export type DepositMoney = {
@@ -519,6 +532,13 @@ export type OwnedShare = {
     value: number;
     gain: number;
     gain_percentage: number | null;
+};
+
+export type PaginatedDepositHistoryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<DepositHistory>;
 };
 
 export type PaginatedGraphEffectList = {
@@ -1001,6 +1021,13 @@ export type OrderWritable = {
     detail_type: number;
 };
 
+export type PaginatedDepositHistoryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
 export type PriceAlertWritable = {
     threshold_type: ThresholdTypeEnum;
     threshold_value: string;
@@ -1250,6 +1277,19 @@ export type InstrumentsDetailRetrieveResponses = {
 
 export type InstrumentsDetailRetrieveResponse = InstrumentsDetailRetrieveResponses[keyof InstrumentsDetailRetrieveResponses];
 
+export type InstrumentsTickersRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/instruments/tickers/';
+};
+
+export type InstrumentsTickersRetrieveResponses = {
+    200: AllTickers;
+};
+
+export type InstrumentsTickersRetrieveResponse = InstrumentsTickersRetrieveResponses[keyof InstrumentsTickersRetrieveResponses];
+
 export type InstrumentsWithPricesListData = {
     body?: never;
     path?: never;
@@ -1322,6 +1362,28 @@ export type InvestorsDepositCreateResponses = {
 };
 
 export type InvestorsDepositCreateResponse = InvestorsDepositCreateResponses[keyof InvestorsDepositCreateResponses];
+
+export type InvestorsDepositHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/api/investors/deposit-history/';
+};
+
+export type InvestorsDepositHistoryListResponses = {
+    200: PaginatedDepositHistoryList;
+};
+
+export type InvestorsDepositHistoryListResponse = InvestorsDepositHistoryListResponses[keyof InvestorsDepositHistoryListResponses];
 
 export type InvestorsMeRetrieveData = {
     body?: never;

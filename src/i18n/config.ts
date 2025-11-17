@@ -34,6 +34,8 @@ import enMarketStatus from './locales/en/marketStatus';
 import plMarketStatus from './locales/pl/marketStatus';
 import enNotifications from './locales/en/notifications';
 import plNotifications from './locales/pl/notifications';
+import enFlows from './locales/en/flows';
+import plFlows from './locales/pl/flows';
 
 i18n
   .use(LanguageDetector)
@@ -57,6 +59,7 @@ i18n
         translation: {
           auth: enAuth,
           common: enCommon,
+          flows: enFlows,
           hero: enHero,
           instruments: enInstruments,
           investor: enInvestor,
@@ -79,6 +82,7 @@ i18n
         translation: {
           auth: plAuth,
           common: plCommon,
+          flows: plFlows,
           hero: plHero,
           instruments: plInstruments,
           investor: plInvestor,
