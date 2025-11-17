@@ -40,7 +40,12 @@ export function WalletSection() {
             {isPending && <Skeleton className="h-6 w-24" />}
             {isError && <Skeleton className="h-6 w-24" />}
             {isSuccess &&
-              withCurrency(parseFloat(accountValue.balance), i18n.language, 2)}
+              withCurrency(
+                parseFloat(accountValue.balance) -
+                  parseFloat(accountValue.blocked_funds ?? '0.0'),
+                i18n.language,
+                2
+              )}
           </div>
         </SidebarMenuButton>
         <Button
