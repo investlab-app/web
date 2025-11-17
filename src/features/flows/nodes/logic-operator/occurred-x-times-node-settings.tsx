@@ -8,17 +8,17 @@ import type { Node, NodeProps } from '@xyflow/react';
 export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
   times: number;
   period: number;
-  interval: number;
-  timeUnit: TimeUnit;
-  intervalUnit: ShortTimeUnit;
+  period2: number;
+  unit: TimeUnit;
+  unit2: ShortTimeUnit;
 
   constructor() {
     super();
     this.times = 1;
     this.period = 1;
-    this.interval = 1;
-    this.timeUnit = TimeUnit.Day;
-    this.intervalUnit = ShortTimeUnit.Day;
+    this.period2 = 1;
+    this.unit = TimeUnit.Day;
+    this.unit2 = ShortTimeUnit.Day;
   }
 
   override isValid(
@@ -30,7 +30,7 @@ export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
       Object.keys(outConnections).length == 1 &&
       this.times >= 0 &&
       this.period > 0 &&
-      this.interval > 0
+      this.period2 > 0
     );
   }
 
@@ -45,19 +45,19 @@ export class OccurredXTimesNodeSettings extends LogicOperatorNodeSettings {
   }
 
   getUpdatedInterval(interval: number): OccurredXTimesNodeSettings {
-    this.interval = interval;
+    this.period2 = interval;
     return this;
   }
 
   getUpdatedTimeUnit(timeUnit: TimeUnit): OccurredXTimesNodeSettings {
-    this.timeUnit = timeUnit;
+    this.unit = timeUnit;
     return this;
   }
 
   getUpdatedIntervalUnit(
     intervalUnit: ShortTimeUnit
   ): OccurredXTimesNodeSettings {
-    this.intervalUnit = intervalUnit;
+    this.unit2 = intervalUnit;
     return this;
   }
 }
@@ -75,10 +75,10 @@ export const OccurredXTimesNode = (props: NodeProps<OccurredXTimesNode>) => {
     <OccurredXTimesNodeUI
       nodeId={props.id}
       times={props.data.settings.times}
-      interval={props.data.settings.interval}
+      interval={props.data.settings.period2}
       period={props.data.settings.period}
-      timeUnit={props.data.settings.timeUnit}
-      intervalUnit={props.data.settings.intervalUnit}
+      timeUnit={props.data.settings.unit}
+      intervalUnit={props.data.settings.unit2}
       onTimesChange={(val) => {
         updateNodeData({ settings: props.data.settings.getUpdatedTimes(val!) });
       }}
