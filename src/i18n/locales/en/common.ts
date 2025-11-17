@@ -64,19 +64,11 @@ const enCommon = {
   faq: 'FAQ',
   tooltips: {
     navigation: {
-<<<<<<< HEAD
       dashboard: 'Dashboard',
       flows: 'strategies',
       instruments: 'Stocks',
       transactions: 'Transactions',
       statistics: 'Statistics',
-=======
-      dashboard: 'Portfolio overview and account summary',
-      instruments: 'Browse instruments',
-      transactions: 'Trading history',
-      statistics: 'Portfolio performance analysis',
-      strategies: 'Automated trading strategies',
->>>>>>> 4d7a061 (feat: add route in ui)
     },
     charts: {
       line_chart: 'Line chart',

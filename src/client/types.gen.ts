@@ -60,6 +60,13 @@ export type ClerkLoginRequest = {
     password: string;
 };
 
+export type CreateLimitOrderRequest = {
+    ticker: string;
+    volume: string;
+    is_buy: boolean;
+    limit_price: string;
+};
+
 export type CreateMarketOrderRequest = {
     ticker: string;
     volume: string;
@@ -112,40 +119,11 @@ export type GraphNotificationEffect = {
     readonly effect_type: string;
 };
 
-export type GraphEffect = {
-    readonly created_at: string;
-    effect: GraphEffectDetail;
-    success: boolean;
-};
-
-export type GraphEffectDetail = ({
-    effect_type: 'transaction';
-} & GraphTransactionEffect) | ({
-    effect_type: 'notification';
-} & GraphNotificationEffect);
-
-export type GraphNotificationEffect = {
-    message: string;
-    format: FormatEnum;
-    readonly effect_type: string;
-};
-
 export type GraphRequest = {
     name: string;
     raw_graph_data: unknown;
     active?: boolean;
     repeat?: boolean;
-};
-
-export type GraphResult = {
-    action: unknown;
-};
-
-export type GraphTransactionEffect = {
-    instrument: InstrumentName;
-    is_buy: boolean;
-    amount: string;
-    readonly effect_type: string;
 };
 
 export type GraphResult = {
@@ -532,7 +510,7 @@ export type Order = {
     detail: OrderDetail;
 };
 
-export type OrderDetail = {
+export type OrderDetail = ({
     detail_type: 'market';
 } & MarketOrderDetails) | ({
     detail_type: 'limit';
@@ -836,21 +814,6 @@ export type GraphTransactionEffectWritable = {
     amount: string;
 };
 
-export type GraphEffectWritable = {
-    success: boolean;
-};
-
-export type GraphNotificationEffectWritable = {
-    message: string;
-    format: FormatEnum;
-};
-
-export type GraphTransactionEffectWritable = {
-    instrument: InstrumentName;
-    is_buy: boolean;
-    amount: string;
-};
-
 export type InstrumentListWritable = {
     /**
      * Ticker Symbol
@@ -1039,7 +1002,6 @@ export type NotificationHistoryWritable = {
 };
 
 export type OrderWritable = {
-    ticker: InstrumentName;
     detail_type: number;
 };
 

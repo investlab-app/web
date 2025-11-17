@@ -49,6 +49,13 @@ export const zClerkLoginRequest = z.object({
     password: z.string().min(1)
 });
 
+export const zCreateLimitOrderRequest = z.object({
+    ticker: z.string().min(1),
+    volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
+    is_buy: z.boolean(),
+    limit_price: z.string().regex(/^-?\d{0,22}(?:\.\d{0,8})?$/)
+});
+
 export const zCreateMarketOrderRequest = z.object({
     ticker: z.string().min(1),
     volume: z.string().regex(/^-?\d{0,10}(?:\.\d{0,5})?$/),
@@ -123,49 +130,11 @@ export const zGraphEffect = z.object({
     success: z.boolean()
 });
 
-export const zInstrumentName = z.object({
-    ticker: z.string().max(20)
-});
-
-export const zGraphTransactionEffect = z.object({
-    instrument: zInstrumentName,
-    is_buy: z.boolean(),
-    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
-    effect_type: z.string().readonly()
-});
-
-export const zGraphNotificationEffect = z.object({
-    message: z.string(),
-    format: zFormatEnum,
-    effect_type: z.string().readonly()
-});
-
-export const zGraphEffectDetail = z.union([
-    z.object({
-        effect_type: z.literal('transaction')
-    }).and(zGraphTransactionEffect),
-    z.object({
-        effect_type: z.literal('notification')
-    }).and(zGraphNotificationEffect)
-]);
-
-export const zGraphEffect = z.object({
-    created_at: z.iso.datetime({
-        offset: true
-    }).readonly(),
-    effect: zGraphEffectDetail,
-    success: z.boolean()
-});
-
 export const zGraphRequest = z.object({
     name: z.string().min(1).max(100),
     raw_graph_data: z.unknown(),
     active: z.optional(z.boolean()),
     repeat: z.optional(z.boolean())
-});
-
-export const zGraphResult = z.object({
-    action: z.unknown()
 });
 
 export const zGraphResult = z.object({
@@ -992,21 +961,6 @@ export const zGraphWritable = z.object({
     raw_graph_data: z.unknown(),
     active: z.optional(z.boolean()),
     repeat: z.optional(z.boolean())
-});
-
-export const zGraphEffectWritable = z.object({
-    success: z.boolean()
-});
-
-export const zGraphNotificationEffectWritable = z.object({
-    message: z.string(),
-    format: zFormatEnum
-});
-
-export const zGraphTransactionEffectWritable = z.object({
-    instrument: zInstrumentName,
-    is_buy: z.boolean(),
-    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
 });
 
 export const zGraphEffectWritable = z.object({
