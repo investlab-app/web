@@ -16,28 +16,25 @@ export function FlowListRowHistoryRibbon({ id }: { id: string }) {
     refetchOnMount: 'always',
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (isPending) {
     return (
-      <div className="p-4 border-b border-muted-foreground/10">
-        <div className="text-sm text-muted-foreground">
-          {t('common.loading')}
-        </div>
+      <div className="p-4 text-sm text-muted-foreground">
+        {t('common.loading')}
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="p-4 border-b border-muted-foreground/10">
-        <div className="text-sm text-muted-foreground">
-          {t('common.error_loading_data')}
-        </div>
+      <div className="p-4 text-sm text-muted-foreground">
+        {t('common.error_loading_data')}
       </div>
     );
   }
 
   return (
-    <div className="p-0 border-b border-muted-foreground/10 overflow-clip">
+    <div className="p-0 overflow-clip">
       {data.results.length === 0 ? (
         <div className="text-sm text-muted-foreground m-4">
           {t('flows.listview.no_history')}

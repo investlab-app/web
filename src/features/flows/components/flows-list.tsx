@@ -37,7 +37,7 @@ export function FlowsList({ strategies, isActive }: FlowsListProps) {
       )}
 
       {isActive && !isMobile && (
-        <div className="bg-muted/40 border-b-muted-foreground/10 border-b">
+        <div className="rounded-xl border bg-card shadow-sm transition-shadow flex flex-col bg-muted/40">
           <Button
             variant="ghost"
             onClick={() => {
