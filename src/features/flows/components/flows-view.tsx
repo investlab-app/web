@@ -11,6 +11,11 @@ import {
 import { graphLangListOptions } from '@/client/@tanstack/react-query.gen';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/features/shared/components/ui/tooltip';
 
 const FlowType = {
   Active: 'active',
@@ -73,11 +78,19 @@ export function FlowsView() {
 
   return (
     <div>
-      <div className="text-2xl font-semibold mb-2">
-        {t('flows.listview.title')}
+      <div className="font-semibold mb-4">
+        <p className="text-2xl">{t('flows.listview.title')}</p>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="cursor-help">
+              {t('flows.listview.description1')}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('flows.listview.description2')}</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
-      <div>{t('flows.listview.description1')}</div>
-      <div className="mb-4">{t('flows.listview.description2')}</div>
       <Tabs defaultValue={FlowType.Active} className="mt-4">
         <TabsList>
           <TabsTrigger

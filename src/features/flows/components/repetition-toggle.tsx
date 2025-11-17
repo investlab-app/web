@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
+import { Play, Repeat } from 'lucide-react';
 import {
   ToggleGroup,
   ToggleGroupItem,
 } from '@/features/shared/components/ui/toggle-group';
+import { useIsMobile } from '@/features/shared/hooks/use-media-query';
 
 interface RepetitionToggleProps {
   repeat: boolean;
@@ -16,6 +18,9 @@ export function RepetitionToggle({
   className,
 }: RepetitionToggleProps) {
   const { t } = useTranslation();
+
+  const isMobile = useIsMobile();
+
   return (
     <ToggleGroup
       type="single"
@@ -26,10 +31,10 @@ export function RepetitionToggle({
       className={className}
     >
       <ToggleGroupItem value="single" aria-label="Single">
-        {t('flows.listview.single')}
+        {isMobile ? <Play className="h-4 w-4" /> : t('flows.listview.single')}
       </ToggleGroupItem>
       <ToggleGroupItem value="repeat" aria-label="Repeat">
-        {t('flows.listview.repeat')}
+        {isMobile ? <Repeat className="h-4 w-4" /> : t('flows.listview.repeat')}
       </ToggleGroupItem>
     </ToggleGroup>
   );

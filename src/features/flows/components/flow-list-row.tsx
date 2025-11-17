@@ -57,7 +57,7 @@ export function FlowListRow({ id, name, className, repeat }: FlowListRowProps) {
             />
           </Button>
 
-          <div className="flex items-center gap-2 sm:gap-3 flex-1">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <span className="text-sm sm:text-base font-semibold text-foreground truncate">
               {name}
             </span>
