@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsDepositHistoryList, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsDepositHistoryListData, InvestorsDepositHistoryListResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -329,7 +329,7 @@ export const instrumentsDetailRetrieveOptions = (options?: Options<InstrumentsDe
 export const instrumentsTickersRetrieveQueryKey = (options?: Options<InstrumentsTickersRetrieveData>) => createQueryKey('instrumentsTickersRetrieve', options);
 
 /**
- * Retrieve all instrument tickers as an object with a list of strings.
+ * Retrieve all tickers as an object with a list of strings.
  */
 export const instrumentsTickersRetrieveOptions = (options?: Options<InstrumentsTickersRetrieveData>) => {
     return queryOptions({
@@ -432,6 +432,49 @@ export const investorsDepositCreateMutation = (options?: Partial<Options<Investo
         }
     };
     return mutationOptions;
+};
+
+export const investorsDepositHistoryListQueryKey = (options?: Options<InvestorsDepositHistoryListData>) => createQueryKey('investorsDepositHistoryList', options);
+
+export const investorsDepositHistoryListOptions = (options?: Options<InvestorsDepositHistoryListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await investorsDepositHistoryList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsDepositHistoryListQueryKey(options)
+    });
+};
+
+export const investorsDepositHistoryListInfiniteQueryKey = (options?: Options<InvestorsDepositHistoryListData>): QueryKey<Options<InvestorsDepositHistoryListData>> => createQueryKey('investorsDepositHistoryList', options, true);
+
+export const investorsDepositHistoryListInfiniteOptions = (options?: Options<InvestorsDepositHistoryListData>) => {
+    return infiniteQueryOptions<InvestorsDepositHistoryListResponse, DefaultError, InfiniteData<InvestorsDepositHistoryListResponse>, QueryKey<Options<InvestorsDepositHistoryListData>>, number | Pick<QueryKey<Options<InvestorsDepositHistoryListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<InvestorsDepositHistoryListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    page: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await investorsDepositHistoryList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: investorsDepositHistoryListInfiniteQueryKey(options)
+    });
 };
 
 export const investorsMeRetrieveQueryKey = (options?: Options<InvestorsMeRetrieveData>) => createQueryKey('investorsMeRetrieve', options);

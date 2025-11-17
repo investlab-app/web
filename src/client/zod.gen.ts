@@ -71,6 +71,14 @@ export const zCurrentAccountValue = z.object({
     ])
 });
 
+export const zDepositHistory = z.object({
+    id: z.uuid().readonly(),
+    amount: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/).readonly(),
+    deposited_at: z.iso.datetime({
+        offset: true
+    }).readonly()
+});
+
 export const zDepositMoney = z.object({
     amount: z.string().regex(/^-?\d{0,10}(?:\.\d{0,2})?$/)
 });
@@ -644,6 +652,19 @@ export const zOwnedShare = z.object({
     ])
 });
 
+export const zPaginatedDepositHistoryList = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(zDepositHistory)
+});
+
 export const zPaginatedGraphEffectList = z.object({
     count: z.int(),
     next: z.optional(z.union([
@@ -1170,6 +1191,19 @@ export const zOrderWritable = z.object({
     detail_type: z.int()
 });
 
+export const zPaginatedDepositHistoryListWritable = z.object({
+    count: z.int(),
+    next: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    previous: z.optional(z.union([
+        z.url(),
+        z.null()
+    ])),
+    results: z.array(z.unknown())
+});
+
 export const zPriceAlertWritable = z.object({
     threshold_type: zThresholdTypeEnum,
     threshold_value: z.string().regex(/^-?\d{0,8}(?:\.\d{0,2})?$/),
@@ -1355,6 +1389,17 @@ export const zInvestorsDepositCreateData = z.object({
 });
 
 export const zInvestorsDepositCreateResponse = zDepositMoney;
+
+export const zInvestorsDepositHistoryListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        page: z.optional(z.int()),
+        page_size: z.optional(z.int())
+    }))
+});
+
+export const zInvestorsDepositHistoryListResponse = zPaginatedDepositHistoryList;
 
 export const zInvestorsMeRetrieveData = z.object({
     body: z.optional(z.never()),
