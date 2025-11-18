@@ -144,8 +144,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         <CardTitle>{ticker}</CardTitle>
         {latestClosingPrice && (
           <CardDescription>
-            {t('instruments.current_price')}: $
-            {withCurrency(latestClosingPrice, i18n.language, 2)}
+            {`${t('instruments.current_price')}: ${withCurrency(latestClosingPrice, i18n.language, 2)}`}
           </CardDescription>
         )}
         <CardAction>
