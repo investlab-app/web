@@ -28,12 +28,7 @@ export function BreadcrumbNav() {
           const isLast = index === items.length - 1;
           return (
             <Fragment key={index}>
-              <BreadcrumbItem
-                className={cn(
-                  'shrink-0',
-                  isLast && 'max-w-[200px] sm:max-w-xs min-w-0 shrink'
-                )}
-              >
+              <BreadcrumbItem className={cn(isLast && 'min-w-0 shrink')}>
                 <Link
                   to={item.href}
                   className={cn('breadcrumb-link', isLast && 'truncate block')}
@@ -41,7 +36,7 @@ export function BreadcrumbNav() {
                   {item.label}
                 </Link>
               </BreadcrumbItem>
-              {index < items.length - 1 && <BreadcrumbSeparator />}
+              {!isLast && <BreadcrumbSeparator />}
             </Fragment>
           );
         })}
