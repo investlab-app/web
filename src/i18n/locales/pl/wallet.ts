@@ -15,11 +15,19 @@ const plWallet = {
     'Proszę wprowadzić prawidłową kwotę mniejszą niż ${{amount}}',
   deposit_error: 'Nie udało się przetworzyć wpłaty. Spróbuj ponownie.',
   balance: 'Saldo',
+  blocked_funds: 'Zablokowane Środki: ',
   total_balance: 'Saldo Całkowite',
   available_balance: 'Dostępne Saldo',
   transaction_history: 'Historia Transakcji',
   recent_deposits: 'Ostatnie Wpłaty',
   no_transactions: 'Brak transakcji',
+  errors: {
+    max_amount_per_24h_exceeded:
+      'Możesz wpłacić maksymalnie ${{maxAmount}} w ciągu 24 godzin. Obecnie możesz wpłacić jeszcze ${{amount}}.',
+    max_amount_per_deposit_exceeded:
+      'Maksymalna kwota na jedną wpłatę to ${{amount}}.',
+    deposit_failed: 'Wpłata nie powiodła się. Spróbuj ponownie później.',
+  },
 };
 
 export default plWallet;

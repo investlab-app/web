@@ -102,7 +102,7 @@ export function PositionSummary({
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <SummaryMetric
             label={t('common.quantity')}
-            value={withCurrency(Number(position.quantity), i18n.language, 2)}
+            value={parseFloat(position.quantity).toFixed(5)}
             containerClassName="min-w-0 border-b border-r md:border-b-0 pl-4"
           />
           <SummaryMetric
@@ -119,7 +119,7 @@ export function PositionSummary({
           <SummaryMetric
             label={t('common.gain_percentage')}
             value={
-              position.gain_percentage === null
+              position.gain_percentage === null // eslint-disable-line @typescript-eslint/no-unnecessary-condition
                 ? 'N/A'
                 : `${withCurrency(position.gain_percentage, i18n.language, 2)}%`
             }

@@ -36,6 +36,8 @@ import enNotifications from './locales/en/notifications';
 import plNotifications from './locales/pl/notifications';
 import enChat from './locales/en/chat';
 import plChat from './locales/pl/chat';
+import enFlows from './locales/en/flows';
+import plFlows from './locales/pl/flows';
 
 i18n
   .use(LanguageDetector)
@@ -59,6 +61,7 @@ i18n
         translation: {
           auth: enAuth,
           common: enCommon,
+          flows: enFlows,
           hero: enHero,
           instruments: enInstruments,
           investor: enInvestor,
@@ -82,6 +85,7 @@ i18n
         translation: {
           auth: plAuth,
           common: plCommon,
+          flows: plFlows,
           hero: plHero,
           instruments: plInstruments,
           investor: plInvestor,

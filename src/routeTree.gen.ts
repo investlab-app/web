@@ -23,13 +23,16 @@ import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLogoutRouteImport } from './routes/_auth/logout'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedTransactionsRouteRouteImport } from './routes/_authed/transactions/route'
+import { Route as AuthedStrategiesRouteRouteImport } from './routes/_authed/strategies/route'
 import { Route as AuthedStatisticsRouteRouteImport } from './routes/_authed/statistics/route'
 import { Route as AuthedInstrumentsRouteRouteImport } from './routes/_authed/instruments/route'
 import { Route as AuthedAssistantRouteRouteImport } from './routes/_authed/assistant/route'
 import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
+import { Route as AuthedStrategiesIndexRouteImport } from './routes/_authed/strategies/index'
 import { Route as AuthedStatisticsIndexRouteImport } from './routes/_authed/statistics/index'
 import { Route as AuthedInstrumentsIndexRouteImport } from './routes/_authed/instruments/index'
 import { Route as AuthedAssistantIndexRouteImport } from './routes/_authed/assistant/index'
+import { Route as AuthedStrategiesFlowIdRouteImport } from './routes/_authed/strategies/$flowId'
 import { Route as AuthedInstrumentsInstrumentIdRouteImport } from './routes/_authed/instruments/$instrumentId'
 import { Route as AuthedAssistantChatIdRouteImport } from './routes/_authed/assistant/$chatId'
 
@@ -100,6 +103,11 @@ const AuthedTransactionsRouteRoute = AuthedTransactionsRouteRouteImport.update({
   path: '/transactions',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
+const AuthedStrategiesRouteRoute = AuthedStrategiesRouteRouteImport.update({
+  id: '/strategies',
+  path: '/strategies',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
 const AuthedStatisticsRouteRoute = AuthedStatisticsRouteRouteImport.update({
   id: '/statistics',
   path: '/statistics',
@@ -120,6 +128,11 @@ const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedTransactionsRouteRoute,
 } as any)
+const AuthedStrategiesIndexRoute = AuthedStrategiesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedStrategiesRouteRoute,
+} as any)
 const AuthedStatisticsIndexRoute = AuthedStatisticsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -134,6 +147,11 @@ const AuthedAssistantIndexRoute = AuthedAssistantIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedAssistantRouteRoute,
+} as any)
+const AuthedStrategiesFlowIdRoute = AuthedStrategiesFlowIdRouteImport.update({
+  id: '/$flowId',
+  path: '/$flowId',
+  getParentRoute: () => AuthedStrategiesRouteRoute,
 } as any)
 const AuthedInstrumentsInstrumentIdRoute =
   AuthedInstrumentsInstrumentIdRouteImport.update({
@@ -153,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AuthedAssistantRouteRouteWithChildren
   '/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
   '/statistics': typeof AuthedStatisticsRouteRouteWithChildren
+  '/strategies': typeof AuthedStrategiesRouteRouteWithChildren
   '/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/logout': typeof AuthLogoutRoute
@@ -164,9 +183,11 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
   '/assistant/': typeof AuthedAssistantIndexRoute
   '/instruments/': typeof AuthedInstrumentsIndexRoute
   '/statistics/': typeof AuthedStatisticsIndexRoute
+  '/strategies/': typeof AuthedStrategiesIndexRoute
   '/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -182,9 +203,11 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof LegalTermsOfServiceRoute
   '/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
   '/assistant': typeof AuthedAssistantIndexRoute
   '/instruments': typeof AuthedInstrumentsIndexRoute
   '/statistics': typeof AuthedStatisticsIndexRoute
+  '/strategies': typeof AuthedStrategiesIndexRoute
   '/transactions': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRoutesById {
@@ -197,6 +220,7 @@ export interface FileRoutesById {
   '/_authed/assistant': typeof AuthedAssistantRouteRouteWithChildren
   '/_authed/instruments': typeof AuthedInstrumentsRouteRouteWithChildren
   '/_authed/statistics': typeof AuthedStatisticsRouteRouteWithChildren
+  '/_authed/strategies': typeof AuthedStrategiesRouteRouteWithChildren
   '/_authed/transactions': typeof AuthedTransactionsRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/logout': typeof AuthLogoutRoute
@@ -208,9 +232,11 @@ export interface FileRoutesById {
   '/_legal/terms-of-service': typeof LegalTermsOfServiceRoute
   '/_authed/assistant/$chatId': typeof AuthedAssistantChatIdRoute
   '/_authed/instruments/$instrumentId': typeof AuthedInstrumentsInstrumentIdRoute
+  '/_authed/strategies/$flowId': typeof AuthedStrategiesFlowIdRoute
   '/_authed/assistant/': typeof AuthedAssistantIndexRoute
   '/_authed/instruments/': typeof AuthedInstrumentsIndexRoute
   '/_authed/statistics/': typeof AuthedStatisticsIndexRoute
+  '/_authed/strategies/': typeof AuthedStrategiesIndexRoute
   '/_authed/transactions/': typeof AuthedTransactionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -221,6 +247,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/instruments'
     | '/statistics'
+    | '/strategies'
     | '/transactions'
     | '/login'
     | '/logout'
@@ -232,9 +259,11 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/assistant/$chatId'
     | '/instruments/$instrumentId'
+    | '/strategies/$flowId'
     | '/assistant/'
     | '/instruments/'
     | '/statistics/'
+    | '/strategies/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -250,9 +279,11 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/assistant/$chatId'
     | '/instruments/$instrumentId'
+    | '/strategies/$flowId'
     | '/assistant'
     | '/instruments'
     | '/statistics'
+    | '/strategies'
     | '/transactions'
   id:
     | '__root__'
@@ -264,6 +295,7 @@ export interface FileRouteTypes {
     | '/_authed/assistant'
     | '/_authed/instruments'
     | '/_authed/statistics'
+    | '/_authed/strategies'
     | '/_authed/transactions'
     | '/_auth/login'
     | '/_auth/logout'
@@ -275,9 +307,11 @@ export interface FileRouteTypes {
     | '/_legal/terms-of-service'
     | '/_authed/assistant/$chatId'
     | '/_authed/instruments/$instrumentId'
+    | '/_authed/strategies/$flowId'
     | '/_authed/assistant/'
     | '/_authed/instruments/'
     | '/_authed/statistics/'
+    | '/_authed/strategies/'
     | '/_authed/transactions/'
   fileRoutesById: FileRoutesById
 }
@@ -389,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTransactionsRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
+    '/_authed/strategies': {
+      id: '/_authed/strategies'
+      path: '/strategies'
+      fullPath: '/strategies'
+      preLoaderRoute: typeof AuthedStrategiesRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
     '/_authed/statistics': {
       id: '/_authed/statistics'
       path: '/statistics'
@@ -417,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTransactionsIndexRouteImport
       parentRoute: typeof AuthedTransactionsRouteRoute
     }
+    '/_authed/strategies/': {
+      id: '/_authed/strategies/'
+      path: '/'
+      fullPath: '/strategies/'
+      preLoaderRoute: typeof AuthedStrategiesIndexRouteImport
+      parentRoute: typeof AuthedStrategiesRouteRoute
+    }
     '/_authed/statistics/': {
       id: '/_authed/statistics/'
       path: '/'
@@ -437,6 +485,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/assistant/'
       preLoaderRoute: typeof AuthedAssistantIndexRouteImport
       parentRoute: typeof AuthedAssistantRouteRoute
+    }
+    '/_authed/strategies/$flowId': {
+      id: '/_authed/strategies/$flowId'
+      path: '/$flowId'
+      fullPath: '/strategies/$flowId'
+      preLoaderRoute: typeof AuthedStrategiesFlowIdRouteImport
+      parentRoute: typeof AuthedStrategiesRouteRoute
     }
     '/_authed/instruments/$instrumentId': {
       id: '/_authed/instruments/$instrumentId'
@@ -517,6 +572,21 @@ const AuthedStatisticsRouteRouteWithChildren =
     AuthedStatisticsRouteRouteChildren,
   )
 
+interface AuthedStrategiesRouteRouteChildren {
+  AuthedStrategiesFlowIdRoute: typeof AuthedStrategiesFlowIdRoute
+  AuthedStrategiesIndexRoute: typeof AuthedStrategiesIndexRoute
+}
+
+const AuthedStrategiesRouteRouteChildren: AuthedStrategiesRouteRouteChildren = {
+  AuthedStrategiesFlowIdRoute: AuthedStrategiesFlowIdRoute,
+  AuthedStrategiesIndexRoute: AuthedStrategiesIndexRoute,
+}
+
+const AuthedStrategiesRouteRouteWithChildren =
+  AuthedStrategiesRouteRoute._addFileChildren(
+    AuthedStrategiesRouteRouteChildren,
+  )
+
 interface AuthedTransactionsRouteRouteChildren {
   AuthedTransactionsIndexRoute: typeof AuthedTransactionsIndexRoute
 }
@@ -535,6 +605,7 @@ interface AuthedRouteRouteChildren {
   AuthedAssistantRouteRoute: typeof AuthedAssistantRouteRouteWithChildren
   AuthedInstrumentsRouteRoute: typeof AuthedInstrumentsRouteRouteWithChildren
   AuthedStatisticsRouteRoute: typeof AuthedStatisticsRouteRouteWithChildren
+  AuthedStrategiesRouteRoute: typeof AuthedStrategiesRouteRouteWithChildren
   AuthedTransactionsRouteRoute: typeof AuthedTransactionsRouteRouteWithChildren
 }
 
@@ -542,6 +613,7 @@ const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedAssistantRouteRoute: AuthedAssistantRouteRouteWithChildren,
   AuthedInstrumentsRouteRoute: AuthedInstrumentsRouteRouteWithChildren,
   AuthedStatisticsRouteRoute: AuthedStatisticsRouteRouteWithChildren,
+  AuthedStrategiesRouteRoute: AuthedStrategiesRouteRouteWithChildren,
   AuthedTransactionsRouteRoute: AuthedTransactionsRouteRouteWithChildren,
 }
 

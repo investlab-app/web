@@ -17,6 +17,8 @@ import {
   investorsMeRetrieveOptions,
 } from '@/client/@tanstack/react-query.gen';
 
+const maxDepositAmount = 1000;
+
 interface DepositDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -36,8 +38,10 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
         return;
       }
 
-      if (value.amount > 100) {
-        toast.error(t('wallet.invalid_amount_maximum', { amount: 100 }));
+      if (value.amount > maxDepositAmount) {
+        toast.error(
+          t('wallet.invalid_amount_maximum', { amount: maxDepositAmount })
+        );
         return;
       }
 
@@ -67,8 +71,28 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
       onOpenChange(false);
     },
     onError: (error) => {
-      console.error('Deposit failed:', error);
-      toast.error(error.message || t('common.something_went_wrong'));
+      const errorStatus:
+        | 'max_amount_per_24h_exceeded'
+        | 'max_amount_per_deposit_exceeded'
+        | '' = (error as any).status ?? ''; // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (errorStatus === 'max_amount_per_24h_exceeded') {
+        const numbers = error.message.match(/\d+(\.\d+)?/g)?.map(Number) || [];
+        const remainingAmount = numbers[1] ?? 0;
+        toast.error(
+          t('wallet.errors.max_amount_per_24h_exceeded', {
+            maxAmount: maxDepositAmount,
+            amount: remainingAmount.toFixed(2),
+          })
+        );
+      } else if (errorStatus == 'max_amount_per_deposit_exceeded') {
+        toast.error(
+          t('wallet.errors.max_amount_per_deposit_exceeded', {
+            amount: maxDepositAmount,
+          })
+        );
+      } else {
+        toast.error(t('wallet.errors.deposit_failed'));
+      }
     },
   });
 
@@ -99,7 +123,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
                   <field.NumberInput
                     id="deposit-amount"
                     min={1}
-                    max={100}
+                    max={maxDepositAmount}
                     decimalScale={2}
                     fixedDecimalScale
                     placeholder={t('wallet.enter_amount')}

@@ -81,6 +81,12 @@ code {
   --green: theme('colors.green.500');
   --green-lighter: theme('colors.green.400');
   --green-darker: theme('colors.green.600');
+  --yellow: theme('colors.yellow.500');
+  --yellow-lighter: theme('colors.yellow.400');
+  --yellow-darker: theme('colors.yellow.600');
+  --blue: theme('colors.blue.500');
+  --blue-lighter: theme('colors.blue.400');
+  --blue-darker: theme('colors.blue.600');
   --red: theme('colors.red.500');
   --red-lighter: theme('colors.red.400');
   --red-darker: theme('colors.red.600');
@@ -95,6 +101,13 @@ code {
   --card-hex: rgb(255, 255, 255);
   --card-foreground-hex: rgb(15, 15, 15);
   --primary-hex: #6d48bf;
+
+  --node-math: oklch(92.252% 0.06229 73.941);
+  --node-flow: oklch(84.955% 0.08265 15.155);
+  --node-predicate: oklch(83.613% 0.10358 306.102);
+  --node-number: oklch(89.253% 0.05945 238.538);
+  --node-trigger: oklch(96.16% 0.07719 98.942);
+  --node-action: oklch(93.199% 0.12425 145.158);
 }
 
 .dark {
@@ -167,6 +180,13 @@ code {
   --card-hex: #0d0d0d;
   --card-foreground-hex: rgb(255, 255, 255);
   --primary-hex: #673492;
+
+  --node-math: oklch(37.29% 0.06992 69.587);
+  --node-flow: oklch(33.241% 0.1167 24.204);
+  --node-number: oklch(35.399% 0.07395 243.595);
+  --node-predicate: oklch(29.569% 0.14401 288.499);
+  --node-trigger: oklch(55.492% 0.10378 105.284);
+  --node-action: oklch(41.121% 0.12896 143.034);
 }
 
 @theme inline {
