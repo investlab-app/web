@@ -119,7 +119,7 @@ export function PositionSummary({
           <SummaryMetric
             label={t('common.gain_percentage')}
             value={
-              position.gain_percentage === null // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+              position.gain_percentage === null  
                 ? 'N/A'
                 : `${withCurrency(position.gain_percentage, i18n.language, 2)}%`
             }
