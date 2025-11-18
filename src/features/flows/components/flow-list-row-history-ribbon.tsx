@@ -16,7 +16,6 @@ export function FlowListRowHistoryRibbon({ id }: { id: string }) {
     refetchOnMount: 'always',
   });
 
-   
   if (isPending) {
     return (
       <div className="p-4 text-sm text-muted-foreground">
