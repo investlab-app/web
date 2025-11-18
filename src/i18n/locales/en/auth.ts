@@ -34,6 +34,8 @@ const enAuth = {
   abandoned: 'Sign up abandoned. Please try again.',
   missing_requirements: 'Sign up missing requirements. Please try again.',
   could_not_sign_up: 'Could not sign up. Please try again or contact support.',
+  could_not_use_google:
+    'Could not use Google. Please try another method or try again later.',
   could_not_prepare_email_address_verification:
     'Could not prepare email address verification.',
   please_try_again_later: 'Please try again later.',

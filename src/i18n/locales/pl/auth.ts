@@ -36,6 +36,8 @@ const plAuth = {
   missing_requirements: 'Rejestracja nie powiodła się. Spróbuj ponownie.',
   could_not_sign_up:
     'Nie udało się zarejestrować. Spróbuj ponownie lub skontaktuj się z obsługą.',
+  could_not_use_google:
+    'Nie udało się użyć Google. Spróbuj innej metody lub spróbuj ponownie później.',
   could_not_prepare_email_address_verification:
     'Nie udało się przygotować weryfikacji adresu e-mail. Spróbuj ponownie później.',
   please_try_again_later: 'Spróbuj ponownie później.',
