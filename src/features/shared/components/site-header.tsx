@@ -52,7 +52,9 @@ export function SiteHeader({ className }: SiteHeaderProps) {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <BreadcrumbNav />
+        <div className="min-w-0">
+          <BreadcrumbNav />
+        </div>
         <div
           className="ml-auto flex items-center gap-2"
           data-tauri-drag-region-ignore
