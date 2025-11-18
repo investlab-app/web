@@ -55,9 +55,39 @@ export type AuthTestResponse = {
     user_id: number;
 };
 
+export type Chat = {
+    readonly id: string;
+    title: string;
+    readonly created_at: string;
+    readonly updated_at: string;
+    readonly message_count: number;
+};
+
+export type ChatDetail = {
+    readonly id: string;
+    title: string;
+    readonly created_at: string;
+    readonly updated_at: string;
+    readonly messages: Array<Message>;
+};
+
+export type ChatDetailRequest = {
+    title: string;
+};
+
 export type ClerkLoginRequest = {
     email: string;
     password: string;
+};
+
+export type CreateChatMessageRequest = {
+    content: string;
+    role?: RoleEnum;
+};
+
+export type CreateChatRequest = {
+    title?: string;
+    first_message: string;
 };
 
 export type CreateLimitOrderRequest = {
@@ -432,6 +462,16 @@ export type MarketStatus = {
     server_time?: string | null;
 };
 
+export type Message = {
+    id: string;
+    role: string;
+    content: string;
+    created_at?: string;
+    experimental_attachments?: Array<unknown>;
+    tool_invocations?: Array<unknown>;
+    parts?: Array<unknown>;
+};
+
 export type MostTradedItem = {
     symbol: string;
     no_trades: number;
@@ -576,6 +616,10 @@ export type PaginatedPriceAlertList = {
     results: Array<PriceAlert>;
 };
 
+export type PatchedChatDetailRequest = {
+    title?: string;
+};
+
 export type PatchedGraphUpdateRequest = {
     name?: string;
     raw_graph_data?: unknown;
@@ -712,6 +756,12 @@ export type PushNotificationRequest = {
     auth: string;
 };
 
+/**
+ * * `user` - user
+ * * `assistant` - assistant
+ */
+export type RoleEnum = 'user' | 'assistant';
+
 export type RunGraphRequest = {
     time_at?: string;
     prices?: Array<TickerPricesRequest>;
@@ -806,6 +856,14 @@ export type AccountValueSnapshotDailyWritable = {
      * Account value on this date
      */
     value: number;
+};
+
+export type ChatWritable = {
+    title: string;
+};
+
+export type ChatDetailWritable = {
+    title: string;
 };
 
 export type GraphWritable = {
@@ -1075,6 +1133,112 @@ export type AuthSignInCreateResponses = {
      */
     200: unknown;
 };
+
+export type ChatsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/chats/';
+};
+
+export type ChatsListResponses = {
+    200: Array<Chat>;
+};
+
+export type ChatsListResponse = ChatsListResponses[keyof ChatsListResponses];
+
+export type ChatsCreateData = {
+    body: CreateChatRequest;
+    path?: never;
+    query?: never;
+    url: '/api/chats/';
+};
+
+export type ChatsCreateResponses = {
+    201: Chat;
+};
+
+export type ChatsCreateResponse = ChatsCreateResponses[keyof ChatsCreateResponses];
+
+export type ChatsDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/chats/{id}/';
+};
+
+export type ChatsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ChatsDestroyResponse = ChatsDestroyResponses[keyof ChatsDestroyResponses];
+
+export type ChatsRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/chats/{id}/';
+};
+
+export type ChatsRetrieveResponses = {
+    200: ChatDetail;
+};
+
+export type ChatsRetrieveResponse = ChatsRetrieveResponses[keyof ChatsRetrieveResponses];
+
+export type ChatsPartialUpdateData = {
+    body?: PatchedChatDetailRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/chats/{id}/';
+};
+
+export type ChatsPartialUpdateResponses = {
+    200: ChatDetail;
+};
+
+export type ChatsPartialUpdateResponse = ChatsPartialUpdateResponses[keyof ChatsPartialUpdateResponses];
+
+export type ChatsUpdateData = {
+    body: ChatDetailRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/chats/{id}/';
+};
+
+export type ChatsUpdateResponses = {
+    200: ChatDetail;
+};
+
+export type ChatsUpdateResponse = ChatsUpdateResponses[keyof ChatsUpdateResponses];
+
+export type ChatsMessagesCreateData = {
+    body: CreateChatMessageRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/chats/{id}/messages/';
+};
+
+export type ChatsMessagesCreateResponses = {
+    201: {
+        status?: string;
+    };
+};
+
+export type ChatsMessagesCreateResponse = ChatsMessagesCreateResponses[keyof ChatsMessagesCreateResponses];
 
 export type GraphLangListData = {
     body?: never;

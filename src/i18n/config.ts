@@ -34,6 +34,8 @@ import enMarketStatus from './locales/en/marketStatus';
 import plMarketStatus from './locales/pl/marketStatus';
 import enNotifications from './locales/en/notifications';
 import plNotifications from './locales/pl/notifications';
+import enChat from './locales/en/chat';
+import plChat from './locales/pl/chat';
 import enFlows from './locales/en/flows';
 import plFlows from './locales/pl/flows';
 
@@ -76,6 +78,7 @@ i18n
           table: enTable,
           marketStatus: enMarketStatus,
           notifications: enNotifications,
+          chat: enChat,
         },
       },
       pl: {
@@ -99,6 +102,7 @@ i18n
           table: plTable,
           marketStatus: plMarketStatus,
           notifications: plNotifications,
+          chat: plChat,
         },
       },
     },

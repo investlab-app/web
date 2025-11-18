@@ -69,6 +69,7 @@ const plCommon = {
       instruments: 'Instrumenty',
       transactions: 'Transakcje',
       statistics: 'Statystyki',
+      assistant: 'Asystent',
     },
     charts: {
       line_chart: 'Wykres liniowy',
@@ -85,6 +86,7 @@ const plCommon = {
     system: 'Systemowy',
     toggle_theme: 'Przełącz motyw',
   },
+  assistant: 'Asystent',
   notifications: 'Powiadomienia',
   no_notifications: 'Brak powiadomień',
   unknown_date: 'Nieznana data',

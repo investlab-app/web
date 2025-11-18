@@ -17,8 +17,13 @@ const store = new Store({
   events: new Map<WSEvent, Array<HandlerId>>(),
 });
 
+interface TypedMessage {
+  type: string;
+  [key: string]: unknown;
+}
+
 interface WSContextType {
-  ws: ReturnType<typeof useWebSocket>;
+  ws: ReturnType<typeof useWebSocket<TypedMessage | null>>;
   updateHandler: (handler: Handler) => void;
   removeHandler: (handlerId: HandlerId) => void;
 }
@@ -35,7 +40,7 @@ export function WSProvider({ children }: WSProviderParams) {
   const url = `${protocol}://${loc.host}/ws/`;
   const { isSignedIn } = useAuth();
   const connect = isSignedIn;
-  const ws = useWebSocket(
+  const ws = useWebSocket<TypedMessage>(
     url,
     {
       onError: (event) => {
@@ -43,8 +48,8 @@ export function WSProvider({ children }: WSProviderParams) {
       },
       shouldReconnect: () => true,
       heartbeat: {
-        message: 'ping',
-        returnMessage: 'pong',
+        message: JSON.stringify({ type: 'ping' }),
+        returnMessage: JSON.stringify({ type: 'pong' }),
         timeout: 60000,
         interval: 25000,
       },
@@ -55,7 +60,8 @@ export function WSProvider({ children }: WSProviderParams) {
   function syncBackend() {
     const events = new Set(store.state.events.keys());
     ws.sendJsonMessage({
-      set_subscription: Array.from(events),
+      type: 'set_subscription',
+      subscriptions: Array.from(events),
     });
   }
 

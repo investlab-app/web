@@ -108,7 +108,7 @@ export function useInstrumentsTable({
 
     const parsed = out.data;
 
-    const tickersData = parsed.prices.filter((item) =>
+    const tickersData = parsed.data.filter((item) =>
       tickers.includes(item.symbol)
     );
     if (tickersData.length === 0) return;

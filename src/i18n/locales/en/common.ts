@@ -69,6 +69,7 @@ const enCommon = {
       instruments: 'Stocks',
       transactions: 'Transactions',
       statistics: 'Statistics',
+      assistant: 'Assistant',
     },
     charts: {
       line_chart: 'Line chart',
@@ -85,7 +86,7 @@ const enCommon = {
     system: 'System',
     toggle_theme: 'Toggle theme',
   },
-  chat: 'Czat',
+  assistant: 'Assistant',
   notifications: 'Notifications',
   no_notifications: 'No notifications yet',
   unknown_date: 'Unknown date',

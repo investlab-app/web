@@ -22,7 +22,7 @@ export function InAppNotificationsProvider({
     );
     if (notificationData.error) return;
 
-    const notification = notificationData.data.notification;
+    const notification = notificationData.data.data;
 
     toast.info(notification.title, {
       description: notification.body,
