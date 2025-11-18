@@ -34,7 +34,7 @@ function MarketLED({
         }`}
         aria-label={isMarketOpen ? 'Market open' : 'Market closed'}
       />
-      <span className="text-xs text-muted-foreground hidden sm:inline">
+      <span className="text-xs text-muted-foreground hidden sm:inline whitespace-nowrap">
         {status}
       </span>
     </div>
