@@ -50,7 +50,7 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
               </TableCell>
               <TableCell>{asset.symbol}</TableCell>
               <TableCell className="text-right">
-                {withCurrency(asset.volume, i18n.language, 5)}
+                {asset.volume.toFixed(5)}
               </TableCell>
               <TableCell className="text-right">
                 {withCurrency(asset.value, i18n.language, 2)}{' '}
