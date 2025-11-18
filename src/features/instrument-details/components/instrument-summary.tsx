@@ -53,7 +53,7 @@ export function InstrumentSummary({
   return (
     <Card className={cn('shadow-sm bg-muted/30 py-0', className)}>
       <CardContent className="p-3 sm:p-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3 sm:gap-8 divide-x">
           <SummaryItem
             label={t('transactions.summary.owned_assets')}
             value={position.quantity}
