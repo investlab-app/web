@@ -44,9 +44,68 @@ export const zAuthTestResponse = z.object({
     user_id: z.int()
 });
 
+export const zChat = z.object({
+    id: z.uuid().readonly(),
+    title: z.string().max(255),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    message_count: z.int().readonly()
+});
+
+export const zMessage = z.object({
+    id: z.string(),
+    role: z.string(),
+    content: z.string(),
+    created_at: z.optional(z.iso.datetime({
+        offset: true
+    })),
+    experimental_attachments: z.optional(z.array(z.unknown())),
+    tool_invocations: z.optional(z.array(z.unknown())),
+    parts: z.optional(z.array(z.unknown()))
+});
+
+export const zChatDetail = z.object({
+    id: z.uuid().readonly(),
+    title: z.string().max(255),
+    created_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    updated_at: z.iso.datetime({
+        offset: true
+    }).readonly(),
+    messages: z.array(zMessage).readonly()
+});
+
+export const zChatDetailRequest = z.object({
+    title: z.string().min(1).max(255)
+});
+
 export const zClerkLoginRequest = z.object({
     email: z.email().min(1),
     password: z.string().min(1)
+});
+
+/**
+ * * `user` - user
+ * * `assistant` - assistant
+ */
+export const zRoleEnum = z.enum([
+    'user',
+    'assistant'
+]);
+
+export const zCreateChatMessageRequest = z.object({
+    content: z.string().min(1).max(10000),
+    role: z.optional(zRoleEnum)
+});
+
+export const zCreateChatRequest = z.object({
+    title: z.optional(z.string().min(1).max(255)),
+    first_message: z.string().min(1).max(10000)
 });
 
 export const zCreateLimitOrderRequest = z.object({
@@ -748,6 +807,10 @@ export const zPaginatedPriceAlertList = z.object({
     results: z.array(zPriceAlert)
 });
 
+export const zPatchedChatDetailRequest = z.object({
+    title: z.optional(z.string().min(1).max(255))
+});
+
 export const zPatchedGraphUpdateRequest = z.object({
     name: z.optional(z.string().min(1).max(100)),
     raw_graph_data: z.optional(z.unknown()),
@@ -975,6 +1038,14 @@ export const zWatchedTickersTicker = z.object({
  */
 export const zAccountValueSnapshotDailyWritable = z.object({
     value: z.number()
+});
+
+export const zChatWritable = z.object({
+    title: z.string().max(255)
+});
+
+export const zChatDetailWritable = z.object({
+    title: z.string().max(255)
 });
 
 export const zGraphWritable = z.object({
@@ -1227,6 +1298,77 @@ export const zAuthSignInCreateData = z.object({
     body: zClerkLoginRequest,
     path: z.optional(z.never()),
     query: z.optional(z.never())
+});
+
+export const zChatsListData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zChatsListResponse = z.array(zChat);
+
+export const zChatsCreateData = z.object({
+    body: zCreateChatRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zChatsCreateResponse = zChat;
+
+export const zChatsDestroyData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+/**
+ * No response body
+ */
+export const zChatsDestroyResponse = z.void();
+
+export const zChatsRetrieveData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsRetrieveResponse = zChatDetail;
+
+export const zChatsPartialUpdateData = z.object({
+    body: z.optional(zPatchedChatDetailRequest),
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsPartialUpdateResponse = zChatDetail;
+
+export const zChatsUpdateData = z.object({
+    body: zChatDetailRequest,
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsUpdateResponse = zChatDetail;
+
+export const zChatsMessagesCreateData = z.object({
+    body: zCreateChatMessageRequest,
+    path: z.object({
+        id: z.uuid()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zChatsMessagesCreateResponse = z.object({
+    status: z.optional(z.string())
 });
 
 export const zGraphLangListData = z.object({

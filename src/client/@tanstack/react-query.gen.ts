@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsDepositHistoryList, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsDepositHistoryListData, InvestorsDepositHistoryListResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, chatsCreate, chatsDestroy, chatsList, chatsMessagesCreate, chatsPartialUpdate, chatsRetrieve, chatsUpdate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsDepositHistoryList, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, ChatsCreateData, ChatsCreateResponse, ChatsDestroyData, ChatsDestroyResponse, ChatsListData, ChatsMessagesCreateData, ChatsMessagesCreateResponse, ChatsPartialUpdateData, ChatsPartialUpdateResponse, ChatsRetrieveData, ChatsUpdateData, ChatsUpdateResponse, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsDepositHistoryListData, InvestorsDepositHistoryListResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -57,6 +57,110 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [
         params
     ];
+};
+
+export const chatsListQueryKey = (options?: Options<ChatsListData>) => createQueryKey('chatsList', options);
+
+export const chatsListOptions = (options?: Options<ChatsListData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await chatsList({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: chatsListQueryKey(options)
+    });
+};
+
+export const chatsCreateMutation = (options?: Partial<Options<ChatsCreateData>>): UseMutationOptions<ChatsCreateResponse, DefaultError, Options<ChatsCreateData>> => {
+    const mutationOptions: UseMutationOptions<ChatsCreateResponse, DefaultError, Options<ChatsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatsCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const chatsDestroyMutation = (options?: Partial<Options<ChatsDestroyData>>): UseMutationOptions<ChatsDestroyResponse, DefaultError, Options<ChatsDestroyData>> => {
+    const mutationOptions: UseMutationOptions<ChatsDestroyResponse, DefaultError, Options<ChatsDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatsDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const chatsRetrieveQueryKey = (options: Options<ChatsRetrieveData>) => createQueryKey('chatsRetrieve', options);
+
+export const chatsRetrieveOptions = (options: Options<ChatsRetrieveData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await chatsRetrieve({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: chatsRetrieveQueryKey(options)
+    });
+};
+
+export const chatsPartialUpdateMutation = (options?: Partial<Options<ChatsPartialUpdateData>>): UseMutationOptions<ChatsPartialUpdateResponse, DefaultError, Options<ChatsPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<ChatsPartialUpdateResponse, DefaultError, Options<ChatsPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatsPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const chatsUpdateMutation = (options?: Partial<Options<ChatsUpdateData>>): UseMutationOptions<ChatsUpdateResponse, DefaultError, Options<ChatsUpdateData>> => {
+    const mutationOptions: UseMutationOptions<ChatsUpdateResponse, DefaultError, Options<ChatsUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatsUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const chatsMessagesCreateMutation = (options?: Partial<Options<ChatsMessagesCreateData>>): UseMutationOptions<ChatsMessagesCreateResponse, DefaultError, Options<ChatsMessagesCreateData>> => {
+    const mutationOptions: UseMutationOptions<ChatsMessagesCreateResponse, DefaultError, Options<ChatsMessagesCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await chatsMessagesCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const graphLangListQueryKey = (options?: Options<GraphLangListData>) => createQueryKey('graphLangList', options);

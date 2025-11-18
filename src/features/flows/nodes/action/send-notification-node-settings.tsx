@@ -6,12 +6,12 @@ import type { CustomNodeTypes } from '../../types/node-types';
 import type { Node, NodeProps } from '@xyflow/react';
 
 export class SendNotificationNodeSettings extends ActionNodeSettings {
-  type: NotificationType;
+  format: NotificationType;
   message: string;
 
   constructor() {
     super();
-    this.type = NotificationType.Push;
+    this.format = NotificationType.Push;
     this.message = '';
   }
 
@@ -26,7 +26,7 @@ export class SendNotificationNodeSettings extends ActionNodeSettings {
   }
 
   getUpdatedType(type: NotificationType): SendNotificationNodeSettings {
-    this.type = type;
+    this.format = type;
     return this;
   }
   getUpdatedMessage(message: string): SendNotificationNodeSettings {
@@ -50,7 +50,7 @@ export const SendNotificationNode = (
   return (
     <SendNotificationNodeUI
       nodeId={props.id}
-      type={props.data.settings.type}
+      type={props.data.settings.format}
       onTypeChange={(val: NotificationType) => {
         updateNodeData({
           settings: props.data.settings.getUpdatedType(val),
