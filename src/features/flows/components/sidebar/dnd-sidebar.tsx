@@ -108,7 +108,7 @@ export function DnDSidebar({
   );
 
   return (
-    <div className="overflow-y-auto mb-5 pr-3">
+    <div className="overflow-y-auto pr-3 transparent-scrollbar">
       <SidebarSection
         title={t('flows.sidebar.logical')}
         createNodeFunc={createAddNewNode}
