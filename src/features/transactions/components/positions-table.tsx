@@ -13,6 +13,8 @@ import { Badge } from '@/features/shared/components/ui/badge';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { withCurrency } from '@/features/shared/utils/numbers';
+import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { cn } from '@/features/shared/utils/styles';
 
 function usePositionsColumns() {
   const { t, i18n } = useTranslation();
@@ -133,7 +135,7 @@ export function PositionsTable({
 
   return (
     <DataTable
-      className={className}
+      className={cn('rounded-lg', className)}
       data={history}
       columns={columns}
       pagination={pagination}
@@ -174,16 +176,20 @@ export function PositionsTableSkeleton({
 function PositionsRowsSkeleton() {
   return (
     <>
-      {Array.from({ length: 3 }).map((_, index) => (
-        <TableRow
-          key={index}
-          className="animate-pulse grid grid-cols-6 gap-4 py-2"
-        >
-          <TableCell className="h-4 bg-muted rounded col-span-2 w-3/4" />
-          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
-          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
-          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
-          <TableCell className="h-4 bg-muted rounded col-span-1 w-1/2 ml-auto" />
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TableRow key={index}>
+          <TableCell>
+            <Skeleton className="h-4 w-3/4" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-1/2" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-1/2 ml-auto" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-1/2 ml-auto" />
+          </TableCell>
         </TableRow>
       ))}
     </>
