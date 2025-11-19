@@ -33,7 +33,7 @@ export const intervalToStartDate = (
       start.setDate(now.getDate() - 1);
       break;
     case 'HOUR':
-      start.setDate(now.getDate() - 5);
+      start.setDate(now.getDate() - 24);
       break;
     case 'DAY':
       start.setMonth(now.getMonth() - 1);
