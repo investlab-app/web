@@ -10,6 +10,11 @@ export const zAccountValueSnapshotDaily = z.object({
     value: z.number()
 });
 
+export const zAccountValueOverTimeResponse = z.object({
+    history: z.array(zAccountValueSnapshotDaily),
+    current_value: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)
+});
+
 export const zAllTickers = z.object({
     tickers: z.array(z.string())
 });
@@ -1559,13 +1564,13 @@ export const zInvestorsMePartialUpdateData = z.object({
 
 export const zInvestorsMePartialUpdateResponse = zInvestor;
 
-export const zInvestorsMeAccountValueListData = z.object({
+export const zInvestorsMeAccountValueRetrieveData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
+export const zInvestorsMeAccountValueRetrieveResponse = zAccountValueOverTimeResponse;
 
 export const zInvestorsMeNotificationsListData = z.object({
     body: z.optional(z.never()),

@@ -7,7 +7,7 @@ import { Dashboard } from '@/routes/-components/dashboard';
 import { DashboardPending } from '@/routes/-components/dashboard-pending';
 import { syncLanguage } from '@/features/shared/queries/update-language';
 import {
-  investorsMeAccountValueListOptions,
+  investorsMeAccountValueRetrieveOptions,
   statisticsAssetAllocationRetrieveOptions,
   statisticsCurrentAccountValueRetrieveOptions,
   statisticsOwnedSharesListOptions,
@@ -31,7 +31,7 @@ export const Route = createFileRoute('/')({
               query: { instruments_number: 4 },
             })
           ),
-          queryClient.ensureQueryData(investorsMeAccountValueListOptions()),
+          queryClient.ensureQueryData(investorsMeAccountValueRetrieveOptions()),
           queryClient.ensureQueryData(statisticsOwnedSharesListOptions()),
         ]);
       } catch {}
