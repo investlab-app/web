@@ -10,6 +10,12 @@ export function invalidateOrderQueries(
   queryClient: QueryClient,
   ticker: string
 ) {
+  // balance
+  queryClient.invalidateQueries({
+    queryKey: investorsMeRetrieveOptions().queryKey,
+  });
+
+  // open positions
   queryClient.invalidateQueries({
     queryKey: statisticsTransactionsHistoryListOptions({
       query: {
@@ -18,12 +24,13 @@ export function invalidateOrderQueries(
       },
     }).queryKey,
   });
-  queryClient.invalidateQueries({
-    queryKey: investorsMeRetrieveOptions().queryKey,
-  });
+
+  // owned shares
   queryClient.invalidateQueries({
     queryKey: statisticsOwnedSharesListOptions().queryKey,
   });
+
+  // orders list
   setTimeout(() => {
     queryClient.invalidateQueries({
       queryKey: ordersListOptions().queryKey,
