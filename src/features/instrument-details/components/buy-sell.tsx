@@ -12,6 +12,7 @@ import {
 } from '@/client/@tanstack/react-query.gen';
 import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { zReasonEnum } from '@/client/zod.gen';
 
 interface BuySellProps {
   ticker: string;
@@ -81,8 +82,13 @@ export const BuySell = ({ ticker }: BuySellProps) => {
       });
     },
     onError: (error) => {
-      console.warn('Order creation failed:', error);
-      toast.error(t('orders.order_failed'));
+      const message =
+        error.reason == zReasonEnum.enum.funds
+          ? t('orders.errors.insufficient_funds')
+          : error.reason == zReasonEnum.enum.assets
+            ? t('orders.errors.insufficient_assets')
+            : t('orders.errors.unknown_error');
+      toast.error(t('orders.errors.order_failed', message));
     },
     onSettled: () => {},
   });

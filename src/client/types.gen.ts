@@ -564,6 +564,11 @@ export type Order = {
     detail: OrderDetail;
 };
 
+export type OrderCreationError = {
+    reason: ReasonEnum;
+    detail: string;
+};
+
 export type OrderDetail = ({
     detail_type: 'market';
 } & MarketOrderDetails) | ({
@@ -760,6 +765,13 @@ export type PushNotificationRequest = {
     p256dh: string;
     auth: string;
 };
+
+/**
+ * * `funds` - funds
+ * * `assets` - assets
+ * * `unknown` - unknown
+ */
+export type ReasonEnum = 'funds' | 'assets' | 'unknown';
 
 /**
  * * `user` - user
@@ -1759,6 +1771,12 @@ export type OrdersLimitCreateData = {
     url: '/api/orders/limit/';
 };
 
+export type OrdersLimitCreateErrors = {
+    400: OrderCreationError;
+};
+
+export type OrdersLimitCreateError = OrdersLimitCreateErrors[keyof OrdersLimitCreateErrors];
+
 export type OrdersLimitCreateResponses = {
     201: LimitOrder;
 };
@@ -1789,6 +1807,12 @@ export type OrdersMarketCreateData = {
     query?: never;
     url: '/api/orders/market/';
 };
+
+export type OrdersMarketCreateErrors = {
+    400: OrderCreationError;
+};
+
+export type OrdersMarketCreateError = OrdersMarketCreateErrors[keyof OrdersMarketCreateErrors];
 
 export type OrdersMarketCreateResponses = {
     201: MarketOrder;

@@ -16,6 +16,7 @@ import {
 
 import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { zReasonEnum } from '@/client/zod.gen';
 
 interface MarketOrderProps {
   ticker: string;
@@ -94,8 +95,13 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
       }, 1000);
     },
     onError: (error) => {
-      console.warn('Order creation failed:', error);
-      toast.error(t('orders.order_failed'));
+      const message =
+        error.reason == zReasonEnum.enum.funds
+          ? t('orders.errors.insufficient_funds')
+          : error.reason == zReasonEnum.enum.assets
+            ? t('orders.errors.insufficient_assets')
+            : t('orders.errors.unknown_error');
+      toast.error(t('orders.errors.order_failed', { message: message }));
     },
     onSettled: () => {},
   });

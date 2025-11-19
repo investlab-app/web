@@ -704,6 +704,22 @@ export const zOrder = z.object({
     detail: zOrderDetail
 });
 
+/**
+ * * `funds` - funds
+ * * `assets` - assets
+ * * `unknown` - unknown
+ */
+export const zReasonEnum = z.enum([
+    'funds',
+    'assets',
+    'unknown'
+]);
+
+export const zOrderCreationError = z.object({
+    reason: zReasonEnum,
+    detail: z.string()
+});
+
 export const zOwnedShare = z.object({
     name: z.string().max(100),
     symbol: z.string().max(10),
