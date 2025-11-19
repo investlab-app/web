@@ -63,6 +63,7 @@ import type { Constructor } from './section';
 import type { OnDropAction } from '../../utils/dnd-context';
 import type { Node, XYPosition } from '@xyflow/react';
 import type { NodeSettings } from '../../nodes/node-settings';
+import { ScrollArea } from '@/features/shared/components/ui/scroll-area';
 
 interface DnDSidebarProps {
   startNodeId: number;
@@ -108,7 +109,7 @@ export function DnDSidebar({
   );
 
   return (
-    <div className="overflow-y-auto mb-5 pr-3">
+    <ScrollArea className="h-full pr-3">
       <SidebarSection
         title={t('flows.sidebar.logical')}
         createNodeFunc={createAddNewNode}
@@ -277,6 +278,6 @@ export function DnDSidebar({
           },
         }}
       />
-    </div>
+    </ScrollArea>
   );
 }

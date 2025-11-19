@@ -232,7 +232,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
     <SidebarProvider
       open={sidebarOpen}
       onOpenChange={setSidebarOpen}
-      className="flex w-full"
+      className="flex"
     >
       {isDragging && <DragGhost type={nodeType} />}
 
@@ -248,7 +248,7 @@ export function FlowsBoard({ id }: FlowsBoardProps) {
           onInit={setRfInstance}
         />
       </div>
-      <div className={cn(' h-full w-min', sidebarOpen ? 'mr-0' : 'mr-4')}>
+      <div className={cn('w-min', sidebarOpen ? 'mr-0' : 'mr-4')}>
         <SidebarTrigger className="text-foreground">
           <PanelRightIcon />
           <span className="sr-only">Toggle Nodes Toolbox</span>

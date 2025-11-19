@@ -64,7 +64,7 @@ function RouteComponent() {
       <TickerValidationProvider value={tickerValidationValue}>
         <ReactFlowProvider>
           <DnDProvider>
-            <div className="h-[calc(100vh-var(--header-height)-2rem)]">
+            <div className="h-[calc(100vh-var(--header-height)-2rem)] sm:truncate">
               <FlowsBoard id={flowId} />
             </div>
           </DnDProvider>
