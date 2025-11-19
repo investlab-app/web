@@ -1,8 +1,11 @@
 import { Store } from '@tanstack/react-store';
-import { createContext } from 'react';
+import { createContext, useEffect  } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { useAuth } from '@clerk/clerk-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
 import type { ReactNode } from 'react';
+
 
 export type HandlerId = string;
 export type WSEvent = string;
@@ -56,6 +59,15 @@ export function WSProvider({ children }: WSProviderParams) {
     },
     connect
   );
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (ws.lastJsonMessage.type === 'order_update') {
+      const data = ws.lastJsonMessage.data as { tickers: Array<string> };
+      invalidateOrderQueries(queryClient, data.tickers);
+    }
+  }, [ws.lastJsonMessage, queryClient]);
 
   function syncBackend() {
     const events = new Set(store.state.events.keys());

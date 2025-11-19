@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
 import { OrderConfirmationModalWrapper } from './order-confirmation-modal-wrapper';
 
-import { ordersLimitCreateMutation } from '@/client/@tanstack/react-query.gen';
+import {
+  investorsMeRetrieveQueryKey,
+  ordersLimitCreateMutation,
+  ordersLimitListQueryKey,
+} from '@/client/@tanstack/react-query.gen';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 import { Label } from '@/features/shared/components/ui/label';
@@ -40,7 +43,16 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
     ...ordersLimitCreateMutation(),
     onSuccess: () => {
       toast.success(t('orders.order_success'));
-      invalidateOrderQueries(queryClient, ticker);
+
+      // balance
+      queryClient.invalidateQueries({
+        queryKey: investorsMeRetrieveQueryKey(),
+      });
+
+      // pending orders
+      queryClient.invalidateQueries({
+        queryKey: ordersLimitListQueryKey({ query: { ticker } }),
+      });
     },
     onError: (error) => {
       const message =
