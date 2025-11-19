@@ -13,56 +13,57 @@ on:
       - main
 
 jobs:
-  # frontend:
-  #   name: Frontend Tests
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #     - name: Setup and Build
-  #       uses: ./.github/actions/setup-and-build
-  #       with:
-  #         node-version: '22'
-  #         pnpm-version: '10'
-  #         fetch-depth: '1'
-  #     - name: Fetch backend schema
-  #       run: |
-  #         set -euo pipefail
-  #         mkdir -p ../backend/backend
-  #         curl -L \
-  #           -H "Accept: application/vnd.github.object" \
-  #           -H "Authorization: Bearer ${{ secrets.BACKEND_READ_TOKEN }}" \
-  #           -H "X-GitHub-Api-Version: 2022-11-28" \
-  #           https://api.github.com/repos/investlab-app/backend/contents/backend/schema.yml?ref=develop \
-  #           | jq -r .content | base64 -d > ../backend/backend/schema.yml
-  #     - name: Generate OpenAPI types
-  #       run: pnpm openapi-ts
-  #     - name: Check type changes
-  #       run: |
-  #         if ! git diff --exit-code src/client/; then
-  #           echo "Generated types have changed; please commit updated types."
-  #           exit 1
-  #         fi
-  #     - name: Run lint checks
-  #       run: pnpm lint
-  #     - name: Check code formatting
-  #       run: pnpm format:check
-  #     - name: Run type checks
-  #       run: pnpm tsc --noEmit
-  #     - name: Run unit tests with coverage
-  #       run: pnpm test --coverage
-  #     - name: Upload coverage report
-  #       uses: actions/upload-artifact@v4
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: coverage-report
-  #         path: coverage/
-  #         retention-days: 30
+  frontend:
+    name: Frontend Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup and Build
+        uses: ./.github/actions/setup-and-build
+        with:
+          node-version: '22'
+          pnpm-version: '10'
+          fetch-depth: '1'
+      - name: Fetch backend schema
+        run: |
+          set -euo pipefail
+          mkdir -p ../backend/src
+          curl -L \
+            -H "Accept: application/vnd.github.object" \
+            -H "Authorization: Bearer ${{ secrets.BACKEND_READ_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/investlab-app/backend/contents/src/schema.yml?ref=develop \
+            | jq -r .content | base64 -d > ../backend/src/schema.yml
+      - name: Generate OpenAPI types
+        run: pnpm openapi-ts
+      - name: Check type changes
+        run: |
+          if ! git diff --exit-code src/client/; then
+            echo "Generated types have changed; please commit updated types."
+            exit 1
+          fi
+      - name: Run lint checks
+        run: pnpm lint
+      - name: Check code formatting
+        run: pnpm format:check
+      - name: Run type checks
+        run: pnpm tsc --noEmit
+      - name: Run unit tests with coverage
+        run: pnpm test --coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
 
   e2e:
     name: E2E Tests
     timeout-minutes: 60
     runs-on: ubuntu-22.04
+    needs: frontend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
