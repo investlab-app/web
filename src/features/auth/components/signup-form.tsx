@@ -129,8 +129,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="firstName"
             validators={{
-              onBlurAsync: z.string().min(1, t('auth.first_name_required')),
-              onBlurAsyncDebounceMs: 100,
+              onBlur: z.string().min(1, t('auth.first_name_required')),
             }}
             children={(field) => (
               <>
@@ -154,8 +153,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="lastName"
             validators={{
-              onBlurAsync: z.string().min(1, t('auth.last_name_required')),
-              onBlurAsyncDebounceMs: 100,
+              onBlur: z.string().min(1, t('auth.last_name_required')),
             }}
             children={(field) => (
               <>
@@ -179,8 +177,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlurAsync: z.email(t('auth.invalid_email')),
-              onBlurAsyncDebounceMs: 100,
+              onBlur: z.email(t('auth.invalid_email')),
             }}
             children={(field) => (
               <>
@@ -205,7 +202,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlurAsync: ({ value }) => {
+              onBlur: ({ value }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
@@ -213,7 +210,6 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   return t('auth.password_min_length', { min: 8 });
                 }
               },
-              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
@@ -236,7 +232,7 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
           <form.AppField
             name="confirmPassword"
             validators={{
-              onBlurAsync: ({ value, fieldApi }) => {
+              onBlur: ({ value, fieldApi }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
@@ -244,7 +240,6 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
                   return t('auth.passwords_do_not_match');
                 }
               },
-              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>

@@ -89,10 +89,9 @@ export function EmailVerificationForm({
           <form.AppField
             name="code"
             validators={{
-              onBlurAsync: z.string().length(6, {
+              onBlur: z.string().length(6, {
                 message: t('auth.code_must_be_digits', { digits: 6 }),
               }),
-              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>

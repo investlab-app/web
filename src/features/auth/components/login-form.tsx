@@ -108,8 +108,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlurAsync: z.email(t('auth.invalid_email')),
-              onBlurAsyncDebounceMs: 50,
+              onBlur: z.email(t('auth.invalid_email')),
             }}
             children={(field) => (
               <>
@@ -133,12 +132,11 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlurAsync: ({ value }) => {
+              onBlur: ({ value }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
               },
-              onBlurAsyncDebounceMs: 50,
             }}
             children={(field) => (
               <>
