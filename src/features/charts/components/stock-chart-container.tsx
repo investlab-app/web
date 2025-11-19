@@ -134,7 +134,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
   // happens with yearly interval for polygon since it's capped to past 5 years
   const zoom = useFrozenValue(
-    Math.max(0.5, 1 - (priceHistory?.length ?? 0) / 100),
+    Math.max(0.1, 0.9 - (priceHistory?.length ?? 0) / 100),
     isPending
   );
 
