@@ -60,7 +60,7 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
     },
     onError: (error) => {
        const message = error.reason == zReasonEnum.enum.funds ? t('orders.errors.insufficient_funds') :error.reason == zReasonEnum.enum.assets ? t('orders.errors.insufficient_assets') : t('orders.errors.unknown_error');
-            toast.error(t('orders.errors.order_failed', message));
+            toast.error(t('orders.errors.order_failed', {message: message}));
     },
   });
 
