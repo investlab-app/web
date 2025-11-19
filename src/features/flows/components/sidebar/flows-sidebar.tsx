@@ -41,7 +41,7 @@ export const FlowsSidebar = memo(function FlowsSidebar({
       collapsible="offcanvas"
       side="right"
       noBackground
-      className="overflow-hidden p-3 mt-10 w-fit"
+      className="overflow-hidden p-3 mt-10 w-fit pb-10"
     >
       <SidebarHeader className="h-fit justify-center p-0 pr-3">
         <FlowHeader
