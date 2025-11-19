@@ -4,6 +4,11 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AccountValueOverTimeResponse = {
+    history: Array<AccountValueSnapshotDaily>;
+    current_value: string;
+};
+
 /**
  * Serializer for AccountValueSnapshot model.
  */
@@ -1587,18 +1592,18 @@ export type InvestorsMePartialUpdateResponses = {
 
 export type InvestorsMePartialUpdateResponse = InvestorsMePartialUpdateResponses[keyof InvestorsMePartialUpdateResponses];
 
-export type InvestorsMeAccountValueListData = {
+export type InvestorsMeAccountValueRetrieveData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/api/investors/me/account-value/';
 };
 
-export type InvestorsMeAccountValueListResponses = {
-    200: Array<AccountValueSnapshotDaily>;
+export type InvestorsMeAccountValueRetrieveResponses = {
+    200: AccountValueOverTimeResponse;
 };
 
-export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
+export type InvestorsMeAccountValueRetrieveResponse = InvestorsMeAccountValueRetrieveResponses[keyof InvestorsMeAccountValueRetrieveResponses];
 
 export type InvestorsMeNotificationsListData = {
     body?: never;
