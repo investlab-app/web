@@ -2,6 +2,11 @@ const enTransactions = {
   tabs: {
     open_positions: 'Open positions',
     closed_positions: 'Closed positions',
+    instrument_transaction_history: 'Instrument transaction history',
+  },
+  summary: {
+    owned_assets: 'Owned volume',
+    assets_value: 'Assets value',
   },
   table: {
     headers: {

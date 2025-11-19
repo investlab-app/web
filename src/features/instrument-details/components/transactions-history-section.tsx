@@ -1,19 +1,22 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import {
-  PositionsTable,
-  PositionsTableSkeleton,
-} from '@/features/transactions/components/positions-table';
+  InstrumentSummary,
+  InstrumentSummarySkeleton,
+} from './instrument-summary';
 import { ErrorMessage } from '@/features/shared/components/error-message';
-import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/features/shared/components/ui/card';
-import { statisticsTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { statisticsTransactionsHistoryListOptions } from '@/client/@tanstack/react-query.gen';
+import {
+  PositionsTable,
+  PositionsTableSkeleton,
+} from '@/features/transactions/components/positions-table';
 
 interface TransactionsHistorySectionProps {
   ticker: string;
@@ -45,9 +48,11 @@ export function TransactionsHistorySection({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>{t('transactions.tabs.open_positions')}</CardTitle>
+        <CardTitle>
+          {t('transactions.tabs.instrument_transaction_history')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="h-full">
+      <CardContent className="h-full space-y-6">
         {isPending ? (
           <TransactionsHistorySectionSkeleton />
         ) : isError ? (
@@ -55,11 +60,14 @@ export function TransactionsHistorySection({
         ) : !tickerTransactions.length ? (
           <EmptyMessage message={t('transactions.no_open_positions')} />
         ) : (
-          <PositionsTable
-            className="border"
-            history={tickerTransactions[0].history}
-            enablePagination
-          />
+          <div className="space-y-6">
+            <InstrumentSummary position={tickerTransactions[0]} />
+            <PositionsTable
+              className="border"
+              history={tickerTransactions[0].history}
+              enablePagination
+            />
+          </div>
         )}
       </CardContent>
     </Card>
@@ -68,8 +76,8 @@ export function TransactionsHistorySection({
 
 function TransactionsHistorySectionSkeleton() {
   return (
-    <div>
-      <Skeleton className="h-20 mb-4" />
+    <div className="space-y-6">
+      <InstrumentSummarySkeleton />
       <PositionsTableSkeleton />
     </div>
   );

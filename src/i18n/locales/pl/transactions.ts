@@ -2,6 +2,11 @@ const plTransactions = {
   tabs: {
     open_positions: 'Otwarte pozycje',
     closed_positions: 'Zamknięte pozycje',
+    instrument_transaction_history: 'Historia transakcji instrumentu',
+  },
+  summary: {
+    owned_assets: 'Posiadany wolumen',
+    assets_value: 'Wartość aktywów',
   },
   table: {
     headers: {
