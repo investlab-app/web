@@ -26,7 +26,7 @@ export function RepetitionToggle({
       type="single"
       value={repeat ? 'repeat' : 'single'}
       onValueChange={(value) =>
-        value && onToggle(value === 'repeat' ? true : false)
+        value && onToggle(value === 'repeat')
       }
       variant="outline"
       aria-label="Toggle strategy repetition"
