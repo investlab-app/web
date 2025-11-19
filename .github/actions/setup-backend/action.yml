@@ -1,0 +1,151 @@
+name: 'Setup Backend Services'
+description: 'Sets up and starts backend services for E2E tests using docker-compose'
+
+inputs:
+  backend-tag:
+    description: 'Backend image tag to pull from GHCR'
+    required: false
+    default: 'latest'
+  backend-repo:
+    description: 'Backend repository name'
+    required: false
+    default: 'investlab-app/backend'
+  backend-repo-ref:
+    description: 'Backend repository branch/tag'
+    required: false
+    default: 'develop'
+  github-token:
+    description: 'GitHub token for authentication (used for GHCR and repo access)'
+    required: true
+  django-secret-key:
+    description: 'Django secret key'
+    required: true
+  clerk-jwt-key:
+    description: 'Clerk JWT key'
+    required: true
+  clerk-secret-key:
+    description: 'Clerk secret key'
+    required: true
+  clerk-issuer:
+    description: 'Clerk issuer URL'
+    required: true
+  polygon-secret-key:
+    description: 'Polygon API secret key'
+    required: true
+  alpaca-public-key:
+    description: 'Alpaca public key'
+    required: true
+  alpaca-secret-key:
+    description: 'Alpaca secret key'
+    required: true
+  admin-email:
+    description: 'Admin email address'
+    required: true
+  from-email:
+    description: 'From email address'
+    required: true
+  email-backend:
+    description: 'Email backend configuration'
+    required: true
+  email-file-path:
+    description: 'Email file path'
+    required: true
+  vapid-private-key:
+    description: 'VAPID private key'
+    required: true
+  vapid-public-key:
+    description: 'VAPID public key'
+    required: true
+  redis-host:
+    description: 'Redis host'
+    required: true
+  redis-port:
+    description: 'Redis port'
+    required: true
+  redis-password:
+    description: 'Redis password'
+    required: true
+  openai-api-key:
+    description: 'OpenAI API key'
+    required: true
+  openai-api-url:
+    description: 'OpenAI API URL'
+    required: true
+  openai-translating-model:
+    description: 'OpenAI translating model'
+    required: true
+  gemini-api-key:
+    description: 'Gemini API key'
+    required: true
+
+outputs:
+  backend-url:
+    description: 'URL of the backend service'
+    value: 'http://localhost:8000'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download backend repository
+      shell: bash
+      run: |
+        mkdir -p /tmp/backend
+        curl -L \
+          -H "Authorization: Bearer ${{ inputs.github-token }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ inputs.backend-repo }}/tarball/${{ inputs.backend-repo-ref }}" \
+          | tar -xz --strip-components=1 -C /tmp/backend/
+
+    - name: Create environment file for docker-compose
+      shell: bash
+      run: |
+        cat > /tmp/backend/.env << 'EOF'
+        DEBUG=false
+        SECRET_KEY="${{ inputs.django-secret-key }}"
+        ALLOWED_HOSTS=*
+        POSTGRES_HOST=postgres
+        POSTGRES_DB=template_db
+        POSTGRES_USER=user
+        POSTGRES_PASSWORD=password
+        POSTGRES_PORT=5432
+        CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+        CLERK_JWT_KEY="${{ inputs.clerk-jwt-key }}"
+        CLERK_SECRET_KEY="${{ inputs.clerk-secret-key }}"
+        CLERK_ISSUER="${{ inputs.clerk-issuer }}"
+        POLYGON_SECRET_KEY="${{ inputs.polygon-secret-key }}"
+        ALPACA_PUBLIC_KEY="${{ inputs.alpaca-public-key }}"
+        ALPACA_SECRET_KEY="${{ inputs.alpaca-secret-key }}"
+        ADMIN_EMAIL="${{ inputs.admin-email }}"
+        FROM_EMAIL="${{ inputs.from-email }}"
+        EMAIL_BACKEND="${{ inputs.email-backend }}"
+        EMAIL_FILE_PATH="${{ inputs.email-file-path }}"
+        VAPID_PRIVATE_KEY="${{ inputs.vapid-private-key }}"
+        VAPID_PUBLIC_KEY="${{ inputs.vapid-public-key }}"
+        REDIS_HOST="${{ inputs.redis-host }}"
+        REDIS_PORT="${{ inputs.redis-port }}"
+        REDIS_PASSWORD="${{ inputs.redis-password }}"
+        OPENAI_API_KEY="${{ inputs.openai-api-key }}"
+        OPENAI_API_URL="${{ inputs.openai-api-url }}"
+        OPENAI_TRANSLATING_MODEL="${{ inputs.openai-translating-model }}"
+        GEMINI_API_KEY="${{ inputs.gemini-api-key }}"
+        EOF
+
+    - name: Pull backend image from GHCR
+      shell: bash
+      run: |
+        echo ${{ inputs.github-token }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        docker pull ghcr.io/${{ inputs.backend-repo }}:${{ inputs.backend-tag }}
+        docker tag ghcr.io/${{ inputs.backend-repo }}:${{ inputs.backend-tag }} investlab-backend:latest
+
+    - name: Start backend services with docker-compose
+      shell: bash
+      run: |
+        cd /tmp/backend
+        docker compose --profile ci up -d --wait
+
+    - name: If failed show logs
+      if: failure()
+      shell: bash
+      run: |
+        cd /tmp/backend
+        docker compose --profile ci logs
