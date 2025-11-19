@@ -12,8 +12,7 @@ const enOrders = {
     insufficient_funds: "You don't have enough funds.",
     insufficient_assets: "You don't have enough assets to sell.",
     unknown_error: 'Please try again later.',
-    order_failed:
-    'Failed to place order. {{message}}',
+    order_failed: 'Failed to place order. {{message}}',
   },
   pending_orders: 'Pending orders',
   pending_market_orders: 'Pending market orders',

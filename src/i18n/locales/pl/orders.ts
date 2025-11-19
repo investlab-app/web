@@ -11,7 +11,8 @@ const plOrders = {
   order_success: 'Zlecenie złożone pomyślnie!',
   errors: {
     insufficient_funds: 'Nie masz wystarczających środków.',
-    insufficient_assets: 'Nie masz wystarczających aktywów do sprzedaży.',
+    insufficient_assets:
+      'Nie masz wystarczającego wolumenu tego aktywa do sprzedaży.',
     unknown_error: 'Spróbuj ponownie później.',
     order_failed: 'Nie udało się złożyć zlecenia. {{message}}',
   },
