@@ -160,19 +160,23 @@ function Sidebar({
   className,
   children,
   noBackground = false,
+  specialWidthHandling = false,
   ...props
 }: React.ComponentProps<'div'> & {
   side?: 'left' | 'right';
   variant?: 'sidebar' | 'floating' | 'inset';
   collapsible?: 'offcanvas' | 'icon' | 'none';
   noBackground?: boolean;
+  specialWidthHandling?: boolean;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const gapRef = React.useRef<HTMLDivElement>(null);
 
   // Sync the gap width with the actual sidebar width
+  // This is needed for the sidebar which changes width based on its content (eg. language)
   React.useEffect(() => {
+    if (!specialWidthHandling) return;
     if (!sidebarRef.current || !gapRef.current || isMobile) return;
 
     const updateGapWidth = () => {
@@ -204,15 +208,13 @@ function Sidebar({
       }
     };
 
-    // Update initially
     updateGapWidth();
 
-    // Update on resize
     const resizeObserver = new ResizeObserver(updateGapWidth);
     resizeObserver.observe(sidebarRef.current);
 
     return () => resizeObserver.disconnect();
-  }, [isMobile, state, collapsible, side]);
+  }, [isMobile, state, collapsible, side, specialWidthHandling]);
 
   if (collapsible === 'none') {
     return (
