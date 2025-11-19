@@ -74,6 +74,9 @@ inputs:
   openai-translating-model:
     description: 'OpenAI translating model'
     required: true
+  gemini-api-key:
+    description: 'Gemini API key'
+    required: true
 
 outputs:
   backend-url:
@@ -124,6 +127,7 @@ runs:
         OPENAI_API_KEY="${{ inputs.openai-api-key }}"
         OPENAI_API_URL="${{ inputs.openai-api-url }}"
         OPENAI_TRANSLATING_MODEL="${{ inputs.openai-translating-model }}"
+        GEMINI_API_KEY="${{ inputs.gemini-api-key }}"
         EOF
 
     - name: Pull backend image from GHCR
