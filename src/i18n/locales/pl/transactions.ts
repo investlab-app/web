@@ -5,7 +5,7 @@ const plTransactions = {
     instrument_transaction_history: 'Historia transakcji instrumentu',
   },
   summary: {
-    owned_assets: 'Posiadany wolumin',
+    owned_assets: 'Posiadany wolumen',
     assets_value: 'Wartość aktywów',
   },
   table: {
