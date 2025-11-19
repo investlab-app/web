@@ -96,7 +96,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
             : t('orders.errors.unknown_error');
       toast.error(t('orders.errors.order_failed', { message: message }));
     },
-    onSettled: () => { },
+    onSettled: () => {},
   });
 
   const handleOrder = (type: 'buy' | 'sell') => {
