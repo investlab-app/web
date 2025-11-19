@@ -42,7 +42,11 @@ export function useChartOptions({
   interval,
   i18n,
 }: CreateChartOptionsProps): EChartsOption {
+  const fontSans = useCssVar('--font-sans');
   return {
+    textStyle: {
+      fontFamily: fontSans,
+    },
     animation: false,
     tooltip: {
       trigger: 'axis',
@@ -63,6 +67,7 @@ export function useChartOptions({
       axisTick: { show: false },
       axisLine: { show: true },
       axisLabel: {
+        fontFamily: fontSans,
         interval: createLabelIntervalFn(dates.length, zoom),
         formatter: (value: string) =>
           formatChartDateByRange({
@@ -78,6 +83,9 @@ export function useChartOptions({
       axisLine: { show: true },
       scale: true,
       splitLine: { lineStyle: { opacity: 0.2 } },
+      axisLabel: {
+        fontFamily: fontSans,
+      },
     },
     dataZoom: [
       {
