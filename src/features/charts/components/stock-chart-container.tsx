@@ -39,7 +39,7 @@ import {
 } from '@/features/shared/components/ui/toggle-group';
 import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
 import { pricesBars } from '@/client';
-import { roundDateToMinute, serialize } from '@/features/shared/utils/date';
+import { serialize } from '@/features/shared/utils/date';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface StockChartProps {
@@ -59,14 +59,8 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const { t, i18n } = useTranslation();
 
   const [interval, setInterval] = useState<TimeInterval>('HOUR');
-  const startDate = intervalToStartDate(interval);
   const endDate = new Date();
-
-  console.log('Rendering StockChartContainer', {
-    interval,
-    startDate,
-    endDate,
-  });
+  const startDate = intervalToStartDate(interval, endDate);
 
   const [isCandlestick, setIsCandlestick] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<InstrumentPricePoint>();
@@ -81,7 +75,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
       query: {
         ticker,
         interval,
-        start_date: serialize(roundDateToMinute(startDate)),
+        start_date: '', // use staleTime to invalidate instead
       },
     }),
     queryFn: async () => {

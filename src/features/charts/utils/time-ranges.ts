@@ -19,37 +19,42 @@ export const timeIntervals: Record<TimeInterval, string> = {
   YEAR: 'common.intervals.year',
 };
 
-export const intervalToStartDate = (
-  range: TimeInterval,
-  now = new Date()
-): Date => {
+const LAST_POINTS_QUANTITY = 400;
+
+export const intervalToStartDate = (range: TimeInterval, now: Date): Date => {
   const start = new Date(now);
 
   switch (range) {
     case 'SECOND':
-      start.setMinutes(now.getMinutes() - 1);
+      start.setSeconds(now.getSeconds() - LAST_POINTS_QUANTITY);
       break;
     case 'MINUTE':
-      start.setDate(now.getDate() - 1);
+      start.setMinutes(now.getMinutes() - LAST_POINTS_QUANTITY);
       break;
     case 'HOUR':
-      start.setDate(now.getDate() - 24);
+      start.setHours(now.getHours() - LAST_POINTS_QUANTITY);
       break;
     case 'DAY':
-      start.setMonth(now.getMonth() - 1);
+      start.setDate(now.getDate() - LAST_POINTS_QUANTITY);
       break;
     case 'WEEK':
-      start.setMonth(now.getMonth() - 3);
+      start.setDate(now.getDate() - LAST_POINTS_QUANTITY * 7);
       break;
     case 'MONTH':
-      start.setFullYear(now.getFullYear() - 5);
+      start.setMonth(now.getMonth() - LAST_POINTS_QUANTITY);
       break;
     case 'QUARTER':
-      start.setFullYear(now.getFullYear() - 50);
+      start.setMonth(now.getMonth() - LAST_POINTS_QUANTITY * 3);
       break;
-    case 'YEAR':
-      start.setFullYear(Math.max(now.getFullYear() - 100, 1970));
+    case 'YEAR': {
+      start.setFullYear(now.getFullYear() - LAST_POINTS_QUANTITY);
       break;
+    }
+  }
+
+  // Return epoch start if calculated date is before epoch
+  if (start.getTime() < 0) {
+    return new Date(0);
   }
 
   return start;
