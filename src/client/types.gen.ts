@@ -4,11 +4,6 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
-export type AccountValueOverTimeResponse = {
-    history: Array<AccountValueSnapshotDaily>;
-    current_value: string;
-};
-
 /**
  * Serializer for AccountValueSnapshot model.
  */
@@ -564,6 +559,11 @@ export type Order = {
     detail: OrderDetail;
 };
 
+export type OrderCreationError = {
+    reason: ReasonEnum;
+    detail: string;
+};
+
 export type OrderDetail = ({
     detail_type: 'market';
 } & MarketOrderDetails) | ({
@@ -760,6 +760,13 @@ export type PushNotificationRequest = {
     p256dh: string;
     auth: string;
 };
+
+/**
+ * * `funds` - funds
+ * * `assets` - assets
+ * * `unknown` - unknown
+ */
+export type ReasonEnum = 'funds' | 'assets' | 'unknown';
 
 /**
  * * `user` - user
@@ -1580,18 +1587,18 @@ export type InvestorsMePartialUpdateResponses = {
 
 export type InvestorsMePartialUpdateResponse = InvestorsMePartialUpdateResponses[keyof InvestorsMePartialUpdateResponses];
 
-export type InvestorsMeAccountValueRetrieveData = {
+export type InvestorsMeAccountValueListData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/api/investors/me/account-value/';
 };
 
-export type InvestorsMeAccountValueRetrieveResponses = {
-    200: AccountValueOverTimeResponse;
+export type InvestorsMeAccountValueListResponses = {
+    200: Array<AccountValueSnapshotDaily>;
 };
 
-export type InvestorsMeAccountValueRetrieveResponse = InvestorsMeAccountValueRetrieveResponses[keyof InvestorsMeAccountValueRetrieveResponses];
+export type InvestorsMeAccountValueListResponse = InvestorsMeAccountValueListResponses[keyof InvestorsMeAccountValueListResponses];
 
 export type InvestorsMeNotificationsListData = {
     body?: never;
@@ -1759,6 +1766,12 @@ export type OrdersLimitCreateData = {
     url: '/api/orders/limit/';
 };
 
+export type OrdersLimitCreateErrors = {
+    400: OrderCreationError;
+};
+
+export type OrdersLimitCreateError = OrdersLimitCreateErrors[keyof OrdersLimitCreateErrors];
+
 export type OrdersLimitCreateResponses = {
     201: LimitOrder;
 };
@@ -1789,6 +1802,12 @@ export type OrdersMarketCreateData = {
     query?: never;
     url: '/api/orders/market/';
 };
+
+export type OrdersMarketCreateErrors = {
+    400: OrderCreationError;
+};
+
+export type OrdersMarketCreateError = OrdersMarketCreateErrors[keyof OrdersMarketCreateErrors];
 
 export type OrdersMarketCreateResponses = {
     201: MarketOrder;

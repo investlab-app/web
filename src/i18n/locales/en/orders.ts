@@ -8,8 +8,13 @@ const enOrders = {
   switch_to_volume: 'Switch to volume',
   current_price_error: 'Sorry, the current price could not be loaded.',
   order_success: 'Order placed successfully!',
-  order_failed:
-    'Failed to place order. Check if you have sufficient funds and try again.',
+  errors: {
+    insufficient_funds: "You don't have enough funds.",
+    insufficient_assets: "You don't have enough assets to sell.",
+    unknown_error: 'Please try again later.',
+    order_failed:
+    'Failed to place order. {{message}}',
+  },
   pending_orders: 'Pending orders',
   pending_market_orders: 'Pending market orders',
   pending_limit_orders: 'Pending limit orders',

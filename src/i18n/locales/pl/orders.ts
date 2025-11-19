@@ -9,8 +9,12 @@ const plOrders = {
   current_price_error:
     'Przepraszamy, bieżąca cena nie mogła zostać załadowana.',
   order_success: 'Zlecenie złożone pomyślnie!',
-  order_failed:
-    'Nie udało się złożyć zlecenia. Sprawdź, czy masz wystarczające środki i spróbuj ponownie.',
+  errors: {
+    insufficient_funds: 'Nie masz wystarczających środków.',
+    insufficient_assets: 'Nie masz wystarczających aktywów do sprzedaży.',
+    unknown_error: 'Spróbuj ponownie później.',
+    order_failed: 'Nie udało się złożyć zlecenia. {{message}}',
+  },
   pending_orders: 'Oczekujące zlecenia',
   pending_market_orders: 'Oczekujące zlecenia rynkowe',
   pending_limit_orders: 'Oczekujące zlecenia z limitem',

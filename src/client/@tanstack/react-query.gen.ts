@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { authSignInCreate, chatsCreate, chatsDestroy, chatsList, chatsMessagesCreate, chatsPartialUpdate, chatsRetrieve, chatsUpdate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsDepositHistoryList, investorsMeAccountValueRetrieve, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
-import type { AuthSignInCreateData, ChatsCreateData, ChatsCreateResponse, ChatsDestroyData, ChatsDestroyResponse, ChatsListData, ChatsMessagesCreateData, ChatsMessagesCreateResponse, ChatsPartialUpdateData, ChatsPartialUpdateResponse, ChatsRetrieveData, ChatsUpdateData, ChatsUpdateResponse, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsDepositHistoryListData, InvestorsDepositHistoryListResponse, InvestorsMeAccountValueRetrieveData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
+import { authSignInCreate, chatsCreate, chatsDestroy, chatsList, chatsMessagesCreate, chatsPartialUpdate, chatsRetrieve, chatsUpdate, graphLangCreate, graphLangDestroy, graphLangList, graphLangPartialUpdate, graphLangResultsList, graphLangRetrieve, graphLangRunCreate, graphLangUpdate, instrumentsDetailRetrieve, instrumentsList, instrumentsTickersRetrieve, instrumentsWithPricesList, investorsDepositCreate, investorsDepositHistoryList, investorsMeAccountValueList, investorsMeNotificationsList, investorsMePartialUpdate, investorsMeRetrieve, investorsMeWatchedTickersList, investorsMeWatchedTickersPartialUpdate, investorsPartialUpdate, investorsRetrieve, marketsHolidaysList, marketsStatusRetrieve, newsList, notificationsVapidPublicKeyRetrieve, type Options, ordersCancelDestroy, ordersLimitCreate, ordersLimitList, ordersList, ordersMarketCreate, ordersMarketList, pricesBars, pricesList, pricesPriceAlertCreate, pricesPriceAlertDestroy, pricesPriceAlertList, pricesPriceAlertPartialUpdate, pricesPriceAlertRetrieve, pricesPriceAlertUpdate, pricesRetrieve, statisticsAssetAllocationRetrieve, statisticsCurrentAccountValueRetrieve, statisticsOwnedSharesList, statisticsStatisticsMostTradedList, statisticsStatisticsTradingOverviewRetrieve, statisticsStatsRetrieve, statisticsTransactionsHistoryList, statusRetrieve, testAdminTestRetrieve, testAllTestRetrieve, testAlpacaTestRetrieve, testPolygonTestRetrieve, testUsersTestRetrieve } from '../sdk.gen';
+import type { AuthSignInCreateData, ChatsCreateData, ChatsCreateResponse, ChatsDestroyData, ChatsDestroyResponse, ChatsListData, ChatsMessagesCreateData, ChatsMessagesCreateResponse, ChatsPartialUpdateData, ChatsPartialUpdateResponse, ChatsRetrieveData, ChatsUpdateData, ChatsUpdateResponse, GraphLangCreateData, GraphLangCreateResponse, GraphLangDestroyData, GraphLangDestroyResponse, GraphLangListData, GraphLangListResponse, GraphLangPartialUpdateData, GraphLangPartialUpdateResponse, GraphLangResultsListData, GraphLangResultsListResponse, GraphLangRetrieveData, GraphLangRunCreateData, GraphLangRunCreateResponse, GraphLangUpdateData, GraphLangUpdateResponse, InstrumentsDetailRetrieveData, InstrumentsListData, InstrumentsListResponse, InstrumentsTickersRetrieveData, InstrumentsWithPricesListData, InstrumentsWithPricesListResponse, InvestorsDepositCreateData, InvestorsDepositCreateResponse, InvestorsDepositHistoryListData, InvestorsDepositHistoryListResponse, InvestorsMeAccountValueListData, InvestorsMeNotificationsListData, InvestorsMePartialUpdateData, InvestorsMePartialUpdateResponse, InvestorsMeRetrieveData, InvestorsMeWatchedTickersListData, InvestorsMeWatchedTickersPartialUpdateData, InvestorsMeWatchedTickersPartialUpdateResponse, InvestorsPartialUpdateData, InvestorsPartialUpdateResponse, InvestorsRetrieveData, MarketsHolidaysListData, MarketsStatusRetrieveData, NewsListData, NotificationsVapidPublicKeyRetrieveData, OrdersCancelDestroyData, OrdersCancelDestroyResponse, OrdersLimitCreateData, OrdersLimitCreateError, OrdersLimitCreateResponse, OrdersLimitListData, OrdersListData, OrdersMarketCreateData, OrdersMarketCreateError, OrdersMarketCreateResponse, OrdersMarketListData, PricesBarsData, PricesListData, PricesPriceAlertCreateData, PricesPriceAlertCreateResponse, PricesPriceAlertDestroyData, PricesPriceAlertDestroyResponse, PricesPriceAlertListData, PricesPriceAlertListResponse, PricesPriceAlertPartialUpdateData, PricesPriceAlertPartialUpdateResponse, PricesPriceAlertRetrieveData, PricesPriceAlertUpdateData, PricesPriceAlertUpdateResponse, PricesRetrieveData, StatisticsAssetAllocationRetrieveData, StatisticsCurrentAccountValueRetrieveData, StatisticsOwnedSharesListData, StatisticsStatisticsMostTradedListData, StatisticsStatisticsTradingOverviewRetrieveData, StatisticsStatsRetrieveData, StatisticsTransactionsHistoryListData, StatusRetrieveData, TestAdminTestRetrieveData, TestAllTestRetrieveData, TestAlpacaTestRetrieveData, TestPolygonTestRetrieveData, TestUsersTestRetrieveData } from '../types.gen';
 
 /**
  * Sign in a user with email and password via Clerk
@@ -620,16 +620,16 @@ export const investorsMePartialUpdateMutation = (options?: Partial<Options<Inves
     return mutationOptions;
 };
 
-export const investorsMeAccountValueRetrieveQueryKey = (options?: Options<InvestorsMeAccountValueRetrieveData>) => createQueryKey('investorsMeAccountValueRetrieve', options);
+export const investorsMeAccountValueListQueryKey = (options?: Options<InvestorsMeAccountValueListData>) => createQueryKey('investorsMeAccountValueList', options);
 
 /**
  * Get account value over time
  * Get account value over time data for the currently authenticated user.
  */
-export const investorsMeAccountValueRetrieveOptions = (options?: Options<InvestorsMeAccountValueRetrieveData>) => {
+export const investorsMeAccountValueListOptions = (options?: Options<InvestorsMeAccountValueListData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await investorsMeAccountValueRetrieve({
+            const { data } = await investorsMeAccountValueList({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -637,7 +637,7 @@ export const investorsMeAccountValueRetrieveOptions = (options?: Options<Investo
             });
             return data;
         },
-        queryKey: investorsMeAccountValueRetrieveQueryKey(options)
+        queryKey: investorsMeAccountValueListQueryKey(options)
     });
 };
 
@@ -814,8 +814,8 @@ export const ordersLimitListOptions = (options?: Options<OrdersLimitListData>) =
     });
 };
 
-export const ordersLimitCreateMutation = (options?: Partial<Options<OrdersLimitCreateData>>): UseMutationOptions<OrdersLimitCreateResponse, DefaultError, Options<OrdersLimitCreateData>> => {
-    const mutationOptions: UseMutationOptions<OrdersLimitCreateResponse, DefaultError, Options<OrdersLimitCreateData>> = {
+export const ordersLimitCreateMutation = (options?: Partial<Options<OrdersLimitCreateData>>): UseMutationOptions<OrdersLimitCreateResponse, OrdersLimitCreateError, Options<OrdersLimitCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrdersLimitCreateResponse, OrdersLimitCreateError, Options<OrdersLimitCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await ordersLimitCreate({
                 ...options,
@@ -845,8 +845,8 @@ export const ordersMarketListOptions = (options?: Options<OrdersMarketListData>)
     });
 };
 
-export const ordersMarketCreateMutation = (options?: Partial<Options<OrdersMarketCreateData>>): UseMutationOptions<OrdersMarketCreateResponse, DefaultError, Options<OrdersMarketCreateData>> => {
-    const mutationOptions: UseMutationOptions<OrdersMarketCreateResponse, DefaultError, Options<OrdersMarketCreateData>> = {
+export const ordersMarketCreateMutation = (options?: Partial<Options<OrdersMarketCreateData>>): UseMutationOptions<OrdersMarketCreateResponse, OrdersMarketCreateError, Options<OrdersMarketCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrdersMarketCreateResponse, OrdersMarketCreateError, Options<OrdersMarketCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await ordersMarketCreate({
                 ...options,

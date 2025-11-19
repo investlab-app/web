@@ -10,11 +10,6 @@ export const zAccountValueSnapshotDaily = z.object({
     value: z.number()
 });
 
-export const zAccountValueOverTimeResponse = z.object({
-    history: z.array(zAccountValueSnapshotDaily),
-    current_value: z.string().regex(/^-?\d{0,28}(?:\.\d{0,2})?$/)
-});
-
 export const zAllTickers = z.object({
     tickers: z.array(z.string())
 });
@@ -702,6 +697,22 @@ export const zOrder = z.object({
     ticker: z.string().readonly(),
     detail_type: z.int(),
     detail: zOrderDetail
+});
+
+/**
+ * * `funds` - funds
+ * * `assets` - assets
+ * * `unknown` - unknown
+ */
+export const zReasonEnum = z.enum([
+    'funds',
+    'assets',
+    'unknown'
+]);
+
+export const zOrderCreationError = z.object({
+    reason: zReasonEnum,
+    detail: z.string()
 });
 
 export const zOwnedShare = z.object({
@@ -1564,13 +1575,13 @@ export const zInvestorsMePartialUpdateData = z.object({
 
 export const zInvestorsMePartialUpdateResponse = zInvestor;
 
-export const zInvestorsMeAccountValueRetrieveData = z.object({
+export const zInvestorsMeAccountValueListData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
 
-export const zInvestorsMeAccountValueRetrieveResponse = zAccountValueOverTimeResponse;
+export const zInvestorsMeAccountValueListResponse = z.array(zAccountValueSnapshotDaily);
 
 export const zInvestorsMeNotificationsListData = z.object({
     body: z.optional(z.never()),
