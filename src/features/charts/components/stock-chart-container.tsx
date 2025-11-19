@@ -144,8 +144,7 @@ export function StockChartContainer({ ticker }: StockChartProps) {
         <CardTitle>{ticker}</CardTitle>
         {latestClosingPrice && (
           <CardDescription>
-            {t('instruments.current_price')}: $
-            {withCurrency(latestClosingPrice, i18n.language, 2)}
+            {`${t('instruments.current_price')}: ${withCurrency(latestClosingPrice, i18n.language, 2)}`}
           </CardDescription>
         )}
         <CardAction>
@@ -153,7 +152,9 @@ export function StockChartContainer({ ticker }: StockChartProps) {
             <ToggleGroup
               type="single"
               value={isCandlestick ? 'candle' : 'line'}
-              onValueChange={(value) => setIsCandlestick(value === 'candle')}
+              onValueChange={(value) =>
+                value && setIsCandlestick(value === 'candle')
+              }
               variant="outline"
               aria-label="Toggle chart type"
             >
