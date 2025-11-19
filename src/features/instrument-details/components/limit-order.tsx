@@ -2,14 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
 import { OrderConfirmationModalWrapper } from './order-confirmation-modal-wrapper';
 
-import {
-  investorsMeRetrieveOptions,
-  ordersLimitCreateMutation,
-  ordersListOptions,
-  statisticsTransactionsHistoryListOptions,
-} from '@/client/@tanstack/react-query.gen';
+import { ordersLimitCreateMutation } from '@/client/@tanstack/react-query.gen';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 import { Label } from '@/features/shared/components/ui/label';
@@ -44,19 +40,7 @@ export function LimitOrder({ ticker, className }: LimitOrderProps) {
     ...ordersLimitCreateMutation(),
     onSuccess: () => {
       toast.success(t('orders.order_success'));
-      queryClient.invalidateQueries({
-        queryKey: statisticsTransactionsHistoryListOptions({
-          query: { type: 'open', tickers: [ticker] },
-        }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: investorsMeRetrieveOptions().queryKey,
-      });
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: ordersListOptions().queryKey,
-        });
-      }, 1000);
+      invalidateOrderQueries(queryClient, ticker);
     },
     onError: (error) => {
       const message =

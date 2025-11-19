@@ -3,16 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { ArrowUpDown } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
 import { OrderConfirmationModalWrapper } from './order-confirmation-modal-wrapper';
 import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 
-import {
-  investorsMeRetrieveOptions,
-  ordersListOptions,
-  ordersMarketCreateMutation,
-  statisticsTransactionsHistoryListOptions,
-} from '@/client/@tanstack/react-query.gen';
+import { ordersMarketCreateMutation } from '@/client/@tanstack/react-query.gen';
 
 import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
@@ -77,22 +73,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
     ...ordersMarketCreateMutation(),
     onSuccess: () => {
       toast.success(t('orders.order_success'));
-      queryClient.invalidateQueries({
-        queryKey: statisticsTransactionsHistoryListOptions({
-          query: {
-            type: 'open',
-            tickers: [ticker],
-          },
-        }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: investorsMeRetrieveOptions().queryKey,
-      });
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: ordersListOptions().queryKey,
-        });
-      }, 1000);
+      invalidateOrderQueries(queryClient, ticker);
     },
     onError: (error) => {
       const message =
