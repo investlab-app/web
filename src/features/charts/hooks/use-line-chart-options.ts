@@ -61,7 +61,7 @@ export function useLineChartOptions({
       return `<div>
 <strong>${formattedDate}</strong>
 <br />
-${t('instruments.price')}: $${withCurrency(value, i18n.language, 2)}
+${t('instruments.price')}: ${withCurrency(value, i18n.language, 2)}
 </div>`;
     },
     [selectedInterval, i18n, t]

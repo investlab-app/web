@@ -70,10 +70,10 @@ export function useCandlestickChartOptions({
 
       return `<div>
   <strong>${formattedDate}</strong><br />
-  Open: $${withCurrency(candlestickData[1], i18n.language, 2)}<br />
-  Close: $${withCurrency(candlestickData[2], i18n.language, 2)}<br />
-  High: $${withCurrency(candlestickData[4], i18n.language, 2)}<br />
-  Low: $${withCurrency(candlestickData[3], i18n.language, 2)}
+  Open: ${withCurrency(candlestickData[1], i18n.language, 2)}<br />
+  Close: ${withCurrency(candlestickData[2], i18n.language, 2)}<br />
+  High: ${withCurrency(candlestickData[4], i18n.language, 2)}<br />
+  Low: ${withCurrency(candlestickData[3], i18n.language, 2)}
   </div>`;
     },
     [i18n, selectedInterval]
