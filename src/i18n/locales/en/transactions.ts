@@ -5,7 +5,7 @@ const enTransactions = {
     instrument_transaction_history: 'Instrument transaction history',
   },
   summary: {
-    owned_assets: 'Owned assets',
+    owned_assets: 'Owned volume',
     assets_value: 'Assets value',
   },
   table: {
