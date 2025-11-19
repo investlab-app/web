@@ -1,5 +1,6 @@
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 
+import { FormPasswordInput as FormPasswordInputComponent } from '../components/ui/form-password-input';
 import { LoadingSpinner } from '@/features/shared/components/ui/loading-spinner';
 import { Button } from '@/features/shared/components/ui/button';
 import { FormInput as FormInputComponent } from '@/features/shared/components/ui/form-input';
@@ -55,7 +56,8 @@ const SubmitButton = ({ children, className }: SubmitButtonProps) => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             form.handleSubmit();
           }}
           className={className}
@@ -105,9 +107,36 @@ const FormInput = ({
   );
 };
 
+const PasswordFormInput = ({
+  id,
+  label,
+  name,
+  placeholder,
+  required,
+  ...props
+}: Omit<FormInputProps, 'type'>) => {
+  const field = useFieldContext<string>();
+
+  return (
+    <FormPasswordInputComponent
+      id={id}
+      label={label}
+      name={name}
+      placeholder={placeholder}
+      required={required}
+      onChange={(e) => {
+        field.handleChange(e.target.value);
+      }}
+      onBlur={field.handleBlur}
+      {...props}
+    />
+  );
+};
+
 export const { useAppForm } = createFormHook({
   fieldComponents: {
     FormInput,
+    PasswordFormInput,
     SixDigitOTPInput,
     NumberInput,
   },

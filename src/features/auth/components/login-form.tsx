@@ -75,12 +75,14 @@ export function LoginForm({ pageError }: LoginFormProps) {
           },
           (e) => {
             let error: string;
+            console.error('Sign-in error:', e);
             switch (e.trim()) {
               case "Couldn't find your account.":
                 error = t('auth.account_not_found');
                 break;
               default:
-                error = e;
+                error = t('auth.could_not_sign_in');
+                break;
             }
             navigate({
               to: '.',
@@ -106,8 +108,7 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="email"
             validators={{
-              onBlurAsync: z.email(t('auth.invalid_email')),
-              onBlurAsyncDebounceMs: 100,
+              onBlur: z.email(t('auth.invalid_email')),
             }}
             children={(field) => (
               <>
@@ -131,19 +132,17 @@ export function LoginForm({ pageError }: LoginFormProps) {
           <form.AppField
             name="password"
             validators={{
-              onBlurAsync: ({ value }) => {
+              onBlur: ({ value }) => {
                 if (!value) {
                   return t('auth.password_required');
                 }
               },
-              onBlurAsyncDebounceMs: 100,
             }}
             children={(field) => (
               <>
-                <field.FormInput
+                <field.PasswordFormInput
                   id="password"
                   label={t('auth.password')}
-                  type="password"
                   name="password"
                   placeholder="********"
                   autoComplete="current-password"

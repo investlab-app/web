@@ -21,8 +21,8 @@ export const ContinueWithGoogle = () => {
   const handler = async () => {
     if (!isLoaded) {
       await navigate({
-        to: '/signup',
-        params: { error: 'Not loaded' },
+        to: '.',
+        search: { error: t('auth.please_try_again_later') },
       });
       return;
     }
@@ -33,13 +33,16 @@ export const ContinueWithGoogle = () => {
         redirectUrlComplete: '/',
         redirectUrl: '/sso-callback',
       }),
-      (e) => (e instanceof Error ? e.message : t('auth.could_not_verify_email'))
+      (e) =>
+        e instanceof Error && e.message
+          ? e.message
+          : t('auth.could_not_use_google')
     );
 
     if (result.isErr()) {
       await navigate({
-        to: '/signup',
-        params: { error: result.error },
+        to: '.',
+        search: { error: result.error },
       });
     }
   };
