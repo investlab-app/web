@@ -158,7 +158,9 @@ export function StockChartContainer({ ticker }: StockChartProps) {
             <ToggleGroup
               type="single"
               value={isCandlestick ? 'candle' : 'line'}
-              onValueChange={(value) => setIsCandlestick(value === 'candle')}
+              onValueChange={(value) =>
+                value && setIsCandlestick(value === 'candle')
+              }
               variant="outline"
               aria-label="Toggle chart type"
             >

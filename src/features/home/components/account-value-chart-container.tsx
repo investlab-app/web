@@ -11,18 +11,18 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { withCurrency } from '@/features/shared/utils/numbers';
-import { investorsMeAccountValueListOptions } from '@/client/@tanstack/react-query.gen';
+import { investorsMeAccountValueRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
   const { data, isPending, isError } = useQuery(
-    investorsMeAccountValueListOptions()
+    investorsMeAccountValueRetrieveOptions()
   );
 
   const chartData: Array<InstrumentPricePoint> =
-    data?.map((point) => ({
+    data?.history.map((point) => ({
       date: new Date(point.date).toISOString(),
       open: point.value,
       close: point.value,
@@ -30,7 +30,7 @@ export const AccountValueChartContainer = () => {
       low: point.value,
     })) || [];
 
-  const currentValue = chartData[chartData.length - 1]?.close ?? 0;
+  const currentValue = parseFloat(data?.current_value ?? '0');
 
   if (isPending) {
     return <AccountValueChartContainerSkeleton />;
