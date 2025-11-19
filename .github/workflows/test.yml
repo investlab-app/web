@@ -63,68 +63,35 @@ jobs:
     name: E2E Tests
     timeout-minutes: 60
     runs-on: ubuntu-22.04
-    env:
-      POSTGRES_DB: template_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_PORT: 5432
     needs: frontend
-    services:
-      db:
-        image: postgres:17
-        env:
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      backend:
-        image: ghcr.io/investlab-app/backend:${{ github.event.inputs.backend_tag || 'latest' }}
-        env:
-          DEBUG: false
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          ALLOWED_HOSTS: '*'
-          POSTGRES_HOST: db
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
-          CORS_ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
-          CLERK_JWT_KEY: ${{ secrets.CLERK_JWT_KEY }}
-          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          CLERK_ISSUER: ${{ secrets.CLERK_ISSUER }}
-          POLYGON_SECRET_KEY: ${{ secrets.POLYGON_SECRET_KEY }}
-          ALPACA_PUBLIC_KEY: ${{ secrets.ALPACA_PUBLIC_KEY }}
-          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
-          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
-          EMAIL_BACKEND: ${{ secrets.EMAIL_BACKEND }}
-          EMAIL_FILE_PATH: ${{ secrets.EMAIL_FILE_PATH }}
-          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
-          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }}
-          REDIS_PORT: ${{ secrets.REDIS_PORT }}
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_API_URL: ${{ secrets.OPENAI_API_URL }}
-          OPENAI_TRANSLATING_MODEL: ${{ secrets.OPENAI_TRANSLATING_MODEL }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        ports:
-          - 8000:8000
-        options: >-
-          --health-cmd "curl -fsS http://localhost:8000/api/status/ || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Setup backend services
+        uses: ./.github/actions/setup-backend
+        with:
+          backend-tag: ${{ github.event.inputs.backend_tag || 'latest' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          django-secret-key: ${{ secrets.DJANGO_SECRET_KEY }}
+          clerk-jwt-key: ${{ secrets.CLERK_JWT_KEY }}
+          clerk-secret-key: ${{ secrets.CLERK_SECRET_KEY }}
+          clerk-issuer: ${{ secrets.CLERK_ISSUER }}
+          polygon-secret-key: ${{ secrets.POLYGON_SECRET_KEY }}
+          alpaca-public-key: ${{ secrets.ALPACA_PUBLIC_KEY }}
+          alpaca-secret-key: ${{ secrets.ALPACA_SECRET_KEY }}
+          admin-email: ${{ secrets.ADMIN_EMAIL }}
+          from-email: ${{ secrets.FROM_EMAIL }}
+          email-backend: ${{ secrets.EMAIL_BACKEND }}
+          email-file-path: ${{ secrets.EMAIL_FILE_PATH }}
+          vapid-private-key: ${{ secrets.VAPID_PRIVATE_KEY }}
+          vapid-public-key: ${{ secrets.VAPID_PUBLIC_KEY }}
+          redis-host: ${{ secrets.REDIS_HOST }}
+          redis-port: ${{ secrets.REDIS_PORT }}
+          redis-password: ${{ secrets.REDIS_PASSWORD }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          openai-api-url: ${{ secrets.OPENAI_API_URL }}
+          openai-translating-model: ${{ secrets.OPENAI_TRANSLATING_MODEL }}
+          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
       - name: Setup and build frontend
         uses: ./.github/actions/setup-and-build
         with:
