@@ -25,6 +25,7 @@ const FormPasswordInput = ({
       <Label htmlFor={id}>{label}</Label>
       <div className="relative">
         <Input
+          id={id}
           type={showPassword ? 'text' : 'password'}
           className={cn('pr-10', className)}
           {...props}
