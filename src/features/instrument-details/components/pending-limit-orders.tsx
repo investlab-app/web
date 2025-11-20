@@ -11,8 +11,10 @@ import { Button } from '@/features/shared/components/ui/button';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
 import {
+  investorsMeRetrieveQueryKey,
   ordersCancelDestroyMutation,
   ordersLimitListOptions,
+  ordersLimitListQueryKey,
 } from '@/client/@tanstack/react-query.gen';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
@@ -22,16 +24,12 @@ interface PendingLimitOrdersProps {
   ticker: string;
 }
 
-const REFETCH_INTERVAL_MS = 1000;
-
 export function PendingLimitOrders({ ticker }: PendingLimitOrdersProps) {
   const { t } = useTranslation();
 
-  const { data, isPending, isError, isSuccess, refetch } = useQuery({
-    ...ordersLimitListOptions({ query: { ticker } }),
-    refetchInterval: ({ state }) =>
-      (state.data?.length || 0) > 0 ? REFETCH_INTERVAL_MS : false,
-  });
+  const { data, isPending, isError, isSuccess, refetch } = useQuery(
+    ordersLimitListOptions({ query: { ticker } })
+  );
 
   return (
     <section className="space-y-3">
@@ -83,7 +81,10 @@ function PendingLimitOrdersTable({
     onSuccess: () => {
       toast.success(t('orders.cancel_order_success'));
       queryClient.invalidateQueries({
-        queryKey: ordersLimitListOptions({ query: { ticker } }).queryKey,
+        queryKey: ordersLimitListQueryKey({ query: { ticker } }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: investorsMeRetrieveQueryKey(),
       });
     },
     onError: () => {

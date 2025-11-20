@@ -8,7 +8,7 @@ import { tanstackConfig } from '@tanstack/eslint-config';
 
 export default [
   {
-    ignores: ['dev-dist/registerSW.js', '**/*.gen*'],
+    ignores: ['dev-dist/registerSW.js', '**/*.gen*', 'playwright-report/*'],
   },
   ...tseslint.configs.recommended,
   ...tanstackConfig,

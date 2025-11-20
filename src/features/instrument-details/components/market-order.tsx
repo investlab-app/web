@@ -8,10 +8,9 @@ import { NumberInput } from '@/features/shared/components/ui/number-input';
 import { Button } from '@/features/shared/components/ui/button';
 
 import {
-  investorsMeRetrieveOptions,
-  ordersListOptions,
+  investorsMeRetrieveQueryKey,
   ordersMarketCreateMutation,
-  statisticsTransactionsHistoryListOptions,
+  ordersMarketListQueryKey,
 } from '@/client/@tanstack/react-query.gen';
 
 import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
@@ -77,22 +76,16 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
     ...ordersMarketCreateMutation(),
     onSuccess: () => {
       toast.success(t('orders.order_success'));
+
+      // balance
       queryClient.invalidateQueries({
-        queryKey: statisticsTransactionsHistoryListOptions({
-          query: {
-            type: 'open',
-            tickers: [ticker],
-          },
-        }).queryKey,
+        queryKey: investorsMeRetrieveQueryKey(),
       });
+
+      // pending orders
       queryClient.invalidateQueries({
-        queryKey: investorsMeRetrieveOptions().queryKey,
+        queryKey: ordersMarketListQueryKey({ query: { ticker } }),
       });
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: ordersListOptions().queryKey,
-        });
-      }, 1000);
     },
     onError: (error) => {
       const message =

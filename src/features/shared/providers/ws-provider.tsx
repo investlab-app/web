@@ -1,7 +1,10 @@
 import { Store } from '@tanstack/react-store';
-import { createContext } from 'react';
+import { createContext, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { useAuth } from '@clerk/clerk-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
+import { orderUpdateSchema } from './types/order-update';
 import type { ReactNode } from 'react';
 
 export type HandlerId = string;
@@ -40,7 +43,7 @@ export function WSProvider({ children }: WSProviderParams) {
   const url = `${protocol}://${loc.host}/ws/`;
   const { isSignedIn } = useAuth();
   const connect = isSignedIn;
-  const ws = useWebSocket<TypedMessage>(
+  const ws = useWebSocket<TypedMessage | null>(
     url,
     {
       onError: (event) => {
@@ -56,6 +59,19 @@ export function WSProvider({ children }: WSProviderParams) {
     },
     connect
   );
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (ws.lastJsonMessage?.type === 'order_update') {
+      const parsed = orderUpdateSchema.safeParse(ws.lastJsonMessage);
+      if (parsed.success) {
+        invalidateOrderQueries(queryClient, parsed.data.data.tickers);
+      } else {
+        console.error('Failed to parse order_update message', parsed.error);
+      }
+    }
+  }, [ws.lastJsonMessage, queryClient]);
 
   function syncBackend() {
     const events = new Set(store.state.events.keys());

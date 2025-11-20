@@ -12,16 +12,16 @@ import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import { ErrorMessage } from '@/features/shared/components/error-message';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import {
+  investorsMeRetrieveQueryKey,
   ordersCancelDestroyMutation,
   ordersMarketListOptions,
+  ordersMarketListQueryKey,
 } from '@/client/@tanstack/react-query.gen';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
 interface PendingMarketOrdersProps {
   ticker: string;
 }
-
-const REFETCH_INTERVAL_MS = 1000;
 
 export function PendingMarketOrders({ ticker }: PendingMarketOrdersProps) {
   const { t } = useTranslation();
@@ -32,11 +32,7 @@ export function PendingMarketOrders({ ticker }: PendingMarketOrdersProps) {
     isError,
     isSuccess,
     refetch: refetchOrders,
-  } = useQuery({
-    ...ordersMarketListOptions({ query: { ticker } }),
-    refetchInterval: ({ state }) =>
-      (state.data?.length || 0) > 0 ? REFETCH_INTERVAL_MS : false,
-  });
+  } = useQuery(ordersMarketListOptions({ query: { ticker } }));
 
   return (
     <section className="space-y-3">
@@ -88,7 +84,10 @@ function PendingMarketOrdersTable({
     onSuccess: () => {
       toast.success(t('orders.cancel_order_success'));
       queryClient.invalidateQueries({
-        queryKey: ordersMarketListOptions({ query: { ticker } }).queryKey,
+        queryKey: ordersMarketListQueryKey({ query: { ticker } }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: investorsMeRetrieveQueryKey(),
       });
     },
     onError: () => {

@@ -11,13 +11,15 @@ import { InstrumentsPending } from '@/routes/-components/instruments-pending';
 export const Route = createFileRoute('/_authed/instruments/')({
   component: RouteComponent,
   loader: async ({ context: { queryClient } }) => {
-    await queryClient.ensureInfiniteQueryData({
-      ...instrumentsWithPricesListInfiniteOptions({
-        query: { ordering: 'ticker', page_size: 10, search: '' },
-      }),
-      initialPageParam: 1,
-      meta: { persist: false },
-    });
+    await queryClient
+      .ensureInfiniteQueryData({
+        ...instrumentsWithPricesListInfiniteOptions({
+          query: { ordering: 'ticker', page_size: 10, search: '' },
+        }),
+        initialPageParam: 1,
+        meta: { persist: false },
+      })
+      .catch();
   },
   pendingComponent: InstrumentsPending,
 });
