@@ -133,9 +133,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
-      - name: Stop backend services
-        if: always()
-        run: |
-          cd backend
-          docker compose --profile ci down
