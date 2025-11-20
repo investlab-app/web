@@ -43,7 +43,7 @@ export function WSProvider({ children }: WSProviderParams) {
   const url = `${protocol}://${loc.host}/ws/`;
   const { isSignedIn } = useAuth();
   const connect = isSignedIn;
-  const ws = useWebSocket<TypedMessage>(
+  const ws = useWebSocket<TypedMessage | null>(
     url,
     {
       onError: (event) => {
@@ -63,7 +63,7 @@ export function WSProvider({ children }: WSProviderParams) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (ws.lastJsonMessage.type === 'order_update') {
+    if (ws.lastJsonMessage?.type === 'order_update') {
       const parsed = orderUpdateSchema.safeParse(ws.lastJsonMessage);
       if (parsed.success) {
         invalidateOrderQueries(queryClient, parsed.data.data.tickers);

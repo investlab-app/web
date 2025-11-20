@@ -4,7 +4,8 @@ import type { QueryKey } from '@/client/@tanstack/react-query.gen';
 import {
   investorsMeAccountValueRetrieveQueryKey,
   investorsMeRetrieveQueryKey,
-  ordersListQueryKey,
+  ordersLimitListQueryKey,
+  ordersMarketListQueryKey,
   statisticsAssetAllocationRetrieveQueryKey,
   statisticsCurrentAccountValueRetrieveQueryKey,
   statisticsOwnedSharesListQueryKey,
@@ -68,15 +69,26 @@ export function invalidateOrderQueries(
       statisticsAssetAllocationRetrieveQueryKey()[0]._id,
   });
 
-  // orders list
-  const ordersListKey = ordersListQueryKey()[0];
+  // pending orders list
+  const ordersMarketListKey = ordersMarketListQueryKey()[0];
+  const ordersLimitListKey = ordersLimitListQueryKey()[0];
   queryClient.invalidateQueries({
     predicate: (query) => {
       const queryKey = query.queryKey[0] as QueryKey<Options>[0];
-      if (queryKey._id !== ordersListKey._id) return false;
-      const typedQueryKey = queryKey as typeof ordersListKey;
-      const ticker = typedQueryKey.query?.ticker;
-      return ticker === undefined || tickers.includes(ticker);
+      switch (queryKey._id) {
+        case ordersMarketListKey._id: {
+          const typedQueryKey = queryKey as typeof ordersMarketListKey;
+          const ticker = typedQueryKey.query?.ticker;
+          return ticker === undefined || tickers.includes(ticker);
+        }
+        case ordersLimitListKey._id: {
+          const typedQueryKey = queryKey as typeof ordersLimitListKey;
+          const ticker = typedQueryKey.query?.ticker;
+          return ticker === undefined || tickers.includes(ticker);
+        }
+        default:
+          return false;
+      }
     },
   });
 
