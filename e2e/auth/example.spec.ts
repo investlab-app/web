@@ -2,6 +2,8 @@ import { clerk } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 import { cleanClerkUser, createClerkUser } from './utils';
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 let user: Awaited<ReturnType<typeof createClerkUser>> | null = null;
 
 test.beforeAll(async () => {

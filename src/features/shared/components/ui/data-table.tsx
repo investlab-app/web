@@ -252,7 +252,7 @@ function DataTableEmptyState<TData, TValue>({
 }: DataTableEmptyStateProps<TData, TValue>) {
   const { t } = useTranslation();
   return (
-    <TableRow>
+    <TableRow data-testid="empty-state-data-table-row">
       <TableCell colSpan={columns.length} className="h-24 text-center">
         <EmptyMessage message={t('instruments.no_instruments_found')} />
       </TableCell>
