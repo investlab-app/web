@@ -5,7 +5,14 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from 'lucide-react';
+import {
+  ArrowUp,
+  Info,
+  Loader2,
+  Mic,
+  Paperclip,
+  Square,
+} from 'lucide-react';
 import { omit } from 'remeda';
 
 import { cn } from '@/features/shared/utils/styles';

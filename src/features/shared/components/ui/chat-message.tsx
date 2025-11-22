@@ -123,6 +123,35 @@ type MessagePart =
   | FilePart
   | StepStartPart;
 
+// Component for displaying images in chat messages with proper sizing
+const ChatImageDisplay = ({ file }: { file: File }) => {
+  const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const url = URL.createObjectURL(file);
+    setImageUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
+
+  if (!imageUrl) {
+    return null;
+  }
+
+  return (
+    <div className="max-w-md lg:max-w-lg xl:max-w-xl">
+      <img
+        src={imageUrl}
+        alt={file.name || 'Generated image'}
+        className="rounded-lg border shadow-sm w-full h-auto object-contain"
+        style={{ maxHeight: '400px' }}
+      />
+    </div>
+  );
+};
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | (string & {});
@@ -199,6 +228,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     );
   }
 
+  console.log(parts);
+
   if (parts && parts.length > 0) {
     return parts.map((part, index) => {
       if (part.type === 'text') {
@@ -241,6 +272,28 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             toolInvocations={[part.toolInvocation]}
           />
         );
+      } else if (part.type === 'file') {
+        const uint8Array = base64ToUint8Array(part.data);
+        const file = new File([uint8Array], 'attachment', {
+          type: part.mimeType,
+        });
+        return (
+          <div
+            key={`file-${index}`}
+            className={cn(
+              'flex flex-col',
+              isUser ? 'items-end' : 'items-start'
+            )}
+          >
+            <div className="mb-1">
+              {part.mimeType.startsWith('image/') ? (
+                <ChatImageDisplay file={file} />
+              ) : (
+                <FilePreview file={file} />
+              )}
+            </div>
+          </div>
+        );
       }
       return null;
     });
@@ -278,8 +331,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
 function dataUrlToUint8Array(data: string) {
   const base64 = data.split(',')[1];
-  const buf = Buffer.from(base64, 'base64');
-  return new Uint8Array(buf);
+  return base64ToUint8Array(base64);
+}
+
+function base64ToUint8Array(base64: string) {
+  const binaryString = atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
 }
 
 const ReasoningBlock = ({ part }: { part: ReasoningPart }) => {

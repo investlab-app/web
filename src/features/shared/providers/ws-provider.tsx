@@ -36,7 +36,7 @@ interface WSProviderParams {
 
 export function WSProvider({ children }: WSProviderParams) {
   const loc = window.location;
-  const protocol = import.meta.env.PROD ? 'wss' : 'ws';
+  const protocol = import.meta.env.PROD ? 'ws' : 'ws';
   const url = `${protocol}://${loc.host}/ws/`;
   const { isSignedIn } = useAuth();
   const connect = isSignedIn;

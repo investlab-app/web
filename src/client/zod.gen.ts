@@ -61,18 +61,6 @@ export const zChat = z.object({
     message_count: z.int().readonly()
 });
 
-export const zMessage = z.object({
-    id: z.string(),
-    role: z.string(),
-    content: z.string(),
-    created_at: z.optional(z.iso.datetime({
-        offset: true
-    })),
-    experimental_attachments: z.optional(z.array(z.unknown())),
-    tool_invocations: z.optional(z.array(z.unknown())),
-    parts: z.optional(z.array(z.unknown()))
-});
-
 export const zChatDetail = z.object({
     id: z.uuid().readonly(),
     title: z.string().max(255),
@@ -82,7 +70,46 @@ export const zChatDetail = z.object({
     updated_at: z.iso.datetime({
         offset: true
     }).readonly(),
-    messages: z.array(zMessage).readonly()
+    messages: z.array(z.object({
+        id: z.string(),
+        role: z.enum([
+            'user',
+            'assistant'
+        ]),
+        content: z.string(),
+        createdAt: z.optional(z.union([
+            z.iso.datetime({
+                offset: true
+            }),
+            z.null()
+        ])),
+        parts: z.optional(z.array(z.union([
+            z.object({
+                type: z.enum([
+                    'text'
+                ]),
+                text: z.string()
+            }),
+            z.object({
+                type: z.enum([
+                    'reasoning'
+                ]),
+                reasoning: z.string()
+            }),
+            z.object({
+                type: z.enum([
+                    'tool-invocation'
+                ])
+            }),
+            z.object({
+                type: z.enum([
+                    'file'
+                ]),
+                mimeType: z.string(),
+                data: z.string()
+            })
+        ])))
+    })).readonly()
 });
 
 export const zChatDetailRequest = z.object({
