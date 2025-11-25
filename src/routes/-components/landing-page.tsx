@@ -4,13 +4,13 @@ import {
   ArrowRight,
   Bot,
   CandlestickChart,
+  History,
+  LayoutDashboard,
   Newspaper,
   PieChart,
   ShieldCheck,
   Wallet,
-  LayoutDashboard,
   Workflow,
-  History,
 } from 'lucide-react';
 import { Button } from '@/features/shared/components/ui/button';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
@@ -18,10 +18,13 @@ import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 import { ThemeToggle } from '@/features/shared/components/mode-toggle';
 import { LanguageToggle } from '@/features/shared/components/language-toggle';
 import { cn } from '@/features/shared/utils/styles';
+import { useTheme } from '@/features/shared/components/theme-provider';
+import { LANDING_IMGS_BASE_URL } from '@/features/shared/utils/constants';
 
 export function LandingPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { appTheme } = useTheme();
 
   const features = [
     {
@@ -51,41 +54,49 @@ export function LandingPage() {
       icon: <LayoutDashboard className="h-8 w-8" />,
       title: t('landing.features_overview.dashboard_title'),
       description: t('landing.features_overview.dashboard_description'),
+      image: undefined,
     },
     {
       icon: <Newspaper className="h-8 w-8" />,
       title: t('landing.features_overview.market_data_title'),
       description: t('landing.features_overview.market_data_description'),
+      image: undefined,
     },
     {
       icon: <PieChart className="h-8 w-8" />,
       title: t('landing.features_overview.statistics_title'),
       description: t('landing.features_overview.statistics_description'),
+      image: undefined,
     },
     {
       icon: <History className="h-8 w-8" />,
       title: t('landing.features_overview.transactions_title'),
       description: t('landing.features_overview.transactions_description'),
+      image: undefined,
     },
     {
       icon: <Wallet className="h-8 w-8" />,
       title: t('landing.features_overview.wallet_title'),
       description: t('landing.features_overview.wallet_description'),
+      image: 'wallet',
     },
     {
       icon: <Workflow className="h-8 w-8" />,
       title: t('landing.features_overview.strategy_editor_title'),
       description: t('landing.features_overview.strategy_editor_description'),
+      image: 'strategies',
     },
     {
       icon: <Bot className="h-8 w-8" />,
       title: t('landing.features_overview.llm_chat_title'),
       description: t('landing.features_overview.llm_chat_description'),
+      image: 'chat',
     },
     {
       icon: <CandlestickChart className="h-8 w-8" />,
       title: t('landing.features_overview.charts_title'),
       description: t('landing.features_overview.charts_description'),
+      image: 'charts',
     },
   ];
 
@@ -216,7 +227,15 @@ export function LandingPage() {
                 </div>
                 <div className="flex-1 w-full h-64 bg-muted rounded-lg flex items-center justify-center">
                   <p className="text-muted-foreground">
-                    {t('landing.features_overview.screenshot_placeholder')}
+                    {!feature.image ? (
+                      t('landing.features_overview.screenshot_placeholder')
+                    ) : (
+                      <img
+                        src={`${LANDING_IMGS_BASE_URL}/${i18n.language}/${appTheme}/${feature.image}.jpg`}
+                        alt={feature.title}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    )}
                   </p>
                 </div>
               </div>

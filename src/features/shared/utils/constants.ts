@@ -16,3 +16,8 @@ export const POSTHOG_HOST = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
 if (!POSTHOG_HOST) {
   throw new Error('VITE_PUBLIC_POSTHOG_HOST is not defined');
 }
+
+export const LANDING_IMGS_BASE_URL = import.meta.env.VITE_LANDING_IMGS_BASE_URL;
+if (!LANDING_IMGS_BASE_URL) {
+  throw new Error('VITE_LANDING_IMGS_BASE_URL is not defined');
+}

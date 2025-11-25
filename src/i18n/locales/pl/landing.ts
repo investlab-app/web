@@ -1,5 +1,5 @@
 const plLanding = {
-    get_started_free: 'Rozpocznij za darmo',
+  get_started_free: 'Rozpocznij za darmo',
   login: 'Zaloguj się',
   header: {
     title_1: 'Rozpocznij swoją przygodę z inwestowaniem',
@@ -38,9 +38,9 @@ const plLanding = {
     statistics_description:
       'Śledź skuteczność swoich decyzji inwestycyjnych poprzez panel statystyk. Analizuj swoje wyniki i ucz się na błędach.',
     transactions_title: 'Historia transakcji',
-    transactions_description: 
-    'Przeglądaj szczegółową historię wszystkich transakcji, aby lepiej zrozumieć swoje poprzednie ruchy i podejmować bardziej świadome decyzje w przyszłości.',
-      wallet_title: 'Portfel',
+    transactions_description:
+      'Przeglądaj szczegółową historię wszystkich transakcji, aby lepiej zrozumieć swoje poprzednie ruchy i podejmować bardziej świadome decyzje w przyszłości.',
+    wallet_title: 'Portfel',
     wallet_description:
       'Zarządzaj swoim wirtualnym kapitałem oraz monitoruj stan swojego konta w dedykowanej sekcji portfela.',
     strategy_editor_title: 'Edytor i lista strategii',
