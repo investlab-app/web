@@ -200,7 +200,7 @@ export function Chat({
   );
 
   return (
-    <ChatContainer className={cn('mx-auto px-4', className)}>
+    <ChatContainer className={cn('mx-auto', className)}>
       {isEmpty && append && suggestions ? (
         <div className="flex flex-col gap-8 py-8">
           <PromptSuggestions
