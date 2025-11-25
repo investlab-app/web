@@ -4,12 +4,13 @@ import {
   ArrowRight,
   Bot,
   CandlestickChart,
-  Cpu,
   Newspaper,
   PieChart,
   ShieldCheck,
   Wallet,
   LayoutDashboard,
+  Workflow,
+  History,
 } from 'lucide-react';
 import { Button } from '@/features/shared/components/ui/button';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
@@ -24,7 +25,7 @@ export function LandingPage() {
 
   const features = [
     {
-      icon: <Cpu className="h-6 w-6" />,
+      icon: <Workflow className="h-6 w-6" />,
       title: t('landing.core_features.feature_1_title'),
       description: t('landing.core_features.feature_1_description'),
     },
@@ -62,12 +63,17 @@ export function LandingPage() {
       description: t('landing.features_overview.statistics_description'),
     },
     {
+      icon: <History className="h-8 w-8" />,
+      title: t('landing.features_overview.transactions_title'),
+      description: t('landing.features_overview.transactions_description'),
+    },
+    {
       icon: <Wallet className="h-8 w-8" />,
       title: t('landing.features_overview.wallet_title'),
       description: t('landing.features_overview.wallet_description'),
     },
     {
-      icon: <Cpu className="h-8 w-8" />,
+      icon: <Workflow className="h-8 w-8" />,
       title: t('landing.features_overview.strategy_editor_title'),
       description: t('landing.features_overview.strategy_editor_description'),
     },
@@ -110,7 +116,7 @@ export function LandingPage() {
 
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
                 {t('landing.header.title_1')}
-                <span className="text-primary-foreground block">
+                <span className="text-primary-foreground  block">
                   {t('landing.header.title_2')}
                 </span>
               </h1>
