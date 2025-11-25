@@ -2,16 +2,21 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
-  BarChart3,
-  Shield,
-  Smartphone,
-  TrendingUp,
+  Bot,
+  CandlestickChart,
+  Cpu,
+  Newspaper,
+  PieChart,
+  ShieldCheck,
+  Wallet,
+  LayoutDashboard,
 } from 'lucide-react';
 import { Button } from '@/features/shared/components/ui/button';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
 import { InvestLabLogo } from '@/features/shared/components/investlab-logo';
 import { ThemeToggle } from '@/features/shared/components/mode-toggle';
 import { LanguageToggle } from '@/features/shared/components/language-toggle';
+import { cn } from '@/features/shared/utils/styles';
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -19,24 +24,62 @@ export function LandingPage() {
 
   const features = [
     {
-      icon: <TrendingUp className="h-6 w-6" />,
-      title: t('hero.feature_realtime_title'),
-      description: t('hero.feature_realtime_desc'),
+      icon: <Cpu className="h-6 w-6" />,
+      title: t('landing.core_features.feature_1_title'),
+      description: t('landing.core_features.feature_1_description'),
     },
     {
-      icon: <BarChart3 className="h-6 w-6" />,
-      title: t('hero.feature_analytics_title'),
-      description: t('hero.feature_analytics_desc'),
+      icon: <Bot className="h-6 w-6" />,
+      title: t('landing.core_features.feature_2_title'),
+      description: t('landing.core_features.feature_2_description'),
     },
     {
-      icon: <Shield className="h-6 w-6" />,
-      title: t('hero.feature_security_title'),
-      description: t('hero.feature_security_desc'),
+      icon: <Newspaper className="h-6 w-6" />,
+      title: t('landing.core_features.feature_3_title'),
+      description: t('landing.core_features.feature_3_description'),
     },
     {
-      icon: <Smartphone className="h-6 w-6" />,
-      title: t('hero.feature_mobile_title'),
-      description: t('hero.feature_mobile_desc'),
+      icon: <ShieldCheck className="h-6 w-6" />,
+      title: t('landing.core_features.feature_4_title'),
+      description: t('landing.core_features.feature_4_description'),
+    },
+  ];
+
+  const platformFeatures = [
+    {
+      icon: <LayoutDashboard className="h-8 w-8" />,
+      title: t('landing.features_overview.dashboard_title'),
+      description: t('landing.features_overview.dashboard_description'),
+    },
+    {
+      icon: <Newspaper className="h-8 w-8" />,
+      title: t('landing.features_overview.market_data_title'),
+      description: t('landing.features_overview.market_data_description'),
+    },
+    {
+      icon: <PieChart className="h-8 w-8" />,
+      title: t('landing.features_overview.statistics_title'),
+      description: t('landing.features_overview.statistics_description'),
+    },
+    {
+      icon: <Wallet className="h-8 w-8" />,
+      title: t('landing.features_overview.wallet_title'),
+      description: t('landing.features_overview.wallet_description'),
+    },
+    {
+      icon: <Cpu className="h-8 w-8" />,
+      title: t('landing.features_overview.strategy_editor_title'),
+      description: t('landing.features_overview.strategy_editor_description'),
+    },
+    {
+      icon: <Bot className="h-8 w-8" />,
+      title: t('landing.features_overview.llm_chat_title'),
+      description: t('landing.features_overview.llm_chat_description'),
+    },
+    {
+      icon: <CandlestickChart className="h-8 w-8" />,
+      title: t('landing.features_overview.charts_title'),
+      description: t('landing.features_overview.charts_description'),
     },
   ];
 
@@ -66,13 +109,13 @@ export function LandingPage() {
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-                {t('hero.title_1')}
+                {t('landing.header.title_1')}
                 <span className="text-primary-foreground block">
-                  {t('hero.title_2')}
+                  {t('landing.header.title_2')}
                 </span>
               </h1>
               <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto text-balance">
-                {t('hero.description')}
+                {t('landing.header.description')}
               </p>
               <div className="mt-10 flex items-center justify-center gap-4">
                 <Button
@@ -80,51 +123,14 @@ export function LandingPage() {
                   onClick={() => navigate({ to: '/signup' })}
                   className="h-12 px-8"
                 >
-                  {t('hero.get_started_free')}
+                  {t('landing.get_started_free')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Link to="/login">
                   <Button variant="outline" size="lg" className="h-12 px-8">
-                    {t('auth.login')}
+                    {t('landing.login')}
                   </Button>
                 </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Platform Screenshot Section */}
-      <div className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              {t('hero.platform_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('hero.platform_description')}
-            </p>
-          </div>
-
-          {/* Placeholder for platform screenshot */}
-          <div className="relative mx-auto max-w-5xl">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/10 dark:to-secondary/10">
-              <div className="aspect-[16/10] flex items-center justify-center bg-muted/30 backdrop-blur-sm">
-                <div className="text-center p-8">
-                  <BarChart3 className="h-16 w-16 mx-auto mb-4 text-primary-foreground" />
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
-                    {t('hero.platform_preview')}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    {t('hero.platform_screenshot_coming')}
-                  </p>
-                </div>
-              </div>
-              {/* Decorative elements */}
-              <div className="absolute top-4 left-4 flex space-x-2">
-                <div className="h-3 w-3 rounded-full bg-[var(--red)]" />
-                <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                <div className="h-3 w-3 rounded-full bg-[var(--green)]" />
               </div>
             </div>
           </div>
@@ -136,10 +142,10 @@ export function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              {t('hero.features_title')}
+              {t('landing.core_features.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('hero.features_description')}
+              {t('landing.core_features.description')}
             </p>
           </div>
 
@@ -168,19 +174,64 @@ export function LandingPage() {
         </div>
       </div>
 
+      {/* Platform Features Section */}
+      <div className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              {t('landing.features_overview.title')}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              {t('landing.features_overview.description')}
+            </p>
+          </div>
+
+          <div className="space-y-16">
+            {platformFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className={cn(
+                  'flex flex-col md:flex-row items-center gap-8 md:gap-12',
+                  index % 2 !== 0 && 'md:flex-row-reverse'
+                )}
+              >
+                <div className="flex-1">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-2xl font-bold text-foreground">
+                      {feature.title}
+                    </h3>
+                  </div>
+                  <p className="text-muted-foreground text-lg">
+                    {feature.description}
+                  </p>
+                </div>
+                <div className="flex-1 w-full h-64 bg-muted rounded-lg flex items-center justify-center">
+                  <p className="text-muted-foreground">
+                    {t('landing.features_overview.screenshot_placeholder')}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* CTA Section */}
       <div className="py-16 bg-purple-900/20 dark:bg-purple-900/20">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-foreground mb-4">
-            {t('hero.cta_title')}
+            {t('landing.cta_title')}
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            {t('hero.cta_description')}
+            {t('landing.cta_description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
               <Button size="lg" className="h-12 px-8">
-                {t('hero.create_free_account')}
+                {t('landing.get_started_free')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -190,7 +241,7 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 px-8 border-primary-foreground/20 text-foreground hover:bg-primary-foreground/10"
               >
-                {t('hero.sign_in')}
+                {t('landing.login')}
               </Button>
             </Link>
           </div>

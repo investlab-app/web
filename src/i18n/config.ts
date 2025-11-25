@@ -8,8 +8,8 @@ import enCommon from './locales/en/common';
 import plCommon from './locales/pl/common';
 import enInstruments from './locales/en/instruments';
 import plInstruments from './locales/pl/instruments';
-import enHero from './locales/en/hero';
-import plHero from './locales/pl/hero';
+import enLanding from './locales/en/landing';
+import plLanding from './locales/pl/landing';
 import enInvestor from './locales/en/investor';
 import plInvestor from './locales/pl/investor';
 import enSettings from './locales/en/settings';
@@ -62,7 +62,7 @@ i18n
           auth: enAuth,
           common: enCommon,
           flows: enFlows,
-          hero: enHero,
+          landing: enLanding,
           instruments: enInstruments,
           investor: enInvestor,
           orders: enOrders,
@@ -86,7 +86,7 @@ i18n
           auth: plAuth,
           common: plCommon,
           flows: plFlows,
-          hero: plHero,
+          landing: plLanding,
           instruments: plInstruments,
           investor: plInvestor,
           orders: plOrders,
