@@ -70,7 +70,7 @@ export function Chat({
   transcribeAudio,
 }: ChatProps) {
   const { t } = useTranslation();
-  const { open } = useSidebar();
+  const { isMobile, open } = useSidebar();
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === 'user';
@@ -225,15 +225,20 @@ export function Chat({
       <div
         className="fixed bottom-0 left-0 right-0"
         style={{
-          marginLeft: open
-            ? 'var(--sidebar-width)'
-            : 'var(--sidebar-width-icon)',
+          marginLeft: isMobile
+            ? '0'
+            : open
+              ? 'var(--sidebar-width)'
+              : 'var(--sidebar-width-icon)',
           transitionTimingFunction: 'var(--ease-out)',
           transitionDuration: '200ms',
           transitionProperty: 'margin',
         }}
       >
-        <ChatForm className="max-w-3xl mx-auto" handleSubmit={handleSubmit}>
+        <ChatForm
+          className="max-w-3xl px-4 mx-auto"
+          handleSubmit={handleSubmit}
+        >
           {({ files, setFiles }) => (
             <MessageInput
               value={input}
