@@ -47,7 +47,7 @@ export function MessageInput({
   submitOnEnter = true,
   stop,
   isGenerating,
-  enableInterrupt = true,
+  enableInterrupt = false,
   transcribeAudio,
   ...props
 }: MessageInputProps) {
