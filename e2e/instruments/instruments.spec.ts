@@ -5,13 +5,9 @@ import { InstrumentsPage } from '../pages/instruments.page';
 test.describe('Instruments Page', () => {
   let instrumentsPage: InstrumentsPage;
 
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
-
-    const storage = await context.storageState();
-    console.log(`STORAGE=${JSON.stringify(storage)}`);
-
     await instrumentsPage.waitForPageReady();
   });
 

@@ -60,7 +60,6 @@ const queryClient = new QueryClient({
 
 export type RouterContext = {
   auth: ReturnType<typeof useAuth>;
-  clerk: ReturnType<typeof useClerk>;
   isLoggedInBefore: boolean;
   i18n: ReturnType<typeof useTranslation>;
   queryClient: QueryClient;
@@ -72,7 +71,6 @@ export const router = createRouter({
   context: {
     queryClient,
     auth: undefined!,
-    clerk: undefined!,
     isLoggedInBefore: undefined!,
     i18n: undefined!,
   },
@@ -114,7 +112,7 @@ function App() {
       <ToasterProvider>
         <InAppNotificationsProvider>
           <RouterProvider
-            context={{ queryClient, auth, clerk, isLoggedInBefore, i18n }}
+            context={{ queryClient, auth, isLoggedInBefore, i18n }}
             router={router}
           />
         </InAppNotificationsProvider>
