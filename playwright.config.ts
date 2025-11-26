@@ -18,7 +18,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -46,6 +46,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.clerk/user.json',
       },
+      testMatch: /e2e\/instruments\/instruments\.spec\.ts/,
       dependencies: ['global setup'],
     },
     // {

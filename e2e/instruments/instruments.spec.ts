@@ -3,24 +3,13 @@ import { clerk } from '@clerk/testing/playwright';
 
 import { InstrumentsPage } from '../pages/instruments.page';
 
-test.describe('Instruments Page', () => {
+test('Instruments Page', () => {
   let instrumentsPage: InstrumentsPage;
 
   test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
-
-    const clerkUserEmail = process.env.E2E_CLERK_USER_EMAIL!;
-    const clerkUserPassword = process.env.E2E_CLERK_USER_PASSWORD!;
-    await clerk.signIn({
-      page,
-      signInParams: {
-        strategy: 'password',
-        identifier: clerkUserEmail,
-        password: clerkUserPassword,
-      },
-    });
-
+    await clerk.loaded({ page })
     await instrumentsPage.waitForPageReady();
   });
 
