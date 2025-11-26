@@ -143,6 +143,12 @@ runs:
         cd /tmp/backend
         docker compose --profile ci up -d --wait
 
+    - name: Seed the database
+      shell: bash
+      run: |
+        cd /tmp/backend
+        docker compose exec backend uv run manage.py seed_testing_db --investor-id=user_2zgsgKHXMItpEbTLdBdaJR7YaZh
+
     - name: If failed show logs
       if: failure()
       shell: bash

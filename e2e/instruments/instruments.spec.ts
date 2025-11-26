@@ -9,7 +9,7 @@ test.describe('Instruments Page', () => {
   test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
-    await clerk.loaded({ page })
+    await clerk.loaded({ page });
     await instrumentsPage.waitForPageReady();
   });
 
