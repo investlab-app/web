@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { clerk } from '@clerk/testing/playwright';
 
 import { InstrumentsPage } from '../pages/instruments.page';
 
@@ -12,8 +11,6 @@ test.describe('Instruments Page', () => {
 
     const storage = await context.storageState();
     console.log(`STORAGE=${JSON.stringify(storage)}`);
-
-    await clerk.loaded({ page });
 
     await instrumentsPage.waitForPageReady();
   });

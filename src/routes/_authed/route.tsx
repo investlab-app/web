@@ -1,15 +1,9 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_authed')({
-  beforeLoad: async ({ context: { auth, isLoggedInBefore } }) => {
+  beforeLoad: ({ context: { isLoggedInBefore } }) => {
     if (!isLoggedInBefore) {
-      if (!auth.isLoaded) {
-        while (!auth.isLoaded) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
-      } else {
-        throw redirect({ to: '/' });
-      }
+      throw redirect({ to: '/' });
     }
   },
   component: RouteComponent,
@@ -17,6 +11,10 @@ export const Route = createFileRoute('/_authed')({
 
 function RouteComponent() {
   const { auth, isLoggedInBefore } = Route.useRouteContext();
+
+  console.log(`auth.isLoaded: ${auth.isLoaded}`);
+  console.log(`isLoggedInBefore: ${isLoggedInBefore}`);
+  console.log(`auth.isSignedIn: ${auth.isSignedIn}`);
 
   if (!auth.isLoaded && isLoggedInBefore) {
     return <Outlet />;
