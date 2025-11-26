@@ -148,6 +148,7 @@ const COMPONENTS = {
   strong: withClass('strong', 'font-semibold'),
   a: withClass('a', 'text-primary underline underline-offset-2'),
   blockquote: withClass('blockquote', 'border-l-2 border-primary pl-4'),
+  img: withClass('img', 'bg-white rounded-md my-2'),
   code: ({ children, className, node, ...rest }: any) => {
     const match = /language-(\w+)/.exec(className || '');
     return match ? (
