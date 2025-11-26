@@ -740,8 +740,8 @@ export type PriceDaily = {
 };
 
 export type PriceDailySummary = {
+    readonly current_price: string;
     ticker: string;
-    current_price: string;
     daily_summary: PriceDaily;
     todays_change: string;
     todays_change_percent: string;
@@ -1120,6 +1120,14 @@ export type PriceAlertCreateRequestWritable = {
     threshold_type: ThresholdTypeEnum;
     threshold_value: string;
     notification_config: NotificationConfigCreateRequestWritable;
+};
+
+export type PriceDailySummaryWritable = {
+    ticker: string;
+    daily_summary: PriceDaily;
+    todays_change: string;
+    todays_change_percent: string;
+    last_updated: string;
 };
 
 export type AuthSignInCreateData = {

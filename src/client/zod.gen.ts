@@ -415,8 +415,8 @@ export const zPriceDaily = z.object({
 });
 
 export const zPriceDailySummary = z.object({
+    current_price: z.string().readonly(),
     ticker: z.string(),
-    current_price: z.string(),
     daily_summary: zPriceDaily,
     todays_change: z.string(),
     todays_change_percent: z.string(),
@@ -1313,6 +1313,16 @@ export const zPriceAlertCreateRequestWritable = z.object({
     threshold_type: zThresholdTypeEnum,
     threshold_value: z.string().regex(/^-?\d{0,8}(?:\.\d{0,2})?$/),
     notification_config: zNotificationConfigCreateRequestWritable
+});
+
+export const zPriceDailySummaryWritable = z.object({
+    ticker: z.string(),
+    daily_summary: zPriceDaily,
+    todays_change: z.string(),
+    todays_change_percent: z.string(),
+    last_updated: z.iso.datetime({
+        offset: true
+    })
 });
 
 export const zAuthSignInCreateData = z.object({

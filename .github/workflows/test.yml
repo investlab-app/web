@@ -92,6 +92,7 @@ jobs:
           openai-api-url: ${{ secrets.OPENAI_API_URL }}
           openai-translating-model: ${{ secrets.OPENAI_TRANSLATING_MODEL }}
           gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          e2e-clerk-user-id: ${{ secrets.E2E_CLERK_USER_ID }}
       - name: Setup and build frontend
         uses: ./.github/actions/setup-and-build
         with:

@@ -177,7 +177,7 @@ function PositionsRowsSkeleton() {
   return (
     <>
       {Array.from({ length: 6 }).map((_, index) => (
-        <TableRow key={index}>
+        <TableRow key={index} data-testid="pending-state-data-table-row">
           <TableCell>
             <Skeleton className="h-4 w-3/4" />
           </TableCell>

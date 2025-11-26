@@ -4,12 +4,6 @@ import { useDnD } from '../../hooks/use-dnd';
 import { CustomNodeTypes } from '../../types/node-types';
 import { PriceOfNodeUI } from '../../nodes/number/price-of-node-ui';
 import { PriceOfNodeSettings } from '../../nodes/number/price-of-node-settings';
-import { MoneyAvailableNodeUI } from '../../nodes/number/money-available-node-ui';
-import { MoneyAvailableNodeSettings } from '../../nodes/number/money-available-node-settings';
-import { NumberOfAssetsNodeUI } from '../../nodes/number/number-of-assets-node-ui';
-import { NumberOfAssetsNodeSettings } from '../../nodes/number/number-of-assets-node-settings';
-import { ValueOfAssetsNodeUI } from '../../nodes/number/value-of-assets-node-ui';
-import { ValueOfAssetsNodeSettings } from '../../nodes/number/value-of-assets-node-settings';
 import { IndicatorNodeUI } from '../../nodes/number/indicator-node-ui';
 import { IndicatorNodeSettings } from '../../nodes/number/indicator-node-settings';
 import { PriceChangeNodeUI } from '../../nodes/number/price-change-node-ui';
@@ -187,18 +181,6 @@ export function DnDSidebar({
           [CustomNodeTypes.PriceOf]: {
             component: PriceOfNodeUI,
             settingsType: PriceOfNodeSettings,
-          },
-          [CustomNodeTypes.MoneyAvailable]: {
-            component: MoneyAvailableNodeUI,
-            settingsType: MoneyAvailableNodeSettings,
-          },
-          [CustomNodeTypes.NumberOfAssets]: {
-            component: NumberOfAssetsNodeUI,
-            settingsType: NumberOfAssetsNodeSettings,
-          },
-          [CustomNodeTypes.ValueOfAssets]: {
-            component: ValueOfAssetsNodeUI,
-            settingsType: ValueOfAssetsNodeSettings,
           },
           [CustomNodeTypes.Indicator]: {
             component: IndicatorNodeUI,

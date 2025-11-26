@@ -77,6 +77,9 @@ inputs:
   gemini-api-key:
     description: 'Gemini API key'
     required: true
+  e2e-clerk-user-id:
+    description: 'E2E Clerk user ID'
+    required: true
 
 outputs:
   backend-url:
@@ -142,6 +145,12 @@ runs:
       run: |
         cd /tmp/backend
         docker compose --profile ci up -d --wait
+
+    - name: Seed the database
+      shell: bash
+      run: |
+        cd /tmp/backend
+        docker compose exec backend uv run manage.py seed_testing_db --investor-id=${{ inputs.e2e-clerk-user-id }}
 
     - name: If failed show logs
       if: failure()
