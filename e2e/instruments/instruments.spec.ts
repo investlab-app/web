@@ -7,10 +7,9 @@ test.describe('Instruments Page', () => {
   let instrumentsPage: InstrumentsPage;
 
   test.beforeEach(async ({ page }) => {
-    await clerk.loaded({ page });
-
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
+    await clerk.loaded({ page });
     await instrumentsPage.waitForPageReady();
   });
 
