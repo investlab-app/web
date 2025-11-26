@@ -150,9 +150,7 @@ if (rootElement && !rootElement.innerHTML) {
                 },
               }}
             >
-              <ClerkLoaded>
-                <App />
-              </ClerkLoaded>
+              <App />
             </PersistQueryClientProvider>
           </Conditional>
         </ClerkThemedProvider>
