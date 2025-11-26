@@ -51,6 +51,7 @@ export default defineConfig({
       name: 'auth',
       use: {
         ...devices['Desktop Chrome'],
+        storageState: 'playwright/.clerk/user.json',
       },
       testMatch: /auth.*\.spec\.ts/,
       dependencies: ['global setup'],
