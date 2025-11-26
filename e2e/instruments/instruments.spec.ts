@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { clerk } from '@clerk/testing/playwright';
 
 import { InstrumentsPage } from '../pages/instruments.page';
 
@@ -9,7 +8,6 @@ test.describe('Instruments Page', () => {
   test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
-    await clerk.loaded({ page });
     await instrumentsPage.waitForPageReady();
   });
 

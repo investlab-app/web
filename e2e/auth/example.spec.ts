@@ -2,36 +2,38 @@ import { clerk } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 import { cleanClerkUser, createClerkUser } from './utils';
 
-test.use({ storageState: { cookies: [], origins: [] } });
-
 let user: Awaited<ReturnType<typeof createClerkUser>> | null = null;
 
-test.beforeAll(async () => {
-  user = await createClerkUser();
-});
+test.describe('example', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
 
-test('example', async ({ page }) => {
-  if (!user) throw new Error('User not created');
-
-  await page.goto('/');
-
-  await clerk.signIn({
-    page,
-    signInParams: {
-      strategy: 'password',
-      identifier: user.email_address[0],
-      password: user.password,
-    },
+  test.beforeAll(async () => {
+    user = await createClerkUser();
   });
 
-  // users email is shown in the sidebar
-  await expect(page.getByText(user.email_address[0])).toBeVisible();
+  test('example', async ({ page }) => {
+    if (!user) throw new Error('User not created');
 
-  await clerk.signOut({ page });
-});
+    await page.goto('/');
 
-test.afterAll(async () => {
-  if (!user) throw new Error('User not created');
+    await clerk.signIn({
+      page,
+      signInParams: {
+        strategy: 'password',
+        identifier: user.email_address[0],
+        password: user.password,
+      },
+    });
 
-  await cleanClerkUser(user.id);
+    // users email is shown in the sidebar
+    await expect(page.getByText(user.email_address[0])).toBeVisible();
+
+    await clerk.signOut({ page });
+  });
+
+  test.afterAll(async () => {
+    if (!user) throw new Error('User not created');
+
+    await cleanClerkUser(user.id);
+  });
 });
