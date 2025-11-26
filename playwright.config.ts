@@ -39,11 +39,20 @@ export default defineConfig({
       testMatch: /global\.setup\.ts/,
     },
     {
-      name: 'chromium',
+      name: 'instruments',
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.clerk/user.json',
       },
+      testMatch: /instruments.*\.spec\.ts/,
+      dependencies: ['global setup'],
+    },
+    {
+      name: 'auth',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+      testMatch: /auth.*\.spec\.ts/,
       dependencies: ['global setup'],
     },
     // {

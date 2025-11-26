@@ -10,11 +10,12 @@ export const Route = createFileRoute('/_authed')({
 });
 
 function RouteComponent() {
-  const { auth, isLoggedInBefore } = Route.useRouteContext();
+  const { auth, clerk, isLoggedInBefore } = Route.useRouteContext();
 
   console.log(`auth.isLoaded: ${auth.isLoaded}`);
   console.log(`isLoggedInBefore: ${isLoggedInBefore}`);
   console.log(`auth.isSignedIn: ${auth.isSignedIn}`);
+  console.log(`clerk.session: ${clerk.session?.expireAt}`);
 
   if (!auth.isLoaded && isLoggedInBefore) {
     return <Outlet />;
