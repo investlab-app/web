@@ -5,6 +5,8 @@ import { InstrumentsPage } from '../pages/instruments.page';
 test.describe('Instruments Page', () => {
   let instrumentsPage: InstrumentsPage;
 
+  test.use({ storageState: 'playwright/.clerk/user.json' });
+
   test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
