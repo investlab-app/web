@@ -7,9 +7,13 @@ test.describe('Instruments Page', () => {
 
   test.use({ storageState: 'playwright/.clerk/user.json' });
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
+
+    const storage = await context.storageState();
+    console.log(`STORAGE=${storage}`);
+
     await instrumentsPage.waitForPageReady();
   });
 
