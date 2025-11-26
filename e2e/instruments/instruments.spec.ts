@@ -3,7 +3,7 @@ import { clerk } from '@clerk/testing/playwright';
 
 import { InstrumentsPage } from '../pages/instruments.page';
 
-test('Instruments Page', () => {
+test.describe('Instruments Page', () => {
   let instrumentsPage: InstrumentsPage;
 
   test.beforeEach(async ({ page }) => {
