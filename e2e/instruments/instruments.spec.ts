@@ -9,7 +9,18 @@ test.describe('Instruments Page', () => {
   test.beforeEach(async ({ page }) => {
     instrumentsPage = new InstrumentsPage(page);
     await instrumentsPage.navigateTo();
-    await clerk.loaded({ page });
+
+    const clerkUserEmail = process.env.E2E_CLERK_USER_EMAIL!;
+    const clerkUserPassword = process.env.E2E_CLERK_USER_PASSWORD!;
+    await clerk.signIn({
+      page,
+      signInParams: {
+        strategy: 'password',
+        identifier: clerkUserEmail,
+        password: clerkUserPassword,
+      },
+    });
+
     await instrumentsPage.waitForPageReady();
   });
 
