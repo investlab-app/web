@@ -46,6 +46,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.clerk/user.json',
       },
+      testMatch: /e2e\/instruments\/instruments\.spec\.ts/,
       dependencies: ['global setup'],
     },
     // {
