@@ -45,7 +45,6 @@ export class InstrumentsPage {
   }
 
   async waitForTableToLoad() {
-    await this.page.waitForTimeout(1000);
     await this.page
       .locator('[data-testid="instrument-table-ready"]')
       .waitFor({ state: 'attached', timeout: 10000 });
