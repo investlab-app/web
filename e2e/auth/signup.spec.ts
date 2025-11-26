@@ -2,7 +2,6 @@ import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 import { cleanCurrentClerkUser, getRandomClerkTestEmail } from './utils';
 
-
 test.describe('signup', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
