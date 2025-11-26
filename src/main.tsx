@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-query';
 import { StrictMode, useEffect } from 'react';
 import { PostHogProvider } from 'posthog-js/react';
-import { ClerkLoaded, useAuth, useClerk } from '@clerk/clerk-react';
+import { useAuth, useClerk } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { routeTree } from './routeTree.gen';
 import { WSProvider } from './features/shared/providers/ws-provider.tsx';
