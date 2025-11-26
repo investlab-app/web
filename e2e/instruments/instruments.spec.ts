@@ -12,7 +12,7 @@ test.describe('Instruments Page', () => {
     await instrumentsPage.navigateTo();
 
     const storage = await context.storageState();
-    console.log(`STORAGE=${storage}`);
+    console.log(`STORAGE=${JSON.stringify(storage)}`);
 
     await instrumentsPage.waitForPageReady();
   });
