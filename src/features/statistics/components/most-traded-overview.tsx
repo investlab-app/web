@@ -81,10 +81,10 @@ const MostTradedOverview = () => {
                     {t('statistics.buys_sells')}
                   </TableHead>
                   <TableHead className="text-right">
-                    {t('statistics.gain')}
+                    {t('common.gain')}
                   </TableHead>
                   <TableHead className="text-right">
-                    {t('statistics.avg_gain')}
+                    {t('common.gain_percentage')}
                   </TableHead>
                 </TableRow>
               </TableHeader>

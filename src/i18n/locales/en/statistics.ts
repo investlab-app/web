@@ -12,7 +12,6 @@ const enStatistics = {
   exp_points: 'Experience Points',
   left_to_next_level: 'Left to Next Level',
   total_account_value: 'Total Account Value',
-  gain: 'Gain',
   no_most_traded_instruments: 'No most traded instruments found',
 };
 

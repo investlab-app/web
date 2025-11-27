@@ -12,7 +12,6 @@ const plStatistics = {
   exp_points: 'Punkty doświadczenia',
   left_to_next_level: 'Do następnego poziomu',
   total_account_value: 'Łączna wartość konta',
-  gain: 'Zysk',
   no_most_traded_instruments:
     'Nie znaleziono najczęściej handlowanych instrumentów',
 };
