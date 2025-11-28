@@ -58,10 +58,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t('common.strategies'),
         to: '/strategies',
         icon: Workflow,
-        tooltip: t(
-          'common.tooltips.navigation.strategies',
-          'See and edit your saved automated strategies'
-        ),
+        tooltip: t('common.tooltips.navigation.flows'),
       },
       {
         title: t('common.transactions'),
