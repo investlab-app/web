@@ -4,6 +4,7 @@ const plInstruments = {
   sell: 'Sprzedaj',
   volume: 'Wolumen',
   price: 'Cena',
+  value: 'Wartość',
   name: 'Nazwa',
   market_capital: 'Kapitał rynkowy',
   market_cap: 'Kapitalizacja rynkowa',

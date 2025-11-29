@@ -128,7 +128,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
     <div className="space-y-2">
       <div className="flex gap-2 items-center">
         <label className="font-medium">
-          {mode === 'price' ? t('instruments.price') : t('instruments.volume')}
+          {mode === 'price' ? t('instruments.value') : t('instruments.volume')}
           {': '}
         </label>
         {mode === 'price' ? (
@@ -172,7 +172,7 @@ export const MarketOrder = ({ ticker }: MarketOrderProps) => {
           <span className="text-muted-foreground">
             {mode === 'price'
               ? t('instruments.volume')
-              : t('instruments.price')}
+              : t('instruments.value')}
           </span>
           <span className="font-medium tabular-nums">
             {mode === 'price'

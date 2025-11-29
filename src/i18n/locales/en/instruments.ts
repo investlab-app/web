@@ -4,6 +4,7 @@ const enInstruments = {
   sell: 'Sell',
   volume: 'Volume',
   price: 'Price',
+  value: 'Value',
   market_capital: 'Market capital',
   market_cap: 'Market Cap',
   exchange: 'Exchange',
