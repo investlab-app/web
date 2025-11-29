@@ -4,6 +4,11 @@ export const withCurrency = (
   precision: number = 2,
   currency: string = 'USD'
 ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (val === undefined || val === null) {
+    console.warn('withCurrency called with undefined or null value');
+    return '';
+  }
   return val.toLocaleString(locale, {
     minimumFractionDigits: precision,
     maximumFractionDigits: precision,
