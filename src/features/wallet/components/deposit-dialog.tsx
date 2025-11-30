@@ -77,7 +77,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
         | '' = (error as any).status ?? ''; // eslint-disable-line @typescript-eslint/no-explicit-any
       if (errorStatus === 'max_amount_per_24h_exceeded') {
         const numbers = error.message.match(/\d+(\.\d+)?/g)?.map(Number) || [];
-        const remainingAmount = numbers[1] ?? 0;
+        const remainingAmount = numbers[2] ?? 0;
         toast.error(
           t('wallet.errors.max_amount_per_24h_exceeded', {
             maxAmount: maxDepositAmount,
