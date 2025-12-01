@@ -62,6 +62,7 @@ const plCommon = {
   privacy_policy: 'Polityka prywatności',
   terms_of_service: 'Regulamin',
   faq: 'FAQ',
+  navigation: 'Nawigacja',
   tooltips: {
     navigation: {
       dashboard: 'Strona główna',

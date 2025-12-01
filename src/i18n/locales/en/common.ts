@@ -62,6 +62,7 @@ const enCommon = {
   privacy_policy: 'Privacy Policy',
   terms_of_service: 'Terms of Service',
   faq: 'FAQ',
+  navigation: 'Navigation',
   tooltips: {
     navigation: {
       dashboard: 'Dashboard',
