@@ -12,7 +12,7 @@ import { cn } from '@/features/shared/utils/styles';
 interface HistoryCardProps {
   timestamp: string;
   instrument: string;
-  quantity: string;
+  quantity: number;
   isBuy: boolean;
   success: boolean;
 }
@@ -64,7 +64,7 @@ export function HistoryCard({
             <span className="text-muted-foreground">
               {t('transactions.table.headers.quantity')}
             </span>
-            <span className="font-medium">{quantity}</span>
+            <span className="font-medium">{quantity.toFixed(5)}</span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
