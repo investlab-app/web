@@ -174,7 +174,8 @@ export const zInstrumentName = z.object({
 export const zGraphTransactionEffect = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
-    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
+    amount: z.number(),
+    action_price: z.number(),
     effect_type: z.string().readonly()
 });
 
@@ -1087,7 +1088,8 @@ export const zGraphNotificationEffectWritable = z.object({
 export const zGraphTransactionEffectWritable = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
-    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
+    amount: z.number(),
+    action_price: z.number()
 });
 
 export const zInstrumentListWritable = z.object({

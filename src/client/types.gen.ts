@@ -183,7 +183,8 @@ export type GraphResult = {
 export type GraphTransactionEffect = {
     instrument: InstrumentName;
     is_buy: boolean;
-    amount: string;
+    amount: number;
+    action_price: number;
     readonly effect_type: string;
 };
 
@@ -898,7 +899,8 @@ export type GraphNotificationEffectWritable = {
 export type GraphTransactionEffectWritable = {
     instrument: InstrumentName;
     is_buy: boolean;
-    amount: string;
+    amount: number;
+    action_price: number;
 };
 
 export type InstrumentListWritable = {
