@@ -14,8 +14,12 @@ type PositionsTableProps = {
 
 export function Positions({ type }: PositionsTableProps) {
   const { t } = useTranslation();
-  const { data, isPending, isError } = useQuery(
-    statisticsTransactionsHistoryListOptions({ query: { type } })
+  const { data, isPending, isError } = useQuery({
+   ...statisticsTransactionsHistoryListOptions({ query: { type } })
+  ,
+  staleTime: 0,
+    refetchOnMount: 'always',
+}
   );
 
   if (isError) {

@@ -17,8 +17,10 @@ import { EmptyMessage } from '@/features/shared/components/empty-message';
 export const AccountValueChartContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { data, isPending, isError } = useQuery(
-    investorsMeAccountValueRetrieveOptions()
+  const { data, isPending, isError } = useQuery({...
+    investorsMeAccountValueRetrieveOptions(),
+    staleTime: 0,
+    refetchOnMount: 'always',}
   );
 
   const chartData: Array<InstrumentPricePoint> =

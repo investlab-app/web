@@ -16,13 +16,18 @@ const AccountOverviewRibbon = () => {
     data: investorStats,
     isPending: statsPending,
     isError: statsError,
-  } = useQuery(statisticsStatsRetrieveOptions());
+  } = useQuery({...statisticsStatsRetrieveOptions(),
+    staleTime: 0,
+    refetchOnMount: 'always',
+  });
 
   const {
     data: currentAccountValue,
     isPending: accountValuePending,
     isError: accountValueError,
-  } = useQuery(statisticsCurrentAccountValueRetrieveOptions());
+  } = useQuery({...statisticsCurrentAccountValueRetrieveOptions(),
+  staleTime: 0,
+    refetchOnMount: 'always',});
 
   const isPending = statsPending || accountValuePending;
   const isError = statsError || accountValueError;
