@@ -64,7 +64,7 @@ export function useInstrumentsTable({
       return lastPage.next ? lastPageNumber + 1 : null;
     },
     placeholderData: keepPreviousData,
-    meta: { persist: false },
+    // meta: { persist: false },
   });
 
   const instruments = (data?.pages ?? [])
