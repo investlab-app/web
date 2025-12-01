@@ -31,16 +31,13 @@ const MostTradedOverviewSkeleton = () => {
     return Array.from({ length: skeletonRowCount }).map((_, idx) => (
       <TableRow key={`skeleton-${idx}`}>
         <TableCell className="hidden sm:table-cell h-10">
-          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-42" />
         </TableCell>
         <TableCell className="h-10">
           <Skeleton className="h-4 w-16" />
         </TableCell>
         <TableCell className="text-right h-10">
           <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
         </TableCell>
         <TableCell className="text-right h-10">
           <Skeleton className="h-4 w-16 ml-auto" />
@@ -67,7 +64,6 @@ const MostTradedOverviewSkeleton = () => {
                 <TableHead className="text-right">Buys/Sells</TableHead>
                 <TableHead className="text-right">Avg Gain</TableHead>
                 <TableHead className="text-right">Avg Loss</TableHead>
-                <TableHead className="text-right">Total Return</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>{RenderSkeletonRows()}</TableBody>
