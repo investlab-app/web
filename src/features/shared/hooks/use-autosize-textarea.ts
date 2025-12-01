@@ -50,11 +50,6 @@ export function useAutosizeTextArea({
     // 2. Don't go below minHeight
     const clampedToMin = Math.max(clampedToMax, minHeight);
 
-    console.log(
-      '[useAutosizeTextArea] Setting height to:',
-      clampedToMin + borderAdjustment
-    );
-
     currentRef.style.height = `${clampedToMin + borderAdjustment}px`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxHeight, minHeight, borderWidth, ref, ...dependencies]);

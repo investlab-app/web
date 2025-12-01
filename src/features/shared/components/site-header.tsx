@@ -3,6 +3,7 @@ import { cn } from '../utils/styles';
 import { LanguageToggle } from './language-toggle';
 import { BreadcrumbNav } from './breadcrumb-nav';
 import { MarketStatusLED } from './market-status-led';
+import { FixedFullWidthSidebarAware } from './fixed-full-width-sidebar-aware';
 import { NotificationPanel } from '@/features/notifications/components/notification-panel';
 import { Separator } from '@/features/shared/components/ui/separator';
 import {
@@ -19,31 +20,12 @@ export function SiteHeader({ className }: SiteHeaderProps) {
   const { isMobile, open } = useSidebar();
 
   return (
-    <header
-      className={cn(
-        'fixed z-1 top-0 right-0 bg-background/50 backdrop-blur-md',
-        className
-      )}
-      style={{
-        left: isMobile
-          ? open
-            ? 'calc(-1 * var(--sidebar-width))'
-            : 'calc(-1 * var(--sidebar-width-icon))'
-          : '0px',
-      }}
+    <FixedFullWidthSidebarAware
+      isMobile={isMobile}
+      open={open}
+      className={cn('z-1 top-0 bg-background/50 backdrop-blur-md', className)}
     >
-      <div
-        data-tauri-drag-region
-        className="h-(--header-height) border-b flex shrink-0 items-center gap-2 px-4"
-        style={{
-          marginLeft: open
-            ? 'var(--sidebar-width)'
-            : 'var(--sidebar-width-icon)',
-          transitionTimingFunction: 'var(--ease-out)',
-          transitionDuration: '200ms',
-          transitionProperty: 'margin',
-        }}
-      >
+      <header className="h-(--header-height) border-b flex shrink-0 items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1 text-foreground">
           <PanelLeftIcon />
           <span className="sr-only">Toggle Sidebar</span>
@@ -55,20 +37,17 @@ export function SiteHeader({ className }: SiteHeaderProps) {
         <div className="min-w-0">
           <BreadcrumbNav />
         </div>
-        <div
-          className="ml-auto flex items-center gap-2"
-          data-tauri-drag-region-ignore
-        >
+        <div className="ml-auto flex items-center gap-2">
           <MarketStatusLED />
           <Separator
             orientation="vertical"
-            className="mx-2 data-[orientation=vertical]:h-4"
+            className="ml-1 data-[orientation=vertical]:h-4"
           />
           <NotificationPanel />
           <ThemeToggle />
           <LanguageToggle />
         </div>
-      </div>
-    </header>
+      </header>
+    </FixedFullWidthSidebarAware>
   );
 }

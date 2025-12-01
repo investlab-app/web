@@ -5,6 +5,7 @@
 import { forwardRef, useCallback, useRef, useState } from 'react';
 import { ArrowDown, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { FixedFullWidthSidebarAware } from '../fixed-full-width-sidebar-aware';
 import type { ReactElement } from 'react';
 
 import type { Message } from '@/features/shared/components/ui/chat-message';
@@ -222,18 +223,10 @@ export function Chat({
         </ChatMessages>
       ) : null}
 
-      <div
+      <FixedFullWidthSidebarAware
+        isMobile={isMobile}
+        open={open}
         className="fixed bottom-0 left-0 right-0"
-        style={{
-          marginLeft: isMobile
-            ? '0'
-            : open
-              ? 'var(--sidebar-width)'
-              : 'var(--sidebar-width-icon)',
-          transitionTimingFunction: 'var(--ease-out)',
-          transitionDuration: '200ms',
-          transitionProperty: 'margin',
-        }}
       >
         <ChatForm
           className="max-w-3xl px-4 mx-auto"
@@ -252,7 +245,7 @@ export function Chat({
             />
           )}
         </ChatForm>
-      </div>
+      </FixedFullWidthSidebarAware>
     </ChatContainer>
   );
 }
