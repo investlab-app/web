@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 
+import { FilterDataStateSlot } from './filter-data-state-slot';
 import { cn } from '@/features/shared/utils/styles';
 
 function Popover({
@@ -10,9 +11,22 @@ function Popover({
 }
 
 function PopoverTrigger({
+  asChild = false,
+  children,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
+}: React.ComponentProps<typeof PopoverPrimitive.Trigger> & {
+  asChild?: boolean;
+  children?: React.ReactNode;
+}) {
+  return (
+    <PopoverPrimitive.Trigger
+      asChild={asChild}
+      data-slot="popover-trigger"
+      {...props}
+    >
+      {asChild ? <FilterDataStateSlot>{children}</FilterDataStateSlot> : null}
+    </PopoverPrimitive.Trigger>
+  );
 }
 
 function PopoverAnchor({

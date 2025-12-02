@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { marketsStatusRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 
 function PendingLED() {
   const { t } = useTranslation();
@@ -215,18 +215,18 @@ export function MarketStatusLED() {
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
+    <HybridTooltip>
+      <HybridTooltipTrigger asChild>
         <div>
           <MarketLED
             isMarketOpen={isMarketOpen}
             status={marketStatusInfo.status}
           />
         </div>
-      </TooltipTrigger>
-      <TooltipContent side="bottom" className="whitespace-pre-line max-w-xs">
+      </HybridTooltipTrigger>
+      <HybridTooltipContent className="whitespace-pre-line max-w-xs">
         {marketStatusInfo.details}
-      </TooltipContent>
-    </Tooltip>
+      </HybridTooltipContent>
+    </HybridTooltip>
   );
 }

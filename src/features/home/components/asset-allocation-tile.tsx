@@ -7,10 +7,10 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
 
@@ -68,8 +68,8 @@ export const AssetAllocationTile = ({
                 ({ instrument_ticker, instrument_name, value }, index) => {
                   const percentage = (value / totalAssetValue) * 100;
                   return (
-                    <Tooltip key={instrument_ticker}>
-                      <TooltipTrigger asChild>
+                    <HybridTooltip key={instrument_ticker}>
+                      <HybridTooltipTrigger asChild>
                         <div
                           className="rounded-md h-4"
                           style={{
@@ -77,13 +77,13 @@ export const AssetAllocationTile = ({
                             backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
                           }}
                         />
-                      </TooltipTrigger>
-                      <TooltipContent>
+                      </HybridTooltipTrigger>
+                      <HybridTooltipContent>
                         {instrument_ticker}
                         {instrument_name && ` - ${instrument_name}`}:{' '}
                         {formatPercentage(value)}%
-                      </TooltipContent>
-                    </Tooltip>
+                      </HybridTooltipContent>
+                    </HybridTooltip>
                   );
                 }
               )}
