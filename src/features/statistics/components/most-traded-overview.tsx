@@ -37,6 +37,9 @@ const RenderSkeletonRows = (skeletonRowCount = 5) => {
       <TableCell className="text-right h-10">
         <Skeleton className="h-4 w-16 ml-auto" />
       </TableCell>
+      <TableCell className="text-right h-10">
+        <Skeleton className="h-4 w-16 ml-auto" />
+      </TableCell>
     </TableRow>
   ));
 };
