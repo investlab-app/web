@@ -1,7 +1,7 @@
 import { Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatPercentage, getGainColor } from '../utils/card-helpers';
 import type { HistoryEntry } from '@/client';
-import type { PositionsCardHelpers } from '../hooks/use-positions-card-helpers';
 import { cn } from '@/features/shared/utils/styles';
 import { dateToLocale } from '@/features/shared/utils/date';
 import {
@@ -20,20 +20,11 @@ import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface BuyCardProps {
   entry: HistoryEntry;
-  entryIndex: number;
-  currentPrice?: number;
-  helpers: PositionsCardHelpers;
+  open: boolean;
 }
 
-export function BuyCard({
-  entry,
-  entryIndex,
-  currentPrice,
-  helpers,
-}: BuyCardProps) {
+export function BuyCard({ entry, open }: BuyCardProps) {
   const { t, i18n } = useTranslation();
-  const gain = helpers.calculateNumericalGain(entry, entryIndex, currentPrice);
-  const gainPct = helpers.calculatePercentageGain(entry, gain, entryIndex);
 
   return (
     <Card
@@ -60,29 +51,42 @@ export function BuyCard({
         <div className="space-y-2 flex-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
-              {t('transactions.table.headers.quantity')}
+              {open
+                ? t('transactions.cards.current_value')
+                : t('transactions.cards.sell_value')}
+            </span>
+            <span className="font-medium">
+              {withCurrency(entry.final_transaction_value, i18n.language)}
+            </span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground">
+              {t('common.quantity')}
             </span>
             <span className="font-medium">{entry.quantity}</span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
-              {t('transactions.table.headers.share_price')}
+              {t('transactions.cards.price_at_buy')}
             </span>
             <span className="font-medium">
-              {withCurrency(entry.share_price, i18n.language)}
+              {withCurrency(entry.initial_share_price, i18n.language)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
-              {t('transactions.cards.current_price')}
+              {open
+                ? t('transactions.cards.current_share_price')
+                : t('transactions.cards.price_at_sell')}
             </span>
             <span className="font-medium">
-              {currentPrice ? withCurrency(currentPrice, i18n.language) : '—'}
+              {withCurrency(entry.final_share_price, i18n.language)}
             </span>
           </div>
+
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1">
-              {t('transactions.table.headers.gain_loss')}
+              {t('transactions.cards.gain_loss')}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Info className="size-2.5 cursor-help" />
@@ -92,17 +96,14 @@ export function BuyCard({
                 </TooltipContent>
               </Tooltip>
             </span>
-            {gain !== null ? (
-              <span className={`font-medium ${helpers.getGainColor(gain)}`}>
-                {withCurrency(gain, i18n.language)}
-              </span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
+
+            <span className={`font-medium ${getGainColor(entry.gain)}`}>
+              {withCurrency(entry.gain, i18n.language)}
+            </span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1">
-              {t('transactions.table.headers.gain_loss_pct')}
+              {t('transactions.cards.gain_loss_pct')}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Info className="size-2.5 cursor-help" />
@@ -112,13 +113,12 @@ export function BuyCard({
                 </TooltipContent>
               </Tooltip>
             </span>
-            {gainPct !== null ? (
-              <span className={`font-medium ${helpers.getGainColor(gainPct)}`}>
-                {helpers.formatPercentage(gainPct)}
-              </span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
+
+            <span
+              className={`font-medium ${getGainColor(entry.gain_percentage)}`}
+            >
+              {formatPercentage(entry.gain_percentage)}
+            </span>
           </div>
         </div>
       </CardContent>

@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { usePositionsCardHelpers } from '../hooks/use-positions-card-helpers';
 import { BuyCard } from './buy-card';
-import { SellCard } from './sell-card';
 import type { HistoryEntry } from '@/client';
 import { ScrollableHorizontally } from '@/features/shared/components/scrollable-horizontally';
 import {
@@ -12,17 +10,16 @@ import {
 
 interface PositionsCardsProps {
   history: Array<HistoryEntry>;
-  currentPrice?: number;
+  open: boolean;
   className?: string;
 }
 
 export function PositionsCards({
   history,
-  currentPrice,
+  open,
   className,
 }: PositionsCardsProps) {
   const { t } = useTranslation();
-  const helpers = usePositionsCardHelpers(history);
 
   if (history.length === 0) {
     return (
@@ -40,16 +37,7 @@ export function PositionsCards({
             key={`${entry.timestamp}-${index}`}
             className="h-full snap-start"
           >
-            {entry.is_buy ? (
-              <BuyCard
-                entry={entry}
-                entryIndex={index}
-                currentPrice={currentPrice}
-                helpers={helpers}
-              />
-            ) : (
-              <SellCard entry={entry} entryIndex={index} helpers={helpers} />
-            )}
+            <BuyCard open={open} entry={entry} />
           </div>
         ))}
         {history.length > 0 && (

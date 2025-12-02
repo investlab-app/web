@@ -224,13 +224,12 @@ export const zHistoryEntry = z.object({
     timestamp: z.iso.datetime({
         offset: true
     }),
-    is_buy: z.boolean(),
     quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
-    share_price: z.number(),
-    acquisition_price: z.union([
-        z.number(),
-        z.null()
-    ])
+    final_transaction_value: z.number(),
+    final_share_price: z.number(),
+    initial_share_price: z.number(),
+    gain: z.number(),
+    gain_percentage: z.number()
 });
 
 export const zInsight = z.object({
@@ -632,8 +631,11 @@ export const zMostTradedItem = z.object({
     no_trades: z.int(),
     buys: z.int(),
     sells: z.int(),
-    avg_gain: z.number(),
-    avg_loss: z.number()
+    gain: z.number(),
+    gain_percentage: z.union([
+        z.number(),
+        z.null()
+    ])
 });
 
 export const zNotificationConfig = z.object({
@@ -860,7 +862,7 @@ export const zPosition = z.object({
         z.null()
     ]),
     quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
-    market_value: z.number(),
+    value: z.number(),
     gain: z.number(),
     gain_percentage: z.union([
         z.number(),

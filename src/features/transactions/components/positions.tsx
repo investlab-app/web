@@ -15,12 +15,10 @@ type PositionsTableProps = {
 export function Positions({ type }: PositionsTableProps) {
   const { t } = useTranslation();
   const { data, isPending, isError } = useQuery({
-   ...statisticsTransactionsHistoryListOptions({ query: { type } })
-  ,
-  staleTime: 0,
+    ...statisticsTransactionsHistoryListOptions({ query: { type } }),
+    staleTime: 0,
     refetchOnMount: 'always',
-}
-  );
+  });
 
   if (isError) {
     return <ErrorMessage message={t('transactions.error_loading')} />;
@@ -57,7 +55,11 @@ export function Positions({ type }: PositionsTableProps) {
   return (
     <div className="space-y-4">
       {data.map((position) => (
-        <PositionSummaryWithTable key={position.symbol} position={position} />
+        <PositionSummaryWithTable
+          key={position.symbol}
+          position={position}
+          open={type == 'open'}
+        />
       ))}
     </div>
   );

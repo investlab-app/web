@@ -4,14 +4,15 @@ import { PositionsCards, PositionsCardsSkeleton } from './positions-cards';
 import type { Position } from '@/client';
 import { cn } from '@/features/shared/utils/styles';
 
-export function PositionSummaryWithTable({ position }: { position: Position }) {
+export function PositionSummaryWithTable({
+  position,
+  open,
+}: {
+  position: Position;
+  open: boolean;
+}) {
   const [collapsed, setCollapsed] = useState(false);
   const contentId = useId();
-
-  const currentPrice =
-    Number(position.quantity) > 0
-      ? position.market_value / Number(position.quantity)
-      : undefined;
 
   return (
     <section
@@ -23,6 +24,7 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
       <PositionSummary
         key={position.symbol}
         position={position}
+        open={open}
         setCollapsed={() => setCollapsed(!collapsed)}
         isCollapsed={collapsed}
         className={cn(
@@ -40,8 +42,8 @@ export function PositionSummaryWithTable({ position }: { position: Position }) {
           )}
         >
           <PositionsCards
+            open={open}
             history={position.history}
-            currentPrice={currentPrice}
             className={cn('rounded-none scroll-smooth snap-x snap-mandatory')}
           />
         </div>

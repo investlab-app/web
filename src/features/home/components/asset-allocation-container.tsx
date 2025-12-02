@@ -14,16 +14,15 @@ import { Skeleton } from '@/features/shared/components/ui/skeleton';
 export const AssetAllocationContainer = () => {
   const { t } = useTranslation();
 
-  const { data, isPending, isSuccess } = useQuery({...
-    statisticsAssetAllocationRetrieveOptions({
+  const { data, isPending, isSuccess } = useQuery({
+    ...statisticsAssetAllocationRetrieveOptions({
       query: {
         instruments_number: 4,
       },
     }),
     staleTime: 0,
     refetchOnMount: 'always',
-  }
-  );
+  });
 
   if (!isSuccess) {
     if (isPending) {

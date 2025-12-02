@@ -27,8 +27,9 @@ export const AssetTableContainer = () => {
     isSuccess,
   } = useQuery({
     ...statisticsOwnedSharesListOptions(),
-  staleTime: 0,
-    refetchOnMount: 'always',});
+    staleTime: 0,
+    refetchOnMount: 'always',
+  });
 
   if (isPending) {
     return <AssetTableContainerSkeleton />;
