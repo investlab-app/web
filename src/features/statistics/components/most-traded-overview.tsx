@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { withCurrency } from '@/features/shared/utils/numbers';
 
 const RenderSkeletonRows = (skeletonRowCount = 5) => {
   return Array.from({ length: skeletonRowCount }).map((_, idx) => (
@@ -44,7 +45,7 @@ const RenderSkeletonRows = (skeletonRowCount = 5) => {
 };
 
 const MostTradedOverview = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const {
     data: mostTraded,
@@ -81,10 +82,10 @@ const MostTradedOverview = () => {
                     {t('statistics.buys_sells')}
                   </TableHead>
                   <TableHead className="text-right">
-                    {t('statistics.gain')}
+                    {t('statistics.avg_gain')}
                   </TableHead>
                   <TableHead className="text-right">
-                    {t('statistics.avg_gain')}
+                    {t('statistics.avg_loss')}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -103,34 +104,34 @@ const MostTradedOverview = () => {
                         <TableCell
                           className={cn(
                             'text-right',
-                            instrumentOverview.gain > 0
+                            instrumentOverview.avg_gain > 0
                               ? 'text-green-500'
-                              : instrumentOverview.gain < 0
-                                ? 'text-red-500'
-                                : ''
+                              : ''
                           )}
                         >
-                          {instrumentOverview.gain >= 0 ? '+' : ''}
-                          {instrumentOverview.gain.toFixed(2)}
+                          {instrumentOverview.avg_gain > 0
+                            ? withCurrency(
+                                instrumentOverview.avg_gain,
+                                i18n.language,
+                                2
+                              )
+                            : '-'}
                         </TableCell>
                         <TableCell
                           className={cn(
                             'text-right',
-                            instrumentOverview.gain_percentage
-                              ? instrumentOverview.gain_percentage > 0
-                                ? 'text-green-500'
-                                : instrumentOverview.gain_percentage < 0
-                                  ? 'text-red-500'
-                                  : ''
+                            instrumentOverview.avg_loss > 0
+                              ? 'text-red-500'
                               : ''
                           )}
                         >
-                          {instrumentOverview.gain_percentage === null
-                            ? 'N/A'
-                            : (instrumentOverview.gain_percentage > 0
-                                ? '+'
-                                : '') +
-                              instrumentOverview.gain_percentage.toFixed(2)}
+                          {instrumentOverview.avg_loss > 0
+                            ? withCurrency(
+                                instrumentOverview.avg_loss,
+                                i18n.language,
+                                2
+                              )
+                            : '-'}
                         </TableCell>
                       </TableRow>
                     ))}

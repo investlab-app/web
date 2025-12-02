@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { StatTile } from '@/features/shared/components/stat-tile';
 import {
   Card,
@@ -27,6 +28,8 @@ const StatsOverviewRibbonSkeleton = () => {
 };
 
 const MostTradedOverviewSkeleton = () => {
+  const { t } = useTranslation();
+
   const RenderSkeletonRows = (skeletonRowCount = 5) => {
     return Array.from({ length: skeletonRowCount }).map((_, idx) => (
       <TableRow key={`skeleton-${idx}`}>
@@ -38,9 +41,6 @@ const MostTradedOverviewSkeleton = () => {
         </TableCell>
         <TableCell className="text-right h-10">
           <Skeleton className="h-4 w-20 ml-auto" />
-        </TableCell>
-        <TableCell className="text-right h-10">
-          <Skeleton className="h-4 w-16 ml-auto" />
         </TableCell>
         <TableCell className="text-right h-10">
           <Skeleton className="h-4 w-16 ml-auto" />
@@ -62,12 +62,19 @@ const MostTradedOverviewSkeleton = () => {
           <Table>
             <TableHeader className="bg-muted">
               <TableRow>
-                <TableHead>Symbol</TableHead>
-                <TableHead className="text-right">Trades</TableHead>
-                <TableHead className="text-right">Buys/Sells</TableHead>
-                <TableHead className="text-right">Avg Gain</TableHead>
-                <TableHead className="text-right">Avg Loss</TableHead>
-                <TableHead className="text-right">Total Return</TableHead>
+                <TableHead>{t('instruments.symbol')}</TableHead>
+                <TableHead className="text-right">
+                  {t('statistics.no_trades')}
+                </TableHead>
+                <TableHead className="text-right">
+                  {t('statistics.buys_sells')}
+                </TableHead>
+                <TableHead className="text-right">
+                  {t('statistics.avg_gain')}
+                </TableHead>
+                <TableHead className="text-right">
+                  {t('statistics.avg_loss')}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>{RenderSkeletonRows()}</TableBody>
