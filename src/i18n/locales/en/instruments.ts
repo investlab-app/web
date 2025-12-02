@@ -60,6 +60,8 @@ const enInstruments = {
     volume: 'Number of shares traded today',
     market_cap: 'Total market capitalization of the company',
     load_more: 'Load more instruments from the list',
+    add_to_watchlist: 'Add to watchlist',
+    remove_from_watchlist: 'Remove from watchlist',
   },
   browse_instruments: 'Browse Instruments',
   no_instruments_found: 'No instruments found',

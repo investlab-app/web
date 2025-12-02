@@ -174,8 +174,7 @@ export const zInstrumentName = z.object({
 export const zGraphTransactionEffect = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
-    amount: z.number(),
-    action_price: z.number(),
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/),
     effect_type: z.string().readonly()
 });
 
@@ -1088,8 +1087,7 @@ export const zGraphNotificationEffectWritable = z.object({
 export const zGraphTransactionEffectWritable = z.object({
     instrument: zInstrumentName,
     is_buy: z.boolean(),
-    amount: z.number(),
-    action_price: z.number()
+    amount: z.string().regex(/^-?\d{0,15}(?:\.\d{0,15})?$/)
 });
 
 export const zInstrumentListWritable = z.object({
@@ -1495,7 +1493,8 @@ export const zInstrumentsListData = z.object({
         ordering: z.optional(z.string()),
         page: z.optional(z.int()),
         page_size: z.optional(z.int()),
-        search: z.optional(z.string())
+        search: z.optional(z.string()),
+        watched: z.optional(z.boolean())
     }))
 });
 
@@ -1530,7 +1529,8 @@ export const zInstrumentsWithPricesListData = z.object({
         ordering: z.optional(z.string()),
         page: z.optional(z.int()),
         page_size: z.optional(z.int()),
-        search: z.optional(z.string())
+        search: z.optional(z.string()),
+        watched: z.optional(z.boolean())
     }))
 });
 

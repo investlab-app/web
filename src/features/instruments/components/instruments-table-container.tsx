@@ -42,6 +42,7 @@ export const InstrumentsTableContainer = ({
   } = useInstrumentsTable({
     ordering,
     pageSize: DEFAULT_PAGE_SIZE,
+    watched: showWatchedOnly,
   });
 
   const handleInstrumentPressed = (asset: Instrument) => {

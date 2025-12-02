@@ -147,6 +147,27 @@ if (rootElement && !rootElement.innerHTML) {
                 }),
                 dehydrateOptions: {
                   shouldDehydrateQuery: (query) => query.meta?.persist === true,
+                  serializeData: (data) => {
+                    // Check if this is infinite query data
+                    const infiniteData = data as
+                      | { pages?: Array<unknown>; pageParams?: Array<unknown> }
+                      | undefined;
+
+                    // If it has multiple pages, trim to first page only
+                    if (
+                      infiniteData?.pages &&
+                      Array.isArray(infiniteData.pages) &&
+                      infiniteData.pages.length > 1
+                    ) {
+                      return {
+                        pages: infiniteData.pages.slice(0, 1),
+                        pageParams: infiniteData.pageParams?.slice(0, 1) ?? [1],
+                      };
+                    }
+
+                    // Otherwise return data as-is
+                    return data;
+                  },
                 },
               }}
             >

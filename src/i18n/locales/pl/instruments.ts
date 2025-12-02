@@ -61,6 +61,8 @@ const plInstruments = {
     volume: 'Liczba akcji handlowanych dzisiaj',
     market_cap: 'Całkowita kapitalizacja rynkowa spółki',
     load_more: 'Załaduj więcej instrumentów z listy',
+    add_to_watchlist: 'Dodaj do obserwowanych',
+    remove_from_watchlist: 'Usuń z obserwowanych',
   },
   browse_instruments: 'Przeglądaj instrumenty',
   no_instruments_found: 'Nie znaleziono instrumentów',

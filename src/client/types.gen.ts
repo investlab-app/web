@@ -183,8 +183,7 @@ export type GraphResult = {
 export type GraphTransactionEffect = {
     instrument: InstrumentName;
     is_buy: boolean;
-    amount: number;
-    action_price: number;
+    amount: string;
     readonly effect_type: string;
 };
 
@@ -899,8 +898,7 @@ export type GraphNotificationEffectWritable = {
 export type GraphTransactionEffectWritable = {
     instrument: InstrumentName;
     is_buy: boolean;
-    amount: number;
-    action_price: number;
+    amount: string;
 };
 
 export type InstrumentListWritable = {
@@ -1420,6 +1418,7 @@ export type InstrumentsListData = {
          * A search term.
          */
         search?: string;
+        watched?: boolean;
     };
     url: '/api/instruments/';
 };
@@ -1497,6 +1496,7 @@ export type InstrumentsWithPricesListData = {
          * A search term.
          */
         search?: string;
+        watched?: boolean;
     };
     url: '/api/instruments/with-prices/';
 };
