@@ -3,9 +3,6 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
-  Heart,
-  HeartMinus,
-  HeartPlus,
   Info,
   Star,
   StarHalf,
@@ -19,7 +16,7 @@ import type {
   SortingState,
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
-import { cn, cssVar } from '@/features/shared/utils/styles';
+import { cn } from '@/features/shared/utils/styles';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
@@ -100,8 +97,8 @@ export const InstrumentTable = ({
               });
             }}
           >
-            <Tooltip disableHoverableContent>
-              <TooltipTrigger asChild>
+            <HybridTooltip disableHoverableContent>
+              <HybridTooltipTrigger asChild>
                 <div className="items-center justify-center group/heart">
                   <div className="hidden group-hover:block size-6">
                     <Star className="hidden group-hover:block group-hover/heart:hidden" />
@@ -115,15 +112,15 @@ export const InstrumentTable = ({
                     )}
                   </div>
                 </div>
-              </TooltipTrigger>
-              <TooltipContent>
+              </HybridTooltipTrigger>
+              <HybridTooltipContent>
                 <p>
                   {row.original.is_watched
                     ? t('instruments.tooltips.remove_from_watchlist')
                     : t('instruments.tooltips.add_to_watchlist')}
                 </p>
-              </TooltipContent>
-            </Tooltip>
+              </HybridTooltipContent>
+            </HybridTooltip>
           </button>
           <InstrumentIconCircle
             className="inline-flex group-hover:hidden"
