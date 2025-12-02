@@ -12,10 +12,10 @@ import {
 } from '@/features/shared/components/ui/card';
 import { Badge } from '@/features/shared/components/ui/badge';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 import { withCurrency } from '@/features/shared/utils/numbers';
 
 interface BuyCardProps {
@@ -83,14 +83,14 @@ export function BuyCard({
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1">
               {t('transactions.table.headers.gain_loss')}
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <Info className="size-2.5 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                </HybridTooltipTrigger>
+                <HybridTooltipContent className="max-w-xs">
                   <p>{t('transactions.tooltips.gain_loss')}</p>
-                </TooltipContent>
-              </Tooltip>
+                </HybridTooltipContent>
+              </HybridTooltip>
             </span>
             {gain !== null ? (
               <span className={`font-medium ${helpers.getGainColor(gain)}`}>
@@ -103,14 +103,14 @@ export function BuyCard({
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1">
               {t('transactions.table.headers.gain_loss_pct')}
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <Info className="size-2.5 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                </HybridTooltipTrigger>
+                <HybridTooltipContent className="max-w-xs">
                   <p>{t('transactions.tooltips.gain_loss_pct')}</p>
-                </TooltipContent>
-              </Tooltip>
+                </HybridTooltipContent>
+              </HybridTooltip>
             </span>
             {gainPct !== null ? (
               <span className={`font-medium ${helpers.getGainColor(gainPct)}`}>

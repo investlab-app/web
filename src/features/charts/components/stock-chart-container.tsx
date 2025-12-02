@@ -16,10 +16,10 @@ import {
   CardTitle,
 } from '@/features/shared/components/ui/card';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 import {
   Select,
   SelectContent,
@@ -158,55 +158,57 @@ export function StockChartContainer({ ticker }: StockChartProps) {
               variant="outline"
               aria-label="Toggle chart type"
             >
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <ToggleGroupItem value="line" aria-label="Line chart">
                     <LineChartIcon strokeWidth={1.5} />
                   </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>
+                </HybridTooltipTrigger>
+                <HybridTooltipContent>
                   <p>
                     {t(
                       'common.tooltips.charts.line_chart',
                       'Display price data as a simple line chart'
                     )}
                   </p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
+                </HybridTooltipContent>
+              </HybridTooltip>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <ToggleGroupItem
                     value="candle"
                     aria-label="Candlestick chart"
                   >
                     <CandlestickChartIcon strokeWidth={1.5} />
                   </ToggleGroupItem>
-                </TooltipTrigger>
-                <TooltipContent>
+                </HybridTooltipTrigger>
+                <HybridTooltipContent>
                   <p>
                     {t(
                       'common.tooltips.charts.candlestick_chart',
                       'Display detailed candlestick chart with open, high, low, close data'
                     )}
                   </p>
-                </TooltipContent>
-              </Tooltip>
+                </HybridTooltipContent>
+              </HybridTooltip>
             </ToggleGroup>
             <Select
               value={interval}
               onValueChange={(value) => setInterval(value as TimeInterval)}
             >
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <SelectTrigger
                     className={`w-40 ${isIntervalChanging && 'animate-pulse'}`}
                     aria-label="Select interval"
                   >
                     <SelectValue placeholder={t('common.select_interval')} />
                   </SelectTrigger>
-                </TooltipTrigger>
-                <TooltipContent>{t('common.select_interval')}</TooltipContent>
-              </Tooltip>
+                </HybridTooltipTrigger>
+                <HybridTooltipContent>
+                  {t('common.select_interval')}
+                </HybridTooltipContent>
+              </HybridTooltip>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>{t('common.interval')}</SelectLabel>

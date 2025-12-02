@@ -4,10 +4,10 @@ import { useState } from 'react';
 import type { ColumnDef, PaginationState } from '@tanstack/react-table';
 import type { HistoryEntry } from '@/client';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 import { dateToLocale } from '@/features/shared/utils/date';
 import { Badge } from '@/features/shared/components/ui/badge';
 import { DataTable } from '@/features/shared/components/ui/data-table';
@@ -25,14 +25,14 @@ function usePositionsColumns() {
       header: () => (
         <div className="flex items-center gap-1">
           <span>{t('transactions.table.headers.transaction')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>{t('transactions.tooltips.transaction')}</p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
@@ -58,14 +58,14 @@ function usePositionsColumns() {
       header: () => (
         <div className="flex items-center gap-1">
           <span>{t('transactions.table.headers.quantity')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>{t('transactions.tooltips.quantity')}</p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => row.original.quantity,
@@ -75,14 +75,14 @@ function usePositionsColumns() {
       header: () => (
         <div className="flex items-center gap-1 justify-end">
           <span>{t('transactions.table.headers.share_price')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>{t('transactions.tooltips.share_price')}</p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
@@ -96,14 +96,14 @@ function usePositionsColumns() {
       header: () => (
         <div className="flex items-center gap-1 justify-end">
           <span>{t('transactions.table.headers.acquisition_price')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>{t('transactions.tooltips.acquisition_price')}</p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
