@@ -149,7 +149,7 @@ export class InstrumentsPage {
     const row = this.tableRows.nth(rowIndex);
     await row.hover();
     await this.page.waitForTimeout(200);
-    const star = row.locator('.group\\/heart svg.cursor-pointer').first();
+    const star = row.locator('button.cursor-pointer').first();
     await star.click({ force: true });
     await this.page.waitForTimeout(500); // Wait for optimistic update
   }
