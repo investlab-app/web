@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { ArrowRight } from 'lucide-react';
 import type { Instrument } from '@/features/instruments/types/instrument';
 import {
   SheetDescription,
@@ -34,11 +35,12 @@ export function InstrumentSheetHeader({
             <span className="text-xl font-bold">{instrument.name}</span>
             <Button
               variant="link"
-              className="self-start p-0 h-min text-secondary-foreground"
+              className="self-start p-0! h-min text-primary-foreground hover:text-primary-foreground/80"
               asChild
             >
               <Link to={`/instruments/${instrument.symbol}`}>
                 {t('instruments.see_details')}
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </div>
