@@ -5,11 +5,12 @@ interface InstrumentIconCircleProps {
   icon: string | null;
   symbol: string;
   name: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
 }
 
 const sizeClasses = {
+  xs: 'h-4 w-4 text-xs',
   sm: 'h-6 w-6 text-sm',
   md: 'h-10 w-10 text-lg',
   lg: 'h-16 w-16 text-4xl',
@@ -33,7 +34,7 @@ export function InstrumentIconCircle({
     <div
       className={cn([
         sizeClass,
-        `rounded-full border border-muted flex items-center justify-center leading-none text-white`,
+        `rounded-full border border-muted aspect-square flex items-center justify-center leading-none text-white`,
         className,
       ])}
       style={{

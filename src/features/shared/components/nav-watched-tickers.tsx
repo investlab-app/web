@@ -80,7 +80,8 @@ export function NavWatchedTickers() {
                         symbol={ticker.ticker}
                         icon={ticker.icon ?? null}
                         name={ticker.name}
-                        className="h-4 w-4 rounded-full border-none outline-muted"
+                        size="xs"
+                        className="border-none outline-muted"
                       />
                       <span>{ticker.ticker}</span>
                     </Link>
