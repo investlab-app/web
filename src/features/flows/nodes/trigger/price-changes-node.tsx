@@ -53,6 +53,7 @@ export function PriceChangesNodeUI({
       {onValueChange && (
         <NumberInput
           className="w-30 ml-2"
+          transparentControls={true}
           min={1}
           stepper={25}
           defaultValue={100.0}

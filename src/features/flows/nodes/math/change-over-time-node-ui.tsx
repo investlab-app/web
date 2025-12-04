@@ -45,6 +45,7 @@ export function ChangeOverTimeNodeUI({
           className="w-22 mx-2"
           min={1}
           max={getMaxValue(unit!)}
+          transparentControls={true}
           defaultValue={1}
           stepper={1}
           value={interval}

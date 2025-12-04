@@ -43,6 +43,7 @@ export function PredicateNodeUI({
               min={-9999}
               max={9999}
               stepper={1}
+              transparentControls={true}
               value={value}
               onValueChange={onValueChange}
               decimalScale={3}

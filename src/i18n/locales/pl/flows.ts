@@ -15,6 +15,8 @@ const plFlows = {
     fail: 'Nie wykonano',
     success: 'Pomyślnie wykonano',
     bought_instrument: 'Kupiony instrument',
+    quantity: 'Ilość',
+    share_price: 'Cena akcji',
   },
   errors: {
     flow_name_empty: 'Nazwa strategii nie może być pusta',

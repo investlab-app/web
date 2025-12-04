@@ -62,13 +62,13 @@ export function HistoryCard({
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
-              {t('transactions.table.headers.quantity')}
+              {t('flows.card.quantity')}
             </span>
             <span className="font-medium">{quantity.toFixed(5)}</span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">
-              {t('transactions.table.headers.share_price')}
+              {t('flows.card.share_price')}
             </span>
             <span className="font-medium">424.00 USD</span>
           </div>

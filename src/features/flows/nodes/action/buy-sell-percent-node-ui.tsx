@@ -48,6 +48,7 @@ export function BuySellPercentNodeUI({
           max={action === BuySellAction.Sell ? 100 : undefined}
           defaultValue={10}
           stepper={5}
+          transparentControls={true}
           suffix="%"
           value={percent}
           onValueChange={(val) => {

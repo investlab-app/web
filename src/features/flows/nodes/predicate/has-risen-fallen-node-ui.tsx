@@ -73,6 +73,7 @@ export function HasRisenFallenNodeUI({
           min={1}
           max={unit ? getMaxValue(unit) : 99}
           defaultValue={1}
+          transparentControls={true}
           stepper={1}
           value={period}
           onValueChange={(val) => {

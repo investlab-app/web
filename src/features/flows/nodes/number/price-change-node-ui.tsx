@@ -62,6 +62,7 @@ export function PriceChangeNodeUI({
           max={getMaxValue(unit!)}
           defaultValue={1}
           stepper={1}
+          transparentControls={true}
           value={period}
           onValueChange={(val) => {
             const maxValue = getMaxValue(unit!);

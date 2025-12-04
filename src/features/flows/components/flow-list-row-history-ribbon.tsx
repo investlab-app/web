@@ -32,9 +32,13 @@ export function FlowListRowHistoryRibbon({ id }: { id: string }) {
     );
   }
 
+  const actualData = data.results.filter(
+    (r) => r.effect.effect_type == 'transaction'
+  );
+
   return (
     <div className="p-0 overflow-clip">
-      {data.results.length === 0 ? (
+      {actualData.length === 0 ? (
         <div className="text-sm text-muted-foreground m-4">
           {t('flows.listview.no_history')}
         </div>

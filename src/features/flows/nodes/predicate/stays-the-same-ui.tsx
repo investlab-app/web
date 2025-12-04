@@ -52,6 +52,7 @@ export function StaysTheSameNodeUI({
           {onPeriodChange && (
             <NumberInput
               className="w-20 mx-2"
+              transparentControls={true}
               min={1}
               max={unit ? getMaxValue(unit) : 99}
               defaultValue={1}
@@ -85,6 +86,7 @@ export function StaysTheSameNodeUI({
             <NumberInput
               className="w-30"
               min={-9999}
+              transparentControls={true}
               max={9999}
               stepper={1}
               value={value}

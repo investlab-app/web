@@ -37,6 +37,7 @@ export function CheckEveryNodeUI({
       {onIntervalChange && (
         <NumberInput
           className="w-22 mx-2"
+          transparentControls={true}
           min={1}
           max={getMaxValue(unit!)}
           defaultValue={1}
