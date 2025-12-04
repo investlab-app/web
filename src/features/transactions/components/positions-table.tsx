@@ -46,9 +46,7 @@ function usePositionsColumns() {
             {dateToLocale(row.original.timestamp, i18n.language)}
           </Badge>
           <Badge variant="outline" className="min-w-20">
-            {row.original.is_buy
-              ? t('transactions.badge.buy')
-              : t('transactions.badge.sell')}
+            {t('transactions.badge.buy')}
           </Badge>
         </div>
       ),
@@ -87,30 +85,59 @@ function usePositionsColumns() {
       ),
       cell: ({ row }) => (
         <div className="text-end">
-          {withCurrency(row.original.share_price, i18n.language)}
+          {withCurrency(row.original.initial_share_price, i18n.language)}
         </div>
       ),
     },
     {
-      accessorKey: 'acquisition_price',
+      accessorKey: 'current_value',
       header: () => (
         <div className="flex items-center gap-1 justify-end">
-          <span>{t('transactions.table.headers.acquisition_price')}</span>
+          <span>{t('transactions.table.headers.current_value')}</span>
           <HybridTooltip>
             <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
             </HybridTooltipTrigger>
             <HybridTooltipContent>
-              <p>{t('transactions.tooltips.acquisition_price')}</p>
+              <p>{t('transactions.tooltips.current_value')}</p>
             </HybridTooltipContent>
           </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
         <div className="text-end">
-          {row.original.acquisition_price
-            ? withCurrency(row.original.acquisition_price, i18n.language)
-            : 'N/A'}
+          {withCurrency(row.original.final_transaction_value, i18n.language)}
+        </div>
+      ),
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'gain',
+      header: () => (
+        <div className="flex items-center gap-1 justify-end">
+          <span>{t('transactions.table.headers.gain')}</span>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
+              <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
+              <p>{t('transactions.tooltips.gain')}</p>
+            </HybridTooltipContent>
+          </HybridTooltip>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div
+          className={cn(
+            'text-end',
+            row.original.gain_percentage < 0
+              ? 'text-[var(--red)]'
+              : row.original.gain_percentage > 0
+                ? 'text-[var(--green)]'
+                : ''
+          )}
+        >
+          {withCurrency(row.original.gain, i18n.language)}
         </div>
       ),
       enableHiding: true,
@@ -183,6 +210,9 @@ function PositionsRowsSkeleton() {
           </TableCell>
           <TableCell>
             <Skeleton className="h-4 w-1/2" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-1/2 ml-auto" />
           </TableCell>
           <TableCell>
             <Skeleton className="h-4 w-1/2 ml-auto" />

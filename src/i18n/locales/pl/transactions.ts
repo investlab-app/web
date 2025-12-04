@@ -2,21 +2,26 @@ const plTransactions = {
   tabs: {
     open_positions: 'Otwarte pozycje',
     closed_positions: 'Zamknięte pozycje',
-    instrument_transaction_history: 'Historia transakcji instrumentu',
+    instrument_transaction_history: 'Otwarte pozycje',
   },
   summary: {
     owned_assets: 'Posiadany wolumen',
     assets_value: 'Wartość aktywów',
   },
-  headers: {
-    name: 'Nazwa',
-    transaction: 'Transakcja',
-    quantity: 'Ilość',
-    market_value: 'Wartość rynkowa',
-    realized_gain_loss: 'Zrealizowany zysk / strata',
-    realized_pct: 'Zrealizowany % zysk / strata',
-    unrealized_gain_loss: 'Niezrealizowany zysk / strata',
-    unrealized_pct: 'Niezrealizowany % zysk / strata',
+  table: {
+    headers: {
+      name: 'Nazwa',
+      transaction: 'Transakcja',
+      quantity: 'Ilość',
+      share_price: 'Cena akcji',
+      current_value: 'Obecna wartość',
+      market_value: 'Wartość rynkowa',
+      gain: 'Zysk',
+      realized_gain_loss: 'Zrealizowany zysk / strata',
+      realized_pct: 'Zrealizowany % zysk / strata',
+      unrealized_gain_loss: 'Niezrealizowany zysk / strata',
+      unrealized_pct: 'Niezrealizowany % zysk / strata',
+    },
   },
   badge: {
     buy: 'Kupno',
@@ -51,11 +56,11 @@ const plTransactions = {
   end_of_history: 'Koniec historii transakcji',
   tooltips: {
     name: 'Nazwa instrumentu finansowego',
-    transaction: 'Data i typ transakcji (kupno lub sprzedaż)',
+    transaction: 'Data i typ transakcji',
     quantity: 'Ilość akcji w pozycji',
+    gain: 'Całkowity zysk z pozycji (ilość × (cena bieżąca - cena zakupu))',
     share_price: 'Cena za akcję w czasie transakcji',
-    acquisition_price:
-      'Cena nabycia pozycji (ilość × cena za akcję + prowizje)',
+    current_value: 'Całkowita bieżąca wartość pozycji',
     market_value: 'Łączna aktualna wartość pozycji',
     gain_loss:
       'Dla KUPNA: (bieżąca cena - cena nabycia) × ilość. Dla SPRZEDAŻY: (cena sprzedaży - cena nabycia) × ilość',

@@ -586,7 +586,7 @@ export type OwnedShare = {
     volume: number;
     value: number;
     gain: number;
-    gain_percentage: number | null;
+    gain_percentage: number;
 };
 
 export type PaginatedDepositHistoryList = {
@@ -689,7 +689,7 @@ export type Position = {
     /**
      * Total gain or loss percentage
      */
-    gain_percentage: number | null;
+    gain_percentage: number;
     /**
      * Transaction history
      */

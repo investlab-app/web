@@ -722,10 +722,7 @@ export const zOwnedShare = z.object({
     volume: z.number(),
     value: z.number(),
     gain: z.number(),
-    gain_percentage: z.union([
-        z.number(),
-        z.null()
-    ])
+    gain_percentage: z.number()
 });
 
 export const zPaginatedDepositHistoryList = z.object({
@@ -861,10 +858,7 @@ export const zPosition = z.object({
     quantity: z.string().regex(/^-?\d{0,15}(?:\.\d{0,5})?$/),
     value: z.number(),
     gain: z.number(),
-    gain_percentage: z.union([
-        z.number(),
-        z.null()
-    ]),
+    gain_percentage: z.number(),
     history: z.array(zHistoryEntry)
 });
 

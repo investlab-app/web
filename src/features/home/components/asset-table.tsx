@@ -58,7 +58,11 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
               <TableCell
                 className={cn(
                   'text-right',
-                  asset.gain < 0 ? 'text-[var(--red)]' : 'text-[var(--green)]'
+                  asset.gain < 0
+                    ? 'text-[var(--red)]'
+                    : asset.gain > 0
+                      ? 'text-[var(--green)]'
+                      : ''
                 )}
               >
                 {withCurrency(asset.gain, i18n.language, 2)}{' '}
@@ -66,16 +70,14 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
               <TableCell
                 className={cn(
                   'text-right hidden sm:table-cell',
-                  asset.gain_percentage === null
-                    ? ''
-                    : asset.gain_percentage < 0
-                      ? 'text-[var(--red)]'
-                      : 'text-[var(--green)]'
+                  asset.gain_percentage < 0
+                    ? 'text-[var(--red)]'
+                    : asset.gain_percentage > 0
+                      ? 'text-[var(--green)]'
+                      : ''
                 )}
               >
-                {asset.gain_percentage
-                  ? `${withCurrency(asset.gain_percentage, i18n.language, 2)}%`
-                  : 'N/A'}
+                {`${withCurrency(asset.gain_percentage, i18n.language, 2)}%`}
               </TableCell>
             </TableRow>
           ))}

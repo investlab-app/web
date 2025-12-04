@@ -4,6 +4,7 @@ import { cn } from '@/features/shared/utils/styles';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { Card, CardContent } from '@/features/shared/components/ui/card';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { formatPercentage } from '@/features/transactions/utils/card-helpers';
 
 interface InstrumentSummaryProps {
   position: Position;
@@ -60,7 +61,7 @@ export function InstrumentSummary({
           />
           <SummaryItem
             label={t('transactions.summary.assets_value')}
-            value={withCurrency(position.market_value, i18n.language, 2)}
+            value={withCurrency(position.value, i18n.language, 2)}
           />
           <SummaryItem
             label={t('investor.gain')}
@@ -70,15 +71,9 @@ export function InstrumentSummary({
           />
           <SummaryItem
             label={t('investor.gain_percent')}
-            value={
-              position.gain_percentage !== null
-                ? `${withCurrency(position.gain_percentage, i18n.language, 2)}%`
-                : 'N/A'
-            }
+            value={formatPercentage(position.gain_percentage)}
             isGain={true}
-            isNegative={
-              position.gain_percentage !== null && position.gain_percentage < 0
-            }
+            isNegative={position.gain_percentage < 0}
           />
         </div>
       </CardContent>

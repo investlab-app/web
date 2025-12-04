@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
+import { formatPercentage } from '../utils/card-helpers';
 import { SummaryMetric, SummaryMetricSkeleton } from './summary-metric';
 import type { Position } from '@/client';
 import { InstrumentIconCircle } from '@/features/instruments/components/instrument-image-circle';
@@ -111,8 +112,8 @@ export function PositionSummary({
           <SummaryMetric
             label={
               open
-                ? t('transactions.headers.unrealized_gain_loss')
-                : t('transactions.headers.realized_gain_loss')
+                ? t('transactions.table.headers.unrealized_gain_loss')
+                : t('transactions.table.headers.realized_gain_loss')
             }
             value={withCurrency(position.gain, i18n.language, 2)}
             valueClassName={getProfitabilityColor(position.gain)}
@@ -121,14 +122,10 @@ export function PositionSummary({
           <SummaryMetric
             label={
               open
-                ? t('transactions.headers.unrealized_pct')
-                : t('transactions.headers.realized_pct')
+                ? t('transactions.table.headers.unrealized_pct')
+                : t('transactions.table.headers.realized_pct')
             }
-            value={
-              position.gain_percentage === null
-                ? 'N/A'
-                : `${withCurrency(position.gain_percentage, i18n.language, 2)}%`
-            }
+            value={formatPercentage(position.gain_percentage)}
             valueClassName={getProfitabilityColor(position.gain_percentage)}
             containerClassName="min-w-0"
           />
