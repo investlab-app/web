@@ -38,6 +38,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes - consider data fresh for 5 minutes
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      refetchOnMount: 'always',
       meta: {
         persist: true,
       },
