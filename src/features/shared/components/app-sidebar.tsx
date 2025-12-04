@@ -16,6 +16,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar';
@@ -93,14 +94,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="border-b border-sidebar-border h-(--header-height) justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-2 pointer-events-none select-none">
-              <InvestLabLogo className="ml-1.5" />
+            <Link className="flex items-center w-min gap-2" to={'/'}>
+              <InvestLabLogo className="ml-1" />
               {state !== 'collapsed' && (
                 <span className="translate-y-[1px] font-black text-[16px]">
                   {t('common.app_name')}
                 </span>
               )}
-            </div>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
