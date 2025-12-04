@@ -487,8 +487,8 @@ export type MostTradedItem = {
     no_trades: number;
     buys: number;
     sells: number;
-    gain: number;
-    gain_percentage: number | null;
+    avg_gain: number;
+    avg_loss: number;
 };
 
 export type NotificationConfig = {
@@ -679,7 +679,7 @@ export type Position = {
      */
     quantity: string;
     /**
-     * Current market value for open positions or total sell value for closed positions
+     * Current market value for open positions or total sell valuefor closed positions
      */
     value: number;
     /**
