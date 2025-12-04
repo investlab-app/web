@@ -15,6 +15,8 @@ const enFlows = {
     fail: 'Not executed',
     success: 'Executed successfully',
     bought_instrument: 'Bought instrument',
+    quantity: 'Quantity',
+    share_price: 'Share Price',
   },
   errors: {
     flow_name_empty: 'Strategy name cannot be empty',

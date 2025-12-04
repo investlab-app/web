@@ -58,6 +58,7 @@ export function BuySellPriceNodeUI({
           className="w-35 ml-2"
           min={0}
           defaultValue={100}
+          transparentControls={true}
           prefix="$"
           stepper={50}
           value={price}

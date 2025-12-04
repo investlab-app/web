@@ -1,5 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowDown, ArrowUp, ArrowUpDown, Info, Star } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Info,
+  Star,
+  StarHalf,
+  StarOff,
+} from 'lucide-react';
 import { useSetWatchedTicker } from '../hooks/use-toggle-watched-instrument';
 import { InstrumentIconCircle } from './instrument-image-circle';
 import type {
@@ -8,17 +16,17 @@ import type {
   SortingState,
 } from '@tanstack/react-table';
 import type { Instrument } from '../types/instrument';
-import { cn, cssVar } from '@/features/shared/utils/styles';
+import { cn } from '@/features/shared/utils/styles';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { Button } from '@/features/shared/components/ui/button';
 import { DataTable } from '@/features/shared/components/ui/data-table';
 import { TableCell, TableRow } from '@/features/shared/components/ui/table';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/features/shared/components/ui/tooltip';
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from '@/features/shared/components/ui/hybrid-tooltip';
 
 interface InstrumentTableProps {
   data: Array<Instrument>;
@@ -61,75 +69,59 @@ export const InstrumentTable = ({
             )}
             {t('instruments.symbol')}
           </Button>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.symbol',
                   'Stock ticker symbol for identification'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <div className="group/heart hidden group-hover:flex items-center">
-            {row.original.is_watched && (
-              <>
-                <Star
-                  className="inline-flex group-hover/heart:hidden cursor-pointer"
-                  fill={cssVar('--foreground')}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setWatchedTicker({
-                      instrument_id: row.original.id,
-                      is_watched: !row.original.is_watched,
-                    });
-                  }}
-                />
-                <Star
-                  className="hidden group-hover/heart:inline-flex cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setWatchedTicker({
-                      instrument_id: row.original.id,
-                      is_watched: !row.original.is_watched,
-                    });
-                  }}
-                />
-              </>
-            )}
-            {!row.original.is_watched && (
-              <>
-                <Star
-                  className="inline-flex group-hover/heart:hidden cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setWatchedTicker({
-                      instrument_id: row.original.id,
-                      is_watched: true,
-                    });
-                  }}
-                />
-                <Star
-                  className="hidden group-hover/heart:inline-flex cursor-pointer"
-                  fill={cssVar('--foreground')}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setWatchedTicker({
-                      instrument_id: row.original.id,
-                      is_watched: true,
-                    });
-                  }}
-                />
-              </>
-            )}
-          </div>
+        <div className="flex items-center">
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setWatchedTicker({
+                instrument_id: row.original.id,
+                is_watched: !row.original.is_watched,
+              });
+            }}
+          >
+            <HybridTooltip disableHoverableContent>
+              <HybridTooltipTrigger asChild>
+                <div className="items-center justify-center group/heart">
+                  <div className="hidden group-hover:block size-6">
+                    <Star className="hidden group-hover:block group-hover/heart:hidden" />
+                    {row.original.is_watched ? (
+                      <StarOff className="hidden group-hover/heart:block" />
+                    ) : (
+                      <div className="relative hidden group-hover/heart:block">
+                        <Star className="absolute" />
+                        <StarHalf className="fill-foreground" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </HybridTooltipTrigger>
+              <HybridTooltipContent>
+                <p>
+                  {row.original.is_watched
+                    ? t('instruments.tooltips.remove_from_watchlist')
+                    : t('instruments.tooltips.add_to_watchlist')}
+                </p>
+              </HybridTooltipContent>
+            </HybridTooltip>
+          </button>
           <InstrumentIconCircle
             className="inline-flex group-hover:hidden"
             symbol={row.original.symbol}
@@ -137,7 +129,7 @@ export const InstrumentTable = ({
             icon={row.original.icon}
             size="sm"
           />
-          {row.original.symbol}
+          <div className="ml-2">{row.original.symbol}</div>
         </div>
       ),
       enableSorting: true,
@@ -147,19 +139,19 @@ export const InstrumentTable = ({
       header: () => (
         <div className="flex items-center gap-1 not-sm:hidden">
           <span className="not-sm:hidden">{t('instruments.name')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.name',
                   'Full company or instrument name'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
@@ -172,19 +164,19 @@ export const InstrumentTable = ({
       header: () => (
         <div className="flex items-center gap-1 justify-end">
           <span className={'text-right'}>{t('instruments.current_price')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.current_price',
                   'Current market price per share'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => {
@@ -208,19 +200,19 @@ export const InstrumentTable = ({
       header: () => (
         <div className="flex items-center gap-1 justify-end">
           <span className="text-right">{t('instruments.day_change')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.day_change',
                   'Price change percentage from previous trading day'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => {
@@ -249,19 +241,19 @@ export const InstrumentTable = ({
       header: () => (
         <div className="flex items-center gap-1 justify-end">
           <span className="text-right">{t('instruments.volume')}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.volume',
                   'Number of shares traded today'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (
@@ -293,19 +285,19 @@ export const InstrumentTable = ({
             )}
             {t('instruments.market_cap')}
           </Button>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <HybridTooltip>
+            <HybridTooltipTrigger asChild>
               <Info className="p-1 size-5 text-muted-foreground hover:text-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
+            </HybridTooltipTrigger>
+            <HybridTooltipContent>
               <p>
                 {t(
                   'instruments.tooltips.market_cap',
                   'Total market capitalization of the company'
                 )}
               </p>
-            </TooltipContent>
-          </Tooltip>
+            </HybridTooltipContent>
+          </HybridTooltip>
         </div>
       ),
       cell: ({ row }) => (

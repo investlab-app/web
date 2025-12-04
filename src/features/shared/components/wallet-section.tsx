@@ -3,7 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Plus, Wallet } from 'lucide-react';
 import { withCurrency } from '../utils/numbers';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import {
+  HybridTooltip,
+  HybridTooltipContent,
+  HybridTooltipTrigger,
+} from './ui/hybrid-tooltip';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import {
@@ -41,8 +45,8 @@ export function WalletSection() {
             {isPending && <Skeleton className="h-6 w-24" />}
             {isError && <Skeleton className="h-6 w-24" />}
             {isSuccess && (
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HybridTooltip>
+                <HybridTooltipTrigger asChild>
                   <span className="cursor-help">
                     {withCurrency(
                       parseFloat(accountValue.balance) -
@@ -51,16 +55,16 @@ export function WalletSection() {
                       2
                     )}
                   </span>
-                </TooltipTrigger>
-                <TooltipContent>
+                </HybridTooltipTrigger>
+                <HybridTooltipContent>
                   {t('wallet.blocked_funds')}
                   {withCurrency(
                     parseFloat(accountValue.blocked_funds ?? '0.0'),
                     i18n.language,
                     2
                   )}
-                </TooltipContent>
-              </Tooltip>
+                </HybridTooltipContent>
+              </HybridTooltip>
             )}
           </div>
         </SidebarMenuButton>

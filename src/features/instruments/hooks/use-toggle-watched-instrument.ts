@@ -106,6 +106,10 @@ export function useSetWatchedTicker() {
       queryClient.invalidateQueries({
         queryKey: investorsMeWatchedTickersListQueryKey(),
       });
+      // Invalidate all instruments queries with watched=true
+      queryClient.invalidateQueries({
+        queryKey: instrumentsWithPricesListInfiniteQueryKey(),
+      });
     },
   });
 }

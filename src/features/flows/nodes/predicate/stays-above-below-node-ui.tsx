@@ -70,6 +70,7 @@ export function StaysAboveBelowNodeUI({
           defaultValue={1}
           stepper={1}
           value={period}
+          transparentControls={true}
           onValueChange={(val) => {
             const maxValue = unit ? getMaxValue(unit) : 99;
             if (val && val > maxValue) {

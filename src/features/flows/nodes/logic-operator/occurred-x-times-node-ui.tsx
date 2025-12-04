@@ -54,6 +54,7 @@ export function OccurredXTimesNodeUI({
           defaultValue={1}
           stepper={1}
           value={times}
+          transparentControls={true}
           onValueChange={(val) => {
             onTimesChange(val);
           }}
@@ -70,6 +71,7 @@ export function OccurredXTimesNodeUI({
         <NumberInput
           className="w-25 mx-2"
           min={1}
+          transparentControls={true}
           max={getMaxValue(timeUnit!)}
           defaultValue={1}
           stepper={1}
@@ -98,6 +100,7 @@ export function OccurredXTimesNodeUI({
         <NumberInput
           className="w-25"
           min={1}
+          transparentControls={true}
           max={getMaxValue(intervalUnit!)}
           defaultValue={1}
           stepper={1}

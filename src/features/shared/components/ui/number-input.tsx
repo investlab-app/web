@@ -21,6 +21,7 @@ export interface NumberInputProps
   fixedDecimalScale?: boolean;
   decimalScale?: number;
   className?: string;
+  transparentControls?: boolean;
 }
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
@@ -40,6 +41,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       value: controlledValue,
       className,
       disabled,
+      transparentControls = false,
       ...props
     },
     ref
@@ -141,8 +143,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         <div className="flex flex-col h-9">
           <Button
             aria-label="Increase value"
-            className="px-2 h-1/2 rounded-l-none rounded-br-none border-input border-l-0 border-b-[0.5px]  focus-visible:relative"
-            variant="outline"
+            className={cn(
+              'px-2 h-1/2 rounded-l-none rounded-tr-none border-input border-l-0 focus-visible:relative',
+              transparentControls ? 'border-t-0' : 'border-b-[0.5px]'
+            )}
+            variant={transparentControls ? 'ghost' : 'outline'}
             onClick={handleIncrement}
             disabled={
               disabled || (displayValue !== undefined && displayValue >= max)
@@ -152,9 +157,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           </Button>
           <Button
             aria-label="Decrease value"
-            className="px-2 h-1/2 rounded-l-none rounded-tr-none border-input border-l-0 border-t-[0.5px]  focus-visible:relative "
+            className={cn(
+              'px-2 h-1/2 rounded-l-none rounded-tr-none border-input border-l-0 focus-visible:relative',
+              transparentControls ? 'border-t-0' : 'border-t-[0.5px]'
+            )}
             onClick={handleDecrement}
-            variant="outline"
+            variant={transparentControls ? 'ghost' : 'outline'}
             disabled={
               disabled || (displayValue !== undefined && displayValue <= min)
             }

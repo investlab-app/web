@@ -1428,6 +1428,7 @@ export type InstrumentsListData = {
          * A search term.
          */
         search?: string;
+        watched?: boolean;
     };
     url: '/api/instruments/';
 };
@@ -1505,6 +1506,7 @@ export type InstrumentsWithPricesListData = {
          * A search term.
          */
         search?: string;
+        watched?: boolean;
     };
     url: '/api/instruments/with-prices/';
 };

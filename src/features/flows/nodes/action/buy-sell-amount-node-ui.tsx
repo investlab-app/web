@@ -52,6 +52,7 @@ export function BuySellAmountNodeUI({
           onValueChange={onAmountChange}
           decimalScale={5}
           fixedDecimalScale={true}
+          transparentControls={true}
         />
       )}
       {onInstrumentChange && (

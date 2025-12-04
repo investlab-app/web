@@ -26,6 +26,7 @@ import { RouterLoading } from './features/shared/components/router-loading.tsx';
 import { ToasterProvider } from './features/shared/providers/toaster-provider.tsx';
 import { useOnlineStatus } from './features/shared/hooks/use-online-status.tsx';
 import { InAppNotificationsProvider } from './features/shared/providers/in-app-notifications-provider.tsx';
+import { HybridTooltipProvider } from './features/shared/components/ui/hybrid-tooltip.tsx';
 import { ThemeProvider } from '@/features/shared/components/theme-provider.tsx';
 import { ClerkThemedProvider } from '@/features/shared/providers/clerk-themed-provider.tsx';
 import './i18n/config.ts';
@@ -127,33 +128,62 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <ThemeProvider>
-        <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
-          <Conditional
-            condition={IS_PROD}
-            component={PostHogProvider}
-            props={{
-              apiKey: POSTHOG_KEY,
-              options: {
-                api_host: POSTHOG_HOST,
-                cookieless_mode: 'always',
-              },
-            }}
-          >
-            <PersistQueryClientProvider
-              client={queryClient}
-              persistOptions={{
-                persister: createAsyncStoragePersister({
-                  storage: window.localStorage,
-                }),
-                dehydrateOptions: {
-                  shouldDehydrateQuery: (query) => query.meta?.persist === true,
+        <HybridTooltipProvider>
+          <ClerkThemedProvider publicKey={CLERK_PUBLIC_KEY}>
+            <Conditional
+              condition={IS_PROD}
+              component={PostHogProvider}
+              props={{
+                apiKey: POSTHOG_KEY,
+                options: {
+                  api_host: POSTHOG_HOST,
+                  cookieless_mode: 'always',
                 },
               }}
             >
-              <App />
-            </PersistQueryClientProvider>
-          </Conditional>
-        </ClerkThemedProvider>
+              <PersistQueryClientProvider
+                client={queryClient}
+                persistOptions={{
+                  persister: createAsyncStoragePersister({
+                    storage: window.localStorage,
+                  }),
+                  dehydrateOptions: {
+                    shouldDehydrateQuery: (query) =>
+                      query.meta?.persist === true,
+                    serializeData: (data) => {
+                      // Check if this is infinite query data
+                      const infiniteData = data as
+                        | {
+                            pages?: Array<unknown>;
+                            pageParams?: Array<unknown>;
+                          }
+                        | undefined;
+
+                      // If it has multiple pages, trim to first page only
+                      if (
+                        infiniteData?.pages &&
+                        Array.isArray(infiniteData.pages) &&
+                        infiniteData.pages.length > 1
+                      ) {
+                        return {
+                          pages: infiniteData.pages.slice(0, 1),
+                          pageParams: infiniteData.pageParams?.slice(0, 1) ?? [
+                            1,
+                          ],
+                        };
+                      }
+
+                      // Otherwise return data as-is
+                      return data;
+                    },
+                  },
+                }}
+              >
+                <App />
+              </PersistQueryClientProvider>
+            </Conditional>
+          </ClerkThemedProvider>
+        </HybridTooltipProvider>
       </ThemeProvider>
     </StrictMode>
   );

@@ -1491,7 +1491,8 @@ export const zInstrumentsListData = z.object({
         ordering: z.optional(z.string()),
         page: z.optional(z.int()),
         page_size: z.optional(z.int()),
-        search: z.optional(z.string())
+        search: z.optional(z.string()),
+        watched: z.optional(z.boolean())
     }))
 });
 
@@ -1526,7 +1527,8 @@ export const zInstrumentsWithPricesListData = z.object({
         ordering: z.optional(z.string()),
         page: z.optional(z.int()),
         page_size: z.optional(z.int()),
-        search: z.optional(z.string())
+        search: z.optional(z.string()),
+        watched: z.optional(z.boolean())
     }))
 });
 

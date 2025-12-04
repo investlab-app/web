@@ -11,6 +11,7 @@ import { instrumentsWithPricesListInfiniteOptions } from '@/client/@tanstack/rea
 type UseInstrumentsTableParams = {
   ordering?: SortingState;
   pageSize: number;
+  watched?: boolean;
 };
 
 const API_COLUMNS: Record<string, string> = {
@@ -30,6 +31,7 @@ function getOrdering(sorting: SortingState | undefined) {
 }
 
 export function useInstrumentsTable({
+  watched,
   ordering,
   pageSize,
 }: UseInstrumentsTableParams) {
@@ -46,6 +48,7 @@ export function useInstrumentsTable({
   } = useInfiniteQuery({
     ...instrumentsWithPricesListInfiniteOptions({
       query: {
+        ...(watched ? { watched } : {}),
         search: debouncedSearch,
         page_size: pageSize,
         ordering: getOrdering(ordering),
@@ -64,7 +67,6 @@ export function useInstrumentsTable({
       return lastPage.next ? lastPageNumber + 1 : null;
     },
     placeholderData: keepPreviousData,
-    // meta: { persist: false },
   });
 
   const instruments = (data?.pages ?? [])

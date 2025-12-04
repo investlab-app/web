@@ -36,6 +36,7 @@ export function MathNodeUI({
             className="w-30 ml-2"
             min={-9999}
             max={9999}
+            transparentControls={true}
             stepper={1}
             value={value}
             onValueChange={onValueChange}
