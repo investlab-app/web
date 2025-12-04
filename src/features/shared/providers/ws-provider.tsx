@@ -5,30 +5,32 @@ import { useAuth } from '@clerk/clerk-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { invalidateOrderQueries } from '../utils/invalidate-order-queries';
 import { orderUpdateSchema } from './types/order-update';
+import { llmSchema } from './types/llm';
 import type { ReactNode } from 'react';
+import { handleLlmMessage } from '@/features/chat/stores/live-chats-store';
 
-export type HandlerId = string;
+export type SubscriptionHandlerId = string;
 export type WSEvent = string;
 
-interface Handler {
-  handlerId: HandlerId;
+interface SubscriptionHandler {
+  handlerId: SubscriptionHandlerId;
   events: Set<WSEvent>;
 }
 
-const store = new Store({
-  handlers: new Map<HandlerId, Handler>(),
-  events: new Map<WSEvent, Array<HandlerId>>(),
+const subscriptionsStore = new Store({
+  handlers: new Map<SubscriptionHandlerId, SubscriptionHandler>(),
+  events: new Map<WSEvent, Array<SubscriptionHandlerId>>(),
 });
 
-interface TypedMessage {
+interface TypedWSMessage {
   type: string;
   [key: string]: unknown;
 }
 
 interface WSContextType {
-  ws: ReturnType<typeof useWebSocket<TypedMessage | null>>;
-  updateHandler: (handler: Handler) => void;
-  removeHandler: (handlerId: HandlerId) => void;
+  ws: ReturnType<typeof useWebSocket<TypedWSMessage | null>>;
+  updateHandler: (handler: SubscriptionHandler) => void;
+  removeHandler: (handlerId: SubscriptionHandlerId) => void;
 }
 
 export const WSContext = createContext<WSContextType | undefined>(undefined);
@@ -43,7 +45,7 @@ export function WSProvider({ children }: WSProviderParams) {
   const url = `${protocol}://${loc.host}/ws/`;
   const { isSignedIn } = useAuth();
   const connect = isSignedIn;
-  const ws = useWebSocket<TypedMessage | null>(
+  const ws = useWebSocket<TypedWSMessage | null>(
     url,
     {
       onError: (event) => {
@@ -71,29 +73,41 @@ export function WSProvider({ children }: WSProviderParams) {
         console.error('Failed to parse order_update message', parsed.error);
       }
     }
+
+    if (ws.lastJsonMessage?.type === 'llm') {
+      const parsed = llmSchema.safeParse(ws.lastJsonMessage);
+      if (parsed.success) {
+        handleLlmMessage(parsed.data);
+      } else {
+        console.error('Failed to parse llm message', parsed.error);
+      }
+    }
   }, [ws.lastJsonMessage, queryClient]);
 
   function syncBackend() {
-    const events = new Set(store.state.events.keys());
+    const events = new Set(subscriptionsStore.state.events.keys());
     ws.sendJsonMessage({
       type: 'set_subscription',
       subscriptions: Array.from(events),
     });
   }
 
-  function updateHandler({ handlerId, events: newHandlerEvents }: Handler) {
-    const newHandlers = new Map(new Map(store.state.handlers));
+  function updateHandler({
+    handlerId,
+    events: newHandlerEvents,
+  }: SubscriptionHandler) {
+    const newHandlers = new Map(new Map(subscriptionsStore.state.handlers));
     if (newHandlerEvents.size > 0) {
       newHandlers.set(handlerId, { handlerId, events: newHandlerEvents });
     } else {
       newHandlers.delete(handlerId);
     }
 
-    const oldEvents = new Map(store.state.events);
-    const newEvents = new Map(store.state.events);
+    const oldEvents = new Map(subscriptionsStore.state.events);
+    const newEvents = new Map(subscriptionsStore.state.events);
 
     const oldHandlerEvents =
-      store.state.handlers.get(handlerId)?.events || new Set();
+      subscriptionsStore.state.handlers.get(handlerId)?.events || new Set();
 
     const eventsToSubscribe = newHandlerEvents.difference(oldHandlerEvents);
     eventsToSubscribe.forEach((event) => {
@@ -114,7 +128,7 @@ export function WSProvider({ children }: WSProviderParams) {
       }
     });
 
-    store.setState({
+    subscriptionsStore.setState({
       handlers: newHandlers,
       events: newEvents,
     });
@@ -127,7 +141,7 @@ export function WSProvider({ children }: WSProviderParams) {
     }
   }
 
-  function removeHandler(handlerId: HandlerId) {
+  function removeHandler(handlerId: SubscriptionHandlerId) {
     updateHandler({ handlerId, events: new Set() });
   }
 

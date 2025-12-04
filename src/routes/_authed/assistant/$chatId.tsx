@@ -1,22 +1,20 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
 import { ChatInterface } from '@/features/chat/components/chat-interface';
 import AppFrame from '@/features/shared/components/app-frame';
-import {
-  chatsDestroyMutation,
-  chatsListOptions,
-  chatsRetrieveOptions,
-} from '@/client/@tanstack/react-query.gen';
+import { chatsRetrieveOptions } from '@/client/@tanstack/react-query.gen';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { liveChatsStore } from '@/features/chat/stores/live-chats-store';
 
 export const Route = createFileRoute('/_authed/assistant/$chatId')({
   component: ChatPage,
   loader: async ({ params: { chatId }, context: { queryClient } }) => {
+    const liveChat = liveChatsStore.state.chats.get(chatId);
+    if (liveChat?.state === 'firstMessage') {
+      return {
+        crumb: '',
+        crumbLoading: true,
+      };
+    }
     const chat = await queryClient.ensureQueryData(
       chatsRetrieveOptions({ path: { id: chatId } })
     );
@@ -29,20 +27,6 @@ export const Route = createFileRoute('/_authed/assistant/$chatId')({
 
 function ChatPage() {
   const { chatId } = Route.useParams();
-  const { data: chat } = useSuspenseQuery(
-    chatsRetrieveOptions({ path: { id: chatId } })
-  );
-  const { mutate: destroyChat } = useMutation(chatsDestroyMutation());
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (chat.messages.length === 0) {
-      destroyChat({ path: { id: chatId } });
-      queryClient.invalidateQueries(chatsListOptions());
-      navigate({ to: '/assistant' });
-    }
-  }, [chat.messages.length, chatId, destroyChat, navigate, queryClient]);
 
   return (
     <AppFrame>

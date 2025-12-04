@@ -1,94 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import z from 'zod';
 import { useNavigate } from '@tanstack/react-router';
+import { useStore } from '@tanstack/react-store';
+import {
+  createPendingMessage,
+  liveChatsStore,
+} from '../stores/live-chats-store';
 import type { Message } from '@/features/shared/components/ui/chat-message';
-import type { ChatDetail, ChatMessage } from '@/client/types.gen';
+import type { ChatDetail } from '@/client/types.gen';
 import {
   chatsCreateMutation,
   chatsListOptions,
   chatsMessagesCreateMutation,
   chatsRetrieveOptions,
 } from '@/client/@tanstack/react-query.gen';
-import { useWS } from '@/features/shared/hooks/use-ws';
-
-const chatSchema = z.object({
-  type: z.literal('llm'),
-  data: z.discriminatedUnion('state', [
-    z.object({
-      state: z.literal('streaming'),
-      chunk: z.string(),
-    }),
-    z.object({
-      state: z.literal('start'),
-    }),
-    z.object({
-      state: z.literal('end'),
-    }),
-  ]),
-});
-
-type LastChatMessageState = 'idle' | 'streaming' | 'done';
-interface UseLastChatMessageReturn {
-  message: ChatMessage | null;
-  state: LastChatMessageState;
-  reset: () => void;
-}
-
-function useLastChatMessage(): UseLastChatMessageReturn {
-  const [message, setMessage] = useState<ChatMessage | null>(null);
-  const [state, setState] = useState<LastChatMessageState>('idle');
-  const ws = useWS([]);
-
-  const reset = () => {
-    setMessage(null);
-    setState('idle');
-  };
-
-  useEffect(() => {
-    if (!ws.lastJsonMessage || ws.lastJsonMessage.type !== 'llm') {
-      return;
-    }
-
-    const result = chatSchema.safeParse(ws.lastJsonMessage);
-    if (result.error) {
-      console.error('Invalid chat message format', result.error);
-      return;
-    }
-
-    const data = result.data.data;
-
-    switch (data.state) {
-      case 'end':
-        setState('done');
-        break;
-      case 'streaming':
-        setMessage((currentMessage) => {
-          if (currentMessage === null) {
-            return {
-              id: 'streaming-message' as const,
-              role: 'assistant' as const,
-              content: data.chunk,
-              createdAt: new Date().toISOString(),
-            };
-          }
-
-          return {
-            id: 'streaming-message' as const,
-            role: 'assistant' as const,
-            content: currentMessage.content + data.chunk,
-            createdAt: new Date().toISOString(),
-          };
-        });
-        break;
-      case 'start':
-        setState('streaming');
-        break;
-    }
-  }, [ws.lastJsonMessage]);
-
-  return { message, state, reset };
-}
+import { useBreadcrumbCustomizer } from '@/features/shared/components/breadcrumb-nav';
 
 interface UseChatParams {
   chatId?: string;
@@ -105,157 +31,142 @@ interface UseChatReturn {
 }
 
 export function useChat({ chatId }: UseChatParams): UseChatReturn {
-  const [input, setInput] = useState('');
-  const [pendingMessage, setPendingMessage] = useState<ChatMessage | null>(
-    null
-  );
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [input, setInput] = useState('');
 
-  // Only use the query when we have a chatId
-  const { data: history } = useQuery({
+  const livePart = useStore(liveChatsStore, (state) =>
+    chatId === undefined ? null : (state.chats.get(chatId) ?? null)
+  );
+
+  const { data: chat, isLoading: isHistoryLoading } = useQuery({
     ...chatsRetrieveOptions({ path: { id: chatId! } }),
-    enabled: !!chatId,
+    enabled:
+      chatId !== undefined &&
+      livePart?.state !== 'firstMessage' &&
+      livePart?.state !== 'sent',
   });
 
-  const { mutate: createChatMutation } = useMutation({
-    ...chatsCreateMutation(),
-    onSuccess: async (data, variables) => {
-      queryClient.invalidateQueries(chatsListOptions());
-      queryClient.setQueryData(
-        chatsRetrieveOptions({ path: { id: data.id } }).queryKey,
-        (old: ChatDetail | undefined) => {
+  useBreadcrumbCustomizer(
+    (items) =>
+      items.map((item) => {
+        if (chatId && item.href.includes(chatId)) {
+          const isLoading =
+            isHistoryLoading ||
+            livePart?.state === 'firstMessage' ||
+            livePart?.state === 'sent';
+          const title = chat?.title || '';
+
           return {
-            id: data.id,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
-            title: data.title,
-            messages: [
-              ...(old?.messages ?? []),
-              {
-                id: 'optimistic-user-message-' + Date.now(),
-                role: 'user' as const,
-                content: variables.body.first_message,
-                createdAt: new Date().toISOString(),
-              },
-            ],
+            ...item,
+            label: title,
+            loading: isLoading,
           };
         }
-      );
+        return item;
+      }),
+    [chatId, isHistoryLoading, livePart?.state, chat?.title]
+  );
 
-      await navigate({
-        to: '/assistant/$chatId',
-        params: { chatId: data.id },
-      });
+  const { mutateAsync: createChatMutation } = useMutation({
+    ...chatsCreateMutation(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(chatsListOptions());
     },
   });
 
-  const { mutateAsync: sendMessageMutation } = useMutation({
-    ...chatsMessagesCreateMutation(),
-    onMutate: async (variables) => {
-      // Cancel outgoing refetches to prevent overwriting optimistic update
-      await queryClient.cancelQueries({
-        queryKey: chatsRetrieveOptions({ path: { id: chatId! } }).queryKey,
-      });
+  const { mutateAsync: sendMessageMutation } = useMutation(
+    chatsMessagesCreateMutation()
+  );
 
-      // Get previous data for rollback
-      const previousData = queryClient.getQueryData(
-        chatsRetrieveOptions({ path: { id: chatId! } }).queryKey
-      );
-
-      // Optimistically update cache with new user message
+  if (chatId && livePart) {
+    const { request, response, state } = livePart;
+    if (response && state === 'done') {
       queryClient.setQueryData(
-        chatsRetrieveOptions({ path: { id: chatId! } }).queryKey,
+        chatsRetrieveOptions({ path: { id: chatId } }).queryKey,
         (old: ChatDetail | undefined) => {
-          if (!old || !chatId) return old;
+          if (!old) return old;
           return {
             ...old,
-            messages: [
-              ...old.messages,
-              {
-                id: 'optimistic-user-message-' + Date.now(),
-                role: 'user' as const,
-                content: variables.body.content,
-                createdAt: new Date().toISOString(),
-              },
-            ],
+            messages: [...old.messages, request, response],
           };
         }
       );
-
-      return { previousData };
-    },
-    onError: (_err, _variables, context) => {
-      // Rollback on error
-      if (context?.previousData) {
-        queryClient.setQueryData(
-          chatsRetrieveOptions({ path: { id: chatId! } }).queryKey,
-          context.previousData
-        );
-      }
-    },
-  });
-
-  const {
-    message: lastChatMessage,
-    state: lastChatMessageState,
-    reset,
-  } = useLastChatMessage();
-
-  if (lastChatMessageState === 'done' && lastChatMessage?.content) {
-    queryClient.setQueryData(
-      chatsRetrieveOptions({ path: { id: chatId! } }).queryKey,
-      (old: ChatDetail | undefined) => {
-        if (!old || !chatId) return old;
-        return {
-          ...old,
-          messages: [...old.messages, lastChatMessage],
-        };
-      }
-    );
-    reset();
+      liveChatsStore.setState((previous) => {
+        const newChats = new Map(previous.chats);
+        newChats.delete(chatId);
+        return { chats: newChats };
+      });
+    }
   }
 
-  const sendMessage = async (message: string) => {
-    if (!chatId) {
-      setPendingMessage({
-        id: 'optimistic-creation-' + Date.now(),
-        role: 'user',
-        content: message,
-        createdAt: new Date().toISOString(),
-      });
-      createChatMutation({ body: { first_message: message } });
-      return;
-    }
-    await sendMessageMutation({
-      body: { content: message, role: 'user' },
-      path: { id: chatId },
-    });
-  };
-
   const messages = [
-    ...(history?.messages ?? []),
-    ...(pendingMessage && !chatId ? [pendingMessage] : []),
-    ...(lastChatMessage ? [lastChatMessage] : []),
+    ...(chat?.messages ?? []),
+    ...(livePart?.request ? [livePart.request] : []),
+    ...(livePart?.response ? [livePart.response] : []),
   ].map((msg) => ({
     ...msg,
     createdAt: msg.createdAt ? new Date(msg.createdAt) : undefined,
   }));
 
+  const append = (message: { role: 'user'; content: string }) => {
+    const newChatId = crypto.randomUUID();
+    createPendingMessage({
+      chatId: newChatId,
+      content: message.content,
+      isFirstMessage: true,
+    });
+    navigate({
+      to: '/assistant/$chatId',
+      params: { chatId: newChatId },
+    });
+    createChatMutation({
+      body: { first_message: message.content, id: newChatId },
+    });
+    setInput('');
+  };
+
+  const handleSubmit = (event?: {
+    preventDefault?: (() => void) | undefined;
+  }) => {
+    event?.preventDefault?.();
+    if (!chatId) {
+      const newChatId = crypto.randomUUID();
+      createPendingMessage({
+        chatId: newChatId,
+        content: input,
+        isFirstMessage: true,
+      });
+      navigate({
+        to: '/assistant/$chatId',
+        params: { chatId: newChatId },
+      });
+      createChatMutation({
+        body: {
+          first_message: input,
+          id: newChatId,
+        },
+      });
+    } else {
+      createPendingMessage({
+        chatId: chatId,
+        content: input,
+        isFirstMessage: false,
+      });
+      sendMessageMutation({
+        body: { content: input, role: 'user' },
+        path: { id: chatId },
+      });
+    }
+    setInput('');
+  };
+
   return {
     messages,
-    append: (message: { role: 'user'; content: string }) => {
-      sendMessage(message.content);
-    },
+    append,
     input,
-    handleInputChange: (event) => {
-      setInput(event.target.value);
-    },
-    handleSubmit: (event) => {
-      event?.preventDefault?.();
-      sendMessage(input);
-      setInput('');
-    },
-    isLoading: lastChatMessageState === 'streaming',
+    handleInputChange: (event) => setInput(event.target.value),
+    handleSubmit,
+    isLoading: livePart?.state === 'streaming',
   };
 }

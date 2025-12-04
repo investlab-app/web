@@ -109,6 +109,7 @@ export const zCreateChatMessageRequest = z.object({
 });
 
 export const zCreateChatRequest = z.object({
+    id: z.uuid(),
     first_message: z.string().min(1).max(10000)
 });
 

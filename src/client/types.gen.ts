@@ -98,6 +98,7 @@ export type CreateChatMessageRequest = {
 };
 
 export type CreateChatRequest = {
+    id: string;
     first_message: string;
 };
 
