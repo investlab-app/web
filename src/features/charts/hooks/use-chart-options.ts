@@ -69,6 +69,7 @@ export function useChartOptions({
       axisLabel: {
         fontFamily: fontSans,
         interval: createLabelIntervalFn(dates.length, zoom),
+        hideOverlap: true,
         formatter: (value: string) =>
           formatChartDateByRange({
             date: new Date(value),
