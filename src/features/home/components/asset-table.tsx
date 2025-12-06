@@ -10,6 +10,7 @@ import {
 } from '@/features/shared/components/ui/table';
 import { cn } from '@/features/shared/utils/styles';
 import { withCurrency } from '@/features/shared/utils/numbers';
+import { formatPercentage } from '@/features/transactions/utils/card-helpers';
 
 type AssetTableProps = {
   data: Array<OwnedShare>;
@@ -77,7 +78,7 @@ const AssetTable = ({ data, onAssetPressed, className }: AssetTableProps) => {
                       : ''
                 )}
               >
-                {`${withCurrency(asset.gain_percentage, i18n.language, 2)}%`}
+                {formatPercentage(asset.gain_percentage)}
               </TableCell>
             </TableRow>
           ))}
