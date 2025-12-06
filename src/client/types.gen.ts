@@ -202,21 +202,29 @@ export type HistoryEntry = {
      */
     timestamp: string;
     /**
-     * True if the transaction was a buy False if it was a sell
-     */
-    is_buy: boolean;
-    /**
      * Number of shares traded
      */
     quantity: string;
     /**
-     * Price per share at the time of transaction
+     * Value of the transaction at closing or current market price
      */
-    share_price: number;
+    final_transaction_value: number;
     /**
-     * Acquisition price (null for SELL transactions)
+     * Price per share at the time of sell transaction or current market price
      */
-    acquisition_price: number | null;
+    final_share_price: number;
+    /**
+     * Price per share at the time of buy transaction
+     */
+    initial_share_price: number;
+    /**
+     * Gain or loss from this transaction
+     */
+    gain: number;
+    /**
+     * Gain or loss percentage from this transaction
+     */
+    gain_percentage: number;
 };
 
 export type Insight = {
@@ -579,7 +587,7 @@ export type OwnedShare = {
     volume: number;
     value: number;
     gain: number;
-    gain_percentage: number | null;
+    gain_percentage: number;
 };
 
 export type PaginatedDepositHistoryList = {
@@ -672,9 +680,9 @@ export type Position = {
      */
     quantity: string;
     /**
-     * Current market value
+     * Current market value for open positions or total sell valuefor closed positions
      */
-    market_value: number;
+    value: number;
     /**
      * Total gain or loss
      */
@@ -682,7 +690,7 @@ export type Position = {
     /**
      * Total gain or loss percentage
      */
-    gain_percentage: number | null;
+    gain_percentage: number;
     /**
      * Transaction history
      */
