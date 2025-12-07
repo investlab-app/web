@@ -30,7 +30,7 @@ export function DepositDialog({ open, onOpenChange }: DepositDialogProps) {
 
   const form = useAppForm({
     defaultValues: {
-      amount: 5,
+      amount: 500,
     },
     onSubmit: ({ value }) => {
       if (value.amount <= 1) {

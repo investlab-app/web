@@ -8,8 +8,8 @@ const plFlows = {
     active_strategies: 'Aktywne strategie',
     closed_strategies: 'Zamknięte strategie',
     no_history: 'Ta strategia nie wykonała jeszcze żadnych transakcji.',
-    single: 'Run once',
-    repeat: 'Repeat',
+    single: 'Uruchom raz',
+    repeat: 'Powtarzaj',
   },
   card: {
     fail: 'Nie wykonano',
