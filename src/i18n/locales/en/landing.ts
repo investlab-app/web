@@ -16,7 +16,7 @@ const enLanding = {
       'Design complex investment strategies without writing a single line of code. Our drag-and-drop interface makes it simple and intuitive.',
     feature_2_title: 'AI Assistant',
     feature_2_description:
-      'Have questions about the application or your portfolio? Our intelligent language model-based assistant is available to help you and provide valuable tips.',
+      'Have questions about the market or your portfolio? Our intelligent language model-based assistant is available to help you and provide valuable tips.',
     feature_3_title: 'Real Market Data',
     feature_3_description:
       'Test your strategies based on current data from financial markets. Gain practical experience in a realistic environment.',
@@ -34,7 +34,7 @@ const enLanding = {
     market_data_title: 'Real-time market data',
     market_data_description:
       'Analyze financial instruments using current quotes, market news, and detailed information to help you make informed decisions.',
-    statistics_title: 'Advanced statistics',
+    statistics_title: 'Friendly statistics',
     statistics_description:
       'Track the effectiveness of your investment decisions through the statistics panel. Analyze your results and learn from your mistakes.',
     transactions_title: 'Transaction history',
@@ -48,7 +48,7 @@ const enLanding = {
       'Create new strategies with our revolutionary graphical editor or manage existing ones. Investment automation is at your fingertips.',
     llm_chat_title: 'Chat with AI assistant',
     llm_chat_description:
-      'Ask questions about the platform, request a portfolio analysis, or generate charts using simple natural language commands. Our assistant will streamline your navigation of the platform.',
+      'Ask questions about the market, request a portfolio analysis, or generate charts using simple natural language commands. Our assistant will streamline your navigation of the platform.',
     charts_title: 'Interactive charts',
     charts_description:
       'Visualize market data with candlestick and line charts. Analyze trends and historical quotes to better plan your investments.',

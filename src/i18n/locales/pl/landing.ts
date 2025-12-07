@@ -16,7 +16,7 @@ const plLanding = {
       'Projektuj złożone strategie inwestycyjne bez pisania ani jednej linijki kodu. Nasz interfejs "przeciągnij i upuść" sprawia, że jest to proste i intuicyjne.',
     feature_2_title: 'Asystent AI',
     feature_2_description:
-      'Masz pytania dotyczące aplikacji lub twojego portfela? Nasz inteligentny asystent oparty na modelu językowym jest dostępny, aby Ci pomóc i dostarczyć cennych wskazówek.',
+      'Masz pytania dotyczące rynku lub twojego portfela? Nasz inteligentny asystent oparty na modelu językowym jest dostępny, aby Ci pomóc i dostarczyć cennych wskazówek.',
     feature_3_title: 'Rzeczywiste dane rynkowe',
     feature_3_description:
       'Testuj swoje strategie w oparciu o aktualne dane z rynków finansowych. Zdobądź praktyczne doświadczenie w realistycznym środowisku.',
@@ -34,7 +34,7 @@ const plLanding = {
     market_data_title: 'Dane rynkowe w czasie rzeczywistym',
     market_data_description:
       'Analizuj instrumenty finansowe, korzystając z aktualnych notowań, wiadomości rynkowych i szczegółowych informacji, które pomogą Ci podejmować świadome decyzje.',
-    statistics_title: 'Zaawansowane statystyki',
+    statistics_title: 'Przyjazne statystyki',
     statistics_description:
       'Śledź skuteczność swoich decyzji inwestycyjnych poprzez panel statystyk. Analizuj swoje wyniki i ucz się na błędach.',
     transactions_title: 'Historia transakcji',
@@ -48,7 +48,7 @@ const plLanding = {
       'Twórz nowe strategie za pomocą naszego rewolucyjnego edytora graficznego lub zarządzaj już istniejącymi. Automatyzacja inwestycji jest na wyciągnięcie ręki.',
     llm_chat_title: 'Czat z asystentem AI',
     llm_chat_description:
-      'Zadawaj pytania dotyczące platformy, proś o analizę portfela lub generuj wykresy za pomocą prostych poleceń w języku naturalnym. Nasz asystent usprawni Twoje poruszanie się po platformie.',
+      'Zadawaj pytania dotyczące rynku, proś o analizę portfela lub generuj wykresy za pomocą prostych poleceń w języku naturalnym. Nasz asystent usprawni Twoje poruszanie się po platformie.',
     charts_title: 'Interaktywne wykresy',
     charts_description:
       'Wizualizuj dane rynkowe za pomocą wykresów świecowych i liniowych. Analizuj trendy i historyczne notowania, aby lepiej planować swoje inwestycje.',

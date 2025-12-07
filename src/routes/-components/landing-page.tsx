@@ -54,25 +54,25 @@ export function LandingPage() {
       icon: <LayoutDashboard className="h-8 w-8" />,
       title: t('landing.features_overview.dashboard_title'),
       description: t('landing.features_overview.dashboard_description'),
-      image: undefined,
+      image: 'dash',
     },
     {
       icon: <Newspaper className="h-8 w-8" />,
       title: t('landing.features_overview.market_data_title'),
       description: t('landing.features_overview.market_data_description'),
-      image: undefined,
+      image: 'info',
     },
     {
       icon: <PieChart className="h-8 w-8" />,
       title: t('landing.features_overview.statistics_title'),
       description: t('landing.features_overview.statistics_description'),
-      image: undefined,
+      image: 'stats',
     },
     {
       icon: <History className="h-8 w-8" />,
       title: t('landing.features_overview.transactions_title'),
       description: t('landing.features_overview.transactions_description'),
-      image: undefined,
+      image: 'history',
     },
     {
       icon: <Wallet className="h-8 w-8" />,
@@ -174,7 +174,7 @@ export function LandingPage() {
               >
                 <CardContent className="pt-6">
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <div className="p-3 rounded-lg bg-primary/10 text-foreground">
                       {feature.icon}
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export function LandingPage() {
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <div className="p-3 rounded-lg bg-primary/10 text-foreground">
                       {feature.icon}
                     </div>
                     <h3 className="text-2xl font-bold text-foreground">
