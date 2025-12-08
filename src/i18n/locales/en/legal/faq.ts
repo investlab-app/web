@@ -28,7 +28,11 @@ const enFaq = {
       part1:
         'Yes. We take data security seriously. Authentication and account management are handled through',
       part2: ', and usage insights are processed using',
-      part3: 'analytics. For full details, see our',
+      part3: '. For AI features, we use large language models (LLMs) from',
+      part4: 'and',
+      part5:
+        '. Application performance and reliability monitoring is provided by',
+      part6: '. For full details, see our',
     },
   },
   q6: {

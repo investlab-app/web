@@ -29,7 +29,10 @@ const plFaq = {
       part1:
         'Tak. Poważnie traktujemy bezpieczeństwo danych. Uwierzytelnianie i zarządzanie kontem obsługuje',
       part2: ', a analiza korzystania z serwisu odbywa się za pomocą',
-      part3: '. Szczegóły znajdziesz w naszym',
+      part3: '. Do funkcji AI wykorzystujemy modele językowe (LLM) od',
+      part4: 'oraz',
+      part5: '. Monitorowanie wydajności i niezawodności aplikacji zapewnia',
+      part6: '. Szczegóły znajdziesz w naszym',
     },
   },
   q6: {

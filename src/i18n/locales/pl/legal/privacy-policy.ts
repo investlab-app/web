@@ -184,6 +184,16 @@ const plPrivacyPolicy = {
       description:
         ' w trybie bez plików cookie zbiera anonimowe, zagregowane dane użytkowania. Żadne pliki cookie ani trwałe identyfikatory nie są przechowywane.',
     },
+    llmProviders: {
+      title: 'Z dostawcami modeli językowych (LLM): ',
+      description:
+        'Korzystamy z usług Groq i Google Gemini do przetwarzania zapytań i generowania odpowiedzi. Dane wejściowe użytkownika mogą być przekazywane do tych dostawców w celu przetworzenia. Dostawcy ci przestrzegają własnych polityk prywatności i zabezpieczeń danych.',
+    },
+    monitoringProviders: {
+      title: 'Z dostawcami monitoringu: ',
+      description:
+        'Używamy Datadog do monitorowania wydajności aplikacji, śledzenia błędów i zapewnienia stabilności usługi. Dane diagnostyczne i logi mogą być przetwarzane przez Datadog w celu poprawy jakości usługi.',
+    },
     otherProviders: {
       title: 'Z innymi dostawcami usług',
       description:
@@ -274,7 +284,7 @@ const plPrivacyPolicy = {
       legitimate: {
         title: 'Uzasadnione interesy',
         description:
-          'analityka przez PostHog w trybie bez plików cookie, ulepszanie funkcji i ochrona bezpieczeństwa.',
+          'analityka przez PostHog w trybie bez plików cookie, przetwarzanie zapytań przez modele językowe (Groq, Gemini), monitorowanie aplikacji przez Datadog, ulepszanie funkcji i ochrona bezpieczeństwa.',
       },
       legal: {
         title: 'Obowiązki prawne',
@@ -284,7 +294,7 @@ const plPrivacyPolicy = {
     transfers: {
       title: 'Transfery międzynarodowe',
       description:
-        'Niektórzy dostawcy (jak Clerk i PostHog, jeśli korzystają z usługi w chmurze) mogą przetwarzać dane poza EOG/UK. Transfery są zabezpieczone za pomocą standardowych klauzul umownych (SCC) lub innych zatwierdzonych zabezpieczeń.',
+        'Niektórzy dostawcy (jak Clerk, PostHog, Groq, Google Gemini i Datadog) mogą przetwarzać dane poza EOG/UK. Transfery są zabezpieczone za pomocą standardowych klauzul umownych (SCC) lub innych zatwierdzonych zabezpieczeń.',
     },
     rights: {
       title: 'Twoje prawa ochrony danych',

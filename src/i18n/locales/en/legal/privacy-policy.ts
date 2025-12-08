@@ -181,6 +181,16 @@ const enPrivacyPolicy = {
       description:
         ' in cookieless mode collects anonymized, aggregated usage metrics. No cookies or persistent identifiers are stored.',
     },
+    llmProviders: {
+      title: 'With LLM Providers: ',
+      description:
+        'We use Groq and Google Gemini to process queries and generate responses. User input data may be sent to these providers for processing. These providers adhere to their own privacy policies and data protection measures.',
+    },
+    monitoringProviders: {
+      title: 'With Monitoring Providers: ',
+      description:
+        'We use Datadog for application performance monitoring, error tracking, and ensuring service stability. Diagnostic data and logs may be processed by Datadog to improve service quality.',
+    },
     otherProviders: {
       title: 'With Other Service Providers',
       description: 'For hosting, infrastructure, and email delivery.',
@@ -269,7 +279,7 @@ const enPrivacyPolicy = {
       legitimate: {
         title: 'Legitimate Interests',
         description:
-          'analytics through PostHog in cookieless mode, improving features, and protecting security.',
+          'analytics through PostHog in cookieless mode, query processing via language models (Groq, Gemini), application monitoring via Datadog, improving features, and protecting security.',
       },
       legal: {
         title: 'Legal Obligations',
@@ -279,7 +289,7 @@ const enPrivacyPolicy = {
     transfers: {
       title: 'International Transfers',
       description:
-        'Some providers (like Clerk, and PostHog if using their cloud service) may process data outside the EEA/UK. Transfers are secured using Standard Contractual Clauses (SCCs) or other approved safeguards.',
+        'Some providers (like Clerk, PostHog, Groq, Google Gemini, and Datadog) may process data outside the EEA/UK. Transfers are secured using Standard Contractual Clauses (SCCs) or other approved safeguards.',
     },
     rights: {
       title: 'Your Data Protection Rights',
