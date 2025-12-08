@@ -12,6 +12,7 @@ import {
   useSidebar,
 } from '@/features/shared/components/ui/sidebar';
 import { Skeleton } from '@/features/shared/components/ui/skeleton';
+import { ScrollArea } from '@/features/shared/components/ui/scroll-area';
 import { investorsMeWatchedTickersListOptions } from '@/client/@tanstack/react-query.gen';
 import { InstrumentIconCircle } from '@/features/instruments/components/instrument-image-circle';
 
@@ -26,71 +27,75 @@ export function NavWatchedTickers() {
 
   if (isLoading) {
     return (
-      <SidebarGroup>
+      <SidebarGroup className="flex-1 min-h-0">
         <SidebarGroupLabel className="flex items-center gap-2 leading-none">
           <Star className="h-4 w-4 flex-shrink-0" />
           {t('common.watched')}
         </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            {[1, 2, 3].map((i) => (
-              <SidebarMenuItem key={i}>
-                <Skeleton className="h-8 w-full" />
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+        <SidebarGroupContent className="flex-1 min-h-0">
+          <ScrollArea className="h-full">
+            <SidebarMenu>
+              {[1, 2, 3].map((i) => (
+                <SidebarMenuItem key={i}>
+                  <Skeleton className="h-8 w-full" />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </ScrollArea>
         </SidebarGroupContent>
       </SidebarGroup>
     );
   }
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="flex-1 min-h-0">
       <SidebarGroupLabel className="flex items-center gap-2 leading-none">
         <Star className="h-4 w-4 flex-shrink-0" />
         {t('common.watched')}
       </SidebarGroupLabel>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {watchedTickers.length === 0 ? (
-            <div
-              className={`px-2 py-2 text-sm text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-200 ${
-                state === 'collapsed' ? 'opacity-0' : 'opacity-100'
-              }`}
-            >
-              {t('common.no_watched_instruments')}
-            </div>
-          ) : (
-            watchedTickers.map((ticker) => {
-              const isActive =
-                location.pathname === `/instruments/${ticker.ticker}`;
-              return (
-                <SidebarMenuItem key={ticker.ticker}>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={ticker.name}
-                    isActive={isActive}
-                  >
-                    <Link
-                      to="/instruments/$instrumentId"
-                      params={{ instrumentId: ticker.ticker }}
-                      className="text-sm"
+      <SidebarGroupContent className="flex-1 min-h-0">
+        <ScrollArea className="h-full">
+          <SidebarMenu>
+            {watchedTickers.length === 0 ? (
+              <div
+                className={`px-2 py-2 text-sm text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-200 ${
+                  state === 'collapsed' ? 'opacity-0' : 'opacity-100'
+                }`}
+              >
+                {t('common.no_watched_instruments')}
+              </div>
+            ) : (
+              watchedTickers.map((ticker) => {
+                const isActive =
+                  location.pathname === `/instruments/${ticker.ticker}`;
+                return (
+                  <SidebarMenuItem key={ticker.ticker}>
+                    <SidebarMenuButton
+                      asChild
+                      tooltip={ticker.name}
+                      isActive={isActive}
                     >
-                      <InstrumentIconCircle
-                        symbol={ticker.ticker}
-                        icon={ticker.icon ?? null}
-                        name={ticker.name}
-                        size="xs"
-                        className="border-none outline-muted"
-                      />
-                      <span>{ticker.ticker}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              );
-            })
-          )}
-        </SidebarMenu>
+                      <Link
+                        to="/instruments/$instrumentId"
+                        params={{ instrumentId: ticker.ticker }}
+                        className="text-sm"
+                      >
+                        <InstrumentIconCircle
+                          symbol={ticker.ticker}
+                          icon={ticker.icon ?? null}
+                          name={ticker.name}
+                          size="xs"
+                          className="border-none outline-muted"
+                        />
+                        <span>{ticker.ticker}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })
+            )}
+          </SidebarMenu>
+        </ScrollArea>
       </SidebarGroupContent>
     </SidebarGroup>
   );
