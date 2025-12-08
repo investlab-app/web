@@ -51,7 +51,8 @@ const enTransactions = {
   error_loading: 'Sorry, the transaction history could not be loaded.',
   error_invalid_data:
     'Invalid data format received from server. Please try again later.',
-  no_open_positions: 'You have no open positions for this instrument.',
+  no_open_positions: 'You have no open positions.',
+  no_closed_positions: 'You have no closed positions.',
   end_of_history: 'End of transaction history',
   tooltips: {
     name: 'Name of the financial instrument',

@@ -52,7 +52,8 @@ const plTransactions = {
     'Przepraszamy, historia transakcji nie mogła zostać załadowana.',
   error_invalid_data:
     'Nieprawidłowy format danych otrzymanych z serwera. Spróbuj ponownie później.',
-  no_open_positions: 'Nie masz otwartych pozycji dla tego instrumentu.',
+  no_open_positions: 'Nie masz otwartych pozycji.',
+  no_closed_positions: 'Nie masz zamkniętych pozycji.',
   end_of_history: 'Koniec historii transakcji',
   tooltips: {
     name: 'Nazwa instrumentu finansowego',

@@ -43,7 +43,11 @@ export function Positions({ type }: PositionsTableProps) {
   if (data.length === 0) {
     return (
       <EmptyMessage
-        message={t('transactions.no_open_positions')}
+        message={
+          type == 'open'
+            ? t('transactions.no_open_positions')
+            : t('transactions.no_closed_positions')
+        }
         cta={{
           to: '/instruments',
           label: t('instruments.browse_instruments'),
