@@ -225,7 +225,7 @@ export function LandingPage() {
                     {feature.description}
                   </p>
                 </div>
-                <div className="flex-1 w-full h-64 bg-muted rounded-lg flex items-center justify-center">
+                <div className="flex-1 w-full h-64 rounded-lg flex items-center justify-center">
                   <p className="text-muted-foreground">
                     {!feature.image ? (
                       t('landing.features_overview.screenshot_placeholder')
@@ -233,7 +233,7 @@ export function LandingPage() {
                       <img
                         src={`${LANDING_IMGS_BASE_URL}/${i18n.language}/${appTheme}/${feature.image}.jpg`}
                         alt={feature.title}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-full object-cover rounded-lg border border-foreground"
                       />
                     )}
                   </p>

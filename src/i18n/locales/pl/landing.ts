@@ -56,7 +56,7 @@ const plLanding = {
   },
   cta_title: 'Gotowy, aby zacząć inwestować?',
   cta_description:
-    'Dołącz aspirujących inwestorów, którzy rozwijają swoje umiejętności z InvestLab. Otwórz darmowe konto już dziś.',
+    'Dołącz do aspirujących inwestorów, którzy rozwijają swoje umiejętności z InvestLab. Otwórz darmowe konto już dziś.',
 };
 
 export default plLanding;
