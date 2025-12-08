@@ -122,6 +122,7 @@ function App() {
   );
 }
 
+// i want to test e2e
 
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
