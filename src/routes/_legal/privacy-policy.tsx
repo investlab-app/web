@@ -12,7 +12,7 @@ function RouteComponent() {
     <div className="prose prose-gray dark:prose-invert max-w-none">
       <h1>{t('legal.privacyPolicy.title')}</h1>
       <p>
-        {t('legal.privacyPolicy.lastUpdated', { date: new Date(2025, 12, 8) })}
+        {t('legal.privacyPolicy.lastUpdated', { date: new Date(2025, 11, 8) })}
       </p>
 
       <p>{t('legal.privacyPolicy.intro.description')}</p>
