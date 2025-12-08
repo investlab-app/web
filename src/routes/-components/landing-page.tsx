@@ -233,7 +233,7 @@ export function LandingPage() {
                       <img
                         src={`${LANDING_IMGS_BASE_URL}/${i18n.language}/${appTheme}/${feature.image}.jpg`}
                         alt={feature.title}
-                        className="w-full h-full object-cover rounded-lg border border-foreground"
+                        className="w-full h-full object-cover rounded-lg border border-foreground/10"
                       />
                     )}
                   </p>
