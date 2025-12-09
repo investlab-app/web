@@ -165,8 +165,12 @@ function RouteComponent() {
           {t(
             'legal.privacyPolicy.interpretationDefinitions.definitions.website.description'
           )}
-          <a href="https://investlab.app/" target="_blank" rel="noopener">
-            https://investlab.app/
+          <a
+            href="https://investlab.kapica.click/"
+            target="_blank"
+            rel="noopener"
+          >
+            https://investlab.kapica.click/
           </a>
           .
         </li>

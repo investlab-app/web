@@ -14,7 +14,7 @@ const plTermsOfService = {
   acceptanceOfTerms: {
     title: 'Akceptacja warunków',
     description:
-      'Uzyskując dostęp do platformy pod adresem http://www.investlab.app, zgadzasz się być związany niniejszym regulaminem, wszystkimi obowiązującymi prawami i przepisami oraz zgadzasz się, że jesteś odpowiedzialny za przestrzeganie wszelkich obowiązujących praw lokalnych.',
+      'Uzyskując dostęp do platformy pod adresem http://www.investlab.kapica.click, zgadzasz się być związany niniejszym regulaminem, wszystkimi obowiązującymi prawami i przepisami oraz zgadzasz się, że jesteś odpowiedzialny za przestrzeganie wszelkich obowiązujących praw lokalnych.',
   },
 
   useLicense: {

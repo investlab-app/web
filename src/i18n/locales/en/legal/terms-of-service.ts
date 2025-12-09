@@ -14,7 +14,7 @@ const enTermsOfService = {
   acceptanceOfTerms: {
     title: 'Acceptance of Terms',
     description:
-      'By accessing the platform at http://www.investlab.app, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.',
+      'By accessing the platform at http://www.investlab.kapica.click, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.',
   },
 
   useLicense: {
