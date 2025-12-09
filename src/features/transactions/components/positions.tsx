@@ -44,7 +44,7 @@ export function Positions({ type }: PositionsTableProps) {
     return (
       <EmptyMessage
         message={
-          type == 'open'
+          type === 'open'
             ? t('transactions.no_open_positions')
             : t('transactions.no_closed_positions')
         }

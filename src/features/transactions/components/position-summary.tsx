@@ -79,7 +79,7 @@ export function PositionSummary({
               <Button
                 variant="link"
                 asChild
-                className="px-0 text-foreground text-sm sm:text-base font-semibold truncate max-w-[120px] sm:max-w-none"
+                className="px-0 text-foreground text-sm sm:text-base font-semibold truncate"
               >
                 <Link
                   aria-label={`${t('transactions.actions.instrument_details')} ${position.name}`}
@@ -90,7 +90,7 @@ export function PositionSummary({
                 </Link>
               </Button>
             ) : (
-              <span className="text-sm sm:text-base font-semibold text-foreground truncate max-w-[120px] sm:max-w-none">
+              <span className="text-sm sm:text-base font-semibold text-foreground truncate">
                 {position.name}
               </span>
             )}
