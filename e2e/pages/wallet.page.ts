@@ -47,7 +47,7 @@ export class WalletPage {
 
   async fillDepositAmount(amount: number) {
     await this.depositAmountInput.clear();
-    await this.depositAmountInput.fill(amount.toString());
+    await this.depositAmountInput.fill(amount.toFixed(2));
   }
 
   async submitDeposit() {
