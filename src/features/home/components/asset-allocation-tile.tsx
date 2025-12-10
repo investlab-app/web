@@ -106,7 +106,7 @@ export const AssetAllocationTile = ({
                       <div
                         className="size-4 rounded-full"
                         style={{
-                          backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
+                          backgroundColor: `color-mix(in srgb, ${theme === 'dark' ? 'black' : 'white'} ${(index / assets.length) * 80}%, var(--primary-foreground))`,
                         }}
                       />
                       <div className="space-y-1">
