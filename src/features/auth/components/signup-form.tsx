@@ -213,10 +213,9 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
             }}
             children={(field) => (
               <>
-                <field.FormInput
+                <field.PasswordFormInput
                   id="password"
                   label={t('auth.password')}
-                  type="password"
                   name="password"
                   placeholder={t('auth.password_placeholder')}
                   autoComplete="new-password"
@@ -243,10 +242,9 @@ export function SignUpForm({ pageError }: SignUpFormProps) {
             }}
             children={(field) => (
               <>
-                <field.FormInput
+                <field.PasswordFormInput
                   id="confirmPassword"
                   label={t('auth.confirm_password')}
-                  type="password"
                   name="confirmPassword"
                   placeholder={t('auth.password_placeholder')}
                   autoComplete="new-password"
