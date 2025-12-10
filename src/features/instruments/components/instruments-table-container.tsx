@@ -24,7 +24,7 @@ export const InstrumentsTableContainer = ({
   const { t } = useTranslation();
 
   const [ordering, setOrdering] = useState<SortingState>([
-    { id: 'symbol', desc: false },
+    { id: 'marketCap', desc: true },
   ]);
   const [showWatchedOnly, setShowWatchedOnly] = useState(false);
 

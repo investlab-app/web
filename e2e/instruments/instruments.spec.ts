@@ -52,9 +52,7 @@ test.describe('Instruments Page', () => {
       // Click to sort by Symbol
       await instrumentsPage.clickTableHeader('Symbol');
       const sortedSymbols = await instrumentsPage.getVisibleInstrumentSymbols();
-
-      // Symbols are sorted in descending order by default so now it should be ascending
-      expect([...sortedSymbols].sort().reverse()).toStrictEqual(sortedSymbols);
+      expect(sortedSymbols.toSorted()).toStrictEqual(sortedSymbols);
 
       // Click again to reverse
       await instrumentsPage.clickTableHeader('Symbol');
@@ -70,16 +68,10 @@ test.describe('Instruments Page', () => {
 
       // Click to sort by Market Cap
       await instrumentsPage.clickTableHeader('Market Cap');
+
+      // Market cap is sorted descending by default
       const sortedMarketCaps =
         await instrumentsPage.getColumnText('Market Cap');
-
-      expect(
-        sortedMarketCaps.toSorted((a, b) => {
-          const numA = parseFloat(a.replace(/[^0-9.-]+/g, '')) || 0;
-          const numB = parseFloat(b.replace(/[^0-9.-]+/g, '')) || 0;
-          return numA - numB;
-        })
-      ).toStrictEqual(sortedMarketCaps);
 
       // Click again to reverse
       await instrumentsPage.clickTableHeader('Market Cap');

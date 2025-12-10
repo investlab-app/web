@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_authed/instruments/')({
     try {
       await queryClient.ensureInfiniteQueryData({
         ...instrumentsWithPricesListInfiniteOptions({
-          query: { ordering: 'ticker', page_size: 10, search: '' },
+          query: { ordering: '-market_cap', page_size: 10, search: '' },
         }),
         initialPageParam: 1,
         meta: { persist: false },
