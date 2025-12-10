@@ -13,6 +13,7 @@ import {
 } from '@/features/shared/components/ui/hybrid-tooltip';
 import { withCurrency } from '@/features/shared/utils/numbers';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { useTheme } from '@/features/shared/components/theme-provider';
 
 interface AssetAllocationProps {
   totalValue: number;
@@ -31,6 +32,8 @@ export const AssetAllocationTile = ({
   const formatPercentage = (val: number) => {
     return Math.round((val / totalAssetValue) * 100);
   };
+
+  const { appTheme: theme } = useTheme();
 
   return (
     <Card>
@@ -74,7 +77,7 @@ export const AssetAllocationTile = ({
                           className="rounded-md h-4"
                           style={{
                             width: `${percentage}%`,
-                            backgroundColor: `color-mix(in srgb, black ${(index / assets.length) * 80}%, var(--primary-foreground))`,
+                            backgroundColor: `color-mix(in srgb, ${theme === 'dark' ? 'black' : 'white'} ${(index / assets.length) * 80}%, var(--primary-foreground))`,
                           }}
                         />
                       </HybridTooltipTrigger>
