@@ -302,6 +302,10 @@ export type InstrumentRetrieve = {
     share_class_figi?: string | null;
     description?: string | null;
     /**
+     * Polish Description
+     */
+    description_pl?: string | null;
+    /**
      * Base symbol for related tickers.
      */
     ticker_root?: string | null;
@@ -971,6 +975,10 @@ export type InstrumentRetrieveWritable = {
     primary_exchange?: string | null;
     share_class_figi?: string | null;
     description?: string | null;
+    /**
+     * Polish Description
+     */
+    description_pl?: string | null;
     /**
      * Base symbol for related tickers.
      */

@@ -333,6 +333,10 @@ export const zInstrumentRetrieve = z.object({
         z.string(),
         z.null()
     ])),
+    description_pl: z.optional(z.union([
+        z.string(),
+        z.null()
+    ])),
     ticker_root: z.optional(z.union([
         z.string().max(50),
         z.null()
@@ -1139,6 +1143,10 @@ export const zInstrumentRetrieveWritable = z.object({
         z.null()
     ])),
     description: z.optional(z.union([
+        z.string(),
+        z.null()
+    ])),
+    description_pl: z.optional(z.union([
         z.string(),
         z.null()
     ])),

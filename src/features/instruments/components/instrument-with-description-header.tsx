@@ -35,7 +35,7 @@ export function InstrumentHeader({
     })
   );
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const { mutate: setWatchedTicker } = useSetWatchedTicker();
 
@@ -60,6 +60,11 @@ export function InstrumentHeader({
       />
     );
   }
+
+  const description =
+    i18n.language === 'pl'
+      ? instrumentInfo.description_pl
+      : instrumentInfo.description;
 
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
@@ -146,16 +151,16 @@ export function InstrumentHeader({
           </div>
         </div>
       </div>
-      {instrumentInfo.description && (
+      {description && (
         <div className="flex flex-col gap-2">
           <div className="relative">
-            {instrumentInfo.description.length < 350 ? (
+            {description.length < 350 ? (
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {instrumentInfo.description}
+                {description}
               </p>
             ) : isExpanded ? (
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {instrumentInfo.description}
+                {description}
                 <button
                   onClick={() => setIsExpanded(false)}
                   className="text-foreground hover:underline font-medium cursor-pointer ml-2"
@@ -166,7 +171,7 @@ export function InstrumentHeader({
             ) : (
               <div className="relative">
                 <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                  {instrumentInfo.description}
+                  {description}
                 </p>
                 <div className="absolute bottom-0 right-0 w-full h-6 flex justify-end items-center pointer-events-none">
                   <div className="w-30 h-6 bg-gradient-to-r from-transparent to-background pointer-events-none" />
