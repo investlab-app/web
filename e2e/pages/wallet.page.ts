@@ -9,9 +9,7 @@ export class WalletPage {
   }
 
   private get walletSection() {
-    return this.page
-      .locator('[data-slot="sidebar-menu-item"]')
-      .filter({ hasText: /wallet/i });
+    return this.page.locator('[data-slot="sidebar-menu-item"]');
   }
 
   private get addMoneyButton() {
@@ -86,9 +84,7 @@ export class WalletPage {
 
   async assertDepositErrorToast() {
     await expect(
-      this.page
-        .locator('[data-sonner-toast]')
-        .filter({ hasText: /error|exceeded|failed/i })
+      this.page.locator('[data-sonner-toast]').filter({ hasText: /maximum/i })
     ).toBeVisible({ timeout: 10000 });
   }
 
