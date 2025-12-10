@@ -34,7 +34,10 @@ test.describe('Wallet Deposit', () => {
     // Verify balance increased
     const newBalance = await walletPage.waitForBalanceUpdate(initialBalance);
     expect(newBalance).toBeGreaterThan(initialBalance);
-    expect(newBalance).toBeCloseTo(initialBalance + depositAmount, 0);
+    await expect(async () => {
+      const currentBalance = await walletPage.getWalletBalance();
+      expect(currentBalance).toBeCloseTo(initialBalance + depositAmount, 0);
+    }).toPass({ timeout: 10_000 });
 
     // Second deposit - should eventually hit the 24h limit
     // Deposit max amount to hit the limit faster
