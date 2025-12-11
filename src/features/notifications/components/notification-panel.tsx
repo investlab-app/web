@@ -127,7 +127,7 @@ export function NotificationPanel() {
       </PopoverTrigger>
 
       <PopoverContent
-        className="w-[420px] overflow-hidden rounded-xl border border-border/60 p-0 shadow-xl"
+        className="w-[420px] max-w-[100vw] overflow-hidden rounded-xl border border-border/60 p-0 shadow-xl"
         align="end"
       >
         <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
