@@ -4,10 +4,11 @@ import { clearCookies } from '@/features/shared/utils/cookies';
 
 export const Route = createFileRoute('/_auth/logout')({
   component: RouteComponent,
-  beforeLoad: async () => {
+  beforeLoad: async ({ context: { queryClient } }) => {
     clearCookies();
     localStorage.clear();
     sessionStorage.clear();
+    queryClient.clear();
     await router.navigate({ to: '/' });
   },
 });
