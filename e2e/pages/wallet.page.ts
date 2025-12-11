@@ -35,9 +35,8 @@ export class WalletPage {
       .locator('span.cursor-help')
       .textContent();
     if (!walletText) return 0;
-    // Parse currency string like "$1,234.56" or "1 234,56 $"
-    const cleanedText = walletText.replace(/[^0-9.,]/g, '').replace(',', '.');
-    return parseFloat(cleanedText) || 0;
+    const cleanedText = walletText.replace(/[^0-9.,]/g, '');
+    return parseFloat(cleanedText.replace(/,/g, '')) || 0;
   }
 
   async openDepositDialog() {
