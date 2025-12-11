@@ -55,7 +55,7 @@ function RouteComponent() {
     void syncLanguage();
   }, [initial_session]);
 
-  if (!auth.isLoadead && isLoggedInBefore) {
+  if (!auth.isLoaded && isLoggedInBefore) {
     return <Dashboard />;
   }
 
