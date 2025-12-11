@@ -41,6 +41,7 @@ import { pricesBarsQueryKey } from '@/client/@tanstack/react-query.gen';
 import { pricesBars } from '@/client';
 import { serialize } from '@/features/shared/utils/date';
 import { EmptyMessage } from '@/features/shared/components/empty-message';
+import { useLivePrice } from '@/features/shared/hooks/use-live-prices';
 
 interface StockChartProps {
   ticker: string;
@@ -128,8 +129,8 @@ export function StockChartContainer({ ticker }: StockChartProps) {
   const appliedPriceHistory = useFrozenValue(priceHistory, isPending);
   const isIntervalChanging = appliedInterval !== interval;
 
-  const latestClosingPrice = currentPrice?.close || priceHistory?.at(-1)?.close;
-
+  const latestClosingPrice =
+    useLivePrice(ticker) || priceHistory?.at(-1)?.close;
   // reason for this mad calculation: if we get e.g. only 5 data points and the
   // zoom is set to 0.1 we'll only see one point on load. This exact situation
   // happens with yearly interval for polygon since it's capped to past 5 years
